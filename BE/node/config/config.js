@@ -2,6 +2,7 @@
 "use strict";
 
 const realDb = require('./db');
+const path = require('path');
 const db = {
     dbBlog: realDb.blog,
     dbUser: realDb.users
@@ -30,7 +31,7 @@ const cdn = {
     "ACCESS_KEY": "",
     "SECRET_KEY": ""
 };
-const path = {
+const filePath = {
     gitArticleMDPath: path.join(__dirname, '../../blogArticle'),
     modsPath: path.join(__dirname, '../mods')
 };
@@ -45,7 +46,7 @@ module.exports = {
     apiVersion,
     session,
     cdn,
-    path,
+    filePath,
     db,
     dbSource,
     userAccess,
