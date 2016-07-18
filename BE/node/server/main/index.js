@@ -8,7 +8,7 @@ const http = require('http');
 
 const fs = require('fs');
 
-const port = require('../config').app.port;
+const port = require('../../config').app.port;
 
 var server = http.createServer(app);
 
