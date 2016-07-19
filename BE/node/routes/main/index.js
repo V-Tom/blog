@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-var Config = require('../config');
+var Config = require('../../config');
 
 
 /* HOME PAGE */

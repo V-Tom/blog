@@ -16,7 +16,7 @@ const ConfigSession = config.session;
 
 
 app.set('env', config.app.env);
-app.set('views', path.join(__dirname, '../../main/views'));
+app.set('views', path.join(__dirname, '../../views/main'));
 app.set('view engine', 'jade');
 app.set('x-powered-by', false);
 app.set('etag', true);

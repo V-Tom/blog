@@ -3,8 +3,8 @@ const express = require('express');
 const router = express.Router();
 const path = require("path");
 
-var config = require('../../config');
-var authController = require('../../controller/auth');
+var config = require('../../../config');
+var authController = require('../../../controller/main/auth');
 var jwt = require(path.join(config.path.modsPath, "jwt"));
 
 router.get('/login', (req, res)=> {

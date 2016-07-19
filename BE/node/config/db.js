@@ -1,82 +1,83 @@
 'use strict';
-const DB = "";
+const DB = "139.196.194.79:27017";
 const db = {
-    "users": {
-        "port": "" + DB + "/user",
-        "collection": {
-            "user": ""
-        }
-    },
-    "cache": {
-        "port": "" + DB + "/cache",
-        "collection": {
-            "session": ""
-        }
-    },
-    "blog": {
-        "port": "" + DB + "/blog",
-        "collection": {
-            "blogList": "",
-            "articleReplyList": "",
-            "articleReplyUserInfo": "",
-            "articleDetail": ""
-        }
+  "users": {
+    "port": "mongodb://admin:zhangchi123ZC@" + DB + "/user",
+    "collection": {
+      "user": "user"
     }
+  },
+  "cache": {
+    "port": "mongodb://admin:zhangchi123ZC@" + DB + "/cache",
+    "collection": {
+      "session": "sessions"
+    }
+  },
+  "blog": {
+    "port": "mongodb://admin:zhangchi123ZC@" + DB + "/blog",
+    "collection": {
+      "blogList": "blogList",
+      "articleReplyList": "articleReplyList",
+      "articleReplyUserInfo": "articleReplyUserInfo",
+      "articleDetail": "articleDetail"
+    }
+  }
 };
 const blogDetailDbSource = {
-    source: {
-        "DBName": db.blog.port,
-        "DBCollection": db.blog.collection.articleDetail
-    }
+  source: {
+    "DBName": db.blog.port,
+    "DBCollection": db.blog.collection.articleDetail
+  }
 };
 const blogListDbSource = {
-    source: {
-        "DBName": db.blog.port,
-        "DBCollection": db.blog.collection.blogList
-    }
+  source: {
+    "DBName": db.blog.port,
+    "DBCollection": db.blog.collection.blogList
+  }
 };
 const replyDbSource = {
-    source: {
-        "DBName": db.blog.port,
-        "DBCollection": db.blog.collection.articleReplyList
-    }
+  source: {
+    "DBName": db.blog.port,
+    "DBCollection": db.blog.collection.articleReplyList
+  }
 };
 const replyUserInfoDbSource = {
-    source: {
-        "DBName": db.blog.port,
-        "DBCollection": db.blog.collection.articleReplyUserInfo
-    }
+  source: {
+    "DBName": db.blog.port,
+    "DBCollection": db.blog.collection.articleReplyUserInfo
+  }
 };
 
 const userDbSource = {
-    source: {
-        "DBName": db.users.port,
-        "DBCollection": db.users.collection.user
-    }
+  source: {
+    "DBName": db.users.port,
+    "DBCollection": db.users.collection.user
+  }
 };
 const sessionMaxAge = 36000;
 const session = function (store) {
-    return {
-        "secret": "",
-        "resave": false,
-        "saveUninitialized": true,
-        "cookie": {
-            "maxAge": sessionMaxAge
-        },
-        "store": new store({
-            "url": '' + DB + '/cache'
-        })
-    }
+  return {
+    "secret": "Nomand",
+    "resave": false,
+    "saveUninitialized": true,
+    "cookie": {
+      "maxAge": sessionMaxAge
+    },
+    "store": new store({
+      "url": 'mongodb://admin:zhangchi123ZC@' + DB + '/cache'
+    })
+  }
 };
 
 module.exports = {
-    session: session,
-    db: db,
-    dbSource: {
-        blogDetail: blogDetailDbSource,
-        blogList: blogListDbSource,
-        reply: replyDbSource,
-        replyUser: replyUserInfoDbSource,
-        user: userDbSource
-    }
+  session: session,
+  db: db,
+  sessionMaxAge: sessionMaxAge,
+  dbSource: {
+    blogDetail: blogDetailDbSource,
+    blogList: blogListDbSource,
+    reply: replyDbSource,
+    replyUser: replyUserInfoDbSource,
+    user: userDbSource
+  }
 };

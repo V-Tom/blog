@@ -46,7 +46,7 @@ module.exports = {
     apiVersion,
     session,
     cdn,
-    filePath,
+    path: filePath,
     db,
     dbSource,
     userAccess,
