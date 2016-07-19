@@ -1,8 +1,9 @@
 'use strict';
-let REDIS_INSTANCE = null;
 const serverLogger = require('../logger').server;
 
 const getRedis = ()=> {
+    let {REDIS_INSTANCE}=global;
+
     if (REDIS_INSTANCE) {
         return REDIS_INSTANCE;
     }
@@ -12,8 +13,8 @@ const getRedis = ()=> {
             password: "zhangchi123ZC"
         });
 
-    REDIS_INSTANCE = client;
-
+    REDIS_INSTANCE = global.REDIS_INSTANCE = client;
+    
     client.on("error", function (err) {
         console.error(`redis error : ${err}`);
     });

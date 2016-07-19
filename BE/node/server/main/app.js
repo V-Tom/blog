@@ -7,10 +7,30 @@ const bodyParser = require('body-parser');
 const compression = require('compression');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
+const MongoClient = require('mongodb').MongoClient;
 const app = express();
-
+const EventEmitter = require('events');
 
 const config = require('../../config');
+
+//set global variables
+global.CONFIG = config;
+global.MONGO_POOL = {};
+Promise.all([
+    MongoClient.connect(config.db.path.cache.port),
+    MongoClient.connect(config.db.path.blog.port),
+    MongoClient.connect(config.db.path.users.port)
+]).then((clients)=> {
+    var MONGO_POOL = global.MONGO_POOL,
+        poolName = ['cache', 'blog', 'users'];
+    clients.forEach((item, index)=> {
+        MONGO_POOL[poolName[index]] = item;
+    });
+}).catch(err=> {
+    console.log(err);
+});
+
+
 const apiVersion = config.apiVersion;
 const ConfigSession = config.session;
 

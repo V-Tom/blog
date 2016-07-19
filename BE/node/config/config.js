@@ -1,12 +1,8 @@
 //base site CONFIG
 "use strict";
 
-const realDb = require('./db');
+const db = require('./db');
 const path = require('path');
-const db = {
-    dbBlog: realDb.blog,
-    dbUser: realDb.users
-};
 const app = {
     port: 4000,
     domain: "t-tom.me",
@@ -19,7 +15,7 @@ const app = {
     }
 };
 const apiVersion = 'v1';
-const session = realDb.session;
+const session = db.session;
 const cdn = {
     "bucket": {
         "node": {
@@ -36,7 +32,6 @@ const filePath = {
     modsPath: path.join(__dirname, '../mods')
 };
 
-const dbSource = realDb.dbSource;
 
 const userAccess = "";
 const redisExp = 1000 * 3600 * 7;
@@ -48,7 +43,6 @@ module.exports = {
     cdn,
     path: filePath,
     db,
-    dbSource,
     userAccess,
     redisExp
 };

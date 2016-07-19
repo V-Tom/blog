@@ -1,6 +1,5 @@
 'use strict';
 const config = require('../../config');
-const dbSource = config.dbSource;
 const path = require('path');
 
 const ObjectId = require('mongodb').ObjectID,
@@ -10,8 +9,15 @@ const ObjectId = require('mongodb').ObjectID,
     redisHelper = require(path.join(config.path.modsPath, './redis')).helper,
     jwt = require(path.join(config.path.modsPath, "jwt"));
 
+
+const dbSource = {
+    poolInstance: global.MONGO_POOL.blog,
+    collection: global.CONFIG.db.collection.blogDetail
+};
+
+
 const updateArticleViews = function (articleId) {
-    return new DBHelperTools(dbSource.blogDetail).updateArticleViews(articleId);
+    return new DBHelperTools(dbSource).updateArticleViews(articleId);
 };
 
 const getArticleDetail = function (dbQuery) {
@@ -31,7 +37,8 @@ const getArticleDetail = function (dbQuery) {
             if (err) {
                 reject(err);
             } else {
-                new DBHelperFind(dbSource.blogDetail).findOne(dbQuery).then(result=> {
+                let dbInstance = new DBHelperFind(dbSource);
+                dbInstance.findOne(dbQuery).then(result=> {
                     if (result.success) {
                         redisHelper.set(key, JSON.stringify(result), function () {
                             resolve(result);
@@ -41,6 +48,8 @@ const getArticleDetail = function (dbQuery) {
                     }
                 }).catch(err=> {
                     reject(err);
+                }).always(()=> {
+                    dbInstance = null;
                 })
             }
         });
@@ -64,7 +73,8 @@ const getArticleList = function (dbQuery, options) {
             if (err) {
                 reject(err);
             }
-            new DBHelperFind(dbSource.blogList).find(dbQuery, options).then(result=> {
+            let dbInstance = new DBHelperFind(dbSource.blogList);
+            dbInstance.find(dbQuery, options).then(result=> {
                 if (result.success) {
                     redisHelper.set(key, JSON.stringify(result), function () {
                         resolve(result);
@@ -74,6 +84,8 @@ const getArticleList = function (dbQuery, options) {
                 }
             }).catch(err=> {
                 reject(err);
+            }).always(()=> {
+                dbInstance = null;
             })
         })
     });
@@ -96,7 +108,8 @@ const getReply = function (dbQuery, options) {
             if (err) {
                 reject(err);
             } else {
-                new DBHelperFind(dbSource.reply).find(dbQuery, options).then(result=> {
+                let dbInstance = new DBHelperFind(dbSource.reply);
+                dbInstance.find(dbQuery, options).then(result=> {
                     if (result.success) {
                         redisHelper.set(key, JSON.stringify(result), function () {
                             resolve(result);
@@ -106,6 +119,8 @@ const getReply = function (dbQuery, options) {
                     }
                 }).catch(err=> {
                     reject(err);
+                }).always(()=> {
+                    dbInstance = null;
                 })
             }
         })
@@ -113,7 +128,7 @@ const getReply = function (dbQuery, options) {
 };
 
 const insertReply = function (data, userId) {
-    return new DBHelperInsert(dbSource.reply).insertOne({
+    return new DBHelperInsert(dbSource).insertOne({
         "articleDbId": data.articleDbId,
         "articleId": data.articleId,
         "replyTo": data.replyTo,
