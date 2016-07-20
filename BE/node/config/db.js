@@ -40,7 +40,7 @@ const session = function (store) {
 
 module.exports = {
     session: session,
-    path: db,
+    port: {blog: db.blog.port, users: db.users.port, cache: db.cache.port},
     sessionMaxAge: sessionMaxAge,
     collection: {
         blogDetail: db.blog.collection.articleDetail,

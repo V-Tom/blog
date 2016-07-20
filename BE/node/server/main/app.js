@@ -13,13 +13,15 @@ const EventEmitter = require('events');
 
 const config = require('../../config');
 
+process.env.NODE_ENV = 'development';
+
 //set global variables
 global.CONFIG = config;
 global.MONGO_POOL = {};
 Promise.all([
-    MongoClient.connect(config.db.path.cache.port),
-    MongoClient.connect(config.db.path.blog.port),
-    MongoClient.connect(config.db.path.users.port)
+    MongoClient.connect(config.db.port.cache),
+    MongoClient.connect(config.db.port.blog),
+    MongoClient.connect(config.db.port.users)
 ]).then((clients)=> {
     var MONGO_POOL = global.MONGO_POOL,
         poolName = ['cache', 'blog', 'users'];

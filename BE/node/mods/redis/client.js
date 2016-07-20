@@ -1,6 +1,4 @@
 'use strict';
-const serverLogger = require('../logger').server;
-
 const getRedis = ()=> {
     let {REDIS_INSTANCE}=global;
 
@@ -14,7 +12,7 @@ const getRedis = ()=> {
         });
 
     REDIS_INSTANCE = global.REDIS_INSTANCE = client;
-    
+
     client.on("error", function (err) {
         console.error(`redis error : ${err}`);
     });

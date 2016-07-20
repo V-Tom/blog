@@ -34,7 +34,8 @@ const filePath = {
 
 
 const userAccess = "";
-const redisExp = 1000 * 3600 * 7;
+const redisExpDev = 3;
+const redisExp = 60 * 60 * 24 * 7;
 
 module.exports = {
     app,
@@ -44,5 +45,7 @@ module.exports = {
     path: filePath,
     db,
     userAccess,
-    redisExp
+    redis: {
+        redisExp, redisExpDev
+    }
 };

@@ -3,10 +3,8 @@ const express = require('express');
 const path = require('path');
 const router = express.Router();
 
-var config = require('../../../config');
 
-
-var canvas = require(path.join(config.path.modsPath, 'verifyCode'));
+var canvas = require(path.join(global.CONFIG.path.modsPath, 'verifyCode'));
 var json = require('../../../mods/jsonWrap');
 //
 router.get('/getVerifyCode', (req, res)=> {

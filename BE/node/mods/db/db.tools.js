@@ -6,34 +6,25 @@ const Utils = require('../utils');
 const Json = require('../jsonWrap');
 const dbFindTimeKey = "DBTime";
 class App extends core {
-  constructor(dbSource) {
-    super(dbSource);
-  }
+    constructor(dbSource) {
+        super(dbSource);
+    }
 
-  updateArticleViews(articleId) {
-    var _DBName = this._DBName,
-      _DBCollection = this._DBCollection, start = new Date();
-    return new Promise((resolve, reject)=> {
-      MongoClient.connect(_DBName, (err, db)=> {
-        if (err) {
-          reject(err);
-        } else {
-          var collection = db.collection(_DBCollection);
-          collection.findOne({"_id": ObjectId(articleId)}).then(docs=> {
-            var views = docs.views || 0;
-            views++;
-            collection.findOneAndUpdate({"_id": ObjectId(articleId)}, {"$set": {"views": views}}, {"upsert": false}).then(docs=> {
-              resolve(docs);
+    updateArticleViews(articleId) {
+        let {poolInstance, collection}=this.db;
+        return new Promise((resolve, reject)=> {
+            poolInstance.collection(collection).findOne({"_id": ObjectId(articleId)}).then(docs=> {
+                var views = docs.views || 0;
+                views++;
+                collection.findOneAndUpdate({"_id": ObjectId(articleId)}, {"$set": {"views": views}}, {"upsert": false}).then(docs=> {
+                    resolve(docs);
+                }).catch(err=> {
+                    reject(err);
+                })
             }).catch(err=> {
-              reject(err);
+                reject(err);
             })
-          }).catch(err=> {
-            reject(err);
-          })
-        }
-      })
-
-    })
-  }
+        })
+    }
 }
 module.exports = App;

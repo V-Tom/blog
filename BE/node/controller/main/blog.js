@@ -1,23 +1,23 @@
 'use strict';
-const config = require('../../config');
 const path = require('path');
 
 const ObjectId = require('mongodb').ObjectID,
-    DBHelperFind = require(path.join(config.path.modsPath, './db/db.find')),
-    DBHelperInsert = require(path.join(config.path.modsPath, './db/db.insert')),
-    DBHelperTools = require(path.join(config.path.modsPath, './db/db.tools')),
-    redisHelper = require(path.join(config.path.modsPath, './redis')).helper,
-    jwt = require(path.join(config.path.modsPath, "jwt"));
+    DBHelperFind = require(path.join(global.CONFIG.path.modsPath, './db/db.find')),
+    DBHelperInsert = require(path.join(global.CONFIG.path.modsPath, './db/db.insert')),
+    DBHelperTools = require(path.join(global.CONFIG.path.modsPath, './db/db.tools')),
+    redisHelper = require(path.join(global.CONFIG.path.modsPath, './redis')).helper,
+    jwt = require(path.join(global.CONFIG.path.modsPath, "jwt"));
 
-
-const dbSource = {
-    poolInstance: global.MONGO_POOL.blog,
-    collection: global.CONFIG.db.collection.blogDetail
-};
-
+const dbFindTimeKey = "dbQueryTime";
 
 const updateArticleViews = function (articleId) {
-    return new DBHelperTools(dbSource).updateArticleViews(articleId);
+    let dbInstance = new DBHelperTools({
+        poolInstance: global.MONGO_POOL.blog,
+        collection: global.CONFIG.db.collection.blogDetail
+    });
+    dbInstance.updateArticleViews(articleId).always(()=> {
+        dbInstance = null;
+    })
 };
 
 const getArticleDetail = function (dbQuery) {
@@ -30,14 +30,17 @@ const getArticleDetail = function (dbQuery) {
             } catch (ex) {
                 reject(ex);
             }
-            delete result["DBTime"];
+            delete result[dbFindTimeKey];
             result["poweredBy"] = "redis";
             resolve(result);
         }).catch(err=> {
             if (err) {
                 reject(err);
             } else {
-                let dbInstance = new DBHelperFind(dbSource);
+                let dbInstance = new DBHelperFind({
+                    poolInstance: global.MONGO_POOL.blog,
+                    collection: global.CONFIG.db.collection.blogDetail
+                });
                 dbInstance.findOne(dbQuery).then(result=> {
                     if (result.success) {
                         redisHelper.set(key, JSON.stringify(result), function () {
@@ -66,14 +69,17 @@ const getArticleList = function (dbQuery, options) {
             } catch (ex) {
                 reject(ex);
             }
-            delete result["DBTime"];
+            delete result[dbFindTimeKey];
             result["poweredBy"] = "redis";
             resolve(result);
         }).catch(err=> {
             if (err) {
                 reject(err);
             }
-            let dbInstance = new DBHelperFind(dbSource.blogList);
+            let dbInstance = new DBHelperFind({
+                poolInstance: global.MONGO_POOL.blog,
+                collection: global.CONFIG.db.collection.blogDetail
+            }.blogList);
             dbInstance.find(dbQuery, options).then(result=> {
                 if (result.success) {
                     redisHelper.set(key, JSON.stringify(result), function () {
@@ -101,14 +107,17 @@ const getReply = function (dbQuery, options) {
             } catch (ex) {
                 reject(ex);
             }
-            delete result["DBTime"];
+            delete result[dbFindTimeKey];
             result["poweredBy"] = "redis";
             resolve(result);
         }).catch(err=> {
             if (err) {
                 reject(err);
             } else {
-                let dbInstance = new DBHelperFind(dbSource.reply);
+                let dbInstance = new DBHelperFind({
+                    poolInstance: global.MONGO_POOL.blog,
+                    collection: global.CONFIG.db.collection.blogDetail
+                }.reply);
                 dbInstance.find(dbQuery, options).then(result=> {
                     if (result.success) {
                         redisHelper.set(key, JSON.stringify(result), function () {
@@ -128,7 +137,10 @@ const getReply = function (dbQuery, options) {
 };
 
 const insertReply = function (data, userId) {
-    return new DBHelperInsert(dbSource).insertOne({
+    return new DBHelperInsert({
+        poolInstance: global.MONGO_POOL.blog,
+        collection: global.CONFIG.db.collection.reply
+    }).insertOne({
         "articleDbId": data.articleDbId,
         "articleId": data.articleId,
         "replyTo": data.replyTo,

@@ -59,7 +59,7 @@ router.get('/article/get', (req, res)=> {
     controller.article.getArticleDetail(dbQuery).then(result=> {
         if (result.success) {
             res.status(200).json(result);
-            controller.article.updateArticleViews(String(result.data._id));
+            result.data && result.data._id && controller.article.updateArticleViews(String(result.data._id));
         }
     }).catch(err=> {
         res.status(500).json(err);

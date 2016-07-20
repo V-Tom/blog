@@ -1,19 +1,9 @@
 'use strict';
 const redis = require('./client');
-const defaultExp = 60 * 60 * 24 * 7;
-const devExp = 3;
-
-const set = (key, value, exp, cb)=> {
-    let currentExp, currentCb;
-    if (typeof exp === 'function') {
-        currentExp = devExp;
-        currentCb = exp
-    } else {
-        currentExp = exp;
-        currentCb = cb
-    }
-    redis.set(key, value, 'EX', currentExp, () => {
-        currentCb && currentCb();
+const exp = process.env.NODE_ENV === "development" ? global.CONFIG.redis.redisExpDev : global.CONFIG.redis.redisExp;
+const set = (key, value, cb)=> {
+    redis.set(key, value, 'EX', exp, () => {
+        cb && cb(key, value, exp);
     })
 };
 

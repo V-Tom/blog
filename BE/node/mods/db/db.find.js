@@ -44,7 +44,8 @@ class App extends core {
     }
 
     findOne(query, options) {
-        var start = new Date();
+        let start = new Date();
+        let {poolInstance, collection}=this.db;
         return new Promise((resolve, reject)=> {
             if (!poolInstance || !collection) {
                 reject("pool name or collection name is not available !");
@@ -52,8 +53,7 @@ class App extends core {
             if (typeof query !== 'object') {
                 reject('query must be an object');
             }
-            let collection = this.db.poolInstance.collection(this.db.collection);
-            collection.findOne(query, options).then((docs)=> {
+            poolInstance.collection(collection).findOne(query, options).then((docs)=> {
                 resolve(Json.success(docs, {[dbFindTimeKey]: new Date() - start + 'ms'}));
             }).catch(()=> {
                 reject(Json.error(err, {[dbFindTimeKey]: new Date() - start + 'ms'}));
