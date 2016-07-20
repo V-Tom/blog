@@ -1,0 +1,67 @@
+background = rgba(10, 10, 10, 0)
+Spinner-ring-width = 6rem
+Spinner-ring-height = 6rem
+Spinner-ring-opacity = 1
+Spinner-ring-border = 4px solid rgb(93, 197, 150)
+
+Spinner-ring-container-width = 6rem
+Spinner-ring-container-height = 6rem
+
+Spinner-ring-ani-perspective = 80rem
+
+.Spinner
+  position fixed
+  top 0
+  right 0
+  left 0
+  bottom 0
+  background background
+  z-index 9999
+  transition 300ms 0s all ease-in-out
+
+  .Spinner-ring-container
+    height Spinner-ring-container-width
+    width Spinner-ring-container-height
+    position absolute
+    top 0
+    right 0
+    left 0
+    bottom 0
+    margin auto
+
+  .Spinner-ring
+    height Spinner-ring-width
+    width Spinner-ring-height
+    border Spinner-ring-border
+    opacity Spinner-ring-opacity
+    border-radius 100%
+
+  .Spinner-ring-1
+    animation Spinner-ringRightRotate 2s 0s infinite linear
+    animation-fill-mode forwards
+    perspective Spinner-ring-ani-perspective
+    position absolute
+    top 0
+    left 0
+
+  .Spinner-ring-2
+    animation Spinner-ringLeftRotate 2s 0s infinite linear
+    animation-fill-mode forwards
+    perspective Spinner-ring-ani-perspective
+    position absolute
+    top 0
+    left 0
+
+@keyframes Spinner-ringRightRotate
+  from
+    transform rotateX(0deg) rotateY(0deg) rotateZ(0deg)
+  to
+    transform rotateX(180deg) rotateY(360deg) rotateZ(360deg)
+
+@keyframes Spinner-ringLeftRotate
+  from
+    transform rotateX(0deg) rotateY(0deg) rotateZ(0deg)
+  to
+    transform rotateX(360deg) rotateY(180deg) rotateZ(360deg)
+
+
