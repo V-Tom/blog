@@ -27,4 +27,4 @@ const blogDetailSchema = new Schema({
 /**
  * Model
  */
-module.exports = blogCoon.model('articleDetail', blogDetailSchema)
+module.exports = blogCoon.model('articleDetail', blogDetailSchema, 'articleDetail')

@@ -8,8 +8,7 @@ exports.getArticleDetail = function *() {
   const id = this.query.articleId
   const detail = yield articleDetail.findOne({"articleId": id}).exec()
   if (detail) {
-    this.body = detail
-    console.log(detail)
+    this.body = detail._doc
   } else {
 
   }
