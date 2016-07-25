@@ -1,0 +1,34 @@
+{
+  "name": "NomandNodeBlogServer-koa",
+  "version": "0.0.1",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "dev-main": "supervisor ./server/main --harmony  ---watch ./routes/main ./controller/main ./views/main ./server/main"
+  },
+  "engines": {
+    "node": ">=5.2.0"
+  },
+  "dependencies": {
+    "jade": "^1.11.0",
+    "jsonwebtoken": "^5.7.0",
+    "koa": "^1.2.1",
+    "redis": "^2.6.2",
+    "request": "^2.73.0",
+    "koa-bodyparser": "~2.0.1",
+    "koa-compress": "1.0.x",
+    "koa-error": "1.1.x",
+    "koa-logger": "1.3.0",
+    "koa-methodoverride": "^1.0.0",
+    "koa-response-time": "1.0.x",
+    "koa-router": "~5.1.2",
+    "koa-send": "^3.2.0",
+    "koa-static-cache": "~3.1.2",
+    "mongoose": "~4.1.3"
+  },
+  "devDependencies": {
+    "supervisor": "^0.11.0"
+  },
+  "author": "Nomand",
+  "license": "MIT"
+}
