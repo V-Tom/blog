@@ -31,6 +31,7 @@ module.exports = (app)=> {
     })
 
     api.get('/blog/article/get', blogDetailController.getArticleDetail)
+    api.put('/blog/article/update', blogDetailController.updateArticleDetail)
 
     // Apply all router server
     app.use(router.routes())

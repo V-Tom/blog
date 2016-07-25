@@ -22,3 +22,7 @@ exports.getArticleDetail = function *() {
     }
     this.body = detail
 }
+
+exports.updateArticleDetail = function *() {
+
+}
