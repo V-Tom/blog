@@ -13,8 +13,10 @@ module.exports = {
         },
         redis: {
             redisExpDev: 60,
-            redisExp: 60 * 60 * 24 * 1
+            redisExp: 60 * 60 * 24
         },
+        tokenSecret: "NOMAND_KOA_BLOG_SERVRFARMWORK",
+        tokenExpireTime: 60 * 60 * 24,
         env: "development"
     }
 }
