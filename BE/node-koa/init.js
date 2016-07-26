@@ -3,7 +3,7 @@ const fs = require('fs')
 const path = require('path')
 
 global.config = require('./config')
-global.redis = require('./config/redis')()
+global.redis = require('./config/redisHelper')
 
 process.env.NODE_ENV = global.config.app.env
 
@@ -12,7 +12,7 @@ process.env.NODE_ENV = global.config.app.env
  */
 const modelsPath = path.join(global.config.app.root, './models')
 fs.readdirSync(modelsPath).forEach(file => {
-    if (file.indexOf('js') !== -1) {
-        require(modelsPath + '/' + file)
-    }
+  if (file.indexOf('js') !== -1) {
+    require(modelsPath + '/' + file)
+  }
 })
