@@ -12,12 +12,7 @@ const commitListSchema = new Schema({
   replyTo: Schema.Types.ObjectId,
   replyUserId: Schema.Types.ObjectId,
   userType: {type: String, default: "github"},
-  detail: {
-    content: String,
-    name: String,
-    time: {},
-    avatar: String
-  }
+  content: String
 });
 
 /**

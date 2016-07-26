@@ -2,10 +2,13 @@
 const fs = require('fs')
 const path = require('path')
 
+
 global.config = require('./config')
-global.redis = require('./config/redisHelper')
 
 process.env.NODE_ENV = global.config.app.env
+
+global.redis = require('./config/redisHelper')
+
 
 /**
  * Load the models

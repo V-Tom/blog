@@ -7,8 +7,7 @@ const indexController = require('../controllers/index.controller')
 const blogDetailController = require('../controllers/blog.detail.controller')
 const blogCommitController = require('../controllers/blog.commit.controller')
 
-const apiPrefix = "api"
-const apiVersion = 'v1'
+const {config:{app:{restfulAPI}}}=global
 
 module.exports = (app)=> {
 
@@ -21,13 +20,12 @@ module.exports = (app)=> {
 
 
   //api server routers
-  const api = new Router({prefix: '/' + apiPrefix + '/' + apiVersion})
-  const apiServeReg = new RegExp('^\/' + apiPrefix + '\/' + apiVersion)
+  const api = new Router({prefix: '/' + restfulAPI.apiPrefix + '/' + restfulAPI.apiVersion})
   app.use(function *(next) {
-    if (apiServeReg.test(this.url)) {
+    yield next
+    if (restfulAPI.apiRegExp.test(this.url)) {
       this.type = "application/json"
     }
-    yield next
   })
 
   api.get('/blog/article/get', blogDetailController.getArticleDetail)

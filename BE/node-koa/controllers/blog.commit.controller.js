@@ -16,7 +16,9 @@ exports.getArticleCOMMIT = function *() {
     if (commitList) {
       commitList = yield global.redis.set(key, commitList._doc)
       commitList["poweredBy"] = "REDIS"
-      this.body = commitList
+      this.body = {success: true, data: commitList}
+    } else {
+      commitList = null
     }
   }
   this.body = commitList

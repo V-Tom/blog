@@ -1,6 +1,9 @@
 'use strict';
 const path = require('path')
 const dbPort = '139.196.194.79:27017'
+const apiVersion = "v1"
+const apiPrefix = 'api'
+
 module.exports = {
   app: {
     port: 4000,
@@ -17,6 +20,19 @@ module.exports = {
     },
     tokenSecret: "NOMAND_KOA_BLOG_SERVRFARMWORK",
     tokenExpireTime: 60 * 60 * 24,
+    restfulAPI: {
+      apiVersion, apiPrefix,
+      apiRegExp: new RegExp('^\/' + apiPrefix + '/' + apiVersion),
+      RESPONSE_ERROR: {
+        "success": false,
+        "data": null,
+        "error": undefined
+      },
+      RESPONSE_SUCCESS: {
+        "success": true,
+        "data": undefined
+      }
+    },
     env: "development"
   }
 }
