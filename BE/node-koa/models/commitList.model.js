@@ -18,4 +18,4 @@ const commitListSchema = new Schema({
 /**
  * Model
  */
-module.exports = blogCoon.model('commitList', commitListSchema, 'articleReply')
+module.exports = blogCoon.model('commitList', commitListSchema, 'articleReplyList')

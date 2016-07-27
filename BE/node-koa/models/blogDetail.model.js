@@ -21,8 +21,10 @@ const blogDetailSchema = new Schema({
   githubArticleUrl: String,
   content: String,
   views: {type: Number, default: 0}
-});
+}, {'toObject': {getters: true, virtuals: true}});
 
+
+blogDetailSchema.set('toObject', {getters: true, virtuals: true})
 
 /**
  * Model

@@ -19,19 +19,25 @@ module.exports = (app)=> {
   })
 
 
-  //api server routers
+  //restful API server routers
   const api = new Router({prefix: '/' + restfulAPI.apiPrefix + '/' + restfulAPI.apiVersion})
-  app.use(function *(next) {
+
+  api.use(function *(next) {
     yield next
-    if (restfulAPI.apiRegExp.test(this.url)) {
-      this.type = "application/json"
-    }
+
+    //set API type
+    this.type = "application/json"
+
+    //restful API response format
+    this.body && (this.body.success ? (this.body = Object.assign({}, restfulAPI.RESPONSE_SUCCESS, this.body)) :
+      this.body = Object.assign({}, restfulAPI.RESPONSE_ERROR, this.body))
   })
 
   api.get('/blog/article/get', blogDetailController.getArticleDetail)
+  api.get('/blog/article/list', blogDetailController.getArticleList)
   api.put('/blog/article/update', blogDetailController.updateArticleDetail)
 
-  api.get('/blog/reply/list', blogCommitController.getArticleCOMMIT)
+  api.get('/blog/reply/get', blogCommitController.getArticleCOMMIT)
   api.post('/blog/reply/add', auth.isCommitAccess)
 
   // Apply all router server

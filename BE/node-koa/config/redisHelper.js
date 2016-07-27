@@ -18,7 +18,7 @@ module.exports.get = (key)=> {
 module.exports.set = (key, value)=> {
   return new Promise((resolve, reject)=> {
     redis.set(key, JSON.stringify(value), 'EX', exp, () => {
-      resolve(value)
+      resolve()
     })
   })
 }
