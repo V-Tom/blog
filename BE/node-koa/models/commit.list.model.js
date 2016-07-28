@@ -10,10 +10,9 @@ const commitListSchema = new Schema({
   articleId: String,
   articleDbId: Schema.Types.ObjectId,
   replyTo: Schema.Types.ObjectId,
-  replyUserId: Schema.Types.ObjectId,
-  userType: {type: String, default: "github"},
+  userId: Schema.Types.ObjectId,
   content: String
-});
+}, {versionKey: false});
 
 /**
  * Model

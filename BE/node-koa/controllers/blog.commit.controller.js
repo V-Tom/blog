@@ -5,9 +5,8 @@ const {mongo:{ObjectId}}=require('mongoose')
 const commitListCoon = blogCoon.model('commitList')
 const redisPrefix = "BLOG_COMMIT_REDIS_PREFIX"
 
-const {config:{app:{restfulAPI:{RESPONSE_SUCCESS, RESPONSE_ERROR}}}}=global
 
-exports.getArticleCOMMIT = function *() {
+exports.getArticleCommit = function *() {
   const {articleId} = this.query
   const key = `${redisPrefix}:${articleId}`
 
@@ -26,6 +25,6 @@ exports.getArticleCOMMIT = function *() {
   this.body = commitList
 }
 
-exports.updateArticleDetail = function *() {
+exports.addArticleCommit = function *() {
 
 }

@@ -14,6 +14,12 @@ module.exports = {
       blog: {uri: 'mongodb://admin:zhangchi123ZC@' + dbPort + '/blog'},
       cache: {uri: 'mongodb://admin:zhangchi123ZC@' + dbPort + '/cache'}
     },
+    userAccess: {
+      github: {
+        client_id: "",
+        client_secret: ""
+      }
+    },
     redis: {
       redisExpDev: 5,
       redisExp: 60 * 60 * 24
