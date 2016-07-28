@@ -34,6 +34,7 @@ exports.getArticleList = function *() {
     }
     this.body = list
   } else {
-    this.body = {"success": false, "error": `API router query limit:${limit} or page:${page} must both is Number`}
+    this.APIStatus = 0
+    this.APIError = `API router query limit:${limit} or page:${page} must both is Number`
   }
 }

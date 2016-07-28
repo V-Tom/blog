@@ -8,7 +8,7 @@ const views = require('co-views')
 const compress = require('koa-compress')
 const errorHandler = require('koa-error')
 const bodyParser = require('koa-bodyparser')
-const formErrorHandler = require('../middlewares/formErrorHandler')
+const formErrorHandler = require('../middlewares/middlewares.form.error.handler')
 const methodOverride = require('koa-methodoverride')
 
 

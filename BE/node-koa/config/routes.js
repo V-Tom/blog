@@ -1,12 +1,16 @@
 'use strict';
 const Router = require('koa-router')
 const send = require('koa-send')
-const auth = require('../auth/auth.server')
 
-const indexController = require('../controllers/index.controller')
-const blogDetailController = require('../controllers/blog.detail.controller')
-const blogCommitController = require('../controllers/blog.commit.controller')
-const blogListController = require('../controllers/blog.list.controller')
+const authUserReply = require('../auth/auth.user.reply')
+
+
+const indexController = require('../controllers/controller.index.js')
+const blogDetailController = require('../controllers/controller.blog.detail.js')
+const blogCommitController = require('../controllers/controller.blog.commit.js')
+const blogListController = require('../controllers/controller.blog.list.js')
+const blogUserController = require('../controllers/controller.blog.user.js')
+
 
 module.exports = (app)=> {
 
@@ -22,16 +26,18 @@ module.exports = (app)=> {
   const {config:{app:{restfulAPI}}}=global
   const api = new Router({prefix: '/' + restfulAPI.apiPrefix + '/' + restfulAPI.apiVersion})
   //restful API format
-  api.use(require('../middlewares/restfulAPI.response.middlewares')(restfulAPI))
+  api.use(require('../middlewares/middlewares.restfulAPI.response.js')(restfulAPI))
 
 
   api.get('/blog/article/get', blogDetailController.getArticleDetail)
   api.put('/blog/article/update', blogDetailController.updateArticleDetail)
-
   api.get('/blog/article/list', blogListController.getArticleList)
 
   api.get('/blog/reply/get', blogCommitController.getArticleCommit)
-  api.post('/blog/reply/add', auth.isUserLoginAuth, blogCommitController.addArticleCommit)
+  api.post('/blog/reply/add', authUserReply.isUserReplyAuthenticated(), blogCommitController.addArticleCommit)
+
+  //TODO Test Token
+  api.post('/blog/user/add', blogUserController.addUser)
 
   // Apply all router server
   app.use(router.routes())

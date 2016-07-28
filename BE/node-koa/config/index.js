@@ -37,6 +37,11 @@ module.exports = {
       RESPONSE_SUCCESS: {
         "success": true,
         "data": undefined
+      },
+      RESPONSE_TOKEN_EXPIRED: {
+        "success": false,
+        "data": null,
+        "error": "Token Expired"
       }
     },
     env: "development"

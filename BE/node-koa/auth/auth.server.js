@@ -6,7 +6,7 @@ const request = require('request');
 
 function signToken(user) {
   return jwt.sign({
-    _id: user._id
+    id: user.id
   }, global.config.app.tokenSecret, {
     expiresIn: global.config.app.tokenExpireTime
   })
@@ -17,7 +17,7 @@ function verifyToken(token) {
 }
 //isAuthenticated
 function isAuthenticated() {
-  return function *isAuthenticated(next) {
+  return function *(next) {
     let token
     if (this.request.query && this.request.query.token) {
       token = this.request.query.token
@@ -38,6 +38,6 @@ function isAuthenticated() {
 }
 
 exports.isAuthenticated = isAuthenticated
-exports.isUserLoginAuth = isAuthenticated
+exports.userLoginAuthenticated = isAuthenticated
 exports.signToken = signToken
 exports.verifyToken = verifyToken
