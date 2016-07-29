@@ -16,8 +16,8 @@ exports = module.exports = (restfulAPI)=> {
     this.body = Object.assign({},
       APIStatus[this.APIStatus],
       this.body ? {data: this.body} : {},
-      this.APIError ? {error: this.APIError} : {},
-      this.APICached ? {APICached: this.APICached} : {})
+      this.APIError ? {error: this.APIError} : null,
+      this.APICached ? {APICached: this.APICached} : null)
   }
 }
 
