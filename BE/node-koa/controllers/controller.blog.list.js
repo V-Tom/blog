@@ -1,7 +1,7 @@
 'use strict'
 const {blogCoon}=require('../mongoConfig')
 
-const articleDetailCoon = blogCoon.model('articleDetail')
+const blogArticleDetailCoon = blogCoon.model('blogArticleDetail')
 const redisPrefix = "BLOG_LIST_REDIS_PREFIX"
 
 
@@ -21,7 +21,7 @@ exports.getArticleList = function *() {
     } else {
       const select = ["articleId", "title", "tags", "subtitle", "preview", "meta", "_id"]
 
-      list = yield articleDetailCoon.find()
+      list = yield blogArticleDetailCoon.find()
         .skip(limit * (page - 1)).limit(limit)
         .select(select.join(" ")).lean().exec()
       if (list) {

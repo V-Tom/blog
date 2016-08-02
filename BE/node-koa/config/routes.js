@@ -23,21 +23,24 @@ module.exports = (app)=> {
 
 
   //restful API server routers
-  const {config:{app:{restfulAPI}}}=global
-  const api = new Router({prefix: '/' + restfulAPI.apiPrefix + '/' + restfulAPI.apiVersion})
+  const { config:{ app:{ restfulAPI } } }=global
+  const api = new Router({ prefix: '/' + restfulAPI.apiPrefix + '/' + restfulAPI.apiVersion })
   //restful API format
   api.use(require('../middlewares/middlewares.restfulAPI.response.js')(restfulAPI))
 
-
+  //blog article
   api.get('/blog/article/get', blogDetailController.getArticleDetail)
   api.put('/blog/article/update', blogDetailController.updateArticleDetail)
   api.get('/blog/article/list', blogListController.getArticleList)
 
+  //blog article reply
   api.get('/blog/reply/get', blogCommitController.getArticleReply)
   api.post('/blog/reply/add', authUserReply.isUserReplyAuthenticated(), blogCommitController.addArticleReply)
 
+  //blog article user
   //TODO Test Token
-  api.post('/blog/user/add', blogUserController.addUser)
+  api.post('/blog/user/getToken', blogUserController.getToken)
+  api.get('/blog/user/auth', blogUserController.updateUser)
 
   // Apply all router server
   app.use(router.routes())

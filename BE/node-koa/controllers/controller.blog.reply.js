@@ -2,7 +2,7 @@
 const {blogCoon}=require('../mongoConfig')
 const {mongo:{ObjectId}}=require('mongoose')
 
-const commitListCoon = blogCoon.model('commitList')
+const blogArticleReplyCoon = blogCoon.model('blogArticleReply')
 const redisPrefix = "BLOG_COMMIT_REDIS_PREFIX"
 
 
@@ -14,7 +14,7 @@ exports.getArticleReply = function *() {
   if (replyList) {
     replyList = {"success": true, "data": JSON.parse(replyList), "poweredBy": "REDIS"}
   } else {
-    replyList = yield commitListCoon.find({"articleId": articleId}).lean().exec()
+    replyList = yield blogArticleReplyCoon.find({"articleId": articleId}).lean().exec()
     if (replyList) {
       yield global.redis.set(key, replyList)
       replyList = {"success": true, "data": replyList}
