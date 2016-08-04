@@ -6,7 +6,7 @@ const blogArticleUsersConn = blogCoon.model('blogArticleUsers')
 const redisPrefix = "BLOG_USERS_REDIS_PREFIX"
 
 const { signToken } = require('../auth/auth.token')
-
+const { oAuthAccess }=require('../middlewares/middleware.oauth.access')
 
 exports.getToken = function *() {
   let userId = this.request.body.userId
@@ -20,7 +20,17 @@ exports.addUser = function *() {
 }
 
 exports.updateUser = function *() {
-  let query = this.query
+  let { code, state } = this.query
+  try {
+    let userInfo = yield oAuthAccess(state, code)
+    let newUser = new blogArticleUsersConn({
+      userType: state,
+      userDetail: userInfo
+    })
+    yield newUser.save()
+  } catch ( ex ) {
+    console.log(ex)
+  }
 }
 
 exports.findUser = (userId)=>function *() {

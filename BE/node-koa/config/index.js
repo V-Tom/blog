@@ -10,14 +10,14 @@ module.exports = {
     root: path.join(__dirname, '../'),
     db: {
       port: dbPort,
-      users: {uri: 'mongodb://admin:zhangchi123ZC@' + dbPort + '/user'},
-      blog: {uri: 'mongodb://admin:zhangchi123ZC@' + dbPort + '/blog'},
-      cache: {uri: 'mongodb://admin:zhangchi123ZC@' + dbPort + '/cache'}
+      users: { uri: 'mongodb://admin:zhangchi123ZC@' + dbPort + '/user' },
+      blog: { uri: 'mongodb://admin:zhangchi123ZC@' + dbPort + '/blog' },
+      cache: { uri: 'mongodb://admin:zhangchi123ZC@' + dbPort + '/cache' }
     },
     userAccess: {
       github: {
-        client_id: "",
-        client_secret: ""
+        client_id: "2c5d30e472a317b5c328",
+        client_secret: "b3e496c7102058763e328bbd4f7ea0e0aa5df4cd"
       }
     },
     redis: {

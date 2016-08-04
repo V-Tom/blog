@@ -7,7 +7,7 @@ const { blogCoon } = require('../mongoConfig')
  */
 
 const blogArticleUsersSchema = new Schema({
-  userType: { type: String, default: "github" },
+  userType: { type: String, default: "Github" },
   userDetail: { type: Object, default: {} }
 }, { versionKey: false });
 
