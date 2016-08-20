@@ -11,7 +11,7 @@ class Notification extends Component {
         this.state = {};
     }
 
-    static PropTypes = {
+    static propTypes = {
         type: PropTypes.string.isRequired,
         msg: PropTypes.string.isRequired,
         duration: PropTypes.number.isRequired,

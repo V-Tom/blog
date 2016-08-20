@@ -1,10 +1,4 @@
-exports = module.exports = (restfulAPI)=> {
-
-  const APIStatus = {
-    0: restfulAPI.RESPONSE_ERROR,
-    1: restfulAPI.RESPONSE_SUCCESS,
-    2: restfulAPI.RESPONSE_TOKEN_EXPIRED
-  }
+exports = module.exports = ()=> {
 
   return function *(next) {
     yield next
@@ -13,11 +7,13 @@ exports = module.exports = (restfulAPI)=> {
     this.type = "application/json"
 
     //restful API response format
-    this.body = Object.assign({},
-      APIStatus[this.APIStatus],
-      this.body ? {data: this.body} : {},
-      this.APIError ? {error: this.APIError} : null,
-      this.APICached ? {APICached: this.APICached} : null)
+    this.body = Object.assign(
+      {
+        "status": 0,
+        "result": null
+      },
+      { result: this.body },
+      this.APICached ? { APICached: 'REDIS' } : null)
   }
 }
 

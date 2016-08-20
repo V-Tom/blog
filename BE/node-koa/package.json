@@ -10,6 +10,7 @@
     "node": ">=5.2.0"
   },
   "dependencies": {
+    "canvas": "^1.4.0",
     "co-views": "^2.1.0",
     "jade": "^1.11.0",
     "jsonwebtoken": "^5.7.0",
@@ -28,6 +29,9 @@
     "request": "^2.73.0"
   },
   "devDependencies": {
+    "canvas": "^1.4.0",
+    "koa-cors": "0.0.16",
+    "qiniu": "^6.1.11",
     "supervisor": "^0.11.0"
   },
   "author": "Nomand",

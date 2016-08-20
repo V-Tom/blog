@@ -3,23 +3,23 @@ const mongoose = require('mongoose')
 
 
 //blogCoon
-const blogCoon = mongoose.createConnection(global.config.app.db.blog.uri)
+const blogCoon = mongoose.createConnection(config.app.db.blog.uri)
 blogCoon.on('error', function (err) {
-  console.error(`blogCoon ${global.config.app.db.blog.uri} connection failed!`, err)
+  console.error(`blogCoon ${config.app.db.blog.uri} connection failed!`, err)
   blogCoon.db.close()
 })
   .on('connected', function () {
-    console.log(`blogCoon ${global.config.app.db.blog.uri} connect success ...`)
+    console.log(`blogCoon ${config.app.db.blog.uri} connect success ...`)
   })
 
-//blogCoon
-const usersCoon = mongoose.createConnection(global.config.app.db.users.uri)
+//userCoon
+const usersCoon = mongoose.createConnection(config.app.db.users.uri)
 usersCoon.on('error', function (err) {
-  console.error(`usersCoon  ${global.config.app.db.users.uri} connection failed!`, err)
+  console.error(`usersCoon  ${config.app.db.users.uri} connection failed!`, err)
   usersCoon.db.close()
 })
   .on('connected', function () {
-    console.log(`usersCoon ${global.config.app.db.users.uri} connect success ...`)
+    console.log(`usersCoon ${config.app.db.users.uri} connect success ...`)
   })
 
 

@@ -1,16 +1,24 @@
 'use strict'
 const { blogCoon }=require('../mongoConfig')
-const { mongo:{ ObjectId } }=require('mongoose')
+const { Types:{ ObjectId } }=require('mongoose')
 
 const blogArticleUsersConn = blogCoon.model('blogArticleUsers')
 const redisPrefix = "BLOG_USERS_REDIS_PREFIX"
 
-const { signToken } = require('../auth/auth.token')
+const authToken = require('../authenticated/auth.token')
 const { oAuthAccess }=require('../middlewares/middleware.oauth.access')
 
 exports.getToken = function *() {
   let userId = this.request.body.userId
-  let token = signToken(userId)
+  let token = authToken.signToken({ userId })
+  this.cookies.set('token', token)
+  this.body = { "token": token }
+}
+
+exports.getAdminToken = function *() {
+  let token = authToken.signToken({
+    "admin": 'NOMAND'
+  })
   this.cookies.set('token', token)
   this.body = { "token": token }
 }
@@ -33,6 +41,13 @@ exports.updateUser = function *() {
   }
 }
 
-exports.findUser = (userId)=>function *() {
-  blogArticleUsersConn.findById(userId).lean().exec()
+exports.findUser = (userId, projection)=>function *() {
+  const key = `${redisPrefix}-${userId}`
+  let userInfo = yield redis.get(key)
+  if (userInfo) {
+    return JSON.parse(userInfo)
+  }
+  userInfo = yield blogArticleUsersConn.findById(new ObjectId(userId), projection).lean().exec()
+  yield redis.set(key, userInfo)
+  return userInfo
 }

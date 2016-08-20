@@ -20,6 +20,12 @@ module.exports = {
         client_secret: "b3e496c7102058763e328bbd4f7ea0e0aa5df4cd"
       }
     },
+    qiniu: {
+      ACCESS_KEY: 'A1vNdjThH47GlwQSD51VdC4PDWF_mIq-VYD9kXi0',
+      SECRET_KEY: 'SORzSSCAcMvduBGKCnQUtpb4wQ35awYtU68bi80L',
+      signedUrlExpires: '24 * 60 * 60',
+      bucket: 'node'
+    },
     redis: {
       redisExpDev: 5,
       redisExp: 60 * 60 * 24
@@ -28,21 +34,7 @@ module.exports = {
     tokenExpireTime: 60 * 60 * 24,
     restfulAPI: {
       apiVersion, apiPrefix,
-      apiRegExp: new RegExp('^\/' + apiPrefix + '/' + apiVersion),
-      RESPONSE_ERROR: {
-        "success": false,
-        "data": null,
-        "error": undefined
-      },
-      RESPONSE_SUCCESS: {
-        "success": true,
-        "data": undefined
-      },
-      RESPONSE_TOKEN_EXPIRED: {
-        "success": false,
-        "data": null,
-        "error": "Token Expired"
-      }
+      apiRegExp: new RegExp('^\/' + apiPrefix + '/' + apiVersion)
     },
     env: "development"
   }

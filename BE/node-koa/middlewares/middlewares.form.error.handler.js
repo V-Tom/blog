@@ -1,17 +1,18 @@
 'use strict'
-
 module.exports = function () {
   return function *(next) {
     try {
-      yield next;
-    } catch (err) {
-      if (global.config.app.restfulAPI.apiRegExp.test(this.url)) {
-        if (err && err.name !== 'ValidationError') {
-          this.throw(err)
-        }
-        this.status = 400
+      yield *next;
+    } catch ( err ) {
+      if (config.app.restfulAPI.apiRegExp.test(this.url)) {
         this.body = {
-          formErrors: _.mapValues(err.errors, 'message')
+          status: err.status || this.status,
+          msg: err.message
+        }
+      } else {
+        this.body = {
+          status: 500,
+          msg: 'server error'
         }
       }
     }

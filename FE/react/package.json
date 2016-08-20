@@ -3,36 +3,24 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "npm-run-all --sequential webpack-dev",
-    "build": "npm-run-all --sequential webpack-build",
-    "webpack-dev": "better-npm-run webpack-dev-server",
-    "webpack-build": "better-npm-run webpack-build"
-  },
-  "betterScripts": {
-    "webpack-dev-server": {
-      "command": "webpack-dev-server -colors --devtool --hot --host 0.0.0.0 --port:8080  --content-base ./src --config ./build/webpack.dev.config.js",
-      "env": {
-        "NODE_ENV": "development",
-        "PORT": ""
-      }
-    },
-    "webpack-build": {
-      "command": "webpack -colors --progress --profile --display-error-details --hide-modules --content-base ./src --config ./build/webpack.prod.config.js",
-      "env": {
-        "NODE_ENV": "production",
-        "PORT": ""
-      }
-    }
+    "dev": "webpack-dev-server -colors --watch  --colors --inline --progress --devtool --hot --host 0.0.0.0 --port:8080  --content-base ./src --config ./build/webpack.dev.config.js",
+    "build": "webpack -colors --progress --profile --display-error-details --hide-modules --content-base ./src --config ./build/webpack.prod.config.js"
   },
   "dependencies": {
+    "axios": "^0.13.1",
     "classnames": "^2.2.3",
     "history": "^2.0.1",
+    "immutable": "^3.7.6",
     "react": "^15.0.1",
+    "react-dom": "^15.0.1",
+    "react-redux": "^4.4.5",
+    "react-router": "^2.1.1",
+    "react-router-redux": "^4.0.2",
+    "redux": "^3.4.0",
     "stylus": "^0.54.2"
   },
   "devDependencies": {
     "autoprefixer-loader": "^3.2.0",
-    "axios": "^0.9.1",
     "babel": "^6.5.2",
     "babel-loader": "^6.2.4",
     "babel-plugin-react-transform": "^2.0.2",
@@ -46,14 +34,9 @@
     "css-loader": "^0.23.1",
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.8.5",
-    "immutable": "^3.7.6",
+    "json-loader": "^0.5.4",
     "jsx-loader": "^0.13.2",
     "npm-run-all": "^1.7.0",
-    "react-dom": "^15.0.1",
-    "react-redux": "^4.4.5",
-    "react-router": "^2.1.1",
-    "react-router-redux": "^4.0.2",
-    "redux": "^3.4.0",
     "redux-devtools": "^3.2.0",
     "redux-devtools-dock-monitor": "^1.1.1",
     "redux-devtools-log-monitor": "^1.0.10",

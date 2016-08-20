@@ -11,8 +11,8 @@ function AccessGithub(code) {
         "Accept": "application/json"
       },
       "form": {
-        "client_id": global.config.app.userAccess.github.client_id,
-        "client_secret": global.config.app.userAccess.github.client_secret,
+        "client_id": config.app.userAccess.github.client_id,
+        "client_secret": config.app.userAccess.github.client_secret,
         "code": code
       }
     }, (tokenError, tokenResponse, tokenBody)=> {
@@ -50,7 +50,7 @@ function AccessGithub(code) {
 exports.oAuthAccess = function *(state, code) {
   state = String(state).toLocaleLowerCase()
   switch (state) {
-    case 'Github':
+    case 'github':
       return AccessGithub(code)
   }
 }

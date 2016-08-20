@@ -1,4 +1,4 @@
-const exp = process.env.NODE_ENV === "development" ? global.config.app.redis.redisExpDev : global.config.app.redis.redisExp;
+const exp = process.env.NODE_ENV === "development" ? config.app.redis.redisExpDev : config.app.redis.redisExp;
 const redis = require('./redis')()
 
 module.exports.get = (key)=> {
@@ -18,6 +18,14 @@ module.exports.get = (key)=> {
 module.exports.set = (key, value)=> {
   return new Promise((resolve, reject)=> {
     redis.set(key, JSON.stringify(value), 'EX', exp, () => {
+      resolve()
+    })
+  })
+}
+
+module.exports.del = (key)=> {
+  return new Promise((resolve, reject)=> {
+    redis.del(key, ()=> {
       resolve()
     })
   })
