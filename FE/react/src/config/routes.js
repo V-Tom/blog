@@ -12,9 +12,8 @@ import Me from '../page/router/Me'
 export default()=>
   <Route path="/" component={App}>
     <IndexRoute component={Home}/>
-    <Route path="/blog" component={Blog}>
-      <Route path="?tagName=/:tag" component={Blog}></Route>
-    </Route>
+    <Route path="/blog" component={Blog}></Route>
+    <Route path="/blog/?tag=/:tag" component={Blog}></Route>
     <Route path="/blog/:articleId" component={ArticleDetail}></Route>
     <Route path="/me" component={Me}></Route>
     <Route path="*" component={NotFound}></Route>

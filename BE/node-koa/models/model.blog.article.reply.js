@@ -19,6 +19,10 @@ const blogArticleReplySchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'blogArticleUsers'
   },
+  time: {
+    type: Date,
+    default: Date.now
+  },
   content: String
 }, { versionKey: false });
 

@@ -10,14 +10,13 @@ exports.getArticleDetail = function *() {
   const { articleId } = this.query
   const key = `${redisPrefix}:${articleId}`
 
-  let detail = yield redis.get(key)
+  let detail = yield redis.getCache(key)
   if (detail) {
     this.APICached = true
-    detail = JSON.parse(detail)
   } else {
     detail = yield blogArticleDetailCoon.findOne({ "articleId": articleId }).lean().exec()
     if (detail) {
-      yield redis.set(key, detail)
+      yield redis.setCache(key, detail)
     } else {
       detail = null
     }

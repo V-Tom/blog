@@ -61,6 +61,7 @@ export default class ArticleDetail extends Component {
 
   componentWillUnmount() {
     this.props.reducerActions.clearArticleDetailState()
+    this.props.reducerActions.showHeader()
     window.removeEventListener('scroll', this.state.scrollListener, false)
   }
 
@@ -176,7 +177,7 @@ export default class ArticleDetail extends Component {
             <article className="markdown container article-content"
                      dangerouslySetInnerHTML={{__html: articleDetail.content}}></article>
           </div>
-          <Discuss ready={articleDetailReady} articleId={articleId}></Discuss>
+          <Discuss ready={articleDetailReady} articleId={articleId} articleDbId={articleDetail._id}></Discuss>
         </div>
       </section>
     )

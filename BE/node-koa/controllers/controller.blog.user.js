@@ -43,11 +43,11 @@ exports.updateUser = function *() {
 
 exports.findUser = (userId, projection)=>function *() {
   const key = `${redisPrefix}-${userId}`
-  let userInfo = yield redis.get(key)
+  let userInfo = yield redis.getCache(key)
   if (userInfo) {
-    return JSON.parse(userInfo)
+    return userInfo
   }
   userInfo = yield blogArticleUsersConn.findById(new ObjectId(userId), projection).lean().exec()
-  yield redis.set(key, userInfo)
+  yield redis.setCache(key, userInfo)
   return userInfo
 }

@@ -19,26 +19,27 @@ function userReplyAuthenticated() {
       token = this.cookies.get('token')
     }
     if (!token) {
-      this.throw('401', 'This method must be have token on querySting or body or cookies')
+      this.throw(401, 'This method must be have token on querySting or body or cookies')
+
     }
 
     try {
       userInfo = verifyToken(token)
     } catch ( ex ) {
       if (ex.name === "TokenExpiredError") {
-        this.throw('4')
+        this.throw(401, 'Token expired. You must login again')
       } else {
-        this.throw('Token illegal !', 401)
+        this.throw(401, 'Token illegal !')
       }
     }
     let { userId }=userInfo
     if (!userId) {
-      this.throw('Token illegal !', 401)
+      this.throw(401, 'Token illegal')
     }
     const user = yield findUser(userId)
 
     if (!user) {
-      this.throw('Token illegal', 401)
+      this.throw(401, 'Token illegal')
     }
     this._user = user
     yield next

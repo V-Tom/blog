@@ -21,7 +21,7 @@ export default class Blog extends Component {
   constructor(props) {
     super(props);
     const page = 1
-    const size = 5
+    const size = 15
     const tag = props.location && Object.keys(props.location.query).length && props.location.query.tag
     this.state = { page, size, tag };
   }
@@ -40,8 +40,7 @@ export default class Blog extends Component {
   };
 
   componentWillMount() {
-    let self = this;
-    this.hashChangeListener = this.__reRenderComponent(self);
+    this.hashChangeListener = this.__reRenderComponent();
     window.addEventListener('hashchange', this.hashChangeListener, false)
   }
 
@@ -58,13 +57,19 @@ export default class Blog extends Component {
   __reRenderComponent() {
     const self = this;
     return function () {
+      console.log(this)
       let hash = window.location.hash;
+      let tag = undefined
       if (hash.indexOf('tag') == -1) {
-        self.state.tag = undefined;
+        tag = undefined;
       } else {
-        self.state.tag = hash.split("tag=")[1].split("&_k")[0];
+        tag = hash.split("tag=")[1];
       }
-      self.__fetchArticleList()
+      this.setState({
+        tag
+      }, ()=> {
+        self.__fetchArticleList()
+      })
     };
 
   }
@@ -81,7 +86,7 @@ export default class Blog extends Component {
         <article className="post-preview" key={i}>
           <Link to={`/blog/${item.articleId}`}>
             <h2 className="post-title ellipsis">{item.title}</h2>
-            <p className="post-subtitle ellipsis">{item.subtitle}</p>
+            <p className="post-subtitle ellipsis">{item.subTitle}</p>
             <section className="post-content-preview">{item.preview}</section>
           </Link>
           <p className="post-meta ellipsis">{item.meta}</p>

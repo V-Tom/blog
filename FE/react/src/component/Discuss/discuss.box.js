@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 import React, { Component, PropTypes }from 'react'
 import Update from 'react-addons-update'
 
@@ -12,15 +12,15 @@ import Notification from '../Notification'
 
 export default class DiscussBox extends Component {
   constructor(props) {
-    super(props);
+    super(props)
 
-    let userAvatarUrl = "https://o42cskze7.qnssl.com/static/images/userAvatar/avatar-1.jpg";
-    let userName = "游客";
-    let isUserLogin = false;
-    if (window.localStorage.getItem("NomandWebsiteLogin")) {
-      userAvatarUrl = window.localStorage.getItem("userAvatarUrl");
-      userName = window.localStorage.getItem("userName");
-      isUserLogin = true;
+    let userAvatarUrl = "https://o42cskze7.qnssl.com/static/images/userAvatar/avatar-1.jpg"
+    let userName = "游客"
+    let isUserLogin = false
+    if (window.sessionStorage.getItem("NomandWebsiteLogin")) {
+      userAvatarUrl = window.sessionStorage.getItem("userAvatarUrl")
+      userName = window.sessionStorage.getItem("userName")
+      isUserLogin = true
     }
 
     this.state = {
@@ -37,18 +37,10 @@ export default class DiscussBox extends Component {
       },
       "discuss": {
         "articleDbId": null,
+        "user": null,
         "articleId": null,
-        "replyUser": {
-          "content": '',
-          "name": userName,
-          "avatar": userAvatarUrl,
-          "time": {
-            "localTime": null,
-            "UTCTime": null
-          },
-          "verifyCode": ''
-        },
-        "replyTo": ''
+        "content": "",
+        "replyTo": null
       }
     }
   }
@@ -57,18 +49,18 @@ export default class DiscussBox extends Component {
     newReplyAdded: PropTypes.func.isRequired,
     articleId: PropTypes.string.isRequired,
     ready: PropTypes.bool.isRequired
-  };
+  }
 
   componentWillReceiveProps(nextProps) {
-    const { articleId, ready }=nextProps;
-    const { discussBoxReady }=this.state;
+    const { articleId, ready, articleDbId }=nextProps
+    const { discussBoxReady }=this.state
     if (!discussBoxReady && ready && articleId) {
       let newState = Update(this.state, {
         "discussBoxReady": { "$set": true },
         "articleId": { "$set": articleId },
-        "discuss": { "articleId": { "$set": articleId } }
-      });
-      this.setState(newState);
+        "discuss": { "articleId": { "$set": articleId }, "articleDbId": { '$set': articleDbId } }
+      })
+      this.setState(newState)
     }
   }
 
@@ -76,164 +68,138 @@ export default class DiscussBox extends Component {
 
   }
 
+  /**
+   * 提交评论
+   * @param ev
+   * @returns {boolean}
+   * @private
+   */
   __submit(ev) {
-    const { verifyCode:{ code } }=this.state;
+    const { verifyCode:{ code } }=this.state
     if (!code) {
-      ev.preventDefault();
-      ev.stopPropagation();
+      ev.preventDefault()
+      ev.stopPropagation()
       Notification.info("请输入验证码~", ()=> {
-        this.__getVerifyCode();
-      });
-      return false;
+        this.__getVerifyCode()
+      })
+      return false
     }
-    let codeUserInput = ev.target.querySelector('input[name="verifyCode"]');
-    if (codeUserInput.value.toLowerCase() != code.toLowerCase()) {
-      let date = new Date();
-      const restoreDiscuss = (cb)=> {
-        let newState = Update(this.state, {
-          discuss: {
-            replyUser: {
-              "content": { "$set": "" },
-              time: {
-                localTime: { "$set": null },
-                UTCTime: { "$set": null }
-              },
-              verifyCode: { "$set": null }
-            }
-          }
-        });
-        this.setState(newState);
-        cb && cb();
-      };
+    let codeUserInput = ev.target.querySelector('input[name="verifyCode"]')
+    if (codeUserInput.value.toLowerCase() !== code.toLowerCase()) {
 
+      let discuss = Object.assign({}, this.state.discuss)
 
-      let { discuss }=this.state;
-      const { newReplyAdded }=this.props;
-      discuss.replyUser.time.localTime = formatDate(date, 'yyyy-MM-dd hh:mm:ss');
-      discuss.replyUser.time.UTCTime = date;
-      discuss.replyUser.verifyCode = code;
+      const { newReplyAdded }=this.props
       ReplyApi.addReply(discuss)
-        .then(({ json, status })=> {
-          if (status !== 'OK') {
-            Notification.err("啊偶~添加评论失败~", ()=> {
-              restoreDiscuss();
-            })
-          } else {
-            if (json.success) {
-              Notification.success("添加评论成功~", ()=> {
-                restoreDiscuss(()=> {
-                  newReplyAdded({
-                    "content": emojiDecoding(json.replyUser.content),
-                    "name": json.replyUser.name,
-                    "avatar": json.replyUser.avatar,
-                    "time": json.replyUser.time
-                  })
-                });
-              });
-            } else {
-              Notification.err(`添加评论失败~${json.err}`, ()=> {
-                restoreDiscuss();
-              });
-            }
-          }
-        })
+        .then(()=> {
+          newReplyAdded()
+        }).catch(e=> {
+
+      })
     } else {
-      ev.preventDefault();
-      ev.stopPropagation();
+      ev.preventDefault()
+      ev.stopPropagation()
       Notification.err("请输入正确的验证码", ()=> {
-        codeUserInput.value = "";
-      });
-      return false;
+        codeUserInput.value = ""
+      })
+      return false
     }
   }
 
   __login() {
-    let clientId = "2c5d30e472a317b5c328";
-    window.open(`https://github.com/login/oauth/authorize?client_id=${clientId}&state=GitHub`, '登录~', "height=500, width=500, top=0, left=0,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=n o, status=no");
-    return true
+    let clientId = "2c5d30e472a317b5c328"
+    window.open(`https://github.com/login/oauth/authorize?client_id=${clientId}&state=GitHub`, '登录~', "height=500, width=500, top=0, left=0,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=n o, status=no")
   }
 
   __emojiToggle(ev) {
-    const { isShowEmoji }=this.state;
+    const { isShowEmoji }=this.state
     this.setState({
       "isShowEmoji": !isShowEmoji
-    });
+    })
   }
 
+  /**
+   * 获取验证码
+   * @param ev
+   * @returns {boolean}
+   * @private
+   */
   __getVerifyCode(ev) {
-    const self = this;
-    let { verifyCode:{ timeShown, code, base64 } }=self.state;
+    const self = this
+    let { verifyCode:{ timeShown, code, base64 } }=self.state
     if (code && base64) {
       if (ev.target.tagName === 'INPUT') {
-        return false;
+        return false
       }
 
       if (timeShown && (new Date().getTime() - timeShown <= 10000)) {
-        Notification.info("获取验证码10s一次哦~");
-        return false;
+        Notification.info("获取验证码10s一次哦~")
+        return false
       }
     }
     ToolsApi.getVerifyCode()
-      .then(response=>({ json: response.data, status: response.statusText }))
-      .then(({ json, status })=> {
-        if (status !== 'OK') {
-          console.log("error")
-        }
-        if (json.success && json.data) {
+      .then(code=> {
+        if (code && code.data) {
+          let data = code.data
           let newState = Update(self.state, {
             verifyCode: {
-              code: { "$set": json.data.code },
-              base64: { "$set": json.data.base64 },
+              code: { "$set": data.code },
+              base64: { "$set": data.base64 },
               timeShown: { "$set": new Date().getTime() }
             }
-          });
-          self.setState(newState);
+          })
+          self.setState(newState)
         }
-      })
+      }).catch(e=> {
+
+    })
   }
 
+  /**
+   * emoji selected
+   * @param ev
+   * @private
+   */
   __emojiOnSelected(ev) {
-    let emojiTitle = ev.target.getAttribute('title');
+    let emojiTitle = ev.target.getAttribute('title')
 
     if (emojiTitle) {
-      emojiTitle = '[' + emojiTitle + ']';
-      let textarea = closest(ev.target, '.emoji-face-container');
+      emojiTitle = '[' + emojiTitle + ']'
+      let textarea = closest(ev.target, '.emoji-face-container')
 
       if (textarea) {
-        textarea = textarea.previousElementSibling.querySelector('textarea');
+        textarea = textarea.previousElementSibling.querySelector('textarea')
         let startPos = textarea.selectionStart, endPos = textarea.selectionEnd,
-          currentPos = startPos, content = textarea.value || "";
-        currentPos += emojiTitle.length;
+          currentPos = startPos, content = textarea.value || ""
+        currentPos += emojiTitle.length
 
         //set state and update SelectionRange
         setTimeout(function () {
-          textarea.selectionStart = textarea.selectionEnd = currentPos;
+          textarea.selectionStart = textarea.selectionEnd = currentPos
           let newState = Update(this.state, {
             isShowEmoji: {
               "$set": false
             },
             discuss: {
-              replyUser: {
-                content: {
-                  "$set": content.substring(0, startPos) + emojiTitle + content.substring(endPos, content.length)
-                }
+              content: {
+                "$set": content.substring(0, startPos) + emojiTitle + content.substring(endPos, content.length)
               }
             }
-          });
+          })
 
-          this.setState(newState);
-          startPos += emojiTitle.length;
+          this.setState(newState)
+          startPos += emojiTitle.length
 
           if (textarea.createTextRange) {
-            let range = textarea.createTextRange;
-            range.move('character', startPos);
-            range.select();
+            let range = textarea.createTextRange
+            range.move('character', startPos)
+            range.select()
           } else {
             if (textarea.selectionStart) {
-              textarea.focus();
+              textarea.focus()
               textarea.setSelectionRange(startPos, startPos)
             } else {
-              textarea.focus();
+              textarea.focus()
               alert("WTF?你使用的什么破浏览器，赶紧换掉")
             }
           }
@@ -242,7 +208,7 @@ export default class DiscussBox extends Component {
 
       }
     } else {
-      alert("找不到当前title");
+      alert("找不到当前title")
     }
   }
 
@@ -255,24 +221,22 @@ export default class DiscussBox extends Component {
   __textAreaKeyUp(ev) {
     let newState = Update(this.state, {
       discuss: {
-        replyUser: {
-          content: {
-            "$set": ev.target.value
-          }
+        content: {
+          "$set": ev.target.value
         }
       }
-    });
-    this.setState(newState);
+    })
+    this.setState(newState)
   }
 
   render() {
-    const { discuss, verifyCode, isUserLogin, isShowEmoji, contentPlaceholder, discuss:{ replyUser:{ content } } }=this.state;
-    let emojiButtonClass = isShowEmoji ? 'active' : "";
+    const { discuss, verifyCode, isUserLogin, isShowEmoji, contentPlaceholder, discuss:{ content } }=this.state
+    let emojiButtonClass = isShowEmoji ? 'active' : ""
     return (
       <form className="discuss-form" action="javascript:void(0)" method="post" onSubmit={ev=>this.__submit(ev)}>
         <section className="discuss-content">
           <a className="avatar" href="javascript:void(0)">
-            <img src={discuss.replyUser.avatar}/>
+            <img src='https://o42cskze7.qnssl.com/static/images/userAvatar/avatar-1.jpg'/>
           </a>
           <div className="discuss-content-body">
             {

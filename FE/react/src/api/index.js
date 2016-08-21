@@ -20,7 +20,7 @@ export const ArticleApi = {
 
 export const ReplyApi = {
   getReply: (articleId, page, limit)=>ReplyResource("get", `?articleId=${articleId}&page=${page}&limit=${limit}`),
-  addReply: data=>ReplyResource("post", data)
+  addReply: data=>ReplyResource("post", null, data)
 };
 
 export const ToolsApi = {

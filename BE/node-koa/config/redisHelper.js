@@ -1,21 +1,25 @@
 const exp = process.env.NODE_ENV === "development" ? config.app.redis.redisExpDev : config.app.redis.redisExp;
 const redis = require('./redis')()
 
-module.exports.get = (key)=> {
+module.exports.getCache = (key)=> {
   return new Promise((resolve, rejcect)=> {
     redis.get(key, (err, reply)=> {
       if (err) {
         resolve(err)
       }
       if (reply) {
-        resolve(reply.toString())
+        try {
+          resolve(JSON.parse(reply.toString()))
+        } catch ( e ) {
+          resolve(null)
+        }
       }
       resolve(null)
     })
   })
 }
 
-module.exports.set = (key, value)=> {
+module.exports.setCache = (key, value)=> {
   return new Promise((resolve, reject)=> {
     redis.set(key, JSON.stringify(value), 'EX', exp, () => {
       resolve()
@@ -23,7 +27,7 @@ module.exports.set = (key, value)=> {
   })
 }
 
-module.exports.del = (key)=> {
+module.exports.delCache = (key)=> {
   return new Promise((resolve, reject)=> {
     redis.del(key, ()=> {
       resolve()

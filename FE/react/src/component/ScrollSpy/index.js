@@ -50,7 +50,7 @@ export default class ScrollSpy extends Component {
   __ScrollSpy(ev, i) {
     ev.preventDefault()
     const { navigation }=this.state
-    window.scrollTo(0, Number(navigation[i].offset) - 50)
+    window.scrollTo(0, Number(navigation[i].offset) - 100)
   }
 
 

@@ -13,23 +13,29 @@ export default class Discuss extends Component {
 
     let discussBoxReady = false
     let articleId = undefined
+    let articleDbId = undefined
     let replyList = []
     let page = 1
     let limit = 10
-    this.state = { discussBoxReady, articleId, replyList, page, limit }
+    this.state = { discussBoxReady, articleId, replyList, page, limit, articleDbId }
   }
 
   static propTypes = {
     ready: PropTypes.bool.isRequired,
-    articleId: PropTypes.string.isRequired
+    articleId: PropTypes.string.isRequired,
+    articleDbId: PropTypes.string.isRequired
   }
 
   componentWillReceiveProps(nextProps) {
-    const { articleId, ready }=nextProps
+    const { articleId, ready, articleDbId }=nextProps
     const { discussBoxReady }=this.state
     if (!discussBoxReady && ready && articleId) {
-      this.state.articleId = articleId
-      this.__fetchReplyList()
+      this.setState({
+        articleId,
+        articleDbId
+      }, ()=> {
+        this.__fetchReplyList()
+      })
     }
   }
 
@@ -39,7 +45,7 @@ export default class Discuss extends Component {
 
   __fetchReplyList() {
     const { articleId, page, limit }=this.state
-    ReplyApi.getReply(articleId, page, limit)
+    return ReplyApi.getReply(articleId, page, limit)
       .then(replyList=> {
         let newState = Update(this.state, {
           "replyList": { "$set": replyList.data },
@@ -47,28 +53,24 @@ export default class Discuss extends Component {
         })
         this.setState(newState)
       }).catch(e=> {
-      e.interceptor && Notification.err("啊偶~读取用户评论失败~")
+        e.interceptor && Notification.err("啊偶~读取用户评论失败~")
 
-    })
+      })
   }
 
   __onNewReplyAdded() {
-    return function (data) {
-      let newState = Update(this.state, {
-        "replyList": { "$push": data }
-      })
-      this.setState(newState)
-    }.bind(this)
+    this.__fetchReplyList()
   }
 
   render() {
     const { ready }=this.props
-    const { replyList, articleId } =this.state
+    const { replyList, articleId, articleDbId } =this.state
     if (ready) {
       return (
         <section className="discuss-wrap">
           <div className="discuss">
-            <DiscussBox articleId={articleId} ready={ready} newReplyAdded={this.__onNewReplyAdded()}></DiscussBox>
+            <DiscussBox articleId={articleId} articleDbId={articleDbId} ready={ready}
+                        newReplyAdded={()=>this.__onNewReplyAdded()}></DiscussBox>
             <DiscussList ready={ready} replyList={replyList}></DiscussList>
           </div>
         </section>

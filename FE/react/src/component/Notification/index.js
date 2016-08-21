@@ -1,75 +1,75 @@
 'use strict';
-import React ,{Component,PropTypes }from 'react'
+import React, { Component, PropTypes }from 'react'
 import ReactDOM from 'react-dom'
 
 import './Notification.stylus'
 
 class Notification extends Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        this.state = {};
-    }
+    this.state = {};
+  }
 
-    static propTypes = {
-        type: PropTypes.string.isRequired,
-        msg: PropTypes.string.isRequired,
-        duration: PropTypes.number.isRequired,
-        callBack: PropTypes.func.isRequired
-    };
+  static propTypes = {
+    type: PropTypes.string.isRequired,
+    msg: PropTypes.string.isRequired,
+    duration: PropTypes.number.isRequired,
+    callBack: PropTypes.func
+  };
 
-    componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps) {
 
-    }
+  }
 
-    componentDidMount() {
+  componentDidMount() {
 
-    }
+  }
 
-    render() {
-        const {msg,type}=this.props;
-        return (
-            <div className="notification-wrapper">
-                <div className="body slideInDown animation">
-                    <div className="content">
-                        <i className={`icon icon-${type}`}></i>
-                        <span>{msg}</span>
-                    </div>
-                </div>
-            </div>
-        )
-    }
+  render() {
+    const { msg, type }=this.props;
+    return (
+      <div className="notification-wrapper">
+        <div className="body slideInDown animation">
+          <div className="content">
+            <i className={`icon icon-${type}`}></i>
+            <span>{msg}</span>
+          </div>
+        </div>
+      </div>
+    )
+  }
 }
 
 Notification.show = (type, msg, cb, duration)=> {
-    duration = duration || 1500;
-    const props = {type, msg, cb, duration};
-    const div = document.createElement('div');
-    document.body.appendChild(div);
-    ReactDOM.render(<Notification {...props} />, div);
+  duration = duration || 1500;
+  const props = { type, msg, cb, duration };
+  const div = document.createElement('div');
+  document.body.appendChild(div);
+  ReactDOM.render(<Notification {...props} />, div);
 
-    setTimeout(()=> {
+  setTimeout(()=> {
 
-        div.addEventListener('animationend', ()=> {
-            div.parentNode.removeChild(div);
-            ReactDOM.unmountComponentAtNode(div);
-            props.cb && props.cb();
-        }, false);
+    div.addEventListener('animationend', ()=> {
+      div.parentNode.removeChild(div);
+      ReactDOM.unmountComponentAtNode(div);
+      props.cb && props.cb();
+    }, false);
 
-        div.querySelector('.body').classList.add('slideOutDown');
+    div.querySelector('.body').classList.add('slideOutDown');
 
-        props.callback && props.callback();
-    }, props.duration);
+    props.callback && props.callback();
+  }, props.duration);
 
 };
 export default {
-    info(msg, cb, duration){
-        return Notification.show("info", msg, cb, duration);
-    },
-    success(msg, cb, duration){
-        return Notification.show("success", msg, cb, duration);
-    },
-    err(msg, cb, duration){
-        return Notification.show("error", msg, cb, duration);
-    }
+  info(msg, cb, duration){
+    return Notification.show("info", msg, cb, duration);
+  },
+  success(msg, cb, duration){
+    return Notification.show("success", msg, cb, duration);
+  },
+  err(msg, cb, duration){
+    return Notification.show("error", msg, cb, duration);
+  }
 };

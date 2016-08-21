@@ -16,24 +16,23 @@ function userAdminAuthenticated() {
       token = this.cookies.get('token')
     }
     if (!token) {
-      this.throw('Token expired. You must login again', 401)
-      return
+      this.throw(401, 'Token expired. You must login again')
     }
 
     try {
       userInfo = verifyToken(token)
     } catch ( ex ) {
       if (ex.name === "TokenExpiredError") {
-        this.throw('Token expired. You must login again', 401)
+        this.throw(401, 'Token expired. You must login again')
         return
       } else {
-        this.throw('Token illegal', 401)
+        this.throw(401, 'Token illegal')
       }
     }
     if (userInfo.admin === 'NOMAND') {
       yield next
     } else {
-      this.throw('Token illegal', 401)
+      this.throw(401, 'Token illegal')
     }
   }
 }

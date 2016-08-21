@@ -63,7 +63,7 @@ exports.index = function (length) {
 
   //export
   return {
-    canvas: canvas.toDataURL(),
+    base64: canvas.toDataURL(),
     code: code
   }
 }
