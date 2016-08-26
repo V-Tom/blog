@@ -5,6 +5,10 @@ export default class Index extends Component {
     super(props)
   }
 
+  componentDidMount() {
+    
+  }
+
   render() {
     const {}=this.props;
     return <h1>ss</h1>

@@ -1,3 +1,4 @@
+@import "../../../stylus/mixins/ellipsis.stylus"
 .blog-detail-page
   background #fff
 
@@ -30,9 +31,10 @@
       font-size 3rem
       font-weight 700
 
-    .article-subheading
+    .article-subTitle
       font-size 2rem
       margin 10px 0
+      ellipsis()
 
     .article-meta
       font-family Lora, 'Times New Roman', serif
@@ -101,6 +103,9 @@
     &:active
       top 1px
 
+.blog-detail-page.ready .article-sidebar
+  transition transform .3s 0s
+
 .article-sidebar
   position: fixed
   top 0
@@ -109,7 +114,7 @@
   width 20rem
   padding 1rem 0
   height 100%
-  transition transform .3s
+  transition transform .3s 2s
   transform translate3d(-100%, 0, 0) rotateY(90deg)
   transform-style preserve-3d
   transform-origin 100% 50%
@@ -147,7 +152,6 @@
 .blog-detail-page.active
 
   .article-sidebar
-    transition all .3s
     transform translate3d(0, 0, 0) rotateY(0deg)
 
   .article-content-wrapper
@@ -178,7 +182,7 @@
       .article-title
         font-size 3rem
 
-      .article-subheading
+      .article-subTitle
         font-size 2.5rem
 
       .article-meta
@@ -191,11 +195,12 @@
 
     .article-intro-body
       padding 150px 80px
+      min-height 478px
 
       .article-title
         font-size 4rem
 
-      .article-subheading
+      .article-subTitle
         font-size 2.5rem
 
       .article-meta
@@ -214,7 +219,7 @@
       .article-title
         font-size 5.5rem
 
-      .article-subheading
+      .article-subTitle
         font-size 3rem
 
       .article-meta

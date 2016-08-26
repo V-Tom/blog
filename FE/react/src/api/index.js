@@ -19,8 +19,8 @@ export const ArticleApi = {
 };
 
 export const ReplyApi = {
-  getReply: (articleId, page, limit)=>ReplyResource("get", `?articleId=${articleId}&page=${page}&limit=${limit}`),
-  addReply: data=>ReplyResource("post", null, data)
+  getArticleReply: (articleId, page, limit)=>ReplyResource("get", `?articleId=${articleId}&page=${page}&limit=${limit}`),
+  addArticleReply: data=>ReplyResource("post", null, data)
 };
 
 export const ToolsApi = {

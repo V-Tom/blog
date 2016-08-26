@@ -1,5 +1,5 @@
 import { ArticleApi } from '../api'
-import { RouterArticle, Spinner, Header } from '../actions/typs'
+import { RouterArticle, Spinner, Header, Discuss } from '../actions/typs'
 import Notification from '../component/Notification'
 
 /**
@@ -12,6 +12,13 @@ export const getArticleDetail = (articleId)=>(dispatch, getState)=> {
   ArticleApi.getArticleDetail(articleId)
     .then(articleDetail=> {
       dispatch({ type: Spinner.HIDE_SPINNER })
+      dispatch({
+        type: Discuss.GET_ARTICLE_REPLY,
+        data: {
+          articleId,
+          articleDbId: articleDetail._id
+        }
+      })
       return dispatch({
         type: RouterArticle.GET_ARTICLE_DETAIL,
         articleDetail: articleDetail.data

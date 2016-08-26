@@ -5,13 +5,13 @@ const log = debug('app:server.js')
 const koa = require('koa')
 
 //init all server global config
-require('./init')
+require('./src/init')
 
 const app = koa()
-require('./config/koa')(app)
+require('./src/config/koa')(app)
 
 // Routes
-require('./config/routes')(app)
+require('./src/config/routes')(app)
 
 
 // Start app

@@ -64,12 +64,24 @@ Notification.show = (type, msg, cb, duration)=> {
 };
 export default {
   info(msg, cb, duration){
+    if (typeof cb === 'number') {
+      duration = cb
+      cb = null
+    }
     return Notification.show("info", msg, cb, duration);
   },
   success(msg, cb, duration){
+    if (typeof cb === 'number') {
+      duration = cb
+      cb = null
+    }
     return Notification.show("success", msg, cb, duration);
   },
   err(msg, cb, duration){
+    if (typeof cb === 'number') {
+      duration = cb
+      cb = null
+    }
     return Notification.show("error", msg, cb, duration);
   }
 };

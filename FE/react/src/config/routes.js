@@ -3,7 +3,6 @@ import { Route, IndexRoute, Redirect } from 'react-router'
 
 import App from '../page/App'
 import NotFound from '../page/404'
-
 import Home from '../page/router/Home'
 import Blog from '../page/router/Blog'
 import ArticleDetail from '../page/router/ArticleDetail'

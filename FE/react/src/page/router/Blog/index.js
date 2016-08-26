@@ -7,82 +7,69 @@ import * as actions from '../../../actions/action.Blog'
 import './blog.stylus'
 
 const mapStateToProps = state=> {
-  return state.Blog.toJS();
-};
+  return state.Blog.toJS()
+}
 
 const mapDispatchToProps = dispatch=> {
   return {
-    actions: bindActionCreators(Object.assign(actions), dispatch)
+    reducerActions: bindActionCreators(Object.assign(actions), dispatch)
   }
-};
+}
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class Blog extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     const page = 1
     const size = 15
-    const tag = props.location && Object.keys(props.location.query).length && props.location.query.tag
-    this.state = { page, size, tag };
+    const tag = props.location.query.tag || null
+    this.state = { page, size, tag }
   }
 
   static propTypes = {
-    articleList: PropTypes.array.isRequired
-  };
+    articleList: PropTypes.object.isRequired
+  }
 
+  /**
+   * blog hashchange listener
+   * @param nextProps
+   */
   componentWillReceiveProps(nextProps) {
-    const { location:{ nextSearch, query:{ tag } } }=nextProps;
-    const { location:{ prevSearch } } = this.props;
+    let nextSearch = nextProps.location.search
+    let prevSearch = this.props.location.search
     if (nextSearch !== prevSearch) {
-      this.state.tag = tag;
-      this.__fetchArticleList()
+      this.setState({
+        tag: nextProps.location.query.tag
+      }, ()=> {
+        this.__fetchArticleList()
+      })
     }
-  };
+  }
 
   componentWillMount() {
-    this.hashChangeListener = this.__reRenderComponent();
-    window.addEventListener('hashchange', this.hashChangeListener, false)
+
   }
 
   componentDidMount() {
-    const { actions } =this.props;
-    actions.showHeader();
-    this.__fetchArticleList();
+    const { reducerActions } =this.props
+    reducerActions.showHeader()
+    this.__fetchArticleList()
   }
 
   componentWillUnmount() {
-    window.removeEventListener('hashchange', this.hashChangeListener, false)
-  }
-
-  __reRenderComponent() {
-    const self = this;
-    return function () {
-      console.log(this)
-      let hash = window.location.hash;
-      let tag = undefined
-      if (hash.indexOf('tag') == -1) {
-        tag = undefined;
-      } else {
-        tag = hash.split("tag=")[1];
-      }
-      this.setState({
-        tag
-      }, ()=> {
-        self.__fetchArticleList()
-      })
-    };
-
+    const { reducerActions } = this.props
+    reducerActions.clearBlogState()
   }
 
   __fetchArticleList(page = this.state.page, size = this.state.size, tag = this.state.tag) {
-    const { actions } = this.props;
-    actions.getBlogList(page, size, tag);
+    const { reducerActions } = this.props
+    reducerActions.getBlogList(page, size, tag)
   }
 
   render() {
-    const { articleList }=this.props;
+    const { articleList }=this.props
     return (<section className="blog-list-page container">
-      {articleList.map((item, i)=>
+      {articleList.data && articleList.data.map((item, i)=>
         <article className="post-preview" key={i}>
           <Link to={`/blog/${item.articleId}`}>
             <h2 className="post-title ellipsis">{item.title}</h2>

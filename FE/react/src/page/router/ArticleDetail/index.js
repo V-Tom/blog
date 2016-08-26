@@ -13,7 +13,7 @@ import '../../../stylus/markdown/prism.stylus'
 
 
 import ScrollSpy from '../../../component/ScrollSpy'
-import Discuss from '../../../component/Discuss'
+import Discuss from './Discuss'
 
 const mapStateToProps = state=> {
   return state.Article.toJS()
@@ -57,6 +57,9 @@ export default class ArticleDetail extends Component {
     }
     reducerActions.hideHeader()
     window.addEventListener('scroll', this.state.scrollListener, false)
+    window.addEventListener('storage', function (e) {
+      console.info(e)
+    }, false)
   }
 
   componentWillUnmount() {
@@ -169,7 +172,7 @@ export default class ArticleDetail extends Component {
                 }
               </ul>
               <h1 className="article-title">{articleDetail.title}</h1>
-              <h2 className="article-subheading">{articleDetail.subTitle}</h2>
+              <h2 className="article-subTitle">{articleDetail.subTitle}</h2>
               <p className="article-meta">{articleDetail.meta}</p>
             </section>
           </header>
@@ -177,7 +180,7 @@ export default class ArticleDetail extends Component {
             <article className="markdown container article-content"
                      dangerouslySetInnerHTML={{__html: articleDetail.content}}></article>
           </div>
-          <Discuss ready={articleDetailReady} articleId={articleId} articleDbId={articleDetail._id}></Discuss>
+          <Discuss/>
         </div>
       </section>
     )
