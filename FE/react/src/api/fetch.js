@@ -79,6 +79,31 @@ class Fetch {
         })
       })
       .then(response=>this.interceptors.response.default(response))
+      .catch(e=> Promise.reject(e))
+  }
+
+  jsonp(url, jsonpCallback) {
+    return new Promise((resolve, reject)=> {
+      var script = document.createElement('script')
+      let response = { result: { data: {} }, status: 0 }
+      script.type = 'text/javascript'
+      url += (url.includes('?') ? '&' : '?') + 'callback=' + jsonpCallback
+      script.src = url
+      script.async = true
+      window[jsonpCallback] = data => response.result.data = data
+      script.onload = script.onerror = evt => {
+        if (evt.type === 'load' && response.data !== null) {
+          response.status = 0
+          resolve(response)
+        } else if (evt.type === 'error') {
+          response.status = 500
+          reject(response)
+        }
+        delete window[jsonpCallback]
+        document.body.removeChild(script)
+      }
+      document.body.appendChild(script)
+    })
   }
 }
 

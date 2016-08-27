@@ -90,5 +90,5 @@ module.exports = {
     // 'react-redux': 'ReactRedux',
     // 'history': 'History'
   },
-  devtool: 'cheap-module-source-map'
+  devtool: devTools
 };

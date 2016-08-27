@@ -31,14 +31,17 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as actions from '../../../../actions/action.Discuss'
+import Update from 'react-addons-update'
 //Third-part
 
 //mine
-
+import './Discuss.stylus'
 import Emoji from '../../../../component/Emoji'
 import Notification from '../../../../component/Notification'
 import { escapeHtml, formatDate, emojiDecoding } from '../../../../libs/utils/tools'
-
+import Fetch from '../../../../api/fetch'
+import { restfulAPI } from '../../../../config'
+const { API_ROOT, API_VERSION } = restfulAPI
 const mapStateToProps = state=> {
   return state.Discuss.toJS()
 }
@@ -68,7 +71,19 @@ export default class Discuss extends Component {
       'base64': null,
       'timeShown': null
     }
-    this.state = { isUserLogin, discuss, verifyCode, isShowEmoji }
+    const platformUser = {}
+    this.state = { isUserLogin, discuss, verifyCode, isShowEmoji, platformUser }
+    this.storageKey = 'platformUser'
+
+    Fetch.jsonp(`${API_ROOT}${API_VERSION}/blog/user/sign`, 'say').then(data=> {
+      let { result, status }=data
+      if (status === 0) {
+        result = result.data
+        if (result.token) {
+          Fetch.setHeader('token', result.token)
+        }
+      }
+    })
   }
 
   componentWillMount() {
@@ -76,28 +91,46 @@ export default class Discuss extends Component {
   }
 
   componentWillReceiveProps(props) {
-    console.log(props)
+
   }
 
   componentDidMount() {
-    let isUserLogin = false, platformUser = window.sessionStorage.getItem('platformUser')
-
+    let isUserLogin = false, platformUser = window.sessionStorage.getItem(this.storageKey)
     if (platformUser) {
       try {
         platformUser = JSON.parse(platformUser)
         isUserLogin = true
-        this.platformUser = platformUser
       } catch ( e ) {
         isUserLogin = false
       }
     }
-    this.setState({ isUserLogin, platformUser }, ()=> {
-      this.__fetchArticleReply()
+
+
+    if (!isUserLogin) {
+      window.localStorage.setItem(this.storageKey, "UNKNOWN PLATFORMUSER ")
+      this.__listenLocalStorage()
+    }
+
+    this.__fetchArticleReply().then(()=> {
+      this.setState({ isUserLogin, platformUser: platformUser })
     })
+
   }
 
   componentWillUnmount() {
+    this.storageListener && window.removeEventListener('storage', this.storageListener, false)
+  }
 
+
+  __listenLocalStorage() {
+    let listener = (ev)=> {
+      if (ev.key === this.storageKey) {
+        window.sessionStorage.setItem(this.storageKey, ev.newValue)
+        window.location.reload()
+      }
+    }
+    this.storageListener = listener
+    window.addEventListener('storage', listener, false)
   }
 
   /**
@@ -158,11 +191,11 @@ export default class Discuss extends Component {
   }
 
   __fetchArticleReply() {
-    const { reducerActions, articleInfo }=this.props
-    return reducerActions.getArticleReply(articleInfo.articldId)
+    const { articleId, reducerActions }=this.props
+    return reducerActions.getArticleReply(articleId)
   }
 
-  __getReplyVerifyCode() {
+  __getReplyVerifyCode(ev) {
     let { isUserLogin } = this.state
     if (!isUserLogin) {
       Notification.err('~请先登录')
@@ -180,7 +213,16 @@ export default class Discuss extends Component {
       }
     }
     const { reducerActions }=this.props
-    return reducerActions.getVerifyCode()
+    reducerActions.getVerifyCode().then(verifyCode=> {
+      let data = verifyCode.data
+      this.setState({
+        verifyCode: {
+          'code': data.code,
+          'base64': data.base64,
+          'timeShown': new Date().getTime()
+        }
+      })
+    })
   }
 
   /**
@@ -190,9 +232,9 @@ export default class Discuss extends Component {
    * @private
    */
   __onAddReplyFormSubmit(ev) {
-    const { verifyCode:{ code } }=this.state
+    let { replyContent, ReplyVerifyCode } = this.refs
 
-    if (!code) {
+    if (!ReplyVerifyCode.value) {
       ev.preventDefault()
       ev.stopPropagation()
       Notification.info('请输入验证码~', ()=> {
@@ -200,15 +242,18 @@ export default class Discuss extends Component {
       })
       return false
     }
-    let { replyContent, ReplyVerifyCode } = this.refs
 
-    if (ReplyVerifyCode.value.toLowerCase() !== code.toLowerCase()) {
-      let discuss = Object.assign({}, this.state.discuss, { content: replyContent.value })
+    let { discuss, verifyCode } = this.state
+    if (ReplyVerifyCode.value.toLowerCase() === verifyCode.code.toLowerCase()) {
+      const { reducerActions, articleDbId, articleId }=this.props
+      let discuss = Object.assign({}, discuss, { content: replyContent.value }, { articleId }, { articleDbId })
+      discuss.content = escapeHtml(discuss.content)
 
-      const { reducerActions }=this.props
-      reducerActions.addArticleReply(escapeHtml(discuss))
+      reducerActions.addArticleReply(discuss)
         .then(()=> {
           Notification.success('添加评论成功')
+          replyContent.value = ''
+          ReplyVerifyCode.value = ''
           this.__fetchArticleReply()
         }).catch(e=> {
         Notification.err('添加评论失败')
@@ -224,7 +269,7 @@ export default class Discuss extends Component {
 
   render() {
     const { platformUser, isUserLogin, verifyCode, isShowEmoji }=this.state
-    const { articleReply, articleInfo } = this.props
+    const { articleReply } = this.props
     return (
       <section className='discuss-wrap'>
         <div className='discuss'>
@@ -233,8 +278,8 @@ export default class Discuss extends Component {
             <section className='discuss-content'>
               <a className='avatar' href='javascript:void(0)'>
                 <img
-                  src={isUserLogin ? platformUser.user.avatar_url : 'https://o42cskze7.qnssl.com/static/images/userAvatar/avatar-1.jpg'}
-                  title={isUserLogin ? platformUser.user.name : '游客'}/>
+                  src={isUserLogin ? platformUser.userDetail.avatar_url : 'https://o42cskze7.qnssl.com/static/images/userAvatar/avatar-1.jpg'}
+                  title={isUserLogin ? platformUser.userDetail.name : '游客'}/>
               </a>
               <div className='discuss-content-body'>
                 {
@@ -257,7 +302,7 @@ export default class Discuss extends Component {
                   </a>
                 </div>
               </div>
-              <Emoji show={isShowEmoji} onClose={this.__emojiOnClose.bind(this)}
+              <Emoji show={isShowEmoji} onClose={()=>this.__emojiOnClose()}
                      onSelect={this.__emojiOnSelected.bind(this)}></Emoji>
             </section>
             <section className='discuss-submit'>
@@ -274,7 +319,7 @@ export default class Discuss extends Component {
 
           <div className='reply-list-wrap'>
             <ul className='reply-list'>
-              {articleReply.data.map((item, i)=> {
+              {articleReply.data && articleReply.data.map((item, i)=> {
                   let userDetail = item.user && item.user.userDetail
                   let replyTime = item.time ? formatDate(new Date(item.time), 'yyyy-MM-dd hh:mm:ss') : ''
                   return (

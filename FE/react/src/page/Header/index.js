@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Link } from 'react-router'
+import { Link, IndexLink } from 'react-router'
 import * as actions from '../../actions/action.Header'
 import './header.stylus'
 
@@ -22,6 +22,14 @@ export default class Header extends Component {
     super(props);
   }
 
+  componentWillReceivedProps() {
+
+  }
+
+  componentDidMount() {
+    this.props.actions.showHeader()
+  }
+
   render() {
     const { active }=this.props;
     const headerClassName = active ? 'App_header active' : 'App_header';
@@ -32,7 +40,7 @@ export default class Header extends Component {
             <section className="App_nav_description" data-page="I Am A Full-stack Developer"></section>
             <section className="App_nav_logo">
               <i className="icon icon-logo"></i>
-              <Link activeClassName='active' to={"/"} title="full stack"></Link>
+              <IndexLink to="/" activeClassName='active' title="full stack"></IndexLink>
               <button type="button" className="App_nav_toggle">
                 <span></span>
                 <span></span>
@@ -42,12 +50,12 @@ export default class Header extends Component {
             <section className="App_nav_bar">
               <ul>
                 <li>
-                  <Link activeClassName='active' to={"/blog"} title="blog"><i className="icon icon-blog"></i></Link>
+                  <Link to="/blog" activeClassName='active' title="blog"><i className="icon icon-blog"></i></Link>
                 </li>
               </ul>
               <ul>
                 <li>
-                  <Link activeClassName='active' to={"/me"} title="me"><i className="icon icon-me"></i></Link>
+                  <Link to="/me" activeClassName='active' title="me"><i className="icon icon-me"></i></Link>
                 </li>
               </ul>
             </section>

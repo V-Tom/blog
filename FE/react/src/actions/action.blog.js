@@ -1,6 +1,7 @@
 import { BlogApi } from '../api'
-import { RouterBlog, Spinner, Header } from '../actions/typs'
+import { RouterBlog, Header } from '../actions/typs'
 import Notification from '../component/Notification'
+import Spinner from '../component/Spinner'
 
 /**
  * 获取文章列表
@@ -9,19 +10,19 @@ import Notification from '../component/Notification'
  * @param tag
  * @returns {function()}
  */
-export const getBlogList = (page, size, tag)=> (dispatch)=> {
-  dispatch({ type: Spinner.SHOW_SPINNER })
-  BlogApi.getBlogList(page, size, tag)
+export const getBlogList = (page = 1, size = 30, tag)=> (dispatch)=> {
+  Spinner.show()
+  return BlogApi.getBlogList(page, size, tag)
     .then(blogList=> {
-      dispatch({ type: Spinner.HIDE_SPINNER })
+      Spinner.remove()
       dispatch({
         type: RouterBlog.GET_ARTICLE_LIST,
         articleList: blogList
       })
       return blogList
     }).catch(err=> {
-    err.interceptor && Notification.err("啊偶~读取文章列表失败~")
-  })
+      err.interceptor && Notification.err("啊偶~读取文章列表失败~")
+    })
 }
 /**
  * 清除 blog state

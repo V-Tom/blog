@@ -15,7 +15,7 @@ config.plugins = (config.plugins || []).concat([
   //文件头部指定的注释信息
   new webpack.BannerPlugin('This file is created by Nomand'),
   //将样式统一发布到style.css中
-  new ExtractTextPlugin("fullstack-[hash].css", {
+  new ExtractTextPlugin("fullStack-[hash].css", {
     allChunks: true,
     disable: false
   }),

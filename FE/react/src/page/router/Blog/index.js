@@ -22,7 +22,7 @@ export default class Blog extends Component {
     super(props)
     const page = 1
     const size = 15
-    const tag = props.location.query.tag || null
+    const tag = this.props.location.query.tag || undefined
     this.state = { page, size, tag }
   }
 
@@ -35,8 +35,8 @@ export default class Blog extends Component {
    * @param nextProps
    */
   componentWillReceiveProps(nextProps) {
-    let nextSearch = nextProps.location.search
-    let prevSearch = this.props.location.search
+    let nextSearch = nextProps.location.query.tag
+    let prevSearch = this.state.tag
     if (nextSearch !== prevSearch) {
       this.setState({
         tag: nextProps.location.query.tag
@@ -61,9 +61,10 @@ export default class Blog extends Component {
     reducerActions.clearBlogState()
   }
 
-  __fetchArticleList(page = this.state.page, size = this.state.size, tag = this.state.tag) {
+  __fetchArticleList() {
     const { reducerActions } = this.props
-    reducerActions.getBlogList(page, size, tag)
+    const { tag } = this.state
+    reducerActions.getBlogList(1, 30, tag)
   }
 
   render() {

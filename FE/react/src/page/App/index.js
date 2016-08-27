@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Header from '../Header'
-import Spinner from '../../component/Spinner'
 
 import { writeEmojiStyle, copyListener } from '../../libs/utils/funny'
 
@@ -12,17 +11,16 @@ import '../../stylus/common/animation.stylus'
 
 export default class App extends Component {
   constructor(props) {
-    super(props);
-    writeEmojiStyle();
-
+    super(props)
+    writeEmojiStyle()
+    copyListener()
   }
 
   render() {
-    const {}=this.props;
+    const {}=this.props
     return (<div>
       <Header/>
       {this.props.children}
-      <Spinner></Spinner>
     </div>)
   }
 }

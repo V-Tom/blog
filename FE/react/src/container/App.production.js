@@ -10,7 +10,7 @@ import configureStore from '../store'
 
 
 export default()=> {
-  const store = configureStore(undefined, browserHistory);
+  const store = configureStore({}, browserHistory);
   return (
     <Provider store={store}>
       <Router history={ syncHistoryWithStore(browserHistory, store)}>

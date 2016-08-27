@@ -34,9 +34,10 @@ export default class ArticleDetail extends Component {
 
     let articleDetailReady = false
     let scrollLimit = 0
+    const openArticleSideBar = false
     let scrollListener = ()=> {
     }
-    this.state = { articleDetailReady, scrollListener, scrollLimit }
+    this.state = { articleDetailReady, scrollListener, scrollLimit, openArticleSideBar }
     this.state.scrollListener = this.__scrollListener()
   }
 
@@ -57,9 +58,6 @@ export default class ArticleDetail extends Component {
     }
     reducerActions.hideHeader()
     window.addEventListener('scroll', this.state.scrollListener, false)
-    window.addEventListener('storage', function (e) {
-      console.info(e)
-    }, false)
   }
 
   componentWillUnmount() {
@@ -71,8 +69,6 @@ export default class ArticleDetail extends Component {
   componentDidUpdate() {
     //如果文档渲染完毕,而且当前state尚未ready
     if (Array.from(document.querySelector('.article-content').querySelectorAll('[data-level]')).length && !this.state.articleDetailReady) {
-      const { reducerActions }=this.props
-      reducerActions.setArticleReady()
       Prism && Prism.highlightAll(false)
       this.__setScrollLimit()
       this.setState({
@@ -123,22 +119,20 @@ export default class ArticleDetail extends Component {
 
   /**
    * 设置按钮
-   * @param ev
    * @param isOpen
    * @private
    */
-  __toggleArticleSideBar(ev, isOpen) {
-    const { reducerActions, openArticleSideBar } = this.props
-    if (!openArticleSideBar) {
-      isOpen && reducerActions.toggleArticleSideBar()
+  __toggleArticleSideBar(isOpen) {
+    if (this.state.openArticleSideBar) {
+      !isOpen && this.setState({ openArticleSideBar: false })
     } else {
-      !isOpen && reducerActions.toggleArticleSideBar()
+      isOpen && this.setState({ openArticleSideBar: true })
     }
   }
 
   render() {
-    const { articleDetail, openArticleSideBar, params: { articleId } }=this.props
-    const { articleDetailReady } = this.state
+    const { articleDetail, params: { articleId } }=this.props
+    const { articleDetailReady, openArticleSideBar } = this.state
     let articleDetailSectionClass = openArticleSideBar ? "blog-detail-page active" : "blog-detail-page"
     let activeButtonClass = articleDetailReady ? "article-side-btn active" : "article-side-btn"
     if (articleDetailReady) {
@@ -148,8 +142,7 @@ export default class ArticleDetail extends Component {
       <section className={articleDetailSectionClass}>
         <div className={activeButtonClass}>
           <button type="button" className="article-menu" title="article menu"
-                  onClick={ev=>this.__toggleArticleSideBar(ev,true)}
-                  onTouchEnd={ev=>this.__toggleArticleSideBar(ev,true)}></button>
+                  onClick={()=>this.__toggleArticleSideBar(true)}></button>
         </div>
 
         <div className="article-sidebar">
@@ -158,8 +151,7 @@ export default class ArticleDetail extends Component {
                        query={"[data-level]"}></ScrollSpy>
           </section>
         </div>
-        <div className="article-content-wrapper" onClick={ev=>this.__toggleArticleSideBar(ev,false)}
-             onTouchEnd={ev=>this.__toggleArticleSideBar(ev,false)}>
+        <div className="article-content-wrapper" onClick={()=>this.__toggleArticleSideBar(false)}>
           <header className="article-intro-container"
                   style={{backgroundImage:'url(' + (articleDetail.intro && articleDetail.intro.pic) + ')'}}>
             <section className="article-intro-mask"></section>
@@ -180,7 +172,7 @@ export default class ArticleDetail extends Component {
             <article className="markdown container article-content"
                      dangerouslySetInnerHTML={{__html: articleDetail.content}}></article>
           </div>
-          <Discuss/>
+          {articleDetailReady && <Discuss articleId={articleId} articleDbId={articleDetail._id}/>}
         </div>
       </section>
     )

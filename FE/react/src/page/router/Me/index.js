@@ -1,4 +1,5 @@
 import React, { Component }from 'react'
+import './Me.stylus'
 export default class Me extends Component {
   constructor(props) {
     super(props)

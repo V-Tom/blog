@@ -3,7 +3,7 @@ import { restfulAPI } from '../config'
 const { API_ROOT, API_VERSION, DO_NOT_INTERCEPTOR_PORT } = restfulAPI
 fetch.defaults.baseURL = API_ROOT;
 fetch.defaults.withCredentials = false;
-fetch.defaults.headers.token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiI1N2E4YmM1ZjZhZGFjZDY2ZDkxNjhmZWUiLCJpYXQiOjE0NzIxMzgzMjAsImV4cCI6MTQ3MjIyNDcyMH0.cOQlK-kIC48iPrJ5yZ8n6Wn1_3EAMKVH5zaauLgqBD4'
+fetch.defaults.headers.token = ''
 // Add a request interceptor
 
 fetch.interceptors.request.use((config) => {
@@ -16,7 +16,7 @@ fetch.interceptors.request.use((config) => {
 
 // Add a response interceptor
 fetch.interceptors.response.use(({ response, data })=> {
-
+  
   //The request URL in some case do not interceptor
   if (DO_NOT_INTERCEPTOR_PORT.indexOf(response.url) >= 0) {
     return response.json()

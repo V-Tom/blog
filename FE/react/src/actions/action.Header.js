@@ -8,3 +8,9 @@ export const setHeaderScrollLimit = (value)=>(dispatch, getState)=> {
     data: value
   })
 }
+
+export const showHeader = (value)=>(dispatch, getState)=> {
+  dispatch({
+    type: Header.SHOW_HEADER
+  })
+}

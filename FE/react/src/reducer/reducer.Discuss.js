@@ -5,19 +5,13 @@ import { fromJS } from 'immutable'
 
 
 const initialState = fromJS({
-  articleReply: {},
-  articleInfo: {}
+  articleReply: {}
 })
 
 export default createReducer(initialState, {
   [Discuss.GET_ARTICLE_REPLY]: (state, action)=> {
     return state.merge({
       articleReply: action.data
-    })
-  },
-  [Discuss.SET_ARTICLE_INFO]: (state, action)=> {
-    return state.merge({
-      articleInfo: action.data
     })
   }
 })
