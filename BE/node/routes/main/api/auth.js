@@ -10,7 +10,7 @@ router.get('/login', (req, res)=> {
     let query = req.query, code = query && query.code, type = query && query.state;
     if (type === "GitHub") {
         authController.auth.GitHubAccess(code).then(userInfo=> {
-            let expires = new Date(Date.now() + global.CONFIG.db.sessionMaxAge);
+            let expires = ;
             let userName = userInfo.name, userAvatar = userInfo.avatar_url, userId = userInfo.id;
             userId = jwt.encode.encode(userId);
             res.cookie('userName', userName, {

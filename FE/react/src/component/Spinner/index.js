@@ -1,51 +1,52 @@
-import React ,{Component,PropTypes }from 'react'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-import * as actions from '../../actions/blog.action'
-
+import React, { Component, PropTypes }from 'react'
+import ReactDOM from 'react-dom'
 import './Spinner.stylus'
 
-const mapStateToProps = state=> {
-    return state.Spinner.toJS();
-};
+class Spinner extends Component {
+  constructor(props) {
+    super(props)
+  }
 
-const mapDispatchToProps = dispatch=> {
-    return {
-        actions: bindActionCreators(Object.assign(actions), dispatch)
-    }
-};
+  componentDidMount() {
 
-@connect(mapStateToProps, mapDispatchToProps)
+  }
 
-export default class Spinner extends Component {
-    constructor(props) {
-        super(props);
-    }
-
-    static propTypes = {
-        show: PropTypes.bool.isRequired
-    };
-
-    componentDidMount() {
-
-    }
-
-    componentWillReceiveProps(nextProps) {
-
-    }
-
-    render() {
-        if (this.props.show) {
-            return (
-                <div className="Spinner">
-                    <div className="Spinner-ring-container">
-                        <section className="Spinner-ring Spinner-ring-1"></section>
-                        <section className="Spinner-ring Spinner-ring-2"></section>
-                    </div>
-                </div>
-            )
-        } else {
-            return null;
-        }
-    }
+  render() {
+    return (
+      <div className="Spinner">
+        <div className="Spinner-ring-container">
+          <section className="Spinner-ring Spinner-ring-1"></section>
+          <section className="Spinner-ring Spinner-ring-2"></section>
+        </div>
+      </div>
+    )
+  }
 }
+
+Spinner.instance = null
+
+Spinner.show = ()=> {
+  if (Spinner.instance) {
+    return false
+  }
+  const div = document.createElement('div')
+  document.body.appendChild(div)
+
+  //instance cache
+  Spinner.instance = div
+
+  ReactDOM.render(<Spinner/>, div)
+}
+
+Spinner.remove = ()=> {
+  let div = Spinner.instance
+  if (!div) {
+    return false
+  }
+  Spinner.instance = null
+  div.parentNode.removeChild(div)
+  ReactDOM.unmountComponentAtNode(div)
+}
+
+
+export default Spinner

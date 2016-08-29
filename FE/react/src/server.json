@@ -1,0 +1,9 @@
+{
+  "restfulAPI": {
+    "API_ROOT": "http://localhost:4000/api/",
+    "API_VERSION": "v1",
+    "DO_NOT_INTERCEPTOR_PORT": [
+      "http://up.qiniu.com/"
+    ]
+  }
+}
