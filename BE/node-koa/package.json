@@ -9,7 +9,7 @@
     "online": "pm2 startOrRestart ecosystem.json"
   },
   "engines": {
-    "node": ">=5.2.0"
+    "node": ">=6.2.0"
   },
   "dependencies": {
     "canvas": "^1.4.0",
