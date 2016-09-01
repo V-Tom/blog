@@ -1,9 +1,9 @@
 'use strict';
 const fs = require('fs')
 const path = require('path')
-
-if (fs.readdirSync('./local.conf.json')) {
-  global.config=require()
+const localConfigPath = path.join(__dirname, './local.conf.json')
+if (fs.readdirSync(localConfigPath)) {
+  global.config = fs.readFileSync(localConfigPath, 'utf8')
 } else {
   global.config = require('./config')
 }
