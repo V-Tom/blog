@@ -2,10 +2,10 @@
 const fs = require('fs')
 const path = require('path')
 const localConfigPath = path.join(__dirname, './local.conf.json')
-if (fs.readdirSync(localConfigPath)) {
-  global.config = fs.readFileSync(localConfigPath, 'utf8')
-} else {
-  global.config = require('./config')
+
+let config = require('./config')
+if (fs.statSync(localConfigPath)) {
+  global.config = Object.assign({}, JSON.parse(fs.readFileSync(localConfigPath, 'utf8').replace(/\r?\n|\r/g, " ")), config)
 }
 
 process.env.NODE_ENV = config.app.env
