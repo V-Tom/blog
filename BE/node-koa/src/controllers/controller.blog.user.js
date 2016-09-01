@@ -53,7 +53,7 @@ exports.updateUser = function *() {
       httpOnly: true
     })
     this.APIDontFormat = true
-    yield renderAuthLoginView.call(this, JSON.stringify(platformUser))
+    yield renderAuthLoginView.call(this, platformUser)
 
   } catch ( ex ) {
     this.throw(500, ex.message)
@@ -78,15 +78,30 @@ exports.findUser = (userId, projection)=>function *() {
 
 /**
  * 从 用户 cookies 上获取一次token 后重新生成一次
+ * JSONP
  */
 exports.sign = function *() {
+  let callback = this.query.callback
+  if (!callback) return
+
   let token = this.cookies.get('token')
+  this.type = 'text/javascript'
+  this.APIDontFormat = true
+
   if (!token) {
-    this.throw(401, 'You might not login,please login.')
+    this.body = callback + '(' + JSON.stringify({ status: 401, msg: 'You might not login,please login' }) + ')'
+    return
   }
 
-  let userInfo = authToken.verifyToken(token)
+  let userInfo
+  try {
+    userInfo = authToken.verifyToken.call(this, token)
+  } catch ( e ) {
+    this.body = callback + '(' + JSON.stringify({ status: 401, msg: 'You might not login,please login' }) + ')'
+    return
+  }
   let newToken = authToken.signToken(userInfo.userId)
 
-  this.body = { data: { token: newToken } }
+
+  this.body = callback + '(' + JSON.stringify({ status: 0, token: newToken }) + ')'
 }

@@ -22,7 +22,7 @@ function userReplyAuthenticated() {
       this.throw(401, 'This method must be have token on querySting or body or cookies')
     }
 
-    userInfo = verifyToken(token)
+    userInfo = verifyToken.call(this, token)
 
     let { userId }=userInfo
     if (!userId) {

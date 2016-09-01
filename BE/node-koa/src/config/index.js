@@ -9,11 +9,12 @@ module.exports = {
   app: {
     port: 4000,
     root: path.join(__dirname, '../'),
+    env: 'production',
     db: {
       port: dbPort,
-      users: { uri: mochaTestDB ? 'mongodb://localhost:27018/users' : 'mongodb://admin:zhangchi123ZC@' + dbPort + '/user' },
-      blog: { uri: mochaTestDB ? 'mongodb://localhost:27018/blog' : 'mongodb://admin:zhangchi123ZC@' + dbPort + '/blog' },
-      cache: { uri: mochaTestDB ? 'mongodb://localhost:27018/cache' : 'mongodb://admin:zhangchi123ZC@' + dbPort + '/cache' }
+      users: { uri: mochaTestDB ? 'mongodb://localhost:27018/users' : 'mongodb://admin:zhangchi123ZCNOMAND@' + dbPort + '/user' },
+      blog: { uri: mochaTestDB ? 'mongodb://localhost:27018/blog' : 'mongodb://admin:zhangchi123ZCNOMAND@' + dbPort + '/blog' },
+      cache: { uri: mochaTestDB ? 'mongodb://localhost:27018/cache' : 'mongodb://admin:zhangchi123ZCNOMAND@' + dbPort + '/cache' }
     },
     userAccess: {
       github: {
@@ -29,14 +30,14 @@ module.exports = {
     },
     redis: {
       redisExpDev: 5,
-      redisExp: 60 * 60 * 24
+      redisExp: 60 * 1000 * 60 * 24
     },
     cookies: {
-      expires: 60 * 60 * 24
+      expires: 60 * 1000 * 60 * 24
     },
     token: {
       secret: 'NOMAND_KOA_BLOG_SERVRFARMWORK',
-      expires: 60 * 60 * 24
+      expires: 60 * 1000 * 60 * 24
     },
     restfulAPI: {
       apiVersion, apiPrefix,

@@ -2,8 +2,11 @@
 const fs = require('fs')
 const path = require('path')
 
-
-global.config = require('./config')
+if (fs.readdirSync('./local.conf.json')) {
+  global.config=require()
+} else {
+  global.config = require('./config')
+}
 
 process.env.NODE_ENV = config.app.env
 

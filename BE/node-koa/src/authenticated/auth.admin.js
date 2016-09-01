@@ -19,7 +19,7 @@ function userAdminAuthenticated() {
       this.throw(401, 'Token expired. You must login again')
     }
 
-    userInfo = verifyToken(token)
+    userInfo = verifyToken.call(this, token)
 
 
     if (!userInfo.userId) {
@@ -32,7 +32,7 @@ function userAdminAuthenticated() {
       this.throw(401, 'Token illegal')
     }
 
-    if (user.email === 'iamnomand@gmail.com') {
+    if (user.userDetail.email === 'iamnomand@gmail.com') {
       this._adminUser = user
       yield next
     } else {

@@ -12,7 +12,7 @@ const cors = require('koa-cors')
 
 module.exports = function (app) {
 
-  process.env.NODE_ENV === 'development' && app.use(logger())
+  config.app.env === 'development' && app.use(logger())
   app.use(methodOverride())
   app.use(bodyParser())
   app.use(cors({
@@ -20,14 +20,19 @@ module.exports = function (app) {
   }))
 
   app.use(function *(next) {
+    this.set('X-Powered-By', 'koa')
+    yield next
+  });
+
+  app.use(function *(next) {
     this.render = views(path.join(config.app.root, '../view'), {
       default: 'jade',
       map: { html: 'jade' },
-      cache: process.env.NODE_ENV === 'development' ? false : 'memory'
+      cache: config.app.env === 'development' ? false : 'memory'
     })
     yield next
   })
-  
+
   app.use(serve(path.join(__dirname, '../../static'), {
     maxAge: 24 * 60 * 60
   }))

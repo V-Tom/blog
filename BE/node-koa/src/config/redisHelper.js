@@ -1,4 +1,4 @@
-const exp = process.env.NODE_ENV === "development" ? config.app.redis.redisExpDev : config.app.redis.redisExp;
+const exp = config.app.env === "development" ? config.app.redis.redisExpDev : config.app.redis.redisExp;
 const redis = require('./redis')()
 
 module.exports.getCache = (key)=> {

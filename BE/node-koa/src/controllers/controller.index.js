@@ -3,8 +3,8 @@
 /**
  * index page
  */
-exports.renderIndexView = function *() {
-  this.body = yield this.render('index', {});
+exports.renderIndexView = function *(config) {
+  this.body = yield this.render('index', config);
 }
 
 /**

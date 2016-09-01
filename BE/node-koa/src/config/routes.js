@@ -12,21 +12,26 @@ const {
   blogListController,
   blogUserController,
   cdnUploadController,
-  toolsController
+  toolsController,
+  frontCacheController
 }=require('../controllers')
 
 module.exports = (app)=> {
 
   //index page render router
   const router = new Router()
-  router.get('/', function *() {
+  router.get('/*', function *() {
+    let config = yield frontCacheController.getCacheConfig()
     this.type = 'html'
-    yield indexController.renderIndexView.apply(this)
+    yield indexController.renderIndexView.call(this, config)
   })
 
   //restful API server routers
   const { config:{ app:{ restfulAPI } } }=global
   const api = new Router({ prefix: '/' + restfulAPI.apiPrefix + '/' + restfulAPI.apiVersion })
+
+  //front config cache
+  api.put('/front/setfrontstatic', authAdmin.userAdminAuthenticated(), frontCacheController.updateConfigCache)
 
   //blog article
   api.get('/blog/article', blogDetailController.getArticleDetail)
@@ -61,14 +66,14 @@ module.exports = (app)=> {
   //restful API format
   api.use(require('../middlewares/middlewares.restfulAPI.response.js')())
 
-  if (process.env.NODE_ENV !== 'development') {
+  if (config.app.env === 'development') {
     app.use(errorHandler())
   } else {
     app.use(require('../middlewares/middlewares.form.error.handler')())
   }
 
   // Apply all router server
-  app.use(router.routes())
   app.use(api.routes())
+  app.use(router.routes())
 
 }

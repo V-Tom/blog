@@ -11,6 +11,11 @@ exports = module.exports = ()=> {
     //set API type
     this.type = "application/json"
 
+    //set koa
+    this.set('X-Powered-By', 'koa')
+
+    this.APICached && this.set('X-Cached-By', 'redis')
+
     //restful API response format
     this.body = Object.assign(
       {
