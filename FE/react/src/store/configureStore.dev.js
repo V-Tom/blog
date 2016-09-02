@@ -5,7 +5,7 @@ import { routerMiddleware } from 'react-router-redux'
 import { persistState } from 'redux-devtools'
 import createLogger from 'redux-logger'
 import { Iterable } from 'immutable'
-import promiseMiddleware from '../middleware/middleware.Promise'
+import promiseMiddleware from '../middleware/middleware.promise'
 import DevTools from '../component/DevTools'
 import appReducer from '../reducer'
 

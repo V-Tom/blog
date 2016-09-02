@@ -4,9 +4,11 @@ const path = require('path')
 const localConfigPath = path.join(__dirname, './local.conf.json')
 
 let config = require('./config')
-if (fs.statSync(localConfigPath)) {
-  global.config = Object.assign({}, JSON.parse(fs.readFileSync(localConfigPath, 'utf8').replace(/\r?\n|\r/g, " ")), config)
+if (fs.existsSync(localConfigPath)) {
+  let local = JSON.parse(fs.readFileSync(localConfigPath, 'utf8').replace(/\r?\n|\r/g, " "))
+  config = { app: Object.assign({}, config.app, local) }
 }
+global.config = config
 
 process.env.NODE_ENV = config.app.env
 

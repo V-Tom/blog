@@ -2,7 +2,7 @@ import React, { Component, PropTypes }from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import * as actions from '../../../actions/action.Blog'
+import * as actions from '../../../actions/action.blog'
 
 import './blog.stylus'
 
