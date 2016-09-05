@@ -6,7 +6,7 @@ const localConfigPath = path.join(__dirname, './local.conf.json')
 let config = require('./config')
 if (fs.existsSync(localConfigPath)) {
   let local = JSON.parse(fs.readFileSync(localConfigPath, 'utf8').replace(/\r?\n|\r/g, " "))
-  config = { app: Object.assign({}, config.app, local) }
+  config = {app: Object.assign({}, config.app, local.app)}
 }
 global.config = config
 

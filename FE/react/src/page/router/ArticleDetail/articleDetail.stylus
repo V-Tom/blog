@@ -146,7 +146,6 @@
 
   .markdown-wrapper
     background #fff
-    color #2f2f2f
     padding 4rem 0
 
 .blog-detail-page.active
@@ -160,16 +159,6 @@
     &:after
       visibility visible
       opacity 1
-
-.blog-detail-dark-them
-  background #000
-
-  .markdown
-    color #fff
-    background #000
-
-    a
-      color #fff
 
 /*480*/
 @media (min-width 34em)
@@ -224,10 +213,3 @@
 
       .article-meta
         font-size 2rem
-
-.dark-theme
-  .markdown-wrapper
-    background #222
-    color #ccc
-    pre
-      opacity .85

@@ -1,9 +1,10 @@
-base-font-family = Lato, "PingFang SC", "Microsoft YaHei", sans-serif
-base-font-size = 1.6rem
+base-font-family = 'Lato', "PingFang SC", "Microsoft YaHei", sans-serif
+base-font-size = 1.4rem
+base-font-color = #555
 
 .markdown
   font-family base-font-family
-  color inherit
+  color base-font-color
   font-size base-font-size
   background-color inherit
   text-rendering optimizeLegibility
