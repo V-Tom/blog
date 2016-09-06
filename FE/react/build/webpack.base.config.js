@@ -9,7 +9,7 @@ const entry = development ? [path.join(__dirname, '../src/app.js')] : {
   fullStack: path.join(__dirname, '../src/app.js')
 }
 
-const devTools = development ? 'cheap-module-eval-source-map' : null
+const devTools = development ? 'source-map' : null
 
 const plugins = [
   new DashboardPlugin(),
@@ -39,7 +39,7 @@ module.exports = {
     chunkFilename: development ? '[id].js' : '[name].js',
     sourceMapFilename: 'debugging/[file].map'
   },
-  stats: { children: false },
+  stats: {children: false},
   module: {
     preLoaders: [
       // { test: /\.(js|jsx|tsx)/, loader: "eslint-loader!source-map-loader" }
@@ -50,7 +50,7 @@ module.exports = {
         loader: development ? 'source-map-loader!react-hot!babel' : 'babel',
         exclude: /node_modules/
       },
-      { test: /\.json$/, loader: 'json' },
+      {test: /\.json$/, loader: 'json'},
       {
         test: /\.(png|jpg|gif)$/,
         loader: 'url',
@@ -59,7 +59,7 @@ module.exports = {
           name: '[name].[ext]?[hash]'
         }
       },
-      { test: /\.json$/, loader: 'json' },
+      {test: /\.json$/, loader: 'json'},
       {
         test: /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
         loader: 'file-loader',

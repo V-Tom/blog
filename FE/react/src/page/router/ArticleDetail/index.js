@@ -35,10 +35,13 @@ export default class ArticleDetail extends Component {
     let articleDetailReady = false
     let scrollLimit = 0
     const openArticleSideBar = false
+    const documentTitleSeparator = ':)=>'
     let scrollListener = ()=> {
     }
     this.state = {articleDetailReady, scrollListener, scrollLimit, openArticleSideBar}
     this.state.scrollListener = this.__scrollListener()
+    this.documentTitleSeparator = documentTitleSeparator
+    document.title = `loading${documentTitleSeparator}${document.title}`
   }
 
   static propTypes = {
@@ -64,6 +67,7 @@ export default class ArticleDetail extends Component {
     this.props.reducerActions.clearArticleDetailState()
     this.props.reducerActions.showHeader()
     window.removeEventListener('scroll', this.state.scrollListener, false)
+    document.title = document.title.split(this.documentTitleSeparator)[1]
   }
 
   componentDidUpdate() {
@@ -73,6 +77,9 @@ export default class ArticleDetail extends Component {
       this.__setScrollLimit()
       this.setState({
         articleDetailReady: true
+      }, ()=> {
+        const {articleDetail} = this.props
+        document.title = `${articleDetail.title}${this.documentTitleSeparator}${document.title.split(this.documentTitleSeparator)[1]}`
       })
     }
 
