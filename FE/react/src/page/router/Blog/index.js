@@ -20,7 +20,7 @@ const mapDispatchToProps = dispatch=> {
 export default class Blog extends Component {
   constructor(props) {
     super(props)
-    const limit = 2
+    const limit = 15
     const {location :{query}} = this.props
     const tag = query.tag || undefined
     const page = query.page || 1
@@ -45,13 +45,17 @@ export default class Blog extends Component {
   componentWillReceiveProps(nextProps) {
     let query = nextProps.location.query
     let nextTag = query.tag
-    let nextPage = Number(query.page)
+    let nextPage = query.page ? Number(query.page) : 1
     let {tag, page} = this.state
+
+    //first into
+    page = Number(page)
+    isNaN(page) && ( page = 0)
 
     if (!isNaN(nextPage) && (nextTag || nextPage) && (nextTag !== tag || nextPage !== page)) {
 
       this.setState({
-        tag: nextTag && nextTag !== tag ? nextTag : tag,
+        tag: nextTag ? (nextTag && nextTag !== tag ? nextTag : tag) : nextTag,
         page: nextPage && nextPage !== page ? nextPage : page
       }, ()=> {
         this.__fetchArticleList()

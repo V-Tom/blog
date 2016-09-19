@@ -1,15 +1,19 @@
 {
-  "name": "NomandNodeBlogServer-koa",
-  "version": "0.0.1",
+  "name": "tom'sblog",
+  "version": "1.0.0",
+  "description": "a koa blog server",
+  "main": "server.js",
   "private": true,
-  "main": "index.js",
-  "scripts": {
-    "dev": "export NODE_ENV=development && supervisor ./server/main --harmony  ---watch ./routes/main ./controller/main ./views/main ./server/main",
-    "test": "export NODE_ENV=test && mocha test/index.js",
-    "online": "pm2 startOrRestart ecosystem.json"
+  "publishConfig": {
+    "registry": "https://registry.npm.taobao.org"
   },
   "engines": {
     "node": ">=6.2.0"
+  },
+  "scripts": {
+    "dev": "export NODE_ENV=development && supervisor ./server/main --harmony  ---watch ./routes/main ./controller/main ./views/main ./server/main",
+    "test": "export NODE_ENV=test && mocha test/index.js",
+    "online": "export NODE_ENV＝online && pm2 startOrRestart ecosystem.json"
   },
   "dependencies": {
     "canvas": "^1.4.0",

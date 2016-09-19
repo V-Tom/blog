@@ -26,8 +26,15 @@
 //
 //
 'use strict'
-const libToolCanvas = require('./lib.tool.canvas')
+//TODO remove canvas for docker
+// const libToolCanvas = require('./lib.tool.canvas')
 const libGenerateArticleId = require('./lib.tool.generateArticleId')
 
-exports.getVerifyCode = libToolCanvas.index
+// exports.getVerifyCode = libToolCanvas.index
+exports.getVerifyCode = function () {
+  return {
+    base64: null,
+    code: undefined
+  }
+}
 exports.generateArticleId = libGenerateArticleId.index
