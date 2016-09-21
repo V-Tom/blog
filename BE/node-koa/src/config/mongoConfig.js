@@ -1,6 +1,6 @@
 'use strict';
 const mongoose = require('mongoose')
-
+const chalk = require('chalk')
 
 //blogCoon
 const blogCoon = mongoose.createConnection(config.app.db.blog.uri)
@@ -10,7 +10,7 @@ blogCoon
     blogCoon.db.close()
   })
   .on('connected', ()=> {
-    console.log(`blogCoon ${config.app.db.blog.uri} connect success ...`)
+    console.log(chalk.green(`blogCoon ${config.app.db.blog.uri} connect success ...`))
   })
 
 //userCoon
@@ -21,7 +21,7 @@ usersCoon
     usersCoon.db.close()
   })
   .on('connected', ()=> {
-    console.log(`usersCoon ${config.app.db.users.uri} connect success ...`)
+    console.log(chalk.green(`usersCoon ${config.app.db.users.uri} connect success ...`))
   })
 
 

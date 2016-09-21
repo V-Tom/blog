@@ -1,7 +1,6 @@
 'use strict';
 
-const debug = require('debug')
-const log = debug('app:server.js')
+const chalk = require('chalk')
 const koa = require('koa')
 
 //init all server global config
@@ -16,8 +15,8 @@ require('./src/config/routes')(app)
 
 // Start app
 app.listen(config.app.port)
-log('Server started, listening on port: ' + config.app.port)
-log('Environment: ' + config.app.env)
+console.log(chalk.cyan(`♪ Server started, listening on port: ${config.app.port}`))
+console.log(chalk.green(`Environment: ${config.app.env}`))
 
 // Export test agent
 module.exports = app
