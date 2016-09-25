@@ -20,6 +20,7 @@ exports.getUserToken = function *() {
 }
 
 /**
+ * TODO
  * 注册一个 admin 账户
  */
 exports.getAdminToken = function *() {
@@ -29,6 +30,7 @@ exports.getAdminToken = function *() {
 }
 
 /**
+ * TODO
  * 添加新的用户
  */
 exports.addUser = function *() {

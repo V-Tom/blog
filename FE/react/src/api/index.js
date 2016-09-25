@@ -1,4 +1,4 @@
-import { BlogListResource, ArticleResource, ToolsResource, ReplyResource } from './resource'
+import { BlogListResource, ArticleResource, ToolsResource, ReplyResource, MyResource } from './resource'
 
 
 const getBlogListLimit = 10;
@@ -26,3 +26,7 @@ export const ReplyApi = {
 export const ToolsApi = {
   getVerifyCode: ()=>ToolsResource('get', '/libs/verifyCode')
 };
+
+export const MyResumeApi = {
+  getMyResume: ()=>MyResource('get', '/resume')
+}

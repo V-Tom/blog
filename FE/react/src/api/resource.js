@@ -16,7 +16,7 @@ fetch.interceptors.request.use((config) => {
 
 // Add a response interceptor
 fetch.interceptors.response.use(({ response, data })=> {
-  
+
   //The request URL in some case do not interceptor
   if (DO_NOT_INTERCEPTOR_PORT.indexOf(response.url) >= 0) {
     return response.json()
@@ -50,4 +50,8 @@ export const ReplyResource = (method, type, data)=> {
 
 export const ToolsResource = (method, type, data)=> {
   return fetch.http(method, `${API_VERSION}/tools${type || ''}`, data)
+};
+
+export const MyResource = (method, type, data)=> {
+  return fetch.http(method, `${API_VERSION}/my${type || ''}`, data)
 };

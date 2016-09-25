@@ -21,3 +21,7 @@ export const RouterArticle = {
 export const Discuss = {
   GET_ARTICLE_REPLY: 'GET_ARTICLE_REPLY'
 }
+
+export const Me = {
+  GET_MY_RESUME: 'GET_MY_RESUME'
+}

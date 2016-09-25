@@ -1,6 +1,5 @@
 'use strict';
 
-const chalk = require('chalk')
 const koa = require('koa')
 
 //init all server global config

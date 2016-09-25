@@ -2,12 +2,16 @@
 const fs = require('fs')
 const path = require('path')
 const localConfigPath = path.join(__dirname, './local.conf.json')
+const chalk = require('chalk')
 
 let config = require('./config')
 if (fs.existsSync(localConfigPath)) {
   let local = JSON.parse(fs.readFileSync(localConfigPath, 'utf8').replace(/\r?\n|\r/g, " "))
-  config = {app: Object.assign({}, config.app, local.app)}
+  config = { app: Object.assign({}, config.app, local.app) }
 }
+
+global.chalk = chalk
+
 global.config = config
 
 process.env.NODE_ENV = config.app.env

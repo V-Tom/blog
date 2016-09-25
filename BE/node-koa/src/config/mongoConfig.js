@@ -1,6 +1,5 @@
 'use strict';
 const mongoose = require('mongoose')
-const chalk = require('chalk')
 
 //blogCoon
 const blogCoon = mongoose.createConnection(config.app.db.blog.uri)

@@ -13,7 +13,8 @@ const {
   blogUserController,
   cdnUploadController,
   toolsController,
-  frontCacheController
+  frontCacheController,
+  myController
 }=require('../controllers')
 
 module.exports = (app)=> {
@@ -52,8 +53,11 @@ module.exports = (app)=> {
   api.get('/tools/cdn/upload', authAdmin.userAdminAuthenticated(), cdnUploadController.uploadFile)
   api.post('/tools/front/update', authAdmin.userAdminAuthenticated(), toolsController.updateFront)
 
-  //blog article user
-  //TODO Test Token
+  //result
+  api.get('/my/resume', myController.getMyResume)
+  api.put('/my/resume', authAdmin.userAdminAuthenticated(), myController.updateMyResume)
+
+  //create blog article user
   api.post('/blog/user/getUserToken', blogUserController.getUserToken)
   api.post('/blog/user/getAdminToken', blogUserController.getAdminToken)
 

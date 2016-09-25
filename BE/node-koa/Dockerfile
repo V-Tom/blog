@@ -11,14 +11,14 @@ WORKDIR /home/blog
 
 #RUN npm config set registry https://registry.npm.taobao.org
 
-#RUN npm install pm2 -g --registry https://registry.npm.taobao.org
+RUN npm install pm2 -g --registry https://registry.npm.taobao.org
 
 COPY . /home/blog
 
 #RUN npm install
 
 #CMD ["make","online"]
-CMD ["node","server.js"]
+#CMD ["node","server.js"]
 
 EXPOSE 3000
 

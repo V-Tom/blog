@@ -9,7 +9,7 @@ module.exports = ()=> {
   })
 
   client.on('ready', ()=> {
-    console.log('redis server connect success ...')
+    console.log(chalk.green('redis server connect success ...'))
   })
 
   client.on("error", function (err) {

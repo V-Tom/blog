@@ -8,5 +8,6 @@ module.exports = {
   blogUserController: require('../controllers/controller.blog.user.js'),
   cdnUploadController: require('../controllers/controller.cdn.upload'),
   toolsController: require('../controllers/controller.tools.alpha'),
-  frontCacheController: require('./controller.front.cache')
+  frontCacheController: require('./controller.front.cache'),
+  myController: require('./controller.my')
 }

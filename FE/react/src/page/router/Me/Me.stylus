@@ -1,13 +1,7 @@
 .blog-me-page
   font-size 1.4rem
-  padding 5rem 0
+  padding 3rem 0
   line-height 2
-  p
-    font-size 14px
-  ul
-    padding-left 2rem
-    list-style circle
-    font-size 14px
 
-    li
-      list-style circle
+  .markdown-wrapper
+    background #fff
