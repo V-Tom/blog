@@ -1,7 +1,7 @@
-builds:
-	npm install --registry=https://registry.npm.taobao.org && npm run online
+install:
+	npm install --registry=https://registry.npm.taobao.org
 
 online:
 	pm2 startOrRestart ecosystem.json
 
-.PHONY: builds
+.PHONY: online
