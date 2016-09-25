@@ -8,6 +8,8 @@ pids
 *.pid
 *.seed
 
+dist
+
 #IDEA
 *.idea
 
