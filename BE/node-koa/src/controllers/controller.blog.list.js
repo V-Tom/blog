@@ -17,7 +17,7 @@ exports.getArticleList = function *() {
     if (list) {
       this.APICached = true
     } else {
-      const select = ["articleId", "title", "tags", "subTitle", "preview", "meta", "_id"]
+      const select = ["articleId", "title", "tags", "subTitle", "intro", "meta", "_id"]
       let query = tag ? { 'tags': { $in: [tag] } } : {}
       let count = yield blogArticleDetailCoon.count(query)
       let data = yield blogArticleDetailCoon.find(query)

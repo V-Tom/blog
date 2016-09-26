@@ -1,7 +1,7 @@
 'use strict'
 const { blogCoon }=require('../config/mongoConfig')
 const { mongo:{ ObjectId } }=require('mongoose')
-
+const moment = require('moment')
 const blogArticleDetaiModel = blogCoon.model('blogArticleDetail')
 const redisPrefix = "BLOG_DETAIL_REDIS_PREFIX"
 const { generateArticleId } = require('../lib')
@@ -36,6 +36,7 @@ exports.updateArticleDetail = function *() {
       author: reqBody.author,
       meta: reqBody.meta,
       subTitle: reqBody.subTitle,
+      preview: reqBody.intro && reqBody.intro.preview || '',
       intro: {
         preview: reqBody.intro && reqBody.intro.preview || '',
         pic: reqBody.intro && reqBody.intro.pic || ''
@@ -52,6 +53,7 @@ exports.updateArticleDetail = function *() {
 exports.createArticle = function *() {
   let reqBody = this.request.body
   let articleId = generateArticleId(23)
+  let date = new Date()
 
   let newArticle = new blogArticleDetaiModel({
     title: reqBody.title,
@@ -63,11 +65,13 @@ exports.createArticle = function *() {
       preview: reqBody.intro && reqBody.intro.preview || '',
       pic: reqBody.intro && reqBody.intro.pic || ''
     },
+    postTime: { localTime: moment(date).format('YYYY-MM-DD HH:mm:ss'), UTCTime: date.getTime() },
     tags: reqBody.tags,
     githubArticleUrl: reqBody.githubArticleUrl || 'https://github.com/V-Tom',
     content: reqBody.content
   })
 
+  redis.removeCache('BLOG_LIST_REDIS_PREFIX:articleList*')
   yield newArticle.save()
 }
 
