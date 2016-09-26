@@ -14,18 +14,18 @@ RUN apt-get install -y nodejs
 RUN useradd -m -s /bin/bash app
 
 
-ADD . /home/app/app
+#ADD . /home/app/app
 
-WORKDIR /home/app/app
+#WORKDIR /home/app/app
 
-RUN chown -R app:app .
-
-
-USER app
-
-RUN npm install --registry=https://registry.npm.taobao.org --disturl=https://npm.taobao.org/dist
+#RUN chown -R app:app .
 
 
-CMD ["daemon", "-f", "-r", "--", "npm", "start"]
+#USER app
+
+#RUN npm install --registry=https://registry.npm.taobao.org --disturl=https://npm.taobao.org/dist
+
+
+#CMD ["daemon", "-f", "-r", "--", "npm", "start"]
 
 EXPOSE 3000
