@@ -1,0 +1,54 @@
+@class-name-prefix: UiRouterContentBox;
+
+.@{class-name-prefix} {
+  position: relative;
+  border-radius: 3px;
+  background: #fff;
+  border-top: 3px solid #d2d6de;
+  margin-top: 15px;
+  margin-bottom: 20px;
+  width: 100%;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .1);
+  border-top-color: #d2d6de;
+  .@{class-name-prefix}-header {
+    &:after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+    color: #444;
+    display: block;
+    padding: 10px;
+    position: relative;
+    border-bottom: 1px solid #f4f4f4;
+    .@{class-name-prefix}-title {
+      display: inline-block;
+      font-size: 18px;
+      margin: 0;
+    }
+    .@{class-name-prefix}-header-control {
+      float: right;
+    }
+    .@{class-name-prefix}-header-breadcrumb {
+      display: inline-block;
+      margin: 0 15px;
+    }
+  }
+  .@{class-name-prefix}-body {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    padding: 10px;
+    .@{class-name-prefix}-search-container {
+      text-align: right;
+      margin: 10px 0;
+      & > section {
+        width: 200px;
+        margin: 0 20px;
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+  }
+}
