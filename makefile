@@ -1,9 +1,7 @@
-fe-dev:
-	cd ./FE/react && make dev
+install:
+	cd src && npm install --registry=https://registry.npm.taobao.org
 
-fe-build:
-	cd ./FE/react && make builds
+online:
+	cd src && pm2 startOrRestart ecosystem.json
 
-be-koa-online:
-	cd ./BE/node-koa/ && git pull origin dev && make install && make online
-	
+.PHONY: online
