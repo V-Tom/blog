@@ -71,7 +71,9 @@ exports.createArticle = function *() {
     content: reqBody.content
   })
 
-  redis.removeCache('BLOG_LIST_REDIS_PREFIX:articleList*')
+  redis.sendCommand('keys', ['BLOG_LIST_REDIS_PREFIX:articleList*']).then(cache=> {
+    cache.forEach(item=>redis.removeCache(item))
+  })
   yield newArticle.save()
 }
 

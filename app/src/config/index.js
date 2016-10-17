@@ -9,7 +9,7 @@ module.exports = {
   app: {
     port: 4000,
     root: path.join(__dirname, '../'),
-    env: 'production',
+    env: 'development',
     db: {
       port: dbPort,
       users: { uri: mochaTestDB ? 'mongodb://localhost:27018/users' : 'mongodb://admin:zhangchi123ZCNOMAND@' + dbPort + '/user' },

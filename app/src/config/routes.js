@@ -21,6 +21,7 @@ module.exports = (app)=> {
 
   //index page render router
   const router = new Router()
+
   router.get('/*', function *() {
     let config = yield frontCacheController.getCacheConfig()
     this.type = 'html'
@@ -51,9 +52,8 @@ module.exports = (app)=> {
   //tools
   api.get('/tools/libs/verifyCode', authUser.userReplyAuthenticated(), toolsController.verifyCode)
   api.get('/tools/cdn/upload', authAdmin.userAdminAuthenticated(), cdnUploadController.uploadFile)
-  api.post('/tools/front/update', authAdmin.userAdminAuthenticated(), toolsController.updateFront)
 
-  //result
+  //my resume
   api.get('/my/resume', myController.getMyResume)
   api.put('/my/resume', authAdmin.userAdminAuthenticated(), myController.updateMyResume)
 
@@ -62,10 +62,13 @@ module.exports = (app)=> {
   api.post('/blog/user/getAdminToken', blogUserController.getAdminToken)
 
   //用户第一次登录
-  api.get('/blog/user/oAuth', blogUserController.updateUser)
+  // api.get('/blog/user/oAuth', blogUserController.updateUser)
 
   //用户二次登录,根据 cookies 拿到 老的TOKEN 重新生成的APP TOKEN
-  api.get('/blog/user/sign', blogUserController.sign)
+  // api.get('/blog/user/sign', blogUserController.sign)
+
+  //TODO TEST
+  api.get('/tools/my/test', toolsController.test)
 
   //restful API format
   api.use(require('../middlewares/middlewares.restfulAPI.response.js')())

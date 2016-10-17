@@ -7,6 +7,6 @@ exports.verifyCode = function *() {
   }
 }
 
-exports.updateFront = function *() {
+exports.test = function *() {
 
 }
