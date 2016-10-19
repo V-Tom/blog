@@ -29,7 +29,7 @@
 //TODO remove canvas for docker
 // const libToolCanvas = require('./lib.tool.canvas')
 const libGenerateArticleId = require('./lib.tool.generateArticleId')
-
+const libUpdateGithubArticleRepo = require('./lib.tools.updateGithubArtcleRepo')
 // exports.getVerifyCode = libToolCanvas.index
 exports.getVerifyCode = function () {
   return {
@@ -38,3 +38,4 @@ exports.getVerifyCode = function () {
   }
 }
 exports.generateArticleId = libGenerateArticleId.index
+exports.updateArticleRepo = libUpdateGithubArticleRepo.index

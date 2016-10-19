@@ -10,6 +10,9 @@ module.exports = {
     port: 4000,
     root: path.join(__dirname, '../'),
     env: 'development',
+    secret: {
+      admin: 'admin'
+    },
     db: {
       port: dbPort,
       users: { uri: mochaTestDB ? 'mongodb://localhost:27018/users' : 'mongodb://admin:zhangchi123ZCNOMAND@' + dbPort + '/user' },

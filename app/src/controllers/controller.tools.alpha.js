@@ -8,5 +8,5 @@ exports.verifyCode = function *() {
 }
 
 exports.test = function *() {
-
+  this.body = 'hello there'
 }

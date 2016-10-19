@@ -3,11 +3,18 @@ const { blogCoon }=require('../config/mongoConfig')
 const { mongo:{ ObjectId } }=require('mongoose')
 const moment = require('moment')
 const blogArticleDetaiModel = blogCoon.model('blogArticleDetail')
+const { generateArticleId, updateArticleRepo } = require('../lib')
 const redisPrefix = "BLOG_DETAIL_REDIS_PREFIX"
-const { generateArticleId } = require('../lib')
 
 exports.getArticleDetail = function *() {
-  const { articleId } = this.query
+  let articleId
+  if (this.params.articleId) {
+    articleId = this.params.articleId
+  } else if (this.query.articleId) {
+    articleId = this.query.articleId
+  } else {
+    this.throw(401, 'unknown articleId')
+  }
   const key = `${redisPrefix}:${articleId}`
 
   let detail = yield redis.getCache(key)
@@ -48,7 +55,7 @@ exports.updateArticleDetail = function *() {
   }),
     redis.removeCache(`${redisPrefix}:${articleId}`)
   ]
-
+  updateArticleRepo(reqBody.title, reqBody.content)
 }
 exports.createArticle = function *() {
   let reqBody = this.request.body

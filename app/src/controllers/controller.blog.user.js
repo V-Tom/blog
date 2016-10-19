@@ -24,9 +24,14 @@ exports.getUserToken = function *() {
  * 注册一个 admin 账户
  */
 exports.getAdminToken = function *() {
-  let token = authToken.signToken('57a8bc5f6adacd66d9168fee')
-  this.cookies.set('token', token)
-  this.body = { "token": token }
+  let { secret } = this.query
+  if (secret === config.app.secret.admin) {
+    let token = authToken.signToken('57a8bc5f6adacd66d9168fee')
+    this.cookies.set('token', token)
+    this.body = { "token": token }
+  } else {
+    this.throw(401, 'admin user secret illegal')
+  }
 }
 
 /**
@@ -88,7 +93,7 @@ exports.sign = function *() {
 
   let token = this.cookies.get('token')
   this.type = 'text/javascript'
-  this.APIDontFormat = true
+  this.APIDonotFormat = true
 
   if (!token) {
     this.body = callback + '(' + JSON.stringify({ status: 401, msg: 'You might not login,please login' }) + ')'

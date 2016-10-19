@@ -1,7 +1,7 @@
 'use strict'
 const { blogCoon }=require('../config/mongoConfig')
 const { mongo:{ ObjectId } }=require('mongoose')
-
+const updateArticleRepoTool = require('../lib/lib.tools.updateGithubArtcleRepo')
 const fs = require('fs')
 const path = require('path')
 
@@ -30,4 +30,15 @@ exports.updateMyResume = function *() {
   yield redis.removeCache(redisPrefix)
   let { resume } = this.body
   fs.writeFileSync(resumeCachePath, JSON.stringify({ resume }), 'utf8')
+}
+
+/**
+ * 更新repo
+ */
+exports.pushArticleRepo = function *() {
+  try {
+    updateArticleRepoTool.push()
+  } catch ( e ) {
+    this.throw(500, e)
+  }
 }
