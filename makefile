@@ -1,7 +1,7 @@
 install:
-	cd src && npm install --registry=https://registry.npm.taobao.org
+	cd app && npm install --registry=https://registry.npm.taobao.org
 
 online:
-	cd src && pm2 startOrRestart ecosystem.json
+	cd app && pm2 startOrRestart ecosystem.json
 
 .PHONY: online

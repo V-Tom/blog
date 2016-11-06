@@ -41,8 +41,9 @@
   },
   "devDependencies": {
     "canvas": "^1.4.0",
-    "supertest": "^2.0.0",
     "qiniu": "^6.1.11",
+    "shelljs": "^0.7.5",
+    "supertest": "^2.0.0",
     "supervisor": "^0.11.0"
   },
   "author": "Nomand",
