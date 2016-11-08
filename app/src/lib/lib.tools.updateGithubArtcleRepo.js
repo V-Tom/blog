@@ -99,6 +99,10 @@ exports.push = ()=> {
   console.log(chalk.green(`-->[GIT]: ${command}`))
   cmd.exec(command)
 
+  command = 'git commit -a'
+  console.log(chalk.green(`-->[GIT]: ${command}`))
+  cmd.exec(command)
+
   command = 'git push origin master'
   console.log(chalk.green(`-->[GIT]: ${command}`))
   cmd.exec(command)

@@ -52,9 +52,9 @@ module.exports = (app)=> {
   api.get('/blog/articlelist', blogListController.getArticleList)
 
   //blog article reply
-  api.get('/blog/reply', blogCommitController.getArticleReply)
-  api.post('/blog/reply', authUser.userReplyAuthenticated(), blogCommitController.addArticleReply)
-  api.del('/blog/reply', authAdmin.userAdminAuthenticated(), blogCommitController.deleteReply)
+  // api.get('/blog/reply', blogCommitController.getArticleReply)
+  // api.post('/blog/reply', authUser.userReplyAuthenticated(), blogCommitController.addArticleReply)
+  // api.del('/blog/reply', authAdmin.userAdminAuthenticated(), blogCommitController.deleteReply)
 
   //auth
   api.post('/auth/user/getUserToken', blogUserController.getUserToken)
@@ -62,7 +62,7 @@ module.exports = (app)=> {
 
   //tools
   api.get('/tools/libs/verifyCode', authUser.userReplyAuthenticated(), toolsController.verifyCode)
-  api.get('/tools/cdn/upload', authAdmin.userAdminAuthenticated(), cdnUploadController.uploadFile)
+  api.get('/tools/cdn/upload', authAdmin.userAdminAuthenticated(), cdnUploadController.uploadFileToken)
 
   //my
   api.get('/my/resume', myController.getMyResume)
