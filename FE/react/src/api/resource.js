@@ -26,7 +26,7 @@ fetch.interceptors.response.use(({ response, data })=> {
   //response statusText must be 'OK'
 
 
-  if (data.status === 0) {
+  if (data.status === 200) {
     return data.result
   }
   return Promise.reject({ status: data.status, msg: data.msg, interceptor: true })
@@ -44,9 +44,9 @@ export const ArticleResource = (method, type, data)=> {
   return fetch.http(method, `${API_VERSION}/blog/article${type || ''}`, data)
 };
 
-export const ReplyResource = (method, type, data)=> {
-  return fetch.http(method, `${API_VERSION}/blog/reply${type || ''}`, data)
-};
+// export const ReplyResource = (method, type, data)=> {
+//   return fetch.http(method, `${API_VERSION}/blog/reply${type || ''}`, data)
+// };
 
 export const ToolsResource = (method, type, data)=> {
   return fetch.http(method, `${API_VERSION}/tools${type || ''}`, data)

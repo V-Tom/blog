@@ -32,7 +32,7 @@ import { bindActionCreators } from 'redux'
 import Update from 'react-addons-update'
 import { connect } from 'react-redux'
 //Third-part
-import { Table, Icon, Modal, Spin, Input, Switch } from 'antd'
+import { Table, Icon, Modal, Spin, Input, Switch, message } from 'antd'
 //mine
 import './ArticleManagement.less'
 import '../../../less/markdown/markdown.stylus'
@@ -40,7 +40,7 @@ import '../../../less/markdown/prism.stylus'
 
 import marked from '../../../libs/markdown'
 import prism from '../../../libs/markdown/prism'
-import { articleApi } from '../../../api'
+import { articleApi, authApi, toolsApi } from '../../../api'
 import UiRouterContentBox from '../../../component/UiRouterContentBox'
 import * as actions from '../../../action/action.ArticleManagement'
 const mapStateToProps = state=> {
@@ -173,6 +173,97 @@ export default class ArticleManagement extends Component {
     return data
   }
 
+  /**
+   * 正式上传图片
+   * @param e
+   * @private
+   */
+  __doUpload(file, token, cdn) {
+    return new Promise((resolve, reject)=> {
+      let xhr = new XMLHttpRequest(),
+        form = new FormData()
+      xhr.onload = function () {
+        resolve(JSON.parse(xhr.responseText))
+      }
+
+      xhr.onerror = function () {
+        reject()
+      }
+      form.append('token', token)
+      form.append('file', file)
+      form.append('key', this.__b64EncodeUnicode(`${file.name}?type=${file.type}&time=${new Date().getTime()}&size=${file.size}`))
+      xhr.open('POST', cdn)
+      xhr.send(form)
+    })
+  }
+
+  /**
+   * base 64 deunicode
+   * @param str
+   * @returns {*}
+   * @private
+   */
+  __b64DecodeUnicode(str) {
+    return decodeURIComponent(Array.prototype.map.call(atob(str), function (c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+    }).join(''))
+  }
+
+  /**
+   * base 64
+   * @param str
+   * @returns {*|string}
+   * @private
+   */
+  __b64EncodeUnicode(str) {
+    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function (match, p1) {
+      return String.fromCharCode('0x' + p1)
+    }))
+  }
+
+  /**
+   * 上传 图片
+   * @param ev
+   * @private
+   */
+  __onChangeIntroPic(ev) {
+    let target = ev.target
+    let file = target.files[0]
+
+    authApi.getAdminToken().then(()=> {
+
+      toolsApi.getCdnUploadToken().then(({ token, url })=> {
+        this.__doUpload(file, token, url).then(data=> {
+          let url = `https://oga6csqie.qnssl.com/${data.key}`
+
+          target.files = null
+          if (window.confirm(`当前地址为${url},是否保存为文章pic?`)) {
+            let newState = Update(this.state.articleData, {
+              intro: {
+                pic: {
+                  '$set': url
+                }
+              }
+            })
+            this.setState({ articleData: newState })
+          }
+          target.files = null
+          console.info(url)
+        }).catch(e=> {
+          console.error(e)
+          message.error(`文件上传失败`)
+        })
+      }).catch(e=> {
+        console.error(e)
+        message.error(`获取 cnd upload token 失败`)
+      })
+
+    }).catch(e=> {
+      console.error(e)
+      message.error(`获取admin token 失败`)
+    })
+  }
+
   __onTablePaginationChange(current) {
     this.setState({
       tableLoading: true,
@@ -213,6 +304,8 @@ export default class ArticleManagement extends Component {
               <div>
                 {articleData.title}
                 <Switch defaultChecked={togglePreview} onChange={(togglePreview)=>this.setState({ togglePreview })}/>
+                上传图片:
+                <input type="file" onChange={(ev)=>this.__onChangeIntroPic(ev)}/>
               </div>
             )}
             width="100%"

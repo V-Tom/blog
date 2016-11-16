@@ -32,3 +32,5 @@ import AxiosAlpha from './axios.alpha'
 
 export const commonResource = (method, type, data) =>AxiosAlpha[method](`${API_VERSION}${type || ''}`, data)
 export const articleResource = (method, type, data) =>AxiosAlpha[method](`${API_VERSION}/blog${type || ''}`, data)
+export const authResource = (method, type, data) =>AxiosAlpha[method](`${API_VERSION}/auth${type || ''}`, data)
+export const toolsResource = (method, type, data) =>AxiosAlpha[method](`${API_VERSION}/tools${type || ''}`, data)

@@ -1,7 +1,7 @@
-import React, {Component, PropTypes}from 'react'
-import {bindActionCreators} from 'redux'
-import {connect} from 'react-redux'
-import {Link} from 'react-router'
+import React, { Component, PropTypes }from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { Link } from 'react-router'
 import * as actions from '../../../actions/action.blog'
 
 import './blog.stylus'
@@ -20,12 +20,12 @@ const mapDispatchToProps = dispatch=> {
 export default class Blog extends Component {
   constructor(props) {
     super(props)
-    const limit = 15
-    const {location :{query}} = this.props
+    const limit = 6
+    const { location :{ query } } = this.props
     const tag = query.tag || undefined
     const page = query.page || 1
 
-    this.state = {page, limit, tag}
+    this.state = { page, limit, tag }
   }
 
   static propTypes = {
@@ -46,7 +46,7 @@ export default class Blog extends Component {
     let query = nextProps.location.query
     let nextTag = query.tag
     let nextPage = query.page ? Number(query.page) : 1
-    let {tag, page} = this.state
+    let { tag, page } = this.state
 
     //first into
     page = Number(page)
@@ -68,13 +68,13 @@ export default class Blog extends Component {
   }
 
   componentDidMount() {
-    const {reducerActions} =this.props
+    const { reducerActions } =this.props
     reducerActions.showHeader()
     this.__fetchArticleList()
   }
 
   componentWillUnmount() {
-    const {reducerActions} = this.props
+    const { reducerActions } = this.props
     reducerActions.clearBlogState()
   }
 
@@ -84,14 +84,14 @@ export default class Blog extends Component {
    */
 
   __fetchArticleList() {
-    const {reducerActions} = this.props
-    const {tag, limit, page} = this.state
+    const { reducerActions } = this.props
+    const { tag, limit, page } = this.state
     reducerActions.getBlogList(page, limit, tag)
   }
 
   render() {
-    const {tag, limit, page} = this.state
-    const {articleList} = this.props
+    const { tag, limit, page } = this.state
+    const { articleList } = this.props
 
     const nextPageDisabled = page >= Math.ceil(articleList.count / limit)
     const prevPageDisabled = page <= 1
