@@ -1,5 +1,5 @@
 'use strict'
-const { blogCoon }=require('../config/mongoConfig')
+const { blogCoon }=require('../config/mongo/mongoConfig')
 const { Types:{ ObjectId } }=require('mongoose')
 
 const blogArticleUsersModel = blogCoon.model('blogArticleUsers')
@@ -72,7 +72,7 @@ exports.updateUser = function *() {
  * @param userId
  * @param projection
  */
-exports.findUser = (userId, projection)=>function *() {
+exports.findUser = (userId, projection) => function *() {
   const key = `${redisPrefix}-${userId}`
   let userInfo = yield redis.getCache(key)
   if (userInfo) {

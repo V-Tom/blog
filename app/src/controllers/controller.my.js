@@ -1,5 +1,5 @@
 'use strict'
-const { blogCoon }=require('../config/mongoConfig')
+const { blogCoon }=require('../config/mongo/mongoConfig')
 const { mongo:{ ObjectId } }=require('mongoose')
 const updateArticleRepoTool = require('../lib/lib.tools.updateGithubArtcleRepo')
 const fs = require('fs')

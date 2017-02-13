@@ -1,6 +1,6 @@
 'use strict';
 const { Schema } = require('mongoose')
-const { blogCoon } = require('../config/mongoConfig')
+const { blogCoon } = require('../config/mongo/mongoConfig')
 
 /**
  * Schema

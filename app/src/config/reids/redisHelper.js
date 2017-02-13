@@ -1,14 +1,14 @@
 const exp = config.app.env === "development" ? config.app.redis.redisExpDev : config.app.redis.redisExp;
-const redis = require('./redis')()
+const redis = require('./index')()
 
 /**
  * get cache
  * @param key
  * @returns {Promise}
  */
-module.exports.getCache = (key)=> {
-  return new Promise((resolve, rejcect)=> {
-    redis.get(key, (err, reply)=> {
+module.exports.getCache = (key) => {
+  return new Promise((resolve, rejcect) => {
+    redis.get(key, (err, reply) => {
       if (err) {
         resolve(err)
       }
@@ -30,8 +30,8 @@ module.exports.getCache = (key)=> {
  * @param value
  * @returns {Promise}
  */
-module.exports.setCache = (key, value)=> {
-  return new Promise((resolve, reject)=> {
+module.exports.setCache = (key, value) => {
+  return new Promise((resolve, reject) => {
     redis.set(key, JSON.stringify(value), 'EX', exp, () => {
       resolve()
     })
@@ -43,9 +43,9 @@ module.exports.setCache = (key, value)=> {
  * @param key
  * @returns {Promise}
  */
-module.exports.removeCache = (key)=> {
-  return new Promise((resolve, reject)=> {
-    redis.del(key, ()=> {
+module.exports.removeCache = (key) => {
+  return new Promise((resolve, reject) => {
+    redis.del(key, () => {
       resolve()
     })
   })
@@ -55,7 +55,7 @@ module.exports.removeCache = (key)=> {
  * send command
  * @param command
  */
-module.exports.sendCommand = (command, args = [])=>new Promise((resolve, reject)=> {
+module.exports.sendCommand = (command, args = []) => new Promise((resolve, reject) => {
   redis.send_command(command, args, function (err, caches) {
     if (err) {
       reject(err)

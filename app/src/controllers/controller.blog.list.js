@@ -1,5 +1,5 @@
 'use strict'
-const { blogCoon }=require('../config/mongoConfig')
+const { blogCoon }=require('../config/mongo/mongoConfig')
 
 const blogArticleDetailCoon = blogCoon.model('blogArticleDetail')
 const redisPrefix = "BLOG_LIST_REDIS_PREFIX"

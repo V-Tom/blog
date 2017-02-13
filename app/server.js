@@ -10,7 +10,7 @@ const app = koa()
 require('./src/config/koa')(app)
 
 //koa Routes
-require('./src/config/routes')(app)
+require('./src/router/routes')(app)
 
 
 // Start app

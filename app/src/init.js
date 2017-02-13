@@ -1,22 +1,21 @@
 'use strict';
 const fs = require('fs')
 const path = require('path')
-const localConfigPath = path.join(__dirname, './local.conf.json')
-const chalk = require('chalk')
 
-let config = require('./config')
-if (fs.existsSync(localConfigPath)) {
-  let local = JSON.parse(fs.readFileSync(localConfigPath, 'utf8').replace(/\r?\n|\r/g, " "))
-  config = { app: Object.assign({}, config.app, local.app) }
-}
+/**
+ * set global
+ */
+global.config = require('./config')
 
-global.chalk = chalk
+global.chalk = require('chalk')
 
-global.config = config
+global.redis = require('./config/reids/redisHelper')
 
+
+/**
+ * set environment
+ */
 process.env.NODE_ENV = config.app.env
-
-global.redis = require('./config/redisHelper')
 
 
 /**

@@ -1,9 +1,9 @@
 'use strict'
-const { blogCoon }=require('../config/mongoConfig')
+const { blogCoon }=require('../config/mongo/mongoConfig')
 const { mongo:{ ObjectId } }=require('mongoose')
 const moment = require('moment')
 const blogArticleDetaiModel = blogCoon.model('blogArticleDetail')
-const { generateArticleId, updateArticleRepo } = require('../lib')
+const { generateArticleId } = require('../lib')
 const redisPrefix = "BLOG_DETAIL_REDIS_PREFIX"
 
 exports.getArticleDetail = function *() {
@@ -55,7 +55,6 @@ exports.updateArticleDetail = function *() {
   }),
     redis.removeCache(`${redisPrefix}:${articleId}`)
   ]
-  updateArticleRepo(reqBody.title, reqBody.content)
 }
 exports.createArticle = function *() {
   let reqBody = this.request.body
@@ -68,18 +67,19 @@ exports.createArticle = function *() {
     author: reqBody.author,
     meta: reqBody.meta,
     subTitle: reqBody.subTitle,
-    intro: {
-      preview: reqBody.intro && reqBody.intro.preview || '',
-      pic: reqBody.intro && reqBody.intro.pic || ''
+    introPreview: reqBody.introPreview,
+    introWrapper: reqBody.introWrapper,
+    postTime: {
+      localTime: moment(date).format('YYYY-MM-DD HH:mm:ss'),
+      UTCTime: date.getTime()
     },
-    postTime: { localTime: moment(date).format('YYYY-MM-DD HH:mm:ss'), UTCTime: date.getTime() },
     tags: reqBody.tags,
-    githubArticleUrl: reqBody.githubArticleUrl || 'https://github.com/V-Tom',
+    gitArticleUrl: reqBody.gitArticleUrl || 'https://github.com/V-Tom',
     content: reqBody.content
   })
 
-  redis.sendCommand('keys', ['BLOG_LIST_REDIS_PREFIX:articleList*']).then(cache=> {
-    cache.forEach(item=>redis.removeCache(item))
+  redis.sendCommand('keys', ['BLOG_LIST_REDIS_PREFIX:articleList*']).then(cache => {
+    cache.forEach(item => redis.removeCache(item))
   })
   yield newArticle.save()
 }

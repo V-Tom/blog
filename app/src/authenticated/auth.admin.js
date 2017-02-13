@@ -29,14 +29,14 @@ function userAdminAuthenticated() {
     let user = yield findUser(userInfo.userId)
 
     if (!user) {
-      this.throw(401, 'Token illegal')
+      this.throw(401, 'Token illegal. can\'t find this admin user')
     }
 
     if (user.userDetail.email === 'iamnomand@gmail.com') {
       this._adminUser = user
       yield next
     } else {
-      this.throw(401, 'Token illegal')
+      this.throw(401, 'Token illegal. this user email is\'nt verify')
     }
   }
 }
