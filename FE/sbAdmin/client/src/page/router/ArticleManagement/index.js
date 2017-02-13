@@ -239,10 +239,8 @@ export default class ArticleManagement extends Component {
           target.files = null
           if (window.confirm(`当前地址为${url},是否保存为文章pic?`)) {
             let newState = Update(this.state.articleData, {
-              intro: {
-                pic: {
-                  '$set': url
-                }
+              introWrapper: {
+                '$set': url
               }
             })
             this.setState({ articleData: newState })

@@ -160,7 +160,7 @@ export default class ArticleDetail extends Component {
         </div>
         <div className="article-content-wrapper" onClick={()=>this.__toggleArticleSideBar(false)}>
           <header className="article-intro-container"
-                  style={{ backgroundImage: 'url(' + (articleDetail.intro && articleDetail.intro.pic) + ')' }}>
+                  style={{ backgroundImage: `url("${articleDetail.introWrapper}")` }}>
             <section
               className="article-intro-mask">
             </section>

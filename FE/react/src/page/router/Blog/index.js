@@ -107,7 +107,7 @@ export default class Blog extends Component {
               <Link to={`/blog/${item.articleId}`}>
                 <h2 className="post-title ellipsis">{item.title}</h2>
                 <p className="post-subtitle ellipsis">{item.subTitle}</p>
-                <section className="post-content-preview">{item.preview}</section>
+                <section className="post-content-preview">{item.introPreview}</section>
               </Link>
               <p className="post-meta ellipsis">{item.meta}</p>
               <hr/>
