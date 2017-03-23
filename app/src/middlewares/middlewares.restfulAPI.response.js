@@ -1,26 +1,28 @@
-exports = module.exports = ()=> {
+module.exports = function () {
+  return async (ctx, next) => {
 
-  return function *(next) {
-    yield next
+    await next()
+    const { APICached, APIDoNotFormat } = ctx.state
 
-    if (this.APIDonotFormat) {
-      yield next
-      return
+    if (APIDoNotFormat) {
+      return next()
     }
 
-    //set API type
-    this.type = "application/json"
+    // set API type
+    ctx.type = "application/json"
 
-    this.APICached && this.set('X-Cached-By', 'redis')
+    // check is redis cached
+    APICached && ctx.set('X-Cached-By', 'redis')
 
     //restful API response format
-    this.body = Object.assign(
+    ctx.body = Object.assign(
       {
         "status": 200,
         "result": null
       },
-      { result: this.body },
-      this.APICached ? { APICached: 'REDIS' } : null)
+      { result: ctx.body },
+      APICached ? { APICached: 'redis' } : null
+    )
   }
 }
 

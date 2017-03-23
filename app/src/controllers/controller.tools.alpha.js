@@ -1,12 +1,19 @@
 'use strict'
 const { getVerifyCode } = require('../lib')
-exports.verifyCode = function *() {
+/**
+ * verify code
+ * @param ctx
+ * @returns {Promise.<void>}
+ */
+exports.verifyCode = async (ctx, next) => {
   let code = getVerifyCode()
-  this.body = {
+  ctx.body = {
     data: code
   }
+  return next()
 }
 
-exports.test = function *() {
-  this.body = 'hello there'
+exports.test = async (ctx, next) => {
+  ctx.body = 'hello there'
+  return next()
 }

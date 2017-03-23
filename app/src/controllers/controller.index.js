@@ -1,8 +1,12 @@
-'use strict';
+'use strict'
+
+const frontCacheController = require('./../lib/lib.front.cache.js')
 
 /**
  * index page
  */
-exports.renderIndexView = function *(config) {
-  this.body = yield this.render('index', config);
+module.exports.renderIndexView = async (ctx, next) => {
+  const config = await frontCacheController.getCacheConfig()
+  ctx.body = await ctx.renderHTML('index', config)
+  return next()
 }

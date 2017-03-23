@@ -1,6 +1,6 @@
 'use strict'
-const { blogCoon }=require('../config/mongo/mongoConfig')
-const { mongo:{ ObjectId } }=require('mongoose')
+const { blogCoon } = require('../config/mongo/mongoConfig')
+const { mongo: { ObjectId } } = require('mongoose')
 const updateArticleRepoTool = require('../lib/lib.tools.updateGithubArtcleRepo')
 const fs = require('fs')
 const path = require('path')
@@ -12,33 +12,36 @@ const resumeCachePath = path.join(__dirname, '../../root/Tom\'sresume.md')
 /**
  * 得到简历
  */
-exports.getMyResume = function *() {
+exports.getMyResume = async (ctx, next) => {
   const resumeRedisPrefix = `${redisPrefix}-resume`
-  let resume = yield redis.getCache(resumeRedisPrefix)
+  let resume = await redis.getCache(resumeRedisPrefix)
   if (!resume) {
     resume = fs.readFileSync(resumeCachePath, 'utf8')
     resume = { data: { resume } }
-    yield  redis.setCache(resumeRedisPrefix, resume)
+    await  redis.setCache(resumeRedisPrefix, resume)
   }
-  this.body = resume
+  ctx.body = resume
+  return next()
 }
 
 /**
  * 更新简历
  */
-exports.updateMyResume = function *() {
-  yield redis.removeCache(redisPrefix)
-  let { resume } = this.body
+exports.updateMyResume = async (ctx, next) => {
+  await redis.removeCache(redisPrefix)
+  let { resume } = ctx.body
   fs.writeFileSync(resumeCachePath, JSON.stringify({ resume }), 'utf8')
+  return next()
 }
 
 /**
  * 更新repo
  */
-exports.pushArticleRepo = function *() {
+exports.pushArticleRepo = async (ctx, next) => {
   try {
     updateArticleRepoTool.push()
+    return next()
   } catch ( e ) {
-    this.throw(500, e)
+    ctx.throw(500, e)
   }
 }

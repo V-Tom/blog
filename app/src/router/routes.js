@@ -2,7 +2,8 @@
 const Router = require('koa-router')
 const errorHandler = require('koa-error')
 
-const { authUser, authAdmin } =require('../authenticated')
+const { authUser, authAdmin } = require('../authenticated')
+const middleWaresRestFulApi = require('../middlewares/middlewares.restfulAPI.response.js')
 
 // all controller
 const {
@@ -11,10 +12,9 @@ const {
   blogListController,
   blogUserController,
   cdnUploadController,
-  toolsController,
   frontCacheController,
   myController
-}=require('../controllers')
+} = require('../controllers')
 
 module.exports = (app) => {
 
@@ -26,22 +26,18 @@ module.exports = (app) => {
   }
 
   // index page render router
-  const router = new Router()
+  const IndexRouter = new Router()
 
-  router.get('/*', function *() {
-    let config = yield frontCacheController.getCacheConfig()
-    this.type = 'html'
-    yield indexController.renderIndexView.call(this, config)
-  })
+  IndexRouter.get('/', indexController.renderIndexView)
 
   // restful API server routers
-  const { config:{ app:{ restfulAPI } } }=global
+  const { app: { restfulAPI } } = global.config
   const api = new Router({ prefix: '/' + restfulAPI.apiPrefix + '/' + restfulAPI.apiVersion })
 
-  //front config cache
+  // front config cache
   api.put('/front/setfrontstatic', authAdmin.userAdminAuthenticated(), frontCacheController.updateConfigCache)
 
-  //blog article
+  // blog article
   api.get('/blog/article/:articleId', blogDetailController.getArticleDetail)
   api.post('/blog/article', authAdmin.userAdminAuthenticated(), blogDetailController.createArticle)
   api.put('/blog/article/:articleId', authAdmin.userAdminAuthenticated(), blogDetailController.updateArticleDetail)
@@ -50,17 +46,9 @@ module.exports = (app) => {
   // blog article list
   api.get('/blog/articlelist', blogListController.getArticleList)
 
-  // blog article reply
-  // api.get('/blog/reply', blogCommitController.getArticleReply)
-  // api.post('/blog/reply', authUser.userReplyAuthenticated(), blogCommitController.addArticleReply)
-  // api.del('/blog/reply', authAdmin.userAdminAuthenticated(), blogCommitController.deleteReply)
-
   // auth
-  // api.post('/auth/user/getUserToken', blogUserController.getUserToken)
   api.post('/auth/user/getAdminToken', blogUserController.getAdminToken)
 
-  // tools
-  api.get('/tools/libs/verifyCode', authUser.userReplyAuthenticated(), toolsController.verifyCode)
   api.get('/tools/cdn/upload', authAdmin.userAdminAuthenticated(), cdnUploadController.uploadFileToken)
 
   // my resume
@@ -70,31 +58,25 @@ module.exports = (app) => {
   // my articleRepo
   api.post('/my/articleRepo', authAdmin.userAdminAuthenticated(), myController.pushArticleRepo)
 
-  // 用户第一次登录
-  // api.get('/blog/user/oAuth', blogUserController.updateUser)
-
-  // 用户二次登录,根据 cookies 拿到 老的TOKEN 重新生成的APP TOKEN
-  // api.get('/blog/user/sign', blogUserController.sign)
-
+  // restful API format
+  api.use(middleWaresRestFulApi())
 
   // Apply all router server
   app.use(api.routes())
-  app.use(router.routes())
-
-  //restful API format
-  api.use(require('../middlewares/middlewares.restfulAPI.response.js')())
+  app.use(IndexRouter.routes())
 
   // 404
-  app.use(function *() {
-    this.body = {
-      status: 404,
-      msg: 'sorry,API document does not found'
+  app.use(async (ctx, next) => {
+    await next()
+    if (ctx.status === 404) {
+      ctx.status = 200
+      ctx.body = {
+        status: 404,
+        result: {
+          msg: 'sorry ,API document doesn\'t found'
+        }
+      }
     }
   })
-
-  // error
-  app.on('error', (err, ctx) => {
-    console.error(err)
-  });
 
 }

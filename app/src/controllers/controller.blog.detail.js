@@ -1,41 +1,44 @@
 'use strict'
-const { blogCoon }=require('../config/mongo/mongoConfig')
-const { mongo:{ ObjectId } }=require('mongoose')
+const { blogCoon } = require('../config/mongo/mongoConfig')
+const { mongo: { ObjectId } } = require('mongoose')
 const moment = require('moment')
 const blogArticleDetaiModel = blogCoon.model('blogArticleDetail')
 const { generateArticleId } = require('../lib')
 const redisPrefix = "BLOG_DETAIL_REDIS_PREFIX"
 
-exports.getArticleDetail = function *() {
+exports.getArticleDetail = async (ctx, next) => {
   let articleId
-  if (this.params.articleId) {
-    articleId = this.params.articleId
-  } else if (this.query.articleId) {
-    articleId = this.query.articleId
+
+  if (ctx.params.articleId) {
+    articleId = ctx.params.articleId
+  } else if (ctx.query.articleId) {
+    articleId = ctx.query.articleId
   } else {
-    this.throw(401, 'unknown articleId')
+    ctx.throw(401, 'unknown articleId')
   }
+
   const key = `${redisPrefix}:${articleId}`
 
-  let detail = yield redis.getCache(key)
+  let detail = await redis.getCache(key)
   if (detail) {
-    this.APICached = true
+    ctx.state.APICached = true
   } else {
-    detail = yield blogArticleDetaiModel.findOne({ "articleId": articleId }).lean().exec()
+    detail = await blogArticleDetaiModel.findOne({ articleId }).lean().exec()
     if (detail) {
-      yield redis.setCache(key, detail)
+      await redis.setCache(key, detail)
     } else {
       detail = null
     }
   }
-  this.body = { data: detail }
+  ctx.body = { data: detail }
+  return next()
 }
 
-exports.updateArticleDetail = function *() {
-  let reqBody = this.request.body
-  let articleId = this.params.articleId
+exports.updateArticleDetail = async (ctx, next) => {
+  let reqBody = ctx.request.body
+  let articleId = ctx.params.articleId
 
-  yield [blogArticleDetaiModel.update({
+  await [blogArticleDetaiModel.update({
     articleId
   }, {
     '$set': {
@@ -55,9 +58,10 @@ exports.updateArticleDetail = function *() {
   }),
     redis.removeCache(`${redisPrefix}:${articleId}`)
   ]
+  return next()
 }
-exports.createArticle = function *() {
-  let reqBody = this.request.body
+exports.createArticle = async (ctx, next) => {
+  let reqBody = ctx.request.body
   let articleId = generateArticleId(23)
   let date = new Date()
 
@@ -81,17 +85,19 @@ exports.createArticle = function *() {
   redis.sendCommand('keys', ['BLOG_LIST_REDIS_PREFIX:articleList*']).then(cache => {
     cache.forEach(item => redis.removeCache(item))
   })
-  yield newArticle.save()
+  await newArticle.save()
+  return next()
 }
 
-exports.deleteArticle = function *() {
-  let { _id, articleId } = this.params
+exports.deleteArticle = async (ctx, next) => {
+  let { _id, articleId } = ctx.params
   if (articleId) {
-    yield [blogArticleDetaiModel.remove({
+    await [blogArticleDetaiModel.remove({
       articleId,
       _id
     }),
       redis.removeCache(`${redisPrefix}:${articleId}`)
     ]
   }
+  return next()
 }

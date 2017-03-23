@@ -1,17 +1,13 @@
 'use strict'
+
 module.exports = function () {
-  return function *(next) {
+  return async (ctx, next) => {
     try {
-      yield *next;
+      await next()
     } catch ( err ) {
-      if (config.app.restfulAPI.apiRegExp.test(this.url)) {
-        this.body = {
-          status: err.status || this.status,
-          msg: err.message
-        }
-      } else {
-        this.body = {
-          status: 500,
+      ctx.body = {
+        status: 500,
+        result: {
           msg: 'server error'
         }
       }
