@@ -5,6 +5,7 @@ module.exports = () => {
 
 
   const client = redis.createClient({
+    host: '0.0.0.0',
     password: "zhangchi123ZC"
   })
 
