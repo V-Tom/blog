@@ -58,7 +58,11 @@ module.exports = {
     },
     redis: {
       redisExpDev: 3000,
-      redisExp: 60 * 1000 * 60 * 24
+      redisExp: 60 * 1000 * 60 * 24,
+      config: {
+        host: '0.0.0.0',
+        password: ""
+      }
     },
     cookies: {
       expires: 60 * 1000 * 60 * 24
