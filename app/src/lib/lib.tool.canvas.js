@@ -26,8 +26,15 @@
 //
 //
 'use strict'
-const Canvas = require('canvas')
+// const Canvas = require('canvas')
+// "canvas": "^1.4.0",
+
 exports.index = function (length) {
+  return {
+    base64: 'deprecated',
+    code: 'deprecated'
+  }
+
   function _getRandomCode() {
     let key = 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPRSTUVWXYZ1234567890'.split('')
     let code = '', i
@@ -41,8 +48,8 @@ exports.index = function (length) {
   function _setCodeStyle(ctx, code) {
     ctx.font = '15px serif'
     ctx.fillStyle = 'rgba(0,0,0,.8)'
-    var codeList = code.split('')
-    for (var i = 0; i < length; i++) {
+    const codeList = code.split('')
+    for (let i = 0; i < length; i++) {
       ctx.fillText(codeList[i], 15 * i, 20)
     }
     ctx.beginPath()

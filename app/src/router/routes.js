@@ -60,7 +60,7 @@ module.exports = (app) => {
   api.post('/auth/user/getAdminToken', blogUserController.getAdminToken)
 
   // tools
-  api.get('/tools/libs/verifyCode', authUser.userReplyAuthenticated(), toolsController.verifyCode)
+  // api.get('/tools/libs/verifyCode', authUser.userReplyAuthenticated(), toolsController.verifyCode)
   api.get('/tools/cdn/upload', authAdmin.userAdminAuthenticated(), cdnUploadController.uploadFileToken)
 
   // my resume
@@ -69,13 +69,6 @@ module.exports = (app) => {
 
   // my articleRepo
   api.post('/my/articleRepo', authAdmin.userAdminAuthenticated(), myController.pushArticleRepo)
-
-  // 用户第一次登录
-  // api.get('/blog/user/oAuth', blogUserController.updateUser)
-
-  // 用户二次登录,根据 cookies 拿到 老的TOKEN 重新生成的APP TOKEN
-  // api.get('/blog/user/sign', blogUserController.sign)
-
 
   // Apply all router server
   app.use(api.routes())
