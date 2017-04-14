@@ -22,6 +22,7 @@ const localConfigPath = path.join(__dirname, './local.conf.json')
 let localConfig = {
   app: {}
 }
+
 if (fs.existsSync(localConfigPath)) {
   localConfig = JSON.parse(fs.readFileSync(localConfigPath, 'utf8').replace(/\r?\n|\r/g, " "))
 }
