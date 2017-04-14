@@ -58,6 +58,10 @@ module.exports = {
       bucket: ''
     },
     redis: {
+      config: {
+        host: '0.0.0.0',
+        password: ""
+      },
       redisExpDev: 3000,
       redisExp: 60 * 1000 * 60 * 24
     },
