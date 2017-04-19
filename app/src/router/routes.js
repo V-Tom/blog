@@ -2,7 +2,7 @@
 const Router = require('koa-router')
 const errorHandler = require('koa-error')
 
-const { authUser, authAdmin } =require('../authenticated')
+const { authUser, authAdmin } = require('../authenticated')
 
 // all controller
 const {
@@ -14,7 +14,7 @@ const {
   toolsController,
   frontCacheController,
   myController
-}=require('../controllers')
+} = require('../controllers')
 
 module.exports = (app) => {
 
@@ -35,7 +35,7 @@ module.exports = (app) => {
   })
 
   // restful API server routers
-  const { config:{ app:{ restfulAPI } } }=global
+  const { restfulAPI } = global.config.app
   const api = new Router({ prefix: '/' + restfulAPI.apiPrefix + '/' + restfulAPI.apiVersion })
 
   //front config cache
@@ -62,6 +62,7 @@ module.exports = (app) => {
   // tools
   // api.get('/tools/libs/verifyCode', authUser.userReplyAuthenticated(), toolsController.verifyCode)
   api.get('/tools/cdn/upload', authAdmin.userAdminAuthenticated(), cdnUploadController.uploadFileToken)
+  api.post('/tools/tinypng', toolsController.tinyPNG)
 
   // my resume
   api.get('/my/resume', myController.getMyResume)

@@ -75,6 +75,9 @@ module.exports = {
     restfulAPI: {
       apiVersion, apiPrefix,
       apiRegExp: new RegExp('^\/' + apiPrefix + '/' + apiVersion)
+    },
+    tinyPNG: {
+      "key": null
     }
   }, localConfig.app)
 }

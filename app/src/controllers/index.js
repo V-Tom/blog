@@ -7,7 +7,7 @@ module.exports = {
   blogListController: require('../controllers/controller.blog.list.js'),
   blogUserController: require('../controllers/controller.blog.user.js'),
   cdnUploadController: require('../controllers/controller.cdn.upload'),
-  toolsController: require('../controllers/controller.tools.alpha'),
+  toolsController: require('./controller.tools'),
   frontCacheController: require('./controller.front.cache'),
   myController: require('./controller.my')
 }
