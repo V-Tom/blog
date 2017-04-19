@@ -1,13 +1,13 @@
 'use strict'
-const { blogCoon }=require('../config/mongo/mongoConfig')
-const { Types:{ ObjectId } }=require('mongoose')
+const { blogCoon } = require('../config/mongo/mongoConfig')
+const { Types: { ObjectId } } = require('mongoose')
 
 const blogArticleUsersModel = blogCoon.model('blogArticleUsers')
 const redisPrefix = "BLOG_USERS_REDIS_PREFIX"
 
 const authToken = require('../authenticated/auth.token')
-const { oAuthAccess }=require('../middlewares/middleware.oauth.access')
-const { renderAuthLoginView }=require('./controller.index')
+const { oAuthAccess } = require('../middlewares/middleware.oauth.access')
+const { renderAuthLoginView } = require('./controller.index')
 
 /**
  * 注册一个简单的用户账户
@@ -25,7 +25,7 @@ exports.getUserToken = function *() {
  */
 exports.getAdminToken = function *() {
   let { secret } = this.query
-  if (secret === config.app.secret.admin) {
+  if (secret === config.app.token.secret) {
     let token = authToken.signToken('57a8bc5f6adacd66d9168fee')
     this.cookies.set('token', token)
     this.body = { "token": token }

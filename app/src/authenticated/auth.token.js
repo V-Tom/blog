@@ -17,12 +17,11 @@ function verifyToken(token) {
     if (ex.name === "TokenExpiredError") {
       this.throw(401, 'Token expired. You must login again')
     } else {
-      this.throw(401, 'Token illegal !')
+      this.throw(401, 'jwt verifyToken error !')
     }
   }
   return userInfo
 }
-
 
 exports.signToken = signToken
 exports.verifyToken = verifyToken
