@@ -1,6 +1,6 @@
 'use strict'
-const { blogCoon }=require('../config/mongo/mongoConfig')
-const { mongo:{ ObjectId } }=require('mongoose')
+const { blogCoon } = require('../config/mongo/mongoConfig')
+const { mongo: { ObjectId } } = require('mongoose')
 const updateArticleRepoTool = require('../lib/lib.tools.updateGithubArtcleRepo')
 const fs = require('fs')
 const path = require('path')
@@ -14,11 +14,11 @@ const resumeCachePath = path.join(__dirname, '../../root/Tom\'sresume.md')
  */
 exports.getMyResume = function *() {
   const resumeRedisPrefix = `${redisPrefix}-resume`
-  let resume = yield redis.getCache(resumeRedisPrefix)
+  let resume = yield REDIS.getCache(resumeRedisPrefix)
   if (!resume) {
     resume = fs.readFileSync(resumeCachePath, 'utf8')
     resume = { data: { resume } }
-    yield  redis.setCache(resumeRedisPrefix, resume)
+    yield  REDIS.setCache(resumeRedisPrefix, resume)
   }
   this.body = resume
 }
@@ -27,7 +27,7 @@ exports.getMyResume = function *() {
  * 更新简历
  */
 exports.updateMyResume = function *() {
-  yield redis.removeCache(redisPrefix)
+  yield REDIS.removeCache(redisPrefix)
   let { resume } = this.body
   fs.writeFileSync(resumeCachePath, JSON.stringify({ resume }), 'utf8')
 }

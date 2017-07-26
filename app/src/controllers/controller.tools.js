@@ -15,7 +15,7 @@ exports.tinyPNG = function *() {
 
   const { binary, key } = reqBody
 
-  if (global.config.app.tinyPNG.key && binary) {
+  if (global.CONFIG.app.tinyPNG.key && binary) {
 
     const tinyBuffer = yield libUniverse.tinyUpload(binary)
     const upload = yield libUniverse.uploadFileFromBuffer(tinyBuffer, key)

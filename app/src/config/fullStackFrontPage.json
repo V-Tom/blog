@@ -1,1 +1,6 @@
-{"vendorCDN":"https://ogduelsu4.qnssl.com/vendor-fad8b4284d0828c92976.js","jsCDN":"https://ogduelsu4.qnssl.com/fullStack-fad8b4284d0828c92976.js","cssCDN":"https://ogduelsu4.qnssl.com/fullStack-fad8b4284d0828c92976.css"}
+{
+  "css": "http://127.0.0.1:8080/full-stack-b198933cf52b2cf9965f.css",
+  "manifest": "http://127.0.0.1:8080/manifest-b198933cf52b2cf9965f.js",
+  "vendor": "http://127.0.0.1:8080/vendor-b198933cf52b2cf9965f.js",
+  "main": "http://127.0.0.1:8080/main-b198933cf52b2cf9965f.js"
+}

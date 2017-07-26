@@ -1,6 +1,6 @@
 'use strict'
-const { blogCoon }=require('../config/mongo/mongoConfig')
-const { mongo:{ ObjectId } }=require('mongoose')
+const { blogCoon } = require('../config/mongo/mongoConfig')
+const { mongo: { ObjectId } } = require('mongoose')
 const moment = require('moment')
 const blogArticleDetaiModel = blogCoon.model('blogArticleDetail')
 const { generateArticleId } = require('../lib')
@@ -17,13 +17,13 @@ exports.getArticleDetail = function *() {
   }
   const key = `${redisPrefix}:${articleId}`
 
-  let detail = yield redis.getCache(key)
+  let detail = yield REDIS.getCache(key)
   if (detail) {
     this.APICached = true
   } else {
     detail = yield blogArticleDetaiModel.findOne({ "articleId": articleId }).lean().exec()
     if (detail) {
-      yield redis.setCache(key, detail)
+      yield REDIS.setCache(key, detail)
     } else {
       detail = null
     }
@@ -53,7 +53,7 @@ exports.updateArticleDetail = function *() {
       content: reqBody.content
     }
   }),
-    redis.removeCache(`${redisPrefix}:${articleId}`)
+    REDIS.removeCache(`${redisPrefix}:${articleId}`)
   ]
 }
 exports.createArticle = function *() {
@@ -78,8 +78,8 @@ exports.createArticle = function *() {
     content: reqBody.content
   })
 
-  redis.sendCommand('keys', ['BLOG_LIST_REDIS_PREFIX:articleList*']).then(cache => {
-    cache.forEach(item => redis.removeCache(item))
+  REDIS.sendCommand('keys', ['BLOG_LIST_REDIS_PREFIX:articleList*']).then(cache => {
+    cache.forEach(item => REDIS.removeCache(item))
   })
   yield newArticle.save()
 }
@@ -91,7 +91,7 @@ exports.deleteArticle = function *() {
       articleId,
       _id
     }),
-      redis.removeCache(`${redisPrefix}:${articleId}`)
+      REDIS.removeCache(`${redisPrefix}:${articleId}`)
     ]
   }
 }

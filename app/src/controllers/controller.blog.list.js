@@ -1,18 +1,18 @@
 'use strict'
-const { blogCoon }=require('../config/mongo/mongoConfig')
+const { blogCoon } = require('../config/mongo/mongoConfig')
 
 const blogArticleDetailCoon = blogCoon.model('blogArticleDetail')
 const redisPrefix = "BLOG_LIST_REDIS_PREFIX"
 
 
 exports.getArticleList = function *() {
-  let { limit, page, tag }=this.query
+  let { limit, page, tag } = this.query
 
   limit = Number(limit)
   page = Number(page)
   if (!isNaN(limit) && !isNaN(page)) {
     const key = `${redisPrefix}:articleList?page=${page}&limit=${limit}${tag ? `tag=${tag}` : ''}`
-    let list = yield redis.getCache(key)
+    let list = yield REDIS.getCache(key)
 
     if (list) {
       this.APICached = true
@@ -26,7 +26,7 @@ exports.getArticleList = function *() {
 
       if (data) {
         list = { data, count, limit, page }
-        yield redis.setCache(key, list)
+        yield REDIS.setCache(key, list)
       } else {
         list = null
       }

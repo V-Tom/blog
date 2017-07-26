@@ -3,6 +3,6 @@
 /**
  * index page
  */
-exports.renderIndexView = function *(config) {
-  this.body = yield this.render('index', config);
+exports.renderIndexView = function *(CONFIG) {
+  this.body = yield this.render('index', CONFIG);
 }

@@ -1,13 +1,29 @@
-doctype html
-html
-    head
-        meta(name='viewport' content='width=device-width, initial-scale=1')
-        meta(http-equiv="X-UA-Compatible" content="IE=edge")
-        meta(name="description" content="")
-        title #{title}
-        link(href="#{cssCDN}" rel="stylesheet")
-    body
-        #root
-    script(src="#{vendorCDN}")
-    script(src="#{jsCDN}")
-
+doctype html(lang='en')
+head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='apple-mobile-web-app-capable', content='yes')
+    meta(name='Keywords', content='')
+    meta(name='full-screen', content='yes')
+    meta(name='mobile-web-app-capable', content='yes')
+    meta(name='apple-mobile-web-app-status-bar-style', content='#006cb4')
+    meta(name='apple-mobile-web-app-title', content="Tom's Blog")
+    meta(name='description', content='')
+    link(rel='dns-prefetch', href='https://www.t-tom.me')
+    link(rel='dns-prefetch', href='https://t-tom.me')
+    link(rel='dns-prefetch', href='https://image.t-tom.me')
+    link(rel='dns-prefetch', href='https://static.t-tom.me')
+    link(rel='preconnect', href='https://www.t-tom.me')
+    link(rel='preconnect', href='https://t-tom.me')
+    link(rel='prefetch', href='')
+    link(rel='prefetch', href='')
+    link(rel='icon', href='', type='image/x-icon')
+    link(rel='apple-touch-icon', href='', type='image/x-icon')
+    title Welcome To TOM&apos;s Blog
+    link(href="#{css}", rel='stylesheet')
+body
+    #root
+    script(type='text/javascript', src="#{manifest}", defer='defer')
+    script(type='text/javascript', src="#{vendor}", defer='defer')
+    script(type='text/javascript', src="#{main}", defer='defer')

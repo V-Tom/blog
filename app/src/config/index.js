@@ -3,29 +3,41 @@ const path = require('path')
 const fs = require('fs')
 
 /**
- * api config
+ * api CONFIG
  * @type {string}
  */
 const apiVersion = "v1"
 const apiPrefix = 'api'
 
 /**
- * db port config
- * @type {string}
+ * db port CONFIG
  */
-const dbPort = process.env.NODE_ENV === 'test' ? '127.0.0.1:27018' : '127.0.0.1:27017'
+const ENV = process.env.NODE_ENV
+const isProduction = ENV === 'production'
+const isDevelopment = ENV === 'development'
+const isUnitTest = ENV === 'unitTest'
+const dbPort = isUnitTest ? '127.0.0.1:27018' : '127.0.0.1:27017'
+
+
+const chalkColor = isProduction ? 'yellow' : (isUnitTest ? 'inverse' : (isDevelopment ? 'cyan' : null))
+if (!chalkColor) {
+  throw new Error(`process.env.NODE_ENV : ${ENV} is not configure`)
+}
+console.log(CHALK[chalkColor](`------------------------------------------------------------------`))
+console.log(CHALK[chalkColor](`The server is running on ${ENV} environment`))
+console.log(CHALK[chalkColor](`------------------------------------------------------------------`))
 
 /**
  *  local config file
  */
-const localConfigPath = path.join(__dirname, './local.conf.json')
 let localConfig = {
   app: {}
 }
-
+const localConfigPath = path.join(__dirname, './local.conf.json')
 if (fs.existsSync(localConfigPath)) {
   localConfig = JSON.parse(fs.readFileSync(localConfigPath, 'utf8').replace(/\r?\n|\r/g, " "))
 }
+
 
 /**
  * export
@@ -35,10 +47,6 @@ module.exports = {
   app: Object.assign({}, {
     port: 4000,
     root: path.join(__dirname, '../'),
-    env: 'development',
-    secret: {
-      admin: 'admin'
-    },
     db: {
       dbPort,
       users: { uri: `mongodb://${dbPort}/user` },
@@ -58,26 +66,25 @@ module.exports = {
       bucket: ''
     },
     redis: {
+      redisExpDev: 3000,
+      redisExp: 60 * 1000 * 60 * 24,
       config: {
         host: '0.0.0.0',
         password: ""
-      },
-      redisExpDev: 3000,
-      redisExp: 60 * 1000 * 60 * 24
+      }
     },
     cookies: {
       expires: 60 * 1000 * 60 * 24
     },
     token: {
-      secret: 'NOMAND_KOA_BLOG_SERVRFARMWORK',
-      expires: 60 * 1000 * 60 * 24
+      secret: "NOMAND_KOA_BLOG_SERVR_FARMWORK",
+      userId: "594743785051cd159ab261b4",
+      email: "iamnomand@gmail.com",
+      expires: 3600
     },
     restfulAPI: {
       apiVersion, apiPrefix,
       apiRegExp: new RegExp('^\/' + apiPrefix + '/' + apiVersion)
-    },
-    tinyPNG: {
-      "key": null
     }
-  }, localConfig.app)
+  }, isProduction ? localConfig.app : {})
 }

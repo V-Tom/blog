@@ -1,4 +1,4 @@
-exports = module.exports = ()=> {
+exports = module.exports = () => {
 
   return function *(next) {
     yield next
@@ -8,12 +8,16 @@ exports = module.exports = ()=> {
       return
     }
 
-    //set API type
+    /**
+     * set API type
+     */
     this.type = "application/json"
 
-    this.APICached && this.set('X-Cached-By', 'redis')
+    this.APICached && this.set('X-Cached-By', 'REDIS')
 
-    //restful API response format
+    /**
+     * restful API response format
+     */
     this.body = Object.assign(
       {
         "status": 200,

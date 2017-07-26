@@ -4,7 +4,7 @@ module.exports = function () {
     try {
       yield *next;
     } catch ( err ) {
-      if (config.app.restfulAPI.apiRegExp.test(this.url)) {
+      if (CONFIG.app.restfulAPI.apiRegExp.test(this.url)) {
         this.body = {
           status: err.status || this.status,
           msg: err.message
