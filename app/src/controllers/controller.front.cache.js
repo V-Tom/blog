@@ -8,7 +8,7 @@ const cachePath = path.join(__dirname, '../config/fullStackFrontPage.json')
  * set cache
  * @returns {*}
  */
-exports.getCacheConfig = function *() {
+exports.getCacheConfig = function* () {
   let CONFIG = yield REDIS.getCache(redisPrefix)
   if (!CONFIG) {
     CONFIG = fs.readFileSync(cachePath, 'utf8')
@@ -21,8 +21,8 @@ exports.getCacheConfig = function *() {
 /**
  * remove cache
  */
-exports.updateConfigCache = function *() {
-  const { ...args } = this.request.body
+exports.updateConfigCache = function* () {
+  const args = this.request.body
   yield REDIS.removeCache(redisPrefix)
-  fs.writeFileSync(cachePath, JSON.stringify({ ...args }), 'utf8')
+  fs.writeFileSync(cachePath, JSON.stringify(args), 'utf8')
 }
