@@ -38,15 +38,15 @@ require('./src/router/routes')(app)
 /**
  * spdy server
  */
-const server = spdy.createServer({
-  key: fs.readFileSync(`${__dirname}/t-tom.key`),
-  cert: fs.readFileSync(`${__dirname}/t-tom.crt`)
-}, app.callback())
+// const server = spdy.createServer({
+//   key: fs.readFileSync(`${__dirname}/t-tom.key`),
+//   cert: fs.readFileSync(`${__dirname}/t-tom.crt`)
+// }, app.callback())
 
 /**
  * start app
  */
-// server.listen(CONFIG.app.port)
-app.listen(CONFIG.app.port, () => {
-  console.log(CHALK.green(`♪ Server started, listening on port: ${CONFIG.app.port}`))
-})
+app.listen(CONFIG.app.port)
+// app.listen(CONFIG.app.port, () => {
+//   console.log(CHALK.green(`♪ Server started, listening on port: ${CONFIG.app.port}`))
+// })
