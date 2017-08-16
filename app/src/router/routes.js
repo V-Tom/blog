@@ -2,7 +2,7 @@
 const Router = require('koa-router')
 const errorHandler = require('koa-error')
 
-const { authUser, authAdmin } = require('../authenticated')
+const { authAdmin } = require('../authenticated')
 
 /**
  * all controller
@@ -33,8 +33,8 @@ module.exports = (app) => {
    */
   const router = new Router()
 
-  router.get('/*', function *() {
-    let CONFIG = yield frontCacheController.getCacheConfig()
+  router.get('/*', function* () {
+    const CONFIG = yield frontCacheController.getCacheConfig()
     this.type = 'html'
     yield indexController.renderIndexView.call(this, CONFIG)
   })
@@ -96,7 +96,7 @@ module.exports = (app) => {
   /**
    * 404
    */
-  app.use(function *() {
+  app.use(function* () {
     this.body = {
       status: 404,
       msg: 'sorry,API document does not found'
