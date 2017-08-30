@@ -2,6 +2,7 @@ module.exports = function () {
   return async (ctx, next) => {
 
     await next()
+
     const { APICached, APIDoNotFormat } = ctx.state
 
     if (APIDoNotFormat) {
@@ -15,8 +16,7 @@ module.exports = function () {
     APICached && ctx.set('X-Cached-By', 'redis')
 
     //restful API response format
-    ctx.body = Object.assign(
-      {
+    ctx.body = Object.assign({
         "status": 200,
         "result": null
       },

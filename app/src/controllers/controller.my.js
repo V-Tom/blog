@@ -14,11 +14,11 @@ const resumeCachePath = path.join(__dirname, '../../root/Tom\'sresume.md')
  */
 exports.getMyResume = async (ctx, next) => {
   const resumeRedisPrefix = `${redisPrefix}-resume`
-  let resume = await redis.getCache(resumeRedisPrefix)
+  let resume = await REDIS.getCache(resumeRedisPrefix)
   if (!resume) {
     resume = fs.readFileSync(resumeCachePath, 'utf8')
     resume = { data: { resume } }
-    await  redis.setCache(resumeRedisPrefix, resume)
+    await  REDIS.setCache(resumeRedisPrefix, resume)
   }
   ctx.body = resume
   return next()
@@ -28,7 +28,7 @@ exports.getMyResume = async (ctx, next) => {
  * 更新简历
  */
 exports.updateMyResume = async (ctx, next) => {
-  await redis.removeCache(redisPrefix)
+  await REDIS.removeCache(redisPrefix)
   let { resume } = ctx.body
   fs.writeFileSync(resumeCachePath, JSON.stringify({ resume }), 'utf8')
   return next()

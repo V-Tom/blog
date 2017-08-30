@@ -1,18 +1,17 @@
 'use strict'
 
 const mongoose = require('mongoose')
+mongoose.Promise = global.Promise
+
 const co = require('co')
 const Schema = mongoose.Schema
 const ObjectId = mongoose.Types.ObjectId
 
 const blogCoon = mongoose.createConnection('mongodb://localhost:27018/blog')
 
-//set schema
-let blogReplySchema = blogCoon.model('blogArticleReply', new Schema({}), 'articleReplyList')
-let blogDetailSchema = blogCoon.model('blogArticleDetail', new Schema({}), 'articleDetail')
-let blogUserSchema = blogCoon.model('blogArticleUsers', new Schema({
-  userType: { type: String, default: "Github" },
-  userDetail: { type: Object, default: {} }
+const blogDetailSchema = blogCoon.model('blogArticleDetail', new Schema({}), 'articleDetail')
+const blogUserSchema = blogCoon.model('blogArticleUsers', new Schema({
+  detail: { type: Object, default: {} }
 }, { versionKey: false }), 'blogUsers')
 
 
@@ -20,11 +19,11 @@ let blogUserSchema = blogCoon.model('blogArticleUsers', new Schema({
  * 链接 mongo
  * @param done
  */
-exports.connect = (done)=> {
+exports.connect = (done) => {
   function connMongodbAsync(conn) {
     return new Promise((resolve, reject) => {
       conn.on('connected', resolve)
-      conn.on('error', err=> {
+      conn.on('error', err => {
         reject(err)
       })
     })
@@ -46,42 +45,15 @@ exports.connect = (done)=> {
  * user seed
  * @param done
  */
-exports.seed = (done)=> {
+exports.seed = (done) => {
+
   let seedBlogReplyUser = {
-    "userDetail": {
-      "updated_at": "2016-08-12T08:32:29Z",
-      "created_at": "2014-07-01T05:27:33Z",
-      "following": 11,
-      "followers": 20,
-      "public_gists": 0,
-      "public_repos": 29,
-      "bio": "Node && FE Developer",
-      "hireable": null,
-      "email": "iamnomand@gmail.com",
-      "location": null,
-      "blog": "https://t-tom.me",
-      "company": null,
-      "name": "zhang",
-      "site_admin": false,
-      "type": "User",
-      "received_events_url": "https://api.github.com/users/V-Tom/received_events",
-      "events_url": "https://api.github.com/users/V-Tom/events{/privacy}",
-      "repos_url": "https://api.github.com/users/V-Tom/repos",
-      "organizations_url": "https://api.github.com/users/V-Tom/orgs",
-      "subscriptions_url": "https://api.github.com/users/V-Tom/subscriptions",
-      "starred_url": "https://api.github.com/users/V-Tom/starred{/owner}{/repo}",
-      "gists_url": "https://api.github.com/users/V-Tom/gists{/gist_id}",
-      "following_url": "https://api.github.com/users/V-Tom/following{/other_user}",
-      "followers_url": "https://api.github.com/users/V-Tom/followers",
-      "html_url": "https://github.com/V-Tom",
-      "url": "https://api.github.com/users/V-Tom",
-      "gravatar_id": "",
-      "avatar_url": "https://avatars.githubusercontent.com/u/8033489?v=3",
-      "id": 8033489,
-      "login": "V-Tom"
-    },
-    "userType": "GitHub"
+    _id: '594743785051cd159ab261b4',
+    detail: {
+      email: 'iamnomand@gmail.com'
+    }
   }
+
   co(function*() {
     try {
       yield [
@@ -103,7 +75,8 @@ exports.drop = done => {
   co(function*() {
     try {
       yield [
-        blogReplySchema.remove({}).exec(),
+        // blogReplySchema.remove({}).exec(),
+        blogUserSchema.remove({}).exec(),
         blogDetailSchema.remove({}).exec()
       ]
       done()

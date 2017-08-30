@@ -9,11 +9,11 @@ const cachePath = path.join(__dirname, '../config/fullStackFrontPage.json')
  * @returns {*}
  */
 exports.getCacheConfig = async () => {
-  let config = await redis.getCache(redisPrefix)
+  let config = await REDIS.getCache(redisPrefix)
   if (!config) {
     config = fs.readFileSync(cachePath, 'utf8')
     config = JSON.parse(config.replace(/\r?\n|\r/g, " "))
-    await redis.setCache(redisPrefix, config)
+    await REDIS.setCache(redisPrefix, config)
   }
   return config
 }
@@ -22,7 +22,7 @@ exports.getCacheConfig = async () => {
  * remove cache
  */
 exports.updateConfigCache = function *() {
-  yield redis.removeCache(redisPrefix)
+  yield REDIS.removeCache(redisPrefix)
   let { vendorCDN, jsCDN, cssCDN } = this.request.body
   fs.writeFileSync(cachePath, JSON.stringify({ vendorCDN, jsCDN, cssCDN }), 'utf8')
 }

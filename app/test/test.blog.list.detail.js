@@ -1,37 +1,47 @@
 'use strict'
-const { Types:{ ObjectId } }=require('mongoose')
+const mongoose = require('mongoose')
+mongoose.Promise = global.Promise
 
 module.exports = (agent, assert) => {
+
   let count = 1
   let articleId = null
   let articleDbId = null
+  const now = Date.now()
+  const localTime = new Date(now)
   let article = {
     title: '测试文章',
+    articleId: '测试文章articleId',
     author: 'Nomand',
     meta: '测试文章meta',
     subTitle: '测试文章subTitle',
-    intro: { preview: '测试文章preview', pic: 'http://www.baidu.com' },
+    introPreview: '测试文章preview',
+    introWrapper: 'http://www.baidu.com',
+    postTime: {
+      localTime,
+      UTCTime: now
+    },
     tags: ['Node', 'Ruby', 'Go'],
     content: '##测试文章content',
-    githubArticleUrl: "https://github.com/V-Tom/article"
+    gitArticleUrl: "https://github.com/V-Tom/article"
   }
 
-  describe('article detail', ()=> {
+  describe('article detail', () => {
       /**
        * 新建文章
        */
-      it('blog article create : /blog/article', done=> {
+      it('blog article create : /blog/article', done => {
         agent
           .post('/blog/article')
           .set('token', global.adminToken)
           .send(article)
           .expect(200)
-          .end((err, res)=> {
+          .end((err, res) => {
             if (err) return done(err)
 
             let body = res.body
 
-            assert.equal(0, body.status)
+            assert.equal(200, body.status)
 
             done()
           })
@@ -41,18 +51,18 @@ module.exports = (agent, assert) => {
        * 获取文章全部列表
        */
 
-      it('blog get list : /blog/articlelist?page=1&limit=10', done=> {
+      it('blog get list : /blog/list?page=1&limit=10', done => {
         let limit = 10
         let page = 1
         agent
-          .get(`/blog/articlelist?page=${page}&limit=${limit}`)
+          .get(`/blog/list?page=${page}&limit=${limit}`)
           .expect(200)
-          .end((err, res)=> {
+          .end((err, res) => {
             if (err) return done(err)
 
             let body = res.body
 
-            assert.equal(0, body.status)
+            assert.equal(200, body.status)
 
             body = body.result
             assert.equal(count, body.count)
@@ -71,18 +81,18 @@ module.exports = (agent, assert) => {
        * 通过tag 获取文章列表
        */
 
-      it('blog get list : /blog/articlelist?page=1&limit=10&tag=Node', done=> {
+      it('blog get list : /blog/list?page=1&limit=10&tag=Node', done => {
         let limit = 10
         let page = 1
         agent
-          .get(`/blog/articlelist?page=${page}&limit=${limit}&tag=Node`)
+          .get(`/blog/list?page=${page}&limit=${limit}&tag=Node`)
           .expect(200)
-          .end((err, res)=> {
+          .end((err, res) => {
             if (err) return done(err)
 
             let body = res.body
 
-            assert.equal(0, body.status)
+            assert.equal(200, body.status)
 
             body = body.result
             assert.equal(count, body.count)
@@ -99,21 +109,22 @@ module.exports = (agent, assert) => {
       /**
        * 获取文章 part one
        */
-      it('blog get article : /blog/article', done=> {
+      it('blog get article : /blog/article/:articleId', done => {
         agent
-          .get(`/blog/article?articleId=${articleId}`
+          .get(`/blog/article/${articleId}`
           )
           .expect(200)
-          .end((err, res)=> {
+          .end((err, res) => {
             if (err) return done(err)
 
             let body = res.body
 
-            assert.equal(0, body.status)
+            assert.equal(200, body.status)
 
             body = body.result
 
             body = body.data
+
             assert.equal(articleId, body.articleId)
             assert.equal(articleDbId, body._id)
             assert.equal(article.title, body.title)
@@ -121,13 +132,13 @@ module.exports = (agent, assert) => {
             assert.equal(article.meta, body.meta)
             assert.equal(article.content, body.content)
             assert.equal(article.subTitle, body.subTitle)
-            assert.equal(article.githubArticleUrl, body.githubArticleUrl)
+            assert.equal(article.gitArticleUrl, body.gitArticleUrl)
             assert.equal(article.tags.length, body.tags.length)
             assert.equal(article.tags[0], body.tags[0])
             assert.equal(article.tags[1], body.tags[1])
             assert.equal(article.tags[2], body.tags[2])
-            assert.equal(article.intro.preview, body.intro.preview)
-            assert.equal(article.intro.pic, body.intro.pic)
+            assert.equal(article.introPreview, body.introPreview)
+            assert.equal(article.introWrapper, body.introWrapper)
 
             done()
           })
@@ -135,7 +146,7 @@ module.exports = (agent, assert) => {
       /**
        * 更新文章
        */
-      it('blog article update : /blog/article', done=> {
+      it('blog article update : /blog/article', done => {
         article.title = '测试更新文章'
         article.meta = '测试更新文章meta'
         agent
@@ -145,49 +156,12 @@ module.exports = (agent, assert) => {
           .set('token', global.adminToken)
           .send(article)
           .expect(200)
-          .end((err, res)=> {
+          .end((err, res) => {
             if (err) return done(err)
 
             let body = res.body
 
-            assert.equal(0, body.status)
-
-            done()
-          })
-      })
-
-      /**
-       * 获取文章 part two
-       */
-      it('blog get article : /blog/article', done=> {
-        agent
-          .get(`/blog/article?articleId=${articleId}`
-          )
-          .expect(200)
-          .end((err, res)=> {
-            if (err) return done(err)
-
-            let body = res.body
-
-            assert.equal(0, body.status)
-
-            body = body.result
-
-            body = body.data
-            assert.equal(articleId, body.articleId)
-            assert.equal(articleDbId, body._id)
-            assert.equal(article.title, body.title)
-            assert.equal(article.author, body.author)
-            assert.equal(article.meta, body.meta)
-            assert.equal(article.content, body.content)
-            assert.equal(article.subTitle, body.subTitle)
-            assert.equal(article.githubArticleUrl, body.githubArticleUrl)
-            assert.equal(article.tags.length, body.tags.length)
-            assert.equal(article.tags[0], body.tags[0])
-            assert.equal(article.tags[1], body.tags[1])
-            assert.equal(article.tags[2], body.tags[2])
-            assert.equal(article.intro.preview, body.intro.preview)
-            assert.equal(article.intro.pic, body.intro.pic)
+            assert.equal(200, body.status)
 
             done()
           })
@@ -196,17 +170,17 @@ module.exports = (agent, assert) => {
       /**
        * 删除文章
        */
-      it('blog article remove : /blog/article/', done=> {
+      it('blog article remove : /blog/article/', done => {
         agent
           .delete(`/blog/article/${articleId}/${articleDbId}`)
           .set('token', global.adminToken)
           .expect(200)
-          .end((err, res)=> {
+          .end((err, res) => {
             if (err) return done(err)
 
             let body = res.body
 
-            assert.equal(0, body.status)
+            assert.equal(200, body.status)
 
             done()
           })

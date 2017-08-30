@@ -5,7 +5,7 @@ const { findUser } = require('../controllers/controller.blog.user')
 
 
 function userAdminAuthenticated() {
-  return async ctx => {
+  return async (ctx, next) => {
     let token, userInfo
 
     if (ctx.request.query && ctx.request.query.token) {
@@ -21,7 +21,6 @@ function userAdminAuthenticated() {
 
     userInfo = verifyToken.call(ctx, token)
 
-
     if (!userInfo.userId) {
       ctx.throw(401, 'Token illegal')
     }
@@ -32,8 +31,9 @@ function userAdminAuthenticated() {
       ctx.throw(401, 'Token illegal. can\'t find ctx admin user')
     }
 
-    if (user.userDetail && user.userDetail.email === 'iamnomand@gmail.com') {
+    if (user.detail && user.detail.email === CONFIG.app.token.email) {
       ctx._adminUser = user
+      return next()
     } else {
       ctx.throw(401, 'Token illegal. ctx user email is\'nt verify')
     }

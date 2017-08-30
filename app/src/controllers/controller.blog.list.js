@@ -10,30 +10,35 @@ exports.getArticleList = async (ctx, next) => {
 
   limit = Number(limit)
   page = Number(page)
+
   if (!isNaN(limit) && !isNaN(page)) {
+
     const key = `${redisPrefix}:articleList?page=${page}&limit=${limit}${tag ? `tag=${tag}` : ''}`
-    let list = await redis.getCache(key)
+
+    let list = await REDIS.getCache(key)
 
     if (list) {
       ctx.state.APICached = true
     } else {
       const select = ["articleId", "title", "tags", "subTitle", "intro", "meta", "_id"]
-      let query = tag ? { 'tags': { $in: [tag] } } : {}
-      let count = await blogArticleDetailCoon.count(query)
-      let data = await blogArticleDetailCoon.find(query)
+
+      const query = tag ? { 'tags': { $in: [tag] } } : {}
+      const count = await blogArticleDetailCoon.count(query)
+      const data = await blogArticleDetailCoon.find(query)
         .skip(limit * (page - 1)).limit(limit)
         .select(select.join(" ")).lean().exec()
 
       if (data) {
         list = { data, count, limit, page }
-        await redis.setCache(key, list)
+        await REDIS.setCache(key, list)
       } else {
         list = null
       }
     }
+
     ctx.body = list
-    return next()
+    next()
   } else {
-    ctx.throw(`API query limit:${ctx.query.limit} or page:${ctx.query.page} must both provide as Number`, 400)
+    ctx.throw(400, `API query current limit:${ctx.query.limit} and current page:${ctx.query.page} must both provide as Number`, 400)
   }
 }

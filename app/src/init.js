@@ -5,23 +5,19 @@ const path = require('path')
 /**
  * set global
  */
-global.config = require('./config')
+global.CHALK = require('chalk')
 
-global.chalk = require('chalk')
+global.CONFIG = require('./config')
 
-global.redis = require('./config/reids/redisHelper')
-
-
-/**
- * set environment
- */
-process.env.NODE_ENV = config.app.env
-
+global.REDIS = require('./config/reids/redisHelper')
 
 /**
- * Load the models
+ * mongo db
  */
-const modelsPath = path.join(config.app.root, './models')
+require('./config/mongo/mongoConfig')
+
+const modelsPath = path.join(CONFIG.app.root, './models')
+
 fs.readdirSync(modelsPath).forEach(file => {
   if (file.indexOf('js') !== -1) {
     require(modelsPath + '/' + file)

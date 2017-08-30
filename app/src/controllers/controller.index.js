@@ -3,10 +3,21 @@
 const frontCacheController = require('./../lib/lib.front.cache.js')
 
 /**
- * index page
+ * getIndexView
  */
-module.exports.renderIndexView = async (ctx, next) => {
+async function getIndexView(ctx) {
   const config = await frontCacheController.getCacheConfig()
-  ctx.body = await ctx.renderHTML('index', config)
-  return next()
+  return await ctx.renderHTML('index', config)
 }
+
+/**
+ * renderIndexView
+ */
+exports.renderIndexView = async (ctx, next) => {
+  ctx.body = await getIndexView(ctx)
+}
+
+/**
+ * getIndexView
+ */
+exports.getIndexView = getIndexView

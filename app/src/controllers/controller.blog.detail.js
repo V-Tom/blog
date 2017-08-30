@@ -6,6 +6,12 @@ const blogArticleDetaiModel = blogCoon.model('blogArticleDetail')
 const { generateArticleId } = require('../lib')
 const redisPrefix = "BLOG_DETAIL_REDIS_PREFIX"
 
+/**
+ * getArticleDetail
+ * @param ctx
+ * @param next
+ * @returns {Promise.<*>}
+ */
 exports.getArticleDetail = async (ctx, next) => {
   let articleId
 
@@ -19,13 +25,13 @@ exports.getArticleDetail = async (ctx, next) => {
 
   const key = `${redisPrefix}:${articleId}`
 
-  let detail = await redis.getCache(key)
+  let detail = await REDIS.getCache(key)
   if (detail) {
     ctx.state.APICached = true
   } else {
     detail = await blogArticleDetaiModel.findOne({ articleId }).lean().exec()
     if (detail) {
-      await redis.setCache(key, detail)
+      await REDIS.setCache(key, detail)
     } else {
       detail = null
     }
@@ -34,11 +40,17 @@ exports.getArticleDetail = async (ctx, next) => {
   return next()
 }
 
+/**
+ * updateArticleDetail
+ * @param ctx
+ * @param next
+ * @returns {Promise.<*>}
+ */
 exports.updateArticleDetail = async (ctx, next) => {
   let reqBody = ctx.request.body
   let articleId = ctx.params.articleId
 
-  await [blogArticleDetaiModel.update({
+  await blogArticleDetaiModel.update({
     articleId
   }, {
     '$set': {
@@ -55,11 +67,18 @@ exports.updateArticleDetail = async (ctx, next) => {
       githubArticleUrl: reqBody.githubArticleUrl || '',
       content: reqBody.content
     }
-  }),
-    redis.removeCache(`${redisPrefix}:${articleId}`)
-  ]
+  })
+  await REDIS.removeCache(`${redisPrefix}:${articleId}`)
+  ctx.body = {}
   return next()
 }
+
+/**
+ * createArticle
+ * @param ctx
+ * @param next
+ * @returns {Promise.<*>}
+ */
 exports.createArticle = async (ctx, next) => {
   let reqBody = ctx.request.body
   let articleId = generateArticleId(23)
@@ -82,22 +101,31 @@ exports.createArticle = async (ctx, next) => {
     content: reqBody.content
   })
 
-  redis.sendCommand('keys', ['BLOG_LIST_REDIS_PREFIX:articleList*']).then(cache => {
-    cache.forEach(item => redis.removeCache(item))
+  await REDIS.sendCommand('keys', ['BLOG_LIST_REDIS_PREFIX:articleList*']).then(cache => {
+    cache.forEach(item => REDIS.removeCache(item))
   })
   await newArticle.save()
+
+  ctx.body = {}
+
   return next()
 }
 
+/**
+ * deleteArticle
+ * @param ctx
+ * @param next
+ * @returns {Promise.<*>}
+ */
 exports.deleteArticle = async (ctx, next) => {
   let { _id, articleId } = ctx.params
   if (articleId) {
-    await [blogArticleDetaiModel.remove({
+    await blogArticleDetaiModel.remove({
       articleId,
       _id
-    }),
-      redis.removeCache(`${redisPrefix}:${articleId}`)
-    ]
+    })
+    await REDIS.removeCache(`${redisPrefix}:${articleId}`)
   }
+  ctx.body = {}
   return next()
 }
