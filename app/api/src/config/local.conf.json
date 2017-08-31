@@ -1,0 +1,41 @@
+{
+  "app": {
+    "port": 4000,
+    "env": "development",
+    "db": {
+      "dbPort": "mongodb",
+      "users": {
+        "uri": "mongodb://admin:zhangchi123ZC_user@104.199.140.151:27017/user"
+      },
+      "blog": {
+        "uri": "mongodb://admin:zhangchi123ZC_blog@104.199.140.151:27017/blog"
+      },
+      "cache": {
+        "uri": "mongodb://admin:zhangchi123ZC_cache@104.199.140.151:27017/cache"
+      }
+    },
+    "redis": {
+      "redisExpDev": 5000,
+      "redisExp": 3600000,
+      "config": {
+        "host": "104.199.140.151",
+        "password": "zhangchi123ZC"
+      }
+    },
+    "qiniu": {
+      "ACCESS_KEY": "NgAsthiEnE6wDk7W_5OtBkkwJE4zUcNJ2IJDZoeAZ",
+      "SECRET_KEY": "8zV2orcd2aEQxa4jPCjGE4XOax86I3vsDVAman3b",
+      "signedUrlExpires": 3600,
+      "bucket": "blog"
+    },
+    "token": {
+      "secret": "NOMAND_KOA_BLOG_SERVR_FARMWORK",
+      "userId": "594743785051cd159ab261b4",
+      "email": "iamnomand@gmail.com",
+      "expires": 3600
+    },
+    "tinyPNG": {
+      "key": "RMMBHi2WWACOoSHU8gtpNgNgY1r_BVpd"
+    }
+  }
+}

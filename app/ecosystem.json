@@ -1,8 +1,17 @@
 {
   "apps": [
     {
-      "name": "full stack",
-      "script": "server.js",
+      "name": "api server",
+      "script": "server.api.js",
+      "env": {
+        "NODE_ENV": "production"
+      },
+      "instances": 2,
+      "exec_mode": "cluster_mode"
+    },
+    {
+      "name": "static server",
+      "script": "server.static.js",
       "env": {
         "NODE_ENV": "production"
       },

@@ -21,7 +21,7 @@ exports.getMyResume = async (ctx, next) => {
     await  REDIS.setCache(resumeRedisPrefix, resume)
   }
   ctx.body = resume
-  return next()
+  next()
 }
 
 /**
