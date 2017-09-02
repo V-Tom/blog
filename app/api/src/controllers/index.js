@@ -2,7 +2,7 @@
 
 module.exports = {
   indexController: require('../controllers/controller.index.js'),
-  blogDetailController: require('../controllers/controller.blog.detail.js'),
+  blogArticleController: require('../controllers/controller.blog.article.js'),
   blogListController: require('../controllers/controller.blog.list.js'),
   blogUserController: require('../controllers/controller.blog.user.js'),
   cdnUploadController: require('../controllers/controller.cdn.upload'),

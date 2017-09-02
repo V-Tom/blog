@@ -11,7 +11,7 @@ exports.getArticleList = async (ctx, next) => {
   limit = Number(limit)
   page = Number(page)
 
-  if (!isNaN(limit) && !isNaN(page)) {
+  if (!isNaN(limit) || !isNaN(page)) {
 
     const key = `${redisPrefix}:articleList?page=${page}&limit=${limit}${tag ? `tag=${tag}` : ''}`
 

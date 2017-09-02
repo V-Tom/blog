@@ -40,7 +40,7 @@ exports.updateMyResume = async (ctx, next) => {
 exports.pushArticleRepo = async (ctx, next) => {
   try {
     updateArticleRepoTool.push()
-    return next()
+    next()
   } catch ( e ) {
     ctx.throw(500, e)
   }

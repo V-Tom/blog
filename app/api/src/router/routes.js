@@ -1,20 +1,5 @@
 'use strict';
-const Router = require('koa-router')
 const errorHandler = require('koa-error')
-const Boom = require('boom')
-const { authAdmin } = require('../authenticated')
-
-/**
- * controller
- */
-const {
-  blogDetailController,
-  blogListController,
-  blogUserController,
-  cdnUploadController,
-  frontCacheController,
-  myController
-} = require('../controllers')
 
 module.exports = (app) => {
 
@@ -32,56 +17,17 @@ module.exports = (app) => {
    */
   const { app: { restfulAPI } } = global.CONFIG
 
-  const api = new Router({ prefix: '/' + restfulAPI.apiPrefix + '/' + restfulAPI.apiVersion })
-
-  /**
-   * front config cache
-   */
-  api.put('/front/setfrontstatic', authAdmin.userAdminAuthenticated(), frontCacheController.updateConfigCache)
-
-  /**
-   * blog article
-   */
-  api.post('/blog/article', authAdmin.userAdminAuthenticated(), blogDetailController.createArticle)
-  api.get('/blog/article/:articleId', blogDetailController.getArticleDetail)
-  api.put('/blog/article/:articleId', authAdmin.userAdminAuthenticated(), blogDetailController.updateArticleDetail)
-  api.del('/blog/article/:articleId/:_id', authAdmin.userAdminAuthenticated(), blogDetailController.deleteArticle)
-
-  /**
-   * blog article list
-   */
-  api.get('/blog/list', blogListController.getArticleList)
-
-  /**
-   * auth
-   */
-  api.post('/auth/user/admin', blogUserController.getAdminToken)
-
-  /**
-   * CDN
-   */
-  api.get('/tools/cdn/upload', authAdmin.userAdminAuthenticated(), cdnUploadController.uploadFileToken)
-
-  /**
-   * resume
-   */
-  api.get('/my/resume', myController.getMyResume)
-  api.put('/my/resume', authAdmin.userAdminAuthenticated(), myController.updateMyResume)
-
-  /**
-   * my articleRepo
-   */
-  api.post('/my/articleRepo', authAdmin.userAdminAuthenticated(), myController.pushArticleRepo)
+  const prefix = '/' + restfulAPI.apiPrefix + '/' + restfulAPI.apiVersion
 
   /**
    * Apply all router server
    */
-  app.use(api.routes())
-  app.use(api.allowedMethods({
-    throw: true,
-    notImplemented: () => new Boom.notImplemented(),
-    methodNotAllowed: () => new Boom.methodNotAllowed()
-  }))
+  app.use(require('./blog.article.router')(prefix).routes())
+  app.use(require('./blog.list.router')(prefix).routes())
+  app.use(require('./front.router')(prefix).routes())
+  app.use(require('./auth.router')(prefix).routes())
+  app.use(require('./my.router')(prefix).routes())
+  app.use(require('./tools.router')(prefix).routes())
 
   /**
    * 404
@@ -97,9 +43,4 @@ module.exports = (app) => {
       }
     }
   })
-
-  /**
-   * restful API format
-   */
-  api.use(require('../middlewares/middlewares.restfulAPI.response.js')())
 }
