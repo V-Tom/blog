@@ -1,13 +1,13 @@
 'use strict'
 
 const path = require('path')
+const fs = require('fs')
 const responseTime = require('koa-response-time')
 const logger = require('koa-logger')
-const views = require('co-views')
 const compress = require('koa-compress')
 const bodyParser = require('koa-bodyparser')
 const methodOverride = require('koa-methodoverride')
-const cors = require('kcors')
+const send = require('koa-send')
 
 module.exports = function (app) {
 
@@ -20,12 +20,6 @@ module.exports = function (app) {
    */
   app.use(bodyParser())
 
-  /**
-   * cors
-   */
-  app.use(cors({
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE'
-  }))
 
   /**
    * x-powered-by koa
@@ -33,18 +27,6 @@ module.exports = function (app) {
   app.use(async (ctx, next) => {
     await next()
     ctx.set('X-Powered-By', 'koa2')
-  })
-
-  /**
-   * render methods
-   */
-  app.use((ctx, next) => {
-    ctx.renderHTML = views(path.join(CONFIG.app.root, '../view'), {
-      default: 'jade',
-      map: { html: 'jade' },
-      cache: CONFIG.app.env === 'development'
-    })
-    return next()
   })
 
   /**
@@ -56,6 +38,14 @@ module.exports = function (app) {
    * response time
    */
   app.use(responseTime())
+
+
+  /**
+   * static
+   */
+  app.use(async (ctx) => {
+    await send(ctx, '/', { root: path.resolve(__dirname, '../dist'), index: 'index.html' })
+  })
 
   /**
    * error

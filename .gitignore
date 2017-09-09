@@ -9,7 +9,7 @@ pids
 *.seed
 
 dist
-
+.DS_Store
 #IDEA
 *.idea
 
@@ -51,3 +51,4 @@ jspm_packages
 /app/t-tom.key
 /app/package-lock.json
 /app/src/config/mongodb.dev.conf
+/app/static/dist/

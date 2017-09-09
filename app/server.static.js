@@ -33,7 +33,7 @@ require('./static/src/koa')(app)
 /**
  * koa Routes
  */
-require('./static/src/router/routes')(app)
+require('./static/src/routes/routes')(app)
 
 /**
  * start app
@@ -53,6 +53,7 @@ function runSpdyService() {
   }, app.callback())
 
   server.listen(CONFIG.app.port, () => {
-    console.log(CHALK.green(`♪ Server started, listening on port: ${CONFIG.app.port}`))
+    console.log(CHALK.green(`♪ Static Server started, listening on port: ${CONFIG.app.port}`))
+    console.log(CHALK.green(`Try open https://0.0.0.0:${CONFIG.app.port}`))
   })
 }

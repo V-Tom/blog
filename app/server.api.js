@@ -62,6 +62,6 @@ function runSpdyService() {
   }, app.callback())
 
   server.listen(CONFIG.app.port, () => {
-    console.log(CHALK.green(`♪ Server started, listening on port: ${CONFIG.app.port}`))
+    console.log(CHALK.green(`♪ API Server started, listening on port: ${CONFIG.app.port}`))
   })
 }
