@@ -1,0 +1,4 @@
+node_modules
+.idea/
+/app/src/local.conf.json
+/app/src/fullStackFrontPage.json
