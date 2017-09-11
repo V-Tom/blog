@@ -38,7 +38,7 @@ require('./src/router/routes')(app)
 /**
  * start app
  */
-runSpdyService()
+runService()
 
 /**
  * runService

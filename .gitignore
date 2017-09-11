@@ -2,3 +2,5 @@ node_modules
 .idea/
 /app/src/local.conf.json
 /app/src/fullStackFrontPage.json
+/app/t-tom.key
+/app/t-tom.crt
