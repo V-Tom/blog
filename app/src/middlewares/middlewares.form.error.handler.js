@@ -23,6 +23,7 @@ module.exports = function () {
         ctx.body = {
           status: 500,
           result: {
+            message: err.message,
             err: 'SERVER ERROR ! Please concat the server develop'
           }
         }

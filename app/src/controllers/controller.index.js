@@ -17,7 +17,4 @@ exports.renderIndexView = async (ctx, next) => {
   ctx.body = await getIndexView(ctx)
 }
 
-/**
- * getIndexView
- */
 exports.getIndexView = getIndexView

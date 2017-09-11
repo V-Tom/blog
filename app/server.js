@@ -13,7 +13,7 @@ const koa = require('koa')
 /**
  * init all server global config
  */
-require('./api/src/init')
+require('./src/init')
 
 /**
  * koa instance
@@ -28,12 +28,12 @@ app.experimental = true
 /**
  * index koa configure
  */
-require('./api/src/koa')(app)
+require('./src/koa')(app)
 
 /**
  * koa Routes
  */
-require('./api/src/router/routes')(app)
+require('./src/router/routes')(app)
 
 /**
  * start app

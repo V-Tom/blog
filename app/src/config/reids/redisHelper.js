@@ -1,4 +1,5 @@
 const exp = CONFIG.app.env === "development" ? CONFIG.app.redis.redisExpDev : CONFIG.app.redis.redisExp;
+
 const redis = require('./index')()
 
 /**
