@@ -27,12 +27,14 @@ html
         each cssURL in css
             link(rel="preload" href=cssURL as="style")
 
+        each cssURL in css
+            link(href=cssURL rel="stylesheet")
+
         // icon
         link(rel='icon', href='#{icon}', type='image/x-icon')
         link(rel='apple-touch-icon', href='#{icon}', type='image/x-icon')
 
         title #{title}
-
     body
         #root
     each jsItem in js
