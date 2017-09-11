@@ -37,6 +37,7 @@ exports.findUser = async (userId, projection = {}) => {
   if (userInfo) {
     return userInfo
   }
+
   userInfo = await blogArticleUsersModel
     .findById(new ObjectId(userId), projection)
     .lean()

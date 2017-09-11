@@ -11,7 +11,7 @@ const cors = require('kcors')
 
 module.exports = function (app) {
 
-  CONFIG.app.env === 'development' && app.use(logger())
+  app.use(logger())
 
   app.use(methodOverride())
 

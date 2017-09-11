@@ -35,6 +35,7 @@ module.exports = (app) => {
    * 404
    */
   app.use(async (ctx, next) => {
+
     if (ctx.status === 404) {
 
       ctx.status = 200

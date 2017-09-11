@@ -1,7 +1,7 @@
 'use strict'
 const Router = require('koa-router')
 
-const { frontCacheController } = require('../controllers')
+const { indexController } = require('../controllers')
 const { authAdmin } = require('../authenticated')
 
 module.exports = prefix => {
@@ -11,7 +11,7 @@ module.exports = prefix => {
    */
   const api = new Router({ prefix })
 
-  api.put('/front/setfrontstatic', authAdmin.userAdminAuthenticated(), frontCacheController.updateConfigCache)
+  api.put('/front/setfrontstatic', authAdmin.userAdminAuthenticated(), indexController.updateConfigCache)
 
   /**
    * restful API format
