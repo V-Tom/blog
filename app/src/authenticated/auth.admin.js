@@ -35,7 +35,7 @@ function userAdminAuthenticated() {
       ctx._adminUser = user
       return next()
     } else {
-      ctx.throw(401, 'Token illegal. ctx user email is\'nt verify')
+      ctx.throw(401, 'Token illegal. ctx user email isn\'t verify')
     }
   }
 }
