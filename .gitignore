@@ -54,3 +54,4 @@ jspm_packages
 /app/static/dist/
 /app/src/local.conf.json
 /app/src/fullStackFrontPage.json
+!/app/src/local.conf.json
