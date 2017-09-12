@@ -35,7 +35,7 @@ module.exports = (app) => {
   /**
    * koa-static
    */
-  app.use(require('koa-static')(path.resolve(__dirname, '../../static/')))
+  app.use(require('koa-static')(path.resolve(__dirname, '../../static/'), { maxage: 360000 }))
 
   /**
    * final middleware
