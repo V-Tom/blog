@@ -15,6 +15,11 @@ module.exports = (app) => {
   }
 
   /**
+   * koa-static
+   */
+  app.use(require('koa-static')(path.resolve(__dirname, '../../static/'), { maxage: 360000 }))
+
+  /**
    * restful API server routers
    */
   const { app: { restfulAPI } } = global.CONFIG
@@ -31,11 +36,6 @@ module.exports = (app) => {
   app.use(require('./auth.route')(prefix).routes())
   app.use(require('./my.route')(prefix).routes())
   app.use(require('./tools.route')(prefix).routes())
-
-  /**
-   * koa-static
-   */
-  app.use(require('koa-static')(path.resolve(__dirname, '../../static/'), { maxage: 360000 }))
 
   /**
    * final middleware
