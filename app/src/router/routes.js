@@ -1,5 +1,6 @@
 'use strict';
 const errorHandler = require('koa-error')
+const path = require('path')
 const { indexController } = require('../controllers')
 
 module.exports = (app) => {
@@ -32,9 +33,14 @@ module.exports = (app) => {
   app.use(require('./tools.route')(prefix).routes())
 
   /**
-   * 404
+   * koa-static
    */
-  app.use(async (ctx, next) => {
+  app.use(require('koa-static')(path.resolve(__dirname, '../../static/')))
+
+  /**
+   * final middleware
+   */
+  app.use(async ctx => {
 
     if (ctx.status === 404) {
 
