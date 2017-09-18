@@ -16,8 +16,9 @@ module.exports = (app) => {
 
   /**
    * koa-static
+   * docker container /home/blog-stable/static
    */
-  app.use(require('koa-static')(path.resolve(__dirname, '../../static/'), { maxage: 360000 }))
+  app.use(require('koa-static')(path.resolve(__dirname, '../../../../static/'), { maxage: 360000 }))
 
   /**
    * restful API server routers
