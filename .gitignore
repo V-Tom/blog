@@ -4,5 +4,4 @@ node_modules
 /app/src/fullStackFrontPage.json
 /app/t-tom.key
 /app/t-tom.crt
-/app/src/webpush.subscribe.json
 /app/src/webpush.subscribelist.json
