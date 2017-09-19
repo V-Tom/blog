@@ -15,7 +15,7 @@ module.exports = prefix => {
 
   api.post(`${localAPI}/subscribe`, webPushController.subscribe)
 
-  api.post(`${localAPI}/broadcast`, /*authAdmin.userAdminAuthenticated(),*/ webPushController.broadcast)
+  api.post(`${localAPI}/broadcast`, authAdmin.userAdminAuthenticated(), webPushController.broadcast)
 
 
   /**
