@@ -1,12 +1,12 @@
 'use strict'
-const { blogCoon } = require('../config/mongo/mongoConfig')
-const { mongo: { ObjectId } } = require('mongoose')
-const updateArticleRepoTool = require('../lib/lib.tools.updateGithubArtcleRepo')
 const fs = require('fs')
 const path = require('path')
 
-const redisPrefix = "MY_REDIS_PREFIX"
+const { blogCoon } = require('../config/mongo/mongoConfig')
+const { mongo: { ObjectId } } = require('mongoose')
 
+const updateArticleRepoTool = require('../lib/lib.tools.updateGithubArtcleRepo')
+const redisPrefix = "MY_REDIS_PREFIX"
 const resumeCachePath = path.join(__dirname, '../../root/Tom\'sresume.md')
 
 /**
@@ -31,7 +31,7 @@ exports.updateMyResume = async (ctx, next) => {
   await REDIS.removeCache(redisPrefix)
   let { resume } = ctx.body
   fs.writeFileSync(resumeCachePath, JSON.stringify({ resume }), 'utf8')
-  return next()
+  next()
 }
 
 /**

@@ -6,5 +6,6 @@ module.exports = {
   blogListController: require('../controllers/controller.blog.list.js'),
   blogUserController: require('../controllers/controller.blog.user.js'),
   cdnUploadController: require('../controllers/controller.cdn.upload'),
-  myController: require('./controller.my')
+  myController: require('./controller.my'),
+  webPushController: require('./controller.webpush')
 }

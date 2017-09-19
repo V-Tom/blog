@@ -37,6 +37,7 @@ module.exports = (app) => {
   app.use(require('./auth.route')(prefix).routes())
   app.use(require('./my.route')(prefix).routes())
   app.use(require('./tools.route')(prefix).routes())
+  app.use(require('./webpush.route')(prefix).routes())
 
   /**
    * final middleware

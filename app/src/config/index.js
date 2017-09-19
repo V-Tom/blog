@@ -56,12 +56,6 @@ module.exports = {
       blog: { uri: `mongodb://${dbPort}/blog` },
       cache: { uri: `mongodb://${dbPort}/cache` }
     },
-    userAccess: {
-      github: {
-        client_id: "",
-        client_secret: ""
-      }
-    },
     qiniu: {
       ACCESS_KEY: "",
       SECRET_KEY: "",
@@ -76,14 +70,14 @@ module.exports = {
         password: ""
       }
     },
-    cookies: {
-      expires: 60 * 1000 * 60 * 24
-    },
     token: {
-      secret: "NOMAND_KOA_BLOG_SERVR_FARMWORK",
-      userId: "594743785051cd159ab261b4",
-      email: "iamnomand@gmail.com",
+      secret: "",
+      userId: "",
+      email: "",
       expires: 3600
+    },
+    gcm: {
+      key: ""
     },
     restfulAPI: {
       apiVersion, apiPrefix,

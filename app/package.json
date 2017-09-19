@@ -41,7 +41,8 @@
     "mongoose": "^4.11.9",
     "redis": "^2.6.2",
     "request": "^2.73.0",
-    "spdy": "^3.4.7"
+    "spdy": "^3.4.7",
+    "web-push": "^3.2.3"
   },
   "devDependencies": {
     "qiniu": "^6.1.13",

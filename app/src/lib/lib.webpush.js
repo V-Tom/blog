@@ -6,18 +6,19 @@ const vapidKeys = webpush.generateVAPIDKeys()
  */
 exports.keys = vapidKeys
 
-webpush.setGCMAPIKey(global.CONFIG.gcm.key)
+webpush.setGCMAPIKey(global.CONFIG.app.gcm.key)
 
 webpush.setVapidDetails(
-  'mailto:t-tom@yourdomain.org',
+  'mailto:913984980@qq.com',
   vapidKeys.publicKey,
   vapidKeys.privateKey
 )
 
 /**
  * sendMessage
+ * @param subscription
  * @param message
  */
-exports.sendMessage = function (message) {
-
+exports.sendMessage = function (subscription, message) {
+  return webpush.sendNotification(subscription, message)
 }
