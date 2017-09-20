@@ -1,7 +1,7 @@
 node_modules
 .idea/
-/app/src/local.conf.json
-/app/src/fullStackFrontPage.json
+/app/src/localconfig/local.conf.json
+/app/src/localconfig/fullStackFrontPage.json
 /app/t-tom.key
 /app/t-tom.crt
-/app/src/webpush.subscribelist.json
+/app/src/localconfig/webpush.subscribelist.json
