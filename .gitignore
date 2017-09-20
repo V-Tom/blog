@@ -1,7 +1,13 @@
+
+# for development
 node_modules
 .idea/
+
+# localconfig
 /app/src/localconfig/local.conf.json
 /app/src/localconfig/fullStackFrontPage.json
+/app/src/localconfig/webpush.subscribelist.json
+
+# ssl
 /app/t-tom.key
 /app/t-tom.crt
-/app/src/localconfig/webpush.subscribelist.json
