@@ -5,28 +5,28 @@ const mongoose = require('mongoose')
  * blogCoon
  * @type {Connection|Promise}
  */
-const blogCoon = mongoose.createConnection(global.CONFIG.app.db.blog.uri)
+const blogCoon = mongoose.createConnection(global.APP.db.blog.uri)
 blogCoon
   .on('error', (err) => {
-    console.error(`blogCoon ${global.CONFIG.app.db.blog.uri} connection failed!`, err)
+    console.error(`blogCoon ${global.APP.db.blog.uri} connection failed!`, err)
     blogCoon.db.close()
   })
   .on('connected', () => {
-    console.log(CHALK.green(`blogCoon ${global.CONFIG.app.db.blog.uri} connect success ...`))
+    console.log(CHALK.green(`blogCoon ${global.APP.db.blog.uri} connect success ...`))
   })
 
 /**
  * userCoon
  * @type {Connection|Promise}
  */
-const usersCoon = mongoose.createConnection(global.CONFIG.app.db.users.uri)
+const usersCoon = mongoose.createConnection(global.APP.db.users.uri)
 usersCoon
   .on('error', (err) => {
-    console.error(`usersCoon  ${global.CONFIG.app.db.users.uri} connection failed!`, err)
+    console.error(`usersCoon  ${global.APP.db.users.uri} connection failed!`, err)
     usersCoon.db.close()
   })
   .on('connected', () => {
-    console.log(CHALK.green(`usersCoon ${global.CONFIG.app.db.users.uri} connect success ...`))
+    console.log(CHALK.green(`usersCoon ${global.APP.db.users.uri} connect success ...`))
   })
 
 

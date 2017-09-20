@@ -4,7 +4,7 @@ const redis = require("redis")
 module.exports = () => {
 
 
-  const client = redis.createClient(CONFIG.app.redis.config)
+  const client = redis.createClient(APP.redis.config)
 
   client.on('ready', () => {
     console.log(CHALK.green('redis server connect success ...'))

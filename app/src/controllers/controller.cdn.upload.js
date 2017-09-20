@@ -1,11 +1,11 @@
 'use strict'
 const qiniu = require('qiniu');
-qiniu.conf.ACCESS_KEY = CONFIG.app.qiniu.ACCESS_KEY
-qiniu.conf.SECRET_KEY = CONFIG.app.qiniu.SECRET_KEY
+qiniu.conf.ACCESS_KEY = APP.qiniu.ACCESS_KEY
+qiniu.conf.SECRET_KEY = APP.qiniu.SECRET_KEY
 
 exports.uploadFileToken = async (ctx, next) => {
-  let putPolicy = new qiniu.rs.PutPolicy(CONFIG.app.qiniu.bucket)
-  putPolicy.expires = CONFIG.app.qiniu.signedUrlExpires
+  let putPolicy = new qiniu.rs.PutPolicy(APP.qiniu.bucket)
+  putPolicy.expires = APP.qiniu.signedUrlExpires
   let token = putPolicy.token()
 
   ctx.body = {

@@ -3,7 +3,7 @@ const fs = require('fs')
 const path = require('path')
 
 const redisPrefix = 'fullStackFrontPage'
-const cachePath = path.join(__dirname, '../fullStackFrontPage.json')
+const cachePath = path.join(__dirname, '../localconfig/fullStackFrontPage.json')
 
 /**
  * getIndexView

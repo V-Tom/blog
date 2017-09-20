@@ -30,7 +30,7 @@ let localConfig = {
   app: {}
 }
 if (isProduction) {
-  const localConfigPath = path.join(__dirname, '../local.conf.json')
+  const localConfigPath = path.join(__dirname, '../localconfig/local.conf.json')
   if (fs.existsSync(localConfigPath)) {
     localConfig = JSON.parse(fs.readFileSync(localConfigPath, 'utf8').replace(/\r?\n|\r/g, " "))
   }
@@ -45,43 +45,42 @@ console.log(CHALK[chalkColor](`-------------------------------------------------
  * export
  * @type {{app: *}}
  */
-module.exports = {
-  app: Object.assign({}, {
-    port: 4000,
-    root: path.join(__dirname, '../'),
-    env: ENV,
-    db: {
-      dbPort,
-      users: { uri: `mongodb://${dbPort}/user` },
-      blog: { uri: `mongodb://${dbPort}/blog` },
-      cache: { uri: `mongodb://${dbPort}/cache` }
-    },
-    qiniu: {
-      ACCESS_KEY: "",
-      SECRET_KEY: "",
-      signedUrlExpires: 24 * 60 * 60,
-      bucket: ''
-    },
-    redis: {
-      redisExpDev: 3000,
-      redisExp: 60 * 1000 * 60 * 24,
-      config: {
-        host: '0.0.0.0',
-        password: ""
-      }
-    },
-    token: {
-      secret: "",
-      userId: "",
-      email: "",
-      expires: 3600
-    },
-    gcm: {
-      key: ""
-    },
-    restfulAPI: {
-      apiVersion, apiPrefix,
-      apiRegExp: new RegExp('^\/' + apiPrefix + '/' + apiVersion)
+module.exports = Object.assign({}, {
+  port: 4000,
+  root: path.join(__dirname, '../'),
+  env: ENV,
+  configPath: path.resolve(__dirname, '../localconfig'),
+  db: {
+    dbPort,
+    users: { uri: `mongodb://${dbPort}/user` },
+    blog: { uri: `mongodb://${dbPort}/blog` },
+    cache: { uri: `mongodb://${dbPort}/cache` }
+  },
+  qiniu: {
+    ACCESS_KEY: "",
+    SECRET_KEY: "",
+    signedUrlExpires: 24 * 60 * 60,
+    bucket: ''
+  },
+  redis: {
+    redisExpDev: 3000,
+    redisExp: 60 * 1000 * 60 * 24,
+    config: {
+      host: '0.0.0.0',
+      password: ""
     }
-  }, isProduction ? localConfig.app : {})
-}
+  },
+  token: {
+    secret: "",
+    userId: "",
+    email: "",
+    expires: 3600
+  },
+  gcm: {
+    key: ""
+  },
+  restfulAPI: {
+    apiVersion, apiPrefix,
+    apiRegExp: new RegExp('^\/' + apiPrefix + '/' + apiVersion)
+  }
+}, isProduction ? localConfig : {})

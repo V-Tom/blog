@@ -31,7 +31,7 @@ function userAdminAuthenticated() {
       ctx.throw(401, 'Token illegal. can\'t find ctx admin user')
     }
 
-    if (user.detail && user.detail.email === CONFIG.app.token.email) {
+    if (user.detail && user.detail.email === APP.token.email) {
       ctx._adminUser = user
       return next()
     } else {

@@ -44,8 +44,8 @@ runService()
  * runService
  */
 function runService() {
-  app.listen(CONFIG.app.port, () => {
-    console.log(CHALK.green(`♪ Server started, listening on port: ${CONFIG.app.port}`))
+  app.listen(APP.port, () => {
+    console.log(CHALK.green(`♪ Server started, listening on port: ${APP.port}`))
   })
 }
 
@@ -61,7 +61,7 @@ function runSpdyService() {
     cert: fs.readFileSync(`${__dirname}/t-tom.crt`)
   }, app.callback())
 
-  server.listen(CONFIG.app.port, () => {
-    console.log(CHALK.green(`♪ API Server started, listening on port: ${CONFIG.app.port}`))
+  server.listen(APP.port, () => {
+    console.log(CHALK.green(`♪ API Server started, listening on port: ${APP.port}`))
   })
 }

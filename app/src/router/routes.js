@@ -8,7 +8,7 @@ module.exports = (app) => {
   /**
    * global catch server error format
    */
-  if (CONFIG.app.env === 'development') {
+  if (APP.env === 'development') {
     app.use(errorHandler())
   } else {
     app.use(require('../middlewares/middlewares.form.error.handler.js')())
@@ -23,7 +23,7 @@ module.exports = (app) => {
   /**
    * restful API server routers
    */
-  const { app: { restfulAPI } } = global.CONFIG
+  const { restfulAPI } = global.APP
 
   const prefix = '/' + restfulAPI.apiPrefix + '/' + restfulAPI.apiVersion
 

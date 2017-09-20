@@ -7,7 +7,7 @@ const path = require('path')
  */
 global.CHALK = require('chalk')
 
-global.CONFIG = require('./config')
+global.APP = require('./config')
 
 global.REDIS = require('./config/reids/redisHelper')
 
@@ -16,7 +16,7 @@ global.REDIS = require('./config/reids/redisHelper')
  */
 require('./config/mongo/mongoConfig')
 
-const modelsPath = path.join(CONFIG.app.root, './models')
+const modelsPath = path.join(APP.root, './models')
 
 fs.readdirSync(modelsPath).forEach(file => {
   if (file.indexOf('js') !== -1) {

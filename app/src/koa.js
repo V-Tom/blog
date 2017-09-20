@@ -34,7 +34,7 @@ module.exports = function (app) {
     ctx.renderHTML = views(path.resolve(__dirname, './view'), {
       default: 'jade',
       map: { html: 'jade' },
-      cache: CONFIG.app.env === 'development'
+      cache: APP.env === 'development'
     })
     return next()
   })

@@ -6,7 +6,7 @@ const vapidKeys = webpush.generateVAPIDKeys()
  */
 exports.keys = vapidKeys
 
-webpush.setGCMAPIKey(global.CONFIG.app.gcm.key)
+webpush.setGCMAPIKey(global.APP.gcm.key)
 
 webpush.setVapidDetails(
   'mailto:913984980@qq.com',

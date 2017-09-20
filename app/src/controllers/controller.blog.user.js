@@ -13,8 +13,8 @@ exports.getAdminToken = async (ctx, next) => {
 
   const { secret } = ctx.query
 
-  if (secret === CONFIG.app.token.secret) {
-    let token = authToken.signToken(CONFIG.app.token.userId)
+  if (secret === APP.token.secret) {
+    let token = authToken.signToken(APP.token.userId)
     ctx.cookies.set('token', token)
     ctx.body = { "token": token }
     return next()

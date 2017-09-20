@@ -3,7 +3,7 @@ const fs = require('fs')
 const path = require('path')
 
 const WebPush = require('../lib/lib.webpush')
-const subscribeFilePath = path.resolve(__dirname, '../webpush.subscribelist.json')
+const subscribeFilePath = path.resolve(__dirname, `${global.APP.configPath}/webpush.subscribelist.json`)
 const redisPrefix = 'WEB_PUSH_SUBSCRIBE_LIST'
 
 /**
