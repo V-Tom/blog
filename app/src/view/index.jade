@@ -24,7 +24,7 @@ html
         link(rel='preconnect', href='https://t-tom.me')
 
         // prefetch
-        link(rel='prefetch', href='#{icon}')
+        link(rel='prefetch', href='#{meta.icon}')
 
         // preload
         each cssURL in css
@@ -34,8 +34,8 @@ html
             link(href=cssURL rel="stylesheet")
 
         // icon
-        link(rel='icon', href='#{icon}', type='image/x-icon')
-        link(rel='apple-touch-icon', href='#{icon}', type='image/x-icon')
+        link(rel='icon', href='#{meta.icon}', type='image/x-icon')
+        link(rel='apple-touch-icon', href='#{meta.icon}', type='image/x-icon')
 
         title #{title}
     body
