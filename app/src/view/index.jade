@@ -41,7 +41,9 @@ html(lang='en-US')
         title #{title}
     body
         noscript This website requires JavaScript
-        #root
+        article#root
+            main#flashScreen
+                .loader
     each jsItem in js
         script(src=jsItem defer=true)
 
