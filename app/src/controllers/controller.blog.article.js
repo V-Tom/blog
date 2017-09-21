@@ -1,9 +1,12 @@
 'use strict'
-const { blogCoon } = require('../config/mongo/mongoConfig')
 const { mongo: { ObjectId } } = require('mongoose')
 const moment = require('moment')
-const blogArticleDetaiModel = blogCoon.model('blogArticleDetail')
+
+const { blogCoon } = require('../config/mongo/mongoConfig')
+const blogArticleDetailModel = blogCoon.model('blogArticleDetail')
+const blogArticleAddonModel = blogCoon.model('blogArticleAddon')
 const { generateArticleId } = require('../lib')
+
 const redisPrefix = "BLOG_DETAIL_REDIS_PREFIX"
 
 /**
@@ -29,14 +32,32 @@ exports.getArticleDetail = async (ctx, next) => {
   if (detail) {
     ctx.state.APICached = true
   } else {
-    detail = await blogArticleDetaiModel.findOne({ articleId }).lean().exec()
+    detail = await blogArticleDetailModel
+      .findOne({ articleId })
+      .lean()
+      .exec()
     if (detail) {
       await REDIS.setCache(key, detail)
     } else {
       detail = null
     }
   }
-  ctx.body = { data: detail }
+
+  /**
+   * update article detail views
+   */
+  let views = 0
+  if (detail) {
+    const addon = await blogArticleAddonModel.findOneAndUpdate({ articleId }, {
+      $inc: {
+        views: 1
+      }
+    }, { upsert: true, new: true, setDefaultsOnInsert: true })
+    views = addon ? addon.views : 0
+  }
+
+  ctx.body = { data: detail, views }
+
   return next()
 }
 
@@ -47,25 +68,25 @@ exports.getArticleDetail = async (ctx, next) => {
  * @returns {Promise.<*>}
  */
 exports.updateArticleDetail = async (ctx, next) => {
-  let reqBody = ctx.request.body
+  let body = ctx.request.body
   let articleId = ctx.params.articleId
 
-  await blogArticleDetaiModel.update({
+  await blogArticleDetailModel.update({
     articleId
   }, {
     '$set': {
-      title: reqBody.title,
-      author: reqBody.author,
-      meta: reqBody.meta,
-      subTitle: reqBody.subTitle,
-      preview: reqBody.intro && reqBody.intro.preview || '',
+      title: body.title,
+      author: body.author,
+      meta: body.meta,
+      subTitle: body.subTitle,
+      preview: body.intro && body.intro.preview || '',
       intro: {
-        preview: reqBody.intro && reqBody.intro.preview || '',
-        pic: reqBody.intro && reqBody.intro.pic || ''
+        preview: body.intro && body.intro.preview || '',
+        pic: body.intro && body.intro.pic || ''
       },
-      tags: reqBody.tags,
-      githubArticleUrl: reqBody.githubArticleUrl || '',
-      content: reqBody.content
+      tags: body.tags,
+      githubArticleUrl: body.githubArticleUrl || '',
+      content: body.content
     }
   })
   await REDIS.removeCache(`${redisPrefix}:${articleId}`)
@@ -80,31 +101,34 @@ exports.updateArticleDetail = async (ctx, next) => {
  * @returns {Promise.<*>}
  */
 exports.createArticle = async (ctx, next) => {
-  let reqBody = ctx.request.body
-  let articleId = generateArticleId(23)
-  let date = new Date()
+  const { body } = ctx.request
+  const articleId = generateArticleId(23)
+  const date = new Date()
 
-  let newArticle = new blogArticleDetaiModel({
-    title: reqBody.title,
+  const newArticle = new blogArticleDetailModel({
+    title: body.title,
     articleId,
-    author: reqBody.author,
-    meta: reqBody.meta,
-    subTitle: reqBody.subTitle,
-    introPreview: reqBody.introPreview,
-    introWrapper: reqBody.introWrapper,
+    author: body.author,
+    meta: body.meta,
+    subTitle: body.subTitle,
+    introPreview: body.introPreview,
+    introWrapper: body.introWrapper,
     postTime: {
       localTime: moment(date).format('YYYY-MM-DD HH:mm:ss'),
       UTCTime: date.getTime()
     },
-    tags: reqBody.tags,
-    gitArticleUrl: reqBody.gitArticleUrl || 'https://github.com/V-Tom',
-    content: reqBody.content
+    tags: body.tags,
+    gitArticleUrl: body.gitArticleUrl || 'https://github.com/V-Tom',
+    content: body.content
   })
 
-  await REDIS.sendCommand('keys', ['BLOG_LIST_REDIS_PREFIX:articleList*']).then(cache => {
-    cache.forEach(item => REDIS.removeCache(item))
+  const newArticleAddon = new blogArticleAddonModel({
+    articleId
   })
+
   await newArticle.save()
+  await newArticleAddon.save()
+  await REDIS.sendCommand('keys', ['BLOG_LIST_REDIS_PREFIX:articleList*']).then(cache => cache.forEach(item => REDIS.removeCache(item)))
 
   ctx.body = {}
 
@@ -118,14 +142,26 @@ exports.createArticle = async (ctx, next) => {
  * @returns {Promise.<*>}
  */
 exports.deleteArticle = async (ctx, next) => {
+
   let { _id, articleId } = ctx.params
+
   if (articleId) {
-    await blogArticleDetaiModel.remove({
+    await blogArticleDetailModel.remove({
       articleId,
       _id
     })
+
+    await blogArticleAddonModel.remove({
+      articleId
+    })
+
     await REDIS.removeCache(`${redisPrefix}:${articleId}`)
+
+  } else {
+    ctx.throw(400, `API delete article need articleId and ObjectId`)
   }
+
   ctx.body = {}
-  return next()
+
+  next()
 }

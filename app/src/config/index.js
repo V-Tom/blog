@@ -53,8 +53,7 @@ module.exports = Object.assign({}, {
   db: {
     dbPort,
     users: { uri: `mongodb://${dbPort}/user` },
-    blog: { uri: `mongodb://${dbPort}/blog` },
-    cache: { uri: `mongodb://${dbPort}/cache` }
+    blog: { uri: `mongodb://${dbPort}/blog` }
   },
   qiniu: {
     ACCESS_KEY: "",
@@ -69,6 +68,11 @@ module.exports = Object.assign({}, {
       host: '0.0.0.0',
       password: ""
     }
+  },
+  cookies: {
+    expires: 60 * 1000 * 60 * 24,
+    path: '/',
+    domain: 'http://0.0.0.0:4000'
   },
   token: {
     secret: "",

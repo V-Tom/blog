@@ -19,8 +19,7 @@ const blogArticleDetailSchema = new Schema({
       UTCTime: Number
     },
     tags: { type: Array, default: [] },
-    gitArticleUrl: { type: String, default: 'https://github.com/V-Tom' },
-    views: { type: Number, default: 0 }
+    gitArticleUrl: { type: String, default: 'https://github.com/V-Tom' }
   },
   { versionKey: false }
 );

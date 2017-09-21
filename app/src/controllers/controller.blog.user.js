@@ -15,12 +15,16 @@ exports.getAdminToken = async (ctx, next) => {
 
   if (secret === APP.token.secret) {
     let token = authToken.signToken(APP.token.userId)
-    ctx.cookies.set('token', token)
+    ctx.cookies.set('token', token, {
+      domain: APP.cookies.domain,
+      path: APP.cookies.path,
+      expires: new Date(Date.now() + APP.cookies.expires)
+    })
     ctx.body = { "token": token }
-    return next()
   } else {
     ctx.throw(401, 'admin user secret illegal')
   }
+  next()
 }
 
 /**
@@ -75,4 +79,6 @@ exports.sign = async (ctx, next) => {
 
 
   ctx.body = callback + '(' + JSON.stringify({ status: 0, token: newToken }) + ')'
+
+  next()
 }
