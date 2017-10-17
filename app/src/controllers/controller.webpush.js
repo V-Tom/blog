@@ -75,6 +75,10 @@ exports.broadcast = async (ctx, next) => {
       type,
       title
     }))
+    /**
+     * just ignore
+     */
+      .catch(e => {})
   })
 
   ctx.body = {}
