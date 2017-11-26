@@ -1,0 +1,149 @@
+@import "../var";
+
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+#root {
+  height: calc(~"100% - @{banner-height}");
+  & > main {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+body:before {
+  content: "";
+  height: @banner-height;
+  display: block;
+}
+
+.container {
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/*480*/
+@media (min-width: 34em) {
+  .container {
+    /*max-width 34rem*/
+    max-width: 520px;
+  }
+}
+
+/*720*/
+@media (min-width: 48em) {
+  .container {
+    /*max-width 45rem*/
+    max-width: 700px;
+  }
+}
+
+/*960*/
+@media (min-width: 62em) {
+  .container {
+    /*max-width 60rem*/
+    max-width: 930px;
+  }
+}
+
+///*1140*/
+//@media (min-width: 75em) {
+//  .container {
+//    /*max-width 72.25rem*/
+//    max-width: 1156px;
+//  }
+//}
+
+/**
+-webkit-scrollbar
+ */
+::-webkit-scrollbar {
+  height: 6px;
+  width: 6px
+}
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3)
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #6e6e6e;
+  outline: 1px solid #708090
+}
+
+/**
+spinner
+ */
+
+#flashScreen {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: rgba(10, 10, 10, 0);
+  z-index: 9999;
+  transition: 300ms 0s all ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .loader {
+    transform: translate(-50%, -50%);
+    width: 0;
+    height: 0;
+    animation: anim-rotate 1.2s infinite ease;
+  }
+
+  .loader:before, .loader:after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 50%;
+    left: 50%;
+    margin-top: -10px;
+    margin-left: -10px;
+    border-radius: 10px;
+    opacity: .9;
+  }
+  .loader::before {
+    background: #00a7ce;
+    transform: translate(-0.75em, -0.75em) scale(1);
+    box-shadow: 1.5em 1.5em 0 #72c45a;
+    animation: anim-1-2 1.2s infinite ease;
+  }
+  .loader:after {
+    background: #f963a3;
+    transform: translate(0.75em, -0.75em) scale(1);
+    box-shadow: -1.5em 1.5em 0 #f78221;
+    animation: anim-3-4 1.2s infinite ease;
+  }
+  @keyframes anim-1-2 {
+    50% {
+      transform: scale(1.3) translate(0, 0);
+      box-shadow: 0 0 0 #72c45a;
+      opacity: .8;
+    }
+  }
+  @keyframes anim-3-4 {
+    50% {
+      transform: scale(1.3) translate(0, 0);
+      box-shadow: 0 0 0 #f78221;
+      opacity: .8;
+    }
+  }
+  @keyframes anim-rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    50% {
+      transform: rotate(360deg);
+    }
+    100% {
+      transform: rotate(720deg);
+    }
+  }
+}

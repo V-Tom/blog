@@ -10,7 +10,7 @@ import ReactDOM from 'react-dom';
 /**
  * @inject
  */
-import './Spinner.stylus';
+import Styles from './Spinner.M.less';
 
 export default class Spinner extends React.PureComponent {
   static instance = null;
@@ -19,16 +19,11 @@ export default class Spinner extends React.PureComponent {
     super(props);
   }
 
-  componentDidMount() {}
-
   render() {
     return (
-      <div className="Spinner">
-        <div className="Spinner-ring-container">
-          <section className="Spinner-ring Spinner-ring-1" />
-          <section className="Spinner-ring Spinner-ring-2" />
-        </div>
-      </div>
+      <main className={Styles.Spinner}>
+        <div className={Styles.loader} />
+      </main>
     );
   }
 }

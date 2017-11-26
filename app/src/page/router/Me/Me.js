@@ -4,14 +4,12 @@
  * @official
  */
 import React from 'react';
-import * as actions from '../../../actions/action.Me';
-// import CssModules from '../../../lib/decorator/decorator.react.css.modules'
-// import AutoBind from '../../../lib/decorator/decorator.auto.bind'
+import {MyResumeApi} from '../../../api';
 
 /**
  * @inject
  */
-import './Me.stylus';
+import './Me.M.less';
 
 export default class Me extends React.PureComponent {
   constructor(props) {
@@ -21,9 +19,7 @@ export default class Me extends React.PureComponent {
   }
 
   componentDidMount() {
-    this.__fetchResume().then(resume => {
-      this.setState({resume});
-    });
+    this.__fetchResume();
   }
 
   /**
@@ -32,20 +28,26 @@ export default class Me extends React.PureComponent {
    * @private
    */
   __fetchResume() {
-    return actions.getMyResume();
+    window.Spinner.show();
+    window.Header.show();
+
+    return MyResumeApi.getMyResume().then(({data}) => {
+      window.Spinner.hide();
+      this.setState({resume: data});
+    });
   }
 
   render() {
     const {resume} = this.state;
 
     return (
-      <section className="blog-me-page container">
+      <main className="blog-me-page container">
         {resume &&
           <article
-            className="markdown container article-content"
-            dangerouslySetInnerHTML={{__html: resume.data.resume}}
+            className="markdown"
+            dangerouslySetInnerHTML={{__html: Marked(resume.resume)}}
           />}
-      </section>
+      </main>
     );
   }
 }

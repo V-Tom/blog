@@ -1,4 +1,25 @@
+/**
+ * marked required
+ */
 import marked from './marked.base';
+import Prism from './prism';
+
+/**
+ * marked style
+ */
+
+import '../../less/markdown/markdown.less';
+import '../../less/markdown/prism.light.css';
+
+/**
+ * prism plugins
+ */
+
+const defaultLanguage = 'javascript';
+
+/**
+ * exports
+ */
 marked.setOptions({
   renderer: new marked.Renderer(),
   gfm: true,
@@ -9,11 +30,13 @@ marked.setOptions({
   smartLists: true,
   emoji: true,
   smartypants: false,
-  showLineNumber: true,
+  highlight: function(code, lang = defaultLanguage) {
+    return Prism.highlight(
+      code,
+      Prism.languages[lang] || Prism.languages[defaultLanguage],
+    );
+  },
   langPrefix: 'lang-',
 });
 
-//h2 文章标题 ##
-//h3 文章子标题 level 1 ###
-//h4 文章子标题 level 2 ####
 export default marked;

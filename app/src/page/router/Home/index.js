@@ -1,7 +1,6 @@
 'use strict';
-import {injectAsyncReducer} from '../../../store';
 
-export default async function(nextState, cb) {
+export default function(nextState, cb) {
   try {
     require.ensure(
       [],

@@ -11,14 +11,18 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="#006cb4">
     <meta name="apple-mobile-web-app-title" content="<%= htmlWebpackPlugin.options.metadata.webAppMobileTitle %>">
     <meta name="description" content="<%= htmlWebpackPlugin.options.description %>">
+    <!--dns-prefetch-->
     <link rel="dns-prefetch" href="https://www.t-tom.me">
     <link rel="dns-prefetch" href="https://t-tom.me">
-    <link rel="dns-prefetch" href="https://image.t-tom.me">
+    <link rel="dns-prefetch" href="https://api.t-tom.me">
     <link rel="dns-prefetch" href="https://static.t-tom.me">
+    <!--preconnect-->
     <link rel="preconnect" href="https://www.t-tom.me">
     <link rel="preconnect" href="https://t-tom.me">
+    <!--prefetch-->
     <link rel="prefetch" href="https://img1a.flixcart.com/www/promos/new/20160610-194655-ios-logo.png">
     <link rel="prefetch" href="https://img1a.flixcart.com/www/linchpin/batman-returns/images/logo_lite-cbb3574d.png">
+    <!--icon-->
     <link rel="icon" href="<%= htmlWebpackPlugin.options.metadata.icon %>"
           type="image/x-icon">
     <link rel="apple-touch-icon" href="<%= htmlWebpackPlugin.options.metadata.appleTouchIcon %>"
@@ -26,6 +30,10 @@
     <title><%= htmlWebpackPlugin.options.title %></title>
 </head>
 <body>
-<div id="root"></div>
+<article id="root">
+    <div id="flashScreen">
+        <div class="loader"></div>
+    </div>
+</article>
 </body>
 </html>

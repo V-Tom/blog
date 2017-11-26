@@ -6,6 +6,25 @@
 
 (function() {
   /**
+   * ADDON START
+   */
+  function generateUUID() {
+    var d = new Date().getTime();
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(
+      c,
+    ) {
+      var r = ((d + Math.random() * 16) % 16) | 0;
+      d = Math.floor(d / 16);
+      return (c == 'x' ? r : (r & 0x7) | 0x8).toString(16);
+    });
+    return uuid;
+  }
+
+  /**
+   * ADDON END
+   */
+
+  /**
    * Block-Level Grammar
    */
 
@@ -679,7 +698,7 @@
    */
 
   InlineLexer.prototype.outputLink = function(cap, link) {
-    var href = escape(link.href),
+    const href = escape(link.href),
       title = link.title ? escape(link.title) : null;
 
     return cap[0].charAt(0) !== '!'
@@ -787,7 +806,9 @@
       );
     }
     return (
-      '<pre><code class="' +
+      '<pre><code data-lang="' +
+      lang +
+      '" class="code-gist ' +
       this.options.langPrefix +
       escape(lang, true) +
       '">' +
@@ -822,18 +843,23 @@
     }
   };
   Renderer.prototype.heading = function(text, level, raw) {
+    // raw.toLowerCase().replace(/[^\w]+/g, '-')
+
+    if (!raw.endsWith(':')) raw = `${raw}:`;
+
+    const headlineText = this.options.headerPrefix + raw;
     return (
       '<h' +
       level +
       ' id="' +
-      this.options.headerPrefix +
-      raw.toLowerCase().replace(/[^\w]+/g, '-') +
+      headlineText +
       '"' +
       'data-level="' +
       this.getHeading(level) +
       '"' +
       '">' +
-      text +
+      // text +
+      `<a href="#${raw}">${headlineText}</a> ` +
       '</h' +
       level +
       '>\n'
@@ -891,7 +917,7 @@
   };
 
   Renderer.prototype.codespan = function(text) {
-    return '<code>' + text + '</code>';
+    return '<code class="code-span">' + text + '</code>';
   };
 
   Renderer.prototype.br = function() {
@@ -915,7 +941,7 @@
         return '';
       }
     }
-    var out = '<a target="_blank" href="' + href + '"';
+    var out = '<a target="_blank" rel="noopener" href="' + href + '"';
     if (title) {
       out += ' title="' + title + '"';
     }
@@ -924,12 +950,71 @@
   };
 
   Renderer.prototype.image = function(href, title, text) {
-    var out = '<img src="' + href + '" alt="' + text + '"';
+    const uuid = generateUUID();
+    const svg = `<div id="${uuid}" class="image-loading" data-src="${href}">
+      <svg width="135" height="130" viewBox="0 0 135 130" xmlns="http://www.w3.org/2000/svg" fill="#fff">
+        <rect x="0" y="10" width="15" height="120" rx="6" fill="#3498db">
+          <animate attributeName="height" begin="0.5s" dur="1s" values="120;110;100;90;80;70;60;50;40;130;120"
+                   calcMode="linear" repeatCount=   "indefinite"/>
+          <animate attributeName="y" begin="0.5s" dur="1s" values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
+                   repeatCount="indefinite"/>
+        </rect>
+        <rect x="30" y="10" width="15" height="120" rx="6" fill="#c0392b">
+          <animate attributeName="height" begin="0.25s" dur="1s" values="120;110;100;90;80;70;60;50;40;130;120"
+                   calcMode="linear" repeatCount="indefinite"/>
+          <animate attributeName="y" begin="0.25s" dur="1s" values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
+                   repeatCount="indefinite"/>
+        </rect>
+        <rect x="60" width="15" height="130" rx="6" fill="#f1c40f">
+          <animate attributeName="height" begin="0s" dur="1s" values="120;110;100;90;80;70;60;50;40;130;120"
+                   calcMode="linear" repeatCount="indefinite"/>
+          <animate attributeName="y" begin="0s" dur="1s" values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
+                   repeatCount="indefinite"/>
+        </rect>
+        <rect x="90" y="10" width="15" height="120" rx="6" fill="#27ae60">
+          <animate attributeName="height" begin="0.25s" dur="1s" values="120;110;100;90;80;70;60;50;40;130;120"
+                   calcMode="linear" repeatCount="indefinite"/>
+          <animate attributeName="y" begin="0.25s" dur="1s" values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
+                   repeatCount="indefinite"/>
+        </rect>
+      </svg>
+    </div>`;
+    let out = '<img src="' + href + '" alt="' + text + '"';
     if (title) {
       out += ' title="' + title + '"';
     }
     out += '>';
-    return out;
+    let cache = new Image();
+    cache.onload = function() {
+      let dom = document.getElementById(uuid);
+      if (dom) {
+        dom.classList.add('loaded');
+        dom.innerHTML = out;
+
+        cache = null;
+        dom = null;
+        out = null;
+      }
+    };
+    cache.onerror = function() {
+      let dom = document.getElementById(uuid);
+      if (dom) {
+        dom.classList.add('errored');
+        dom.innerHTML = `😳😳😳图片加载失败\n${text}`;
+
+        cache = null;
+        dom = null;
+        out = null;
+      }
+    };
+    cache.src = href;
+    return svg;
+    // let out = '<img src="' + href + '" alt="' + text + '"';
+    // if (title) {
+    //   out += ' title="' + title + '"';
+    // }
+    // out += '>';
+    // return out;
   };
 
   /**

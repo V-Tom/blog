@@ -6,45 +6,34 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
-import cx from 'classnames';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
 /**
  * @inject
  */
-import * as actions from '../../../actions/action.Article';
-import { debounce } from '../../../lib/utils/tools';
+import { ArticleApi } from '../../../api';
+import Footer from '../../Footer';
+import { throttle } from '../../../lib/utils/tools';
 import Disqus from './Disqus';
-import ScrollSpy from '../../../component/ScrollSpy';
-import './Article.stylus';
+import Styles from './Article.M.less';
+import defaultBanner from './defaultBanner';
 
-const mapStateToProps = state => {
-  return state.Article.toJS();
-};
+const documentTitleSeparator = ':)=>';
 
-const mapDispatchToProps = dispatch => {
-  return {
-    reducerActions: bindActionCreators({ ...actions }, dispatch),
-  };
-};
-
-@connect(mapStateToProps, mapDispatchToProps)
 export default class ArticleDetail extends React.Component {
   constructor(props) {
     super(props);
-    const articleDetailReady = false;
+
     const scrollLimit = 0;
-    const openArticleSideBar = false;
-    const documentTitleSeparator = ':)=>';
+    const articleDetail = {};
 
-    this.$container = undefined;
-    this.state = { articleDetailReady, scrollLimit, openArticleSideBar };
+    this.scrollListenerFn = throttle(this.__scrollListener.bind(this), 100);
+    this.setAnchorTimer = null;
+    this.ready = false;
 
-    this.scrollListenerFn = debounce(this.__scrollListener.bind(this), 100);
-    this.documentTitleSeparator = documentTitleSeparator;
-    this.titleScrollerTimer = null
+    this.state = { scrollLimit, articleDetail };
+
+    this.title = document.title;
     document.title = `loading${documentTitleSeparator}${document.title}`;
   }
 
@@ -55,60 +44,64 @@ export default class ArticleDetail extends React.Component {
   }
 
   componentDidMount() {
-    const { reducerActions, params: { articleId } } = this.props;
+    const { params: { articleId } } = this.props;
     if (articleId) {
       this.__fetchArticleDetail(articleId);
     }
-    window.Header.hide();
+
+    /**
+     * scroll
+     */
     window.addEventListener('scroll', this.scrollListenerFn, false);
   }
 
   componentDidUpdate() {
-    //如果文档渲染完毕,而且当前state尚未ready
+    /**
+     * 如果文档渲染完毕,而且当前state尚未ready
+     */
+    const content = document.querySelector(`.${Styles.content}`);
     if (
-      Array.from(
-        document
-          .querySelector('.article-content')
-          .querySelectorAll('[data-level]'),
-      ).length &&
-      !this.state.articleDetailReady
+      content &&
+      Array.from(content.querySelectorAll('[data-level]')).length &&
+      !this.ready
     ) {
-      Prism && Prism.highlightAll(false);
-      this.__setScrollLimit();
       this.setState(
         {
-          articleDetailReady: true,
+          scrollLimit: document.querySelector(`.${Styles.introduction}`)
+            .offsetHeight,
         },
         () => {
+          const { location: { hash } } = this.props;
+          const { articleDetail } = this.state;
 
-          const { articleDetail } = this.props;
-          document.title = `${articleDetail.title}${this
-            .documentTitleSeparator}${document.title.split(
-            this.documentTitleSeparator,
-          )[1]}`
+          self.setAnchorTimer = setTimeout(() => {
+            document.title = articleDetail.title;
 
-          this.titleScrollerTimer = setInterval(() => {
-            document.title = document.title.substr(1) + document.title.substr(0, 1)
-          }, 500)
-
+            if (hash) {
+              const activeHead = document.getElementById(
+                hash.substr(1, hash.length),
+              );
+              if (activeHead && activeHead.nodeType === 1) {
+                const a = activeHead.querySelector('a');
+                if (a && a.nodeType === 1) a.click();
+              }
+            }
+          }, 150);
         },
       );
     }
   }
 
-  componentWillUnmount() {
-    this.props.reducerActions.clearArticleDetailState();
-    window.Header.show();
-    window.removeEventListener('scroll', this.scrollListenerFn, false);
-    clearInterval(this.titleScrollerTimer)
-    document.title = document.title.split(this.documentTitleSeparator)[1];
+  componentDidCatch(error, info) {
+    debugger
   }
 
-  __setScrollLimit() {
-    const { reducerActions } = this.props;
-    this.state.scrollLimit = document.querySelector(
-      '.article-content-wrapper>header',
-    ).offsetHeight;
+  componentWillUnmount() {
+    clearTimeout(this.setAnchorTimer);
+
+    window.Header.show();
+    window.removeEventListener('scroll', this.scrollListenerFn, false);
+    document.title = this.title;
   }
 
   /**
@@ -139,94 +132,64 @@ export default class ArticleDetail extends React.Component {
    * @private
    */
   __fetchArticleDetail(articleId) {
-    const { reducerActions } = this.props;
-    return reducerActions.getArticleDetail(articleId);
-  }
+    window.Spinner.show();
 
-  /**
-   * 设置按钮
-   * @param isOpen
-   * @private
-   */
-  __toggleArticleSideBar(isOpen) {
-    if (this.state.openArticleSideBar) {
-      !isOpen && this.setState({ openArticleSideBar: false });
-    } else {
-      isOpen && this.setState({ openArticleSideBar: true });
-    }
+    ArticleApi.getArticleDetail(articleId).then(({ data, views }) => {
+      window.Header.hide();
+      window.Spinner.hide();
+      this.setState(
+        { articleDetail: { ...data, ...{ views } } },
+        _ => (this.ready = true),
+      );
+    });
   }
 
   render() {
-    const { articleDetail, params: { articleId } } = this.props;
-    const { articleDetailReady, openArticleSideBar } = this.state;
+    const { articleDetail } = this.state;
 
-    const articleDetailSectionClass = cx('blog-detail', {
-      active: openArticleSideBar,
-      ready: articleDetailSectionClass,
-    });
-
-    const activeButtonClass = cx('article-side-btn', {
-      active: articleDetailReady,
-    });
-
-    return (
-      <main
-        className={articleDetailSectionClass}
-        ref={$dom => (this.$container = $dom)}>
-        <div className={activeButtonClass}>
-          <button
-            type="button"
-            className="article-menu"
-            title="article menu"
-            onClick={() => this.__toggleArticleSideBar(true)}
-          />
-        </div>
-
-        <div className="article-sidebar">
-          <section className="article-sidebar-inner">
-            <ScrollSpy
-              ready={articleDetailReady}
-              $container={this.$container}
-            />
-          </section>
-        </div>
-        <div
-          className="article-content-wrapper"
-          onClick={() => this.__toggleArticleSideBar(false)}>
-          <header
-            className="article-intro-container"
-            style={{ backgroundImage: `url("${articleDetail.introWrapper}")` }}>
-            <section className="article-intro-mask"/>
-            <section className="article-intro-body container">
-              <ul className="tags">
-                {articleDetail.tags.map((tag, i) =>
-                  <li key={i}>
-                    <Link to={`/blog?tag=${tag}`}>
-                      {tag}
-                    </Link>
-                  </li>,
-                )}
-              </ul>
-              <h1 className="article-title">
-                {articleDetail.title}
-              </h1>
-              <h2 className="article-subTitle">
-                {articleDetail.subTitle}
-              </h2>
-              <p className="article-meta">
-                {articleDetail.meta}
-              </p>
-            </section>
-          </header>
-          <div className="markdown-wrapper">
+    if (Object.keys(articleDetails).length) {
+      return [
+        <main key={Date.now()} className={Styles.ArticlePage}>
+          <section className={Styles.body}>
+            <header
+              className={Styles.introduction}
+              style={{
+                backgroundImage: `url("${articleDetail.introWrapper ||
+                defaultBanner}")`,
+              }}>
+              <section className={Styles.mask}/>
+              <section className={`${Styles.body} container`}>
+                <ul className={Styles.tags}>
+                  {articleDetail.tags.map((tag, i) =>
+                    <li key={i}>
+                      <Link to={`/blog?tag=${tag}`}>
+                        {tag}
+                      </Link>
+                    </li>,
+                  )}
+                </ul>
+                <h1 className={Styles.title}>
+                  {articleDetail.title}
+                </h1>
+                <h2 className={Styles.subTitle}>
+                  {articleDetail.subTitle}
+                </h2>
+                <p className={Styles.meta}>
+                  {articleDetail.meta} 访客：{articleDetail.views}
+                </p>
+              </section>
+            </header>
             <article
-              className="markdown container article-content"
-              dangerouslySetInnerHTML={{ __html: articleDetail.content }}
+              className={`markdown container ${Styles.content}`}
+              dangerouslySetInnerHTML={{ __html: Marked(articleDetail.content) }}
             />
-          </div>
-          {articleDetailReady && <Disqus/>}
-        </div>
-      </main>
-    );
+            <Disqus/>
+          </section>
+        </main>,
+        <Footer key="footer"/>,
+      ];
+    } else {
+      return null;
+    }
   }
 }

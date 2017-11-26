@@ -5,20 +5,19 @@
  */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Route, IndexRoute} from 'react-router';
 
 /**
  * @inject
  */
 import RootComponent from '../page/App';
-
-/**
- * dynamicRouters
- */
 import HomeComponent from '../page/router/Home';
 import BlogComponent from '../page/router/Blog';
 import ArticleComponent from '../page/router/Article';
 
+/**
+ * 不要使用 static 路由
+ * 这个路由在 nginx 层做了静态服务器
+ */
 export default {
   /**
    * base router
@@ -35,7 +34,8 @@ export default {
     /**
      * me router
      */
-    require('../page/router/Me'),
+    // require('../page/router/Me'),
+
     /**
      * multiple blog router
      */

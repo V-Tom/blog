@@ -23,8 +23,7 @@ const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin')
 const ENV = process.env.NODE_ENV
 
 const METADATA = {
-  // title: 'Welcome To Tom\'s Blog',
-  title: 'WebPack Toolkit',
+  title: 'Welcome To Tom\'s Blog',
   baseUrl: '/',
   isDevServer: true
 }
@@ -37,7 +36,7 @@ module.exports = () => webpackMerge(commonConfig({
   env: ENV,
 
   entry: {
-    'vendor': ['react', 'react-dom', 'history', 'react-redux', 'react-router', 'react-router-redux', 'whatwg-fetch', 'classnames', 'prop-types'],
+    'vendor': ['react', 'history', 'react-router', 'whatwg-fetch', 'classnames', 'prop-types'],
     'main': path.resolve(__dirname, '../src/app.js')
   },
 
@@ -67,7 +66,7 @@ module.exports = () => webpackMerge(commonConfig({
   plugins: [
 
     new webpack.optimize.CommonsChunkPlugin({
-      names: ['vendor', 'manifest']
+      names: ['vendor']
     }),
 
     new HtmlWebpackPlugin({
@@ -77,7 +76,7 @@ module.exports = () => webpackMerge(commonConfig({
       metadata: METADATA,
       inject: 'body',
       chunksSortMode: (chunk1, chunk2) => {
-        const orders = ['vendor', 'polyfill', 'main']
+        const orders = ['vendor', 'main']
         const order1 = orders.indexOf(chunk1.names[0])
         const order2 = orders.indexOf(chunk2.names[0])
         if (order1 > order2) {

@@ -43,8 +43,7 @@ module.exports = WebpackMerge(webpackCommon({
   env: ENV,
 
   entry: {
-    'polyfill': 'babel-polyfill',
-    'vendor': ['react', 'react-dom', 'history', 'react-redux', 'react-router', 'react-router-redux', 'whatwg-fetch', 'classnames', 'prop-types'],
+    'vendor': ['react', 'react-dom', 'history', 'react-router', 'whatwg-fetch', 'classnames', 'prop-types'],
     'main': path.resolve(__dirname, '../src/app.js')
   },
 
@@ -54,6 +53,14 @@ module.exports = WebpackMerge(webpackCommon({
 
 }), {
   plugins: [
+
+    /**
+     * chunkhash 增量包
+     * https://webpack.js.org/guides/caching/#generating-unique-hashes-for-each-file
+     * http://www.cnblogs.com/ihardcoder/p/5623411.html
+     * https://sebastianblade.com/using-webpack-to-achieve-long-term-cache/#webpackmd5hash
+     */
+    // new webpack.HashedModuleIdsPlugin(),
 
     new webpack.optimize.CommonsChunkPlugin({
       names: ['vendor', 'manifest']
@@ -102,15 +109,21 @@ module.exports = WebpackMerge(webpackCommon({
       defaultAttribute: 'defer',
       // prefetch: /(\.js|\.css)$/
     }),
-    //
-    // new UglifyJsPlugin({
-    //   output: {
-    //     comments: false
-    //   },
-    //   compress: {
-    //     warnings: false
-    //   }
-    // })
+
+    new UglifyJsPlugin({
+      beautify: false,
+      sourceMap: true,
+      output: {
+        comments: false
+      },
+      mangle: {
+        screw_ie8: true
+      },
+      compress: {
+        screw_ie8: true,
+        warnings: false
+      },
+    })
 
   ]
 })

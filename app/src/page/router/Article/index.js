@@ -1,24 +1,18 @@
 'use strict';
-import { injectAsyncReducer } from '../../../store';
+import injectMarked from '../injectMarked';
 
-export default async function (nextState, cb) {
+export default async function(nextState, cb) {
   try {
-
-    await import(/*webpackChunkName:'Prism.lib'*/ '../../../lib/markdown/prism');
-    await import(/*webpackChunkName:'Markdown.css'*/ '../../../stylus/markdown/markdown.stylus');
-    await import(/*webpackChunkName:'Prism.css'*/ '../../../stylus/markdown/prism.stylus');
+    await injectMarked();
 
     return require.ensure(
       [],
       require => {
-        injectAsyncReducer({
-          Article: require('../../../reducer/reducer.Article').default,
-        });
         cb(null, require('./Article').default);
       },
       'Article.router',
     );
-  } catch ( e ) {
+  } catch (e) {
     console.warn('[Article]路由加载失败');
     console.error(e);
   }

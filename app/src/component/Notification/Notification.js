@@ -10,13 +10,11 @@ import ReactDOM from 'react-dom';
 /**
  * @inject
  */
-import './Notification.stylus';
+import Styles from './Notification.less';
 
 export default class Notification extends React.PureComponent {
   constructor(props) {
     super(props);
-
-    this.state = {};
   }
 
   static propTypes = {
@@ -26,16 +24,14 @@ export default class Notification extends React.PureComponent {
     callBack: PropTypes.func,
   };
 
-  componentWillReceiveProps(nextProps) {}
-
-  componentDidMount() {}
+  static defaultProps = {};
 
   render() {
     const {msg, type} = this.props;
     return (
-      <div className="notification-wrapper">
-        <div className="body slideInDown animation">
-          <div className="content">
+      <div className={Styles.notification}>
+        <div className={`${Styles.body} ${Styles.slideInDown}`}>
+          <div className={Styles.content}>
             <i className={`icon icon-${type}`} />
             <span>
               {msg}

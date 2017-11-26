@@ -1,6 +1,4 @@
 'use strict';
-import {injectAsyncReducer} from '../../../store';
-
 module.exports = {
   path: '*',
   getComponent(nextState, cb) {

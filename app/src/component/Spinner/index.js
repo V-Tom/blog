@@ -32,7 +32,7 @@ export default {
 
     ReactDOM.render(<Spinner />, div);
   },
-  remove() {
+  hide() {
     let div = instance;
     if (!div) {
       return false;

@@ -6,7 +6,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 
-export default class Disqus extends React.Component {
+export default class Disqus extends React.PureComponent {
   constructor(props) {
     super(props);
   }
@@ -31,6 +31,15 @@ export default class Disqus extends React.Component {
   }
 
   render() {
-    return <div id="disqus_thread" className="container" />;
+    return (
+      <div
+        id="disqus_thread"
+        className="container"
+        style={{
+          minHeight: '1rem',
+          margin: '10px auto',
+        }}
+      />
+    );
   }
 }

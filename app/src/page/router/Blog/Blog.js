@@ -5,59 +5,43 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
 import {Link} from 'react-router';
 
 /**
  * @inject
  */
-import * as actions from '../../../actions/action.blog';
-import './Blog.stylus';
+import Styles from './Blog.M.less';
+import {BlogApi} from '../../../api';
+import Footer from '../../Footer';
 
-const mapStateToProps = state => {
-  return state.Blog.toJS();
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    reducerActions: bindActionCreators({...actions}, dispatch),
-  };
-};
-
-@connect(mapStateToProps, mapDispatchToProps)
-export default class Blog extends React.Component {
+export default class Blog extends React.PureComponent {
   constructor(props) {
     super(props);
+
     const limit = 6;
     const {location: {query}} = this.props;
+
     const tag = query.tag || undefined;
     const page = query.page || 1;
+    const articleList = [];
 
-    this.state = {page, limit, tag};
+    this.state = {page, limit, tag, articleList};
   }
-
-  static propTypes = {
-    articleList: PropTypes.object.isRequired,
-  };
-
-  static defaultProps = {
-    articleList: {
-      data: [],
-    },
-  };
 
   /**
    * blog hash change listener
    * @param nextProps
    */
   componentWillReceiveProps(nextProps) {
-    let query = nextProps.location.query;
-    let nextTag = query.tag;
-    let nextPage = query.page ? Number(query.page) : 1;
+    const query = nextProps.location.query;
+    const nextTag = query.tag;
+    const nextPage = query.page ? Number(query.page) : 1;
     let {tag, page} = this.state;
 
-    //first into
+    /**
+     * first into
+     * @type {number}
+     */
     page = Number(page);
     isNaN(page) && (page = 0);
 
@@ -81,15 +65,11 @@ export default class Blog extends React.Component {
   componentWillMount() {}
 
   componentDidMount() {
-    const {reducerActions} = this.props;
     window.Header.show();
     this.__fetchArticleList();
   }
 
-  componentWillUnmount() {
-    const {reducerActions} = this.props;
-    reducerActions.clearBlogState();
-  }
+  componentWillUnmount() {}
 
   /**
    * 获取文章列表
@@ -97,14 +77,19 @@ export default class Blog extends React.Component {
    */
 
   __fetchArticleList() {
-    const {reducerActions} = this.props;
     const {tag, limit, page} = this.state;
-    reducerActions.getBlogList(page, limit, tag);
+
+    window.Spinner.show();
+    window.Header.show();
+
+    BlogApi.getBlogList(page, limit, tag).then(({data}) => {
+      window.Spinner.hide();
+      this.setState({articleList: data});
+    });
   }
 
   render() {
-    const {tag, limit, page} = this.state;
-    const {articleList} = this.props;
+    const {tag, limit, page, articleList} = this.state;
 
     const nextPageDisabled = page >= Math.ceil(articleList.count / limit);
     const prevPageDisabled = page <= 1;
@@ -112,47 +97,56 @@ export default class Blog extends React.Component {
     let nextPage = nextPageDisabled ? page : page + 1;
     let prevPage = prevPageDisabled ? 1 : page - 1;
 
-    return (
-      <section className="blog-list-page container">
-        <div className="post">
-          {articleList.data &&
-            articleList.data.map((item, i) =>
-              <article className="post-preview" key={i}>
-                <Link to={`/blog/${item.articleId}`}>
-                  <h2 className="post-title ellipsis">
-                    {item.title}
-                  </h2>
-                  <p className="post-subtitle ellipsis">
-                    {item.subTitle}
+    if (articleList.length > 0) {
+      return [
+        <main key={Date.now()} className={Styles.BlogPage}>
+          <div className={`${Styles.post} container`}>
+            {articleList &&
+              articleList.map((item, i) =>
+                <article className={Styles.body} key={i}>
+                  <Link to={`/blog/${item.articleId}`}>
+                    <h2 className={Styles.title}>
+                      {item.title}
+                    </h2>
+                    <p className={Styles.subtitle}>
+                      {item.subTitle}
+                    </p>
+                    <section className={Styles.preview}>
+                      {item.introPreview}
+                    </section>
+                  </Link>
+                  <p className={Styles.meta}>
+                    {item.meta}
                   </p>
-                  <section className="post-content-preview">
-                    {item.introPreview}
-                  </section>
-                </Link>
-                <p className="post-meta ellipsis">
-                  {item.meta}
-                </p>
-                <hr />
-              </article>,
-            )}
-        </div>
-        <div className="pagination">
-          {prevPageDisabled
-            ? <span className="pagination-item disabled">older</span>
-            : <Link
-                className="pagination-item"
-                to={`/blog?page=${prevPage}${tag ? `&tag=${tag}` : ''}`}>
-                older
-              </Link>}
-          {nextPageDisabled
-            ? <span className="pagination-item disabled">next</span>
-            : <Link
-                className="pagination-item"
-                to={`/blog?page=${nextPage}${tag ? `&tag=${tag}` : ''}`}>
-                next
-              </Link>}
-        </div>
-      </section>
-    );
+                  <hr />
+                </article>,
+              )}
+          </div>
+          <div className={Styles.pagination}>
+            {prevPageDisabled
+              ? <span className={`${Styles.item} ${Styles.disabled}`}>
+                  older
+                </span>
+              : <Link
+                  className={Styles.item}
+                  to={`/blog?page=${prevPage}${tag ? `&tag=${tag}` : ''}`}>
+                  older
+                </Link>}
+            {nextPageDisabled
+              ? <span className={`${Styles.item} ${Styles.disabled}`}>
+                  {' '}next{' '}
+                </span>
+              : <Link
+                  className={Styles.item}
+                  to={`/blog?page=${nextPage}${tag ? `&tag=${tag}` : ''}`}>
+                  next
+                </Link>}
+          </div>
+        </main>,
+        <Footer key="footer" />,
+      ];
+    } else {
+      return null;
+    }
   }
 }

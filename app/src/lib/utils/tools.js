@@ -127,3 +127,32 @@ export const debounce = (func, wait) => {
     timer = setTimeout(later, wait);
   };
 };
+
+/**
+ * throttle
+ * @param fn
+ * @param threshhold
+ * @returns {Function}
+ */
+export function throttle(fn, threshhold = 250) {
+  let last, timer;
+
+  return function() {
+    const context = this,
+      args = arguments;
+
+    const now = +new Date();
+
+    if (last && now < last + threshhold) {
+      clearTimeout(timer);
+
+      timer = setTimeout(function() {
+        last = now;
+        fn.apply(context, args);
+      }, threshhold);
+    } else {
+      last = now;
+      fn.apply(context, args);
+    }
+  };
+}

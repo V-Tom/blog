@@ -1,16 +1,13 @@
 'use strict';
-import {injectAsyncReducer} from '../../../store';
+import injectMarked from '../injectMarked';
 
 module.exports = {
   path: '/me',
   getComponent: async (nextState, cb) => {
-
-    await import(/*webpackChunkName:'Prism.lib'*/ '../../../lib/markdown/prism');
-    await import(/*webpackChunkName:'Markdown.css'*/ '../../../stylus/markdown/markdown.stylus');
-    await import(/*webpackChunkName:'Prism.css'*/ '../../../stylus/markdown/prism.stylus');
+    await injectMarked();
 
     try {
-     return  require.ensure(
+      return require.ensure(
         [],
         require => {
           cb(null, require('./Me').default);

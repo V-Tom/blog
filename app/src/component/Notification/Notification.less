@@ -1,0 +1,45 @@
+
+.notification {
+  position: fixed;
+  width: 100%;
+  top: 5.5rem;
+  z-index: 10000;
+  i {
+    padding: 0 0.5rem;
+  }
+  .icon-info {
+    &:before {
+      color: #2db7f5;
+    }
+  }
+  .icon-error {
+    &:before {
+      color: #f60;
+    }
+  }
+  .icon-success {
+    &:before {
+      color: #87d068;
+    }
+  }
+  .body {
+    position: absolute;
+    transform: translate3d(0, -100%, 0);
+    transition: all 100ms 0s cubic-bezier(0, 0.56, 0, 1.4);
+    left: 50%;
+    width: auto;
+    opacity: 1;
+    visibility: show;
+    vertical-align: middle;
+    .content {
+      position: relative;
+      right: 50%;
+      padding: 0.8rem 1.6rem;
+      border-radius: 0.6rem;
+      border: 0.1rem solid #d9d9d9;
+      box-shadow: 0 0 0.4rem rgba(0, 0, 0, 0.17);
+      background: #fff;
+      font-size: 1.4rem;
+    }
+  }
+}

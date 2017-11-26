@@ -15,15 +15,19 @@ const path = require('path')
 const ExtractTextPlugin = require("extract-text-webpack-plugin")
 const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin')
 
-
 /**
  * Webpack Constants
  */
-const cssModules = {
-  modules: true,
-  localIdentName: '[local]__[hash:base64:5]'
+const postCssLoader = {
+  loader: 'postcss-loader',
+  options: {
+    sourceMap: 'inline',
+    plugins: (loader) => [
+      require('autoprefixer')({ browsers: ['> 5%', 'last 2 versions'], remove: false }),
+    ]
+  }
 }
-
+const cssModulesRule = '[local]__[hash:base64:5]'
 /**
  * Webpack Exported
  */
@@ -33,6 +37,12 @@ module.exports = ({ env, entry, context }) => {
 
   const nodeModules = /node_modules/
 
+  /**
+   * chunkhash 增量包
+   * @type {string}
+   */
+  const chunkhash = 'hash'
+
   return {
 
     entry,
@@ -41,13 +51,15 @@ module.exports = ({ env, entry, context }) => {
 
       path: path.resolve(__dirname, "../dist"),
 
-      publicPath: '/',
+      publicPath: isDevelopment ? '/' : 'https://static.t-tom.me/',
 
-      filename: `[name]-[hash].js`,
+      filename: isDevelopment ? `[name]-[hash].js` : `[name]-[${chunkhash}].js`,
 
       sourceMapFilename: '[name].[hash].map',
 
-      chunkFilename: isDevelopment ? '[name]-[hash].chunk.js' : '[name]-[hash].chunk.js'
+      chunkFilename: isDevelopment ? '[name]-[hash].chunk.js' : `[name]-[${chunkhash}].chunk.js`,
+
+      crossOriginLoading: 'anonymous'
     },
 
     resolve: {
@@ -69,21 +81,26 @@ module.exports = ({ env, entry, context }) => {
           exclude: nodeModules
         },
         {
-          test: /\.stylus$/,
+          test: /\.M.less/,
           use: isDevelopment ?
             [
               'style-loader',
               {
                 loader: 'css-loader',
-                options: {}
-              },
-              {
-                loader: 'postcss-loader'
-              },
-              {
-                loader: 'stylus-loader',
                 options: {
                   sourceMap: true,
+                  modules: true,
+                  localIdentName: cssModulesRule
+                }
+              },
+              postCssLoader,
+              {
+                loader: 'less-loader',
+                options: {
+                  outputStyle: 'expanded',
+                  sourceMap: true,
+                  sourceMapContents: true,
+                  sourceComments: true
                 }
               }
             ] :
@@ -92,15 +109,31 @@ module.exports = ({ env, entry, context }) => {
               use: [
                 {
                   loader: 'css-loader',
+                  options: {
+                    minimize: true,
+                    modules: true,
+                    localIdentName: cssModulesRule
+                  }
                 },
-                {
-                  loader: 'postcss-loader'
-                },
-                {
-                  loader: 'stylus-loader'
-                }
-              ]
+                postCssLoader, 'less-loader']
             }),
+          exclude: nodeModules
+        },
+        {
+          test: /^((?!\.M).)*less/,
+          use: isDevelopment ? ['style-loader', 'css-loader?sourceMap=true', postCssLoader, 'less-loader'] :
+            [
+              {
+                loader: 'style-loader'
+              },
+              {
+                loader: 'css-loader'
+              },
+              postCssLoader,
+              {
+                loader: 'less-loader'
+              }
+            ],
           exclude: nodeModules
         },
         {
