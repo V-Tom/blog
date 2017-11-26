@@ -1,9 +1,5 @@
-fe-dev:
-	cd ./FE/react && make dev
+client-dev:
+	cd client/src && npm run webpack-dev
 
-fe-build:
-	cd ./FE/react && make builds
-
-be-koa-online:
-	cd ./BE/node-koa/ && git pull origin dev && make install && make online
-	
+electron-dev:
+	electron ./app.js

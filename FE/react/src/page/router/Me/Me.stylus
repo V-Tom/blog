@@ -1,7 +1,0 @@
-.blog-me-page
-  font-size 1.4rem
-  padding 3rem 0
-  line-height 2
-
-  .markdown-wrapper
-    background #fff
