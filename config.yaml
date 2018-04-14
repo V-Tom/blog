@@ -1,0 +1,56 @@
+baseURL: "https://t-tom.me"
+languageCode: "ZH-CN"
+title: "TOM's zone"
+DisqusShortname: "toms-blog-1"
+defaultContentLanguage: "en"
+disableHugoGeneratorInject: true
+
+Params:
+
+  DebugCSS: true
+
+  # Site meta description
+  description: "Welcome to TOM's zone"
+  # Site's Tagline (Subtitle or Keyword)
+  tagline: "Nothing sweeter than this"
+
+  dateFormat: "January 2, 2006"
+  colorTheme: "#ff8181"
+
+  head404: "Sorry, I can't find what you want."
+  sub404: "Back to <a href='/'>Home</a>."
+
+  # Configure which section for Latest Posts
+  postSection: "blog"
+  # Configure which section for Latest Works
+  workSection: "work"
+
+  # Maximum number of item in Latest Posts or Works
+  latestCount: 5
+  themeAttrib: false
+  # HighlightJs
+  HighlightJs: true
+  highlightJsStyle: "ocean"
+  HighlightJsLanguages:
+    - javascript
+    - python
+    - go
+    - css
+
+  # Social Links
+  email: "iamnomand@gmail.com"
+  github: "https://github.com/v-tom/"
+  twitter: "https://twitter.com/iamnomand"
+
+taxonomies:
+  tags: "tags"
+
+
+Paginate: 24
+
+menu:
+  main:
+    - name: "Blog"
+      url: "/blog/"
+      title: "Blog"
+      Identifier: "Blog"

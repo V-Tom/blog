@@ -1,0 +1,29 @@
+			<hr class="sep" />
+		</main>
+		<footer class="container no-print">
+			<div class="u-footer">
+				{{ partial "social.html" . }}
+				<p>
+					{{ if .Site.Params.themeAttrib | default true }}
+					{{ T "usedTheme" }} <a href="https://github.com/yursan9/manis-hugo-theme">Manis</a><br>
+					{{ end }}
+					{{ with .Site.Copyright }}
+					{{ . | safeHTML }}
+					{{ end }}
+					{{ with .Site.Params.LicenseURL }}
+					| <a href="{{.}}">{{ T "license" }}</a>
+					{{ end }}
+				</p>
+				{{ if ne .Kind "home" }}
+				<a href="#brand">
+					<img class="icon-text" src="/img/toup.svg" alt="To Up"/>
+					<span>{{ T "toUp" }}</span>
+				</a>
+				{{ end }}
+			</div>
+		</footer>
+		{{ if .Site.Params.HighlightJs }}
+		<script>hljs.initHighlightingOnLoad();</script>
+		{{ end }}
+	</body>
+</html>

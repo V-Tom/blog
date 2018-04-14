@@ -1,0 +1,39 @@
+#markdown {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    &:target {
+      text-decoration: underline;
+      a {
+        &:before {
+          opacity: 1;
+          color: inherit;
+        }
+      }
+    }
+
+    a {
+      color: #000;
+      cursor: pointer;
+      &:before {
+        position: absolute;
+        opacity: 0;
+        transition: opacity 300ms ease;
+        right: 100%;
+        display: block;
+        color: rgba(34, 34, 34, 0.1);
+        content: "#";
+        padding-right: 5px;
+      }
+      &:hover {
+        &:before {
+          color: inherit;
+          opacity: 1;
+        }
+      }
+    }
+  }
+}

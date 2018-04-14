@@ -1,0 +1,25 @@
+{{ partial "header" . }}
+<article>
+    <header>{{ partial "title" . }}</header>
+    <section id="markdown">
+        {{ .Content }}
+    </section>
+    <nav class="no-print post-nav">
+        {{ if .PrevInSection }}
+        <a class="prev-post" href="{{ .PrevInSection.Permalink }}">
+            <img class="icon-text" src="/img/prev.svg"/>
+            {{- .PrevInSection.Title -}}
+        </a>
+        {{ end }}
+        {{ if .NextInSection }}
+        <a class="next-post" href="{{ .NextInSection.Permalink }}">
+            {{- .NextInSection.Title -}}
+            <img class="icon-text" src="/img/next.svg"/>
+        </a>
+        {{ end }}
+    </nav>
+</article>
+<script src="/js/bundle.js"></script>
+{{ partial "related" . }}
+{{ partial "disqus" . }}
+{{ partial "footer" . }}

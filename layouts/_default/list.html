@@ -1,0 +1,15 @@
+{{ partial "header" . }}
+<article>
+	<header>
+		{{ partial "title" . }}
+		{{ with .Content }}{{.}}{{ end }}
+	</header>
+	<ul class="no-bullet">
+	    {{ range .Paginator.Pages }}
+	    {{ partial "li" . }}
+	    {{ end }}
+	</ul>
+	{{ partial "paginator" . }}
+</article>
+<script src="/js/bundle.js"></script>
+{{ partial "footer" . }}
