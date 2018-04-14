@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>React on TOM&#39;s zone</title>
+    <link>https://t-tom.me/tags/react/</link>
+    <description>Recent content in React on TOM&#39;s zone</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ZH-CN</language>
+    <lastBuildDate>Sat, 13 Jan 2018 15:29:40 +0800</lastBuildDate>
+    
+	<atom:link href="https://t-tom.me/tags/react/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>React Native ART 介绍与实践</title>
+      <link>https://t-tom.me/blog/2018-01-13-react-native-art/</link>
+      <pubDate>Sat, 13 Jan 2018 15:29:40 +0800</pubDate>
+      
+      <guid>https://t-tom.me/blog/2018-01-13-react-native-art/</guid>
+      <description>TBD
+ React Native ART 由来 React-Art  是 Reactjs 团队基于 Art（一个兼容各个浏览器SVG绘制的API封装）开发的模块，让 React 开发者能使用 jsx 语法绘制 svg。
+React Native 团队分别在0.10.0和0.18.0也添加了iOS和Android平台对 react-art 的支持，官网文档至今对其只字未提。本文旨在介绍安静躺在 react-native/Libraries/ 里的ART，并展示一些实践结果。
+在React Native中ART是个非常重要的库，它让非常酷炫的绘图及动画变成了可能。但是可能是知道的人真的不多导致文档及少中文更少。很多都是把英文的参数列表翻译过来，也没有案例。
+为什么用 ART React Native 本身自带的 &amp;lt;Image&amp;gt; 有很多缺陷：
+首先是不支持 SVG 格式的资源，目前的解决方案有通过 ReactNative-SVG 进行实现，但是这个库需要更改客户端bundle文件，带来一定的风险。
+其次是 Image decoding can take more than a frame-worth of time，图片的解码由于不在主线程中进行，所以不能确保所有图片和内容在同一帧内出现，使用 &amp;lt;Image&amp;gt;标签的制作的组件里的图（比如icon）可能是三三两两“闪现”出来的，让人怀疑是个webview，体验远不如原生，尤其是在开发环境下最为明显。
+其次就是不能支持矢量图形，必须放置 @2x 或者 @3x 对应的图片。
+ART能干什么 俗话说，库如其名，背负着如此具有“艺术感”名字的ART生来就是为了绘制矢量图的，或者说是 画UI的，ART可以解决上诉的所有缺陷。
+在我看来，或者说我目前业务需求用到的功能：
+ ART 可以解决上诉 &amp;lt;Image&amp;gt; 的缺陷：解码和矢量图形 ART 可以实现 UI 上的一些渐变，比如渐变按钮，渐变背景或者底色。以及一些交互性较强的动画——画UI ART 另外一个场景就是简单数据可视化。  使用 ART  本文使用的 RN版本为0.</description>
+    </item>
+    
+    <item>
+      <title>React 模式，技巧，技巧和窍门</title>
+      <link>https://t-tom.me/blog/2017-11-02-react-%E6%A8%A1%E5%BC%8F%E6%8A%80%E5%B7%A7%E6%8A%80%E5%B7%A7%E5%92%8C%E7%AA%8D%E9%97%A8/</link>
+      <pubDate>Thu, 02 Nov 2017 15:29:40 +0800</pubDate>
+      
+      <guid>https://t-tom.me/blog/2017-11-02-react-%E6%A8%A1%E5%BC%8F%E6%8A%80%E5%B7%A7%E6%8A%80%E5%B7%A7%E5%92%8C%E7%AA%8D%E9%97%A8/</guid>
+      <description>这篇文章整理了学习 React 过程中以及实际开发应用当中一些模式，技巧，技巧和窍门。
+大部门内容是基于 React 框架下面产生的一些内容，有很大的局限性，但是确实带来了新的理念和开发方式，仁者见仁智者见智，多学习一点内容总归对职业生涯有好处。
+ 本篇文章还在持续更新中，如果有错误烦请指正。
+ Normally React 一些常见的关于React需要了解的内容，就简单列举如下。下面只会列到本人认为比较值得重视的部分进行详细陈述。
+ 语法层面——基础入门
+  JSX语法、React基本内容等 Derocator 或者 async await 等常见ES6、ES7的内容 React Lists and Keys   常用层面——日常开发必备
+  smart component and dumb component container component and presentation component stateless component Events handler bind this：bind this 或者 Derocator 或者 proposal-class-public-fields-declarations Conditionals render in JSX 或者 IIFE render in JSX 或者 methods render in JSX Dynamic router 以及 dynamic component，甚至于 dynamic redux injection HOC   进阶层面——性能优化和业务解耦必备</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Babel on TOM&#39;s zone</title>
+    <link>https://t-tom.me/tags/babel/</link>
+    <description>Recent content in Babel on TOM&#39;s zone</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ZH-CN</language>
+    <lastBuildDate>Sun, 13 Aug 2017 15:29:40 +0800</lastBuildDate>
+    
+	<atom:link href="https://t-tom.me/tags/babel/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>译文:Understanding ASTs by Building Your Own Babel Plugin</title>
+      <link>https://t-tom.me/blog/2017-08-13-%E8%AF%91%E6%96%87understanding-asts-by-building-your-own-babel-plugin/</link>
+      <pubDate>Sun, 13 Aug 2017 15:29:40 +0800</pubDate>
+      
+      <guid>https://t-tom.me/blog/2017-08-13-%E8%AF%91%E6%96%87understanding-asts-by-building-your-own-babel-plugin/</guid>
+      <description>原文地址
+Language Overview  We want to design a plugin that will allow us to use regular object and array literals, which will be transformed into persistent data structures using Mori
+ 我们想要设计一个插件：它将允许我们通过使用常规对象和数值文本，可以使用Mori转化为持久性的数据结构。
+ We want to write code like this:
+ 我们要写这样的代码：
+var foo = { a: 1 }; var baz = foo.a = 2; foo.a === 1; baz.a === 2;   And transform it into code like this:</description>
+    </item>
+    
+  </channel>
+</rss>

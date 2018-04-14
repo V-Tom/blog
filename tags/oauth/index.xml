@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Oauth on TOM&#39;s zone</title>
+    <link>https://t-tom.me/tags/oauth/</link>
+    <description>Recent content in Oauth on TOM&#39;s zone</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ZH-CN</language>
+    <lastBuildDate>Mon, 02 Apr 2018 11:31:25 +0800</lastBuildDate>
+    
+	<atom:link href="https://t-tom.me/tags/oauth/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>从jwt到OAuth</title>
+      <link>https://t-tom.me/blog/2018-04-02-%E4%BB%8Ejwt%E5%88%B0oauth/</link>
+      <pubDate>Mon, 02 Apr 2018 11:31:25 +0800</pubDate>
+      
+      <guid>https://t-tom.me/blog/2018-04-02-%E4%BB%8Ejwt%E5%88%B0oauth/</guid>
+      <description>JWT JWT 是 JSON Web Token 的缩写，可以简单理解为生产者颁发给消费者一个令牌。参照 JWT 规范 对其所做的描述是：
+ JSON Web令牌（JWT）是一种紧凑的、URL安全的方式，用来表示要在双方之间传递的“声明”。JWT中的声明被编码为JSON对象，用作JSON Web签名（JWS）结构的有效内容或JSON Web加密（JWE）结构的明文，使得声明能够被：数字签名、或利用消息认证码（MAC）保护完整性、加密。
+ 这个规范允许我们使用JWT在用户和服务器之间传递安全可靠的信息。
+JWT的构成 JWT 由三部分构成：
+ Header ：头部，即 JOSE Header Claims ：声明，即 JWT Payload Signature ：签名，即 JWT Signature  JWT由这三部分组成，每一部分都是使用base64url编码的，并使用句点（.）连接起来
+ 这里使用base64url编码而不是普通的base64，是因为base64编码会产生+和/，这两个字符在URL中是有特殊意义的，会导致JWT不是URL安全的。
+ 头部(JOSE Header) JSOE 是 JSON Object Signing and Encryption，即JSON对象签名与加密的缩写。
+{ &amp;quot;typ&amp;quot;: &amp;quot;JWT&amp;quot;, &amp;quot;alg&amp;quot;: &amp;quot;HS256&amp;quot; }  示例中给出了两个声明：
+ typ：类型，在JOSE Header中这是个可选参数，但这里我们需要指明类型是JWT。 alg：算法，必须是 jwt 支持的算法，算法列表可以在jwt 规范当中找到。  简单示例：
+package main import &amp;quot;bytes&amp;quot; import ( &amp;quot;encoding/json&amp;quot; &amp;quot;encoding/base64&amp;quot; &amp;quot;fmt&amp;quot; ) func header() string { header := struct { Alg string `json:&amp;quot;alg&amp;quot;` Typ string `json:&amp;quot;typ&amp;quot;` }{ Alg: &amp;quot;HS256&amp;quot;, Typ: &amp;quot;JWT&amp;quot;, } data, _ := json.</description>
+    </item>
+    
+  </channel>
+</rss>

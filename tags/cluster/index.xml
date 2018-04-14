@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Cluster on TOM&#39;s zone</title>
+    <link>https://t-tom.me/tags/cluster/</link>
+    <description>Recent content in Cluster on TOM&#39;s zone</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ZH-CN</language>
+    <lastBuildDate>Sun, 08 Apr 2018 14:22:25 +0800</lastBuildDate>
+    
+	<atom:link href="https://t-tom.me/tags/cluster/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>谈谈 Node.js 的单线程</title>
+      <link>https://t-tom.me/blog/2018-04-08-%E8%B0%88%E8%B0%88node.js%E7%9A%84%E5%8D%95%E7%BA%BF%E7%A8%8B/</link>
+      <pubDate>Sun, 08 Apr 2018 14:22:25 +0800</pubDate>
+      
+      <guid>https://t-tom.me/blog/2018-04-08-%E8%B0%88%E8%B0%88node.js%E7%9A%84%E5%8D%95%E7%BA%BF%E7%A8%8B/</guid>
+      <description>前言 从Node.js进入人们的视野时，我们所知道的它就由这些关键字组成 事件驱动、非阻塞I/O、高效、轻量，它在官网中也是这么描述自己的。
+ Node.js® is a JavaScript runtime built on Chrome’s V8 JavaScript engine. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient.
+ Node.js 结构 我们可以看到，Node.js 的结构大致分为三个层次：
+ Node.js 标准库，这部分是由 Javascript 编写的，即我们使用过程中直接能调用的 API。在源码中的 lib 目录下可以看到。 Node bindings，这一层是 Javascript 与底层 C/C++ 能够沟通的关键，前者通过 bindings 调用后者，相互交换数据。实现在 node.cc 这一层是支撑 Node.js 运行的关键，由 C/C++ 实现。  V8：Google 推出的 Javascript VM，也是 Node.js 为什么使用的是 Javascript 的关键，它为 Javascript 提供了在非浏览器端运行的环境，它的高效是 Node.js 之所以高效的原因之一。 Libuv：它为 Node.</description>
+    </item>
+    
+    <item>
+      <title>如何创建一个Node.js 的 Docker 开发环境</title>
+      <link>https://t-tom.me/blog/2017-04-22-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AAnode.js-%E7%9A%84-docker-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</link>
+      <pubDate>Sat, 22 Apr 2017 15:29:40 +0800</pubDate>
+      
+      <guid>https://t-tom.me/blog/2017-04-22-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AAnode.js-%E7%9A%84-docker-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</guid>
+      <description>本文以构建一个 Node.js Docker应用 为目标写的一个教程。当前操作系统环境 Mac OSX Sierra 10.12.4
+ Docker介绍  Docker 是个划时代的开源项目，它彻底释放了计算虚拟化的威力，极大提高了应用的运行效率，降低了云计算资源供应的成本！ 使用 Docker，可以让应用的部署、测试和分发都变得前所未有的高效和轻松！
+ Docker引擎的基础是Linuxring器(Linux Containers，LXC)技术。这个并不是一个新生的概念，很早前已经出现，比如操作系统上的chroot工具、以及Solaris Containers和FreeBSD jail等等，虽然这个技术非常成熟，然而这些工具使用起来非常不方便。Docker的出现解决了这些问题。
+Docker容器虚拟化有很多好处：
+ 更高效的利用系统资源：由于容器不需要进行硬件虚拟以及运行完整操作系统等额外开销，Docker 对系统资源的利用率更高。 更快速的启动时间，Docker容器应用启动时间很快 一致的运行环境和环境隔离 持续交付和部署 更轻松的迁移服务  既然Docker这么好，我们来试试如何跑一个Node.js Docker应用。
+安装Docker 使用Docker之前，我们需要安装。Docker支持在主流操作平台上使用：包括Ubuntu、CenterOS、Windows已经MacOS系统。
+Ubuntu 在Ubuntu上安装Docker可以直接使用以下shell script
+// 最新的Docker安装需要先移除老的Docker sudo apt-get remove docker docker-engine sudo apt-get update sudo curl -sSL https://get.docker.com/ | sh  Windows Windows 上我们可以直接下载 Docker GUI
+Mac OSX Mac OSX 上我们也可以直接下载 Docker GUI。
+Docker的主要目标是Build ship and run any app,any where.</description>
+    </item>
+    
+  </channel>
+</rss>

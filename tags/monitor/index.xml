@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Monitor on TOM&#39;s zone</title>
+    <link>https://t-tom.me/tags/monitor/</link>
+    <description>Recent content in Monitor on TOM&#39;s zone</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ZH-CN</language>
+    <lastBuildDate>Tue, 12 Sep 2017 15:29:40 +0800</lastBuildDate>
+    
+	<atom:link href="https://t-tom.me/tags/monitor/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>RN性能检测和错误捕捉</title>
+      <link>https://t-tom.me/blog/2017-09-12-rn%E6%80%A7%E8%83%BD%E6%A3%80%E6%B5%8B%E5%92%8C%E9%94%99%E8%AF%AF%E6%8D%95%E6%8D%89/</link>
+      <pubDate>Tue, 12 Sep 2017 15:29:40 +0800</pubDate>
+      
+      <guid>https://t-tom.me/blog/2017-09-12-rn%E6%80%A7%E8%83%BD%E6%A3%80%E6%B5%8B%E5%92%8C%E9%94%99%E8%AF%AF%E6%8D%95%E6%8D%89/</guid>
+      <description>在复杂的网络环境和浏览器环境下，自测、QA测试以及 Code Review 都是不够的，如果对页面稳定性和准确性要求较高，就必须有一套完善的代码异常监控体系好的产品，这样才能很好的得到用户的反馈从而不断的迭代改进我们的产品。
+而且复杂的用户终端设备，也需要通过性能监控发现部分前端性能瓶颈，以便进行优化；通过错误日志收集，及时获得前端的运行时错误
+收集错误异常  错误异常分为 web 错误异常和React-native 错误异常
+ web 错误异常 总体来说：平时收集日志的手段，可以归类为两个方面，一个是逻辑中的错误判断，为主动判断，如try...catch；一个是利用语言给我们提供的捷径，暴力式获取错误信息，如 window.onerror；当然也存在另外一种错误，那就是Promise unhandlerejection
+try…catch 判断一个代码段中可能存在的错误：
+try { doSomeThing() // code... } catch(e){ // send format error Reporter.send(format(e)) }  window.onerror 这个用来捕获全局错误：
+window.onerror = function() { // send format error var errInfo = format(arguments); Reporter.send(errInfo) return true };  在上面的函数中返回 return true，错误便不会暴露到控制台中。下面是它的参数信息：
+/** * @param {String} errorMessage 错误信息 * @param {String} scriptURI 出错的文件 * @param {Long} lineNumber 出错代码的行号 * @param {Long} columnNumber 出错代码的列号 * @param {Object} errorObj 错误的详细信息，Anything */ window.</description>
+    </item>
+    
+  </channel>
+</rss>

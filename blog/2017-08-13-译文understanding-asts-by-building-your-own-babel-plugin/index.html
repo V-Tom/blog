@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.38.2" />
+    <title>译文:Understanding ASTs by Building Your Own Babel Plugin - TOM&#39;s zone</title>
+
+    <meta name="description" content="原文地址
+Language Overview  We want to design a plugin that will allow us to use regular object and array literals, which will be transformed into persistent data structures using Mori
+ 我们想要设计一个插件：它将允许我们通过使用常规对象和数值文本，可以使用Mori转化为持久性的数据结构。
+ We want to write code like this:
+ 我们要写这样的代码：
+var foo = { a: 1 }; var baz = foo.a = 2; foo.a === 1; baz.a === 2;   And transform it into code like this:">
+
+
+    
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato|Raleway">
+
+    
+    <link rel="stylesheet"
+          href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/ocean.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/javascript.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/python.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/go.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/css.min.js"></script>
+    
+    
+    <link rel="stylesheet" href="/css/bundle.css"/>
+    <style>
+	a { color: #ff8181; }
+	blockquote {
+		border-left-color: #ff8181;
+		border-right-color: #ff8181; }
+	.bar a:hover {
+		color: #ff8181;
+		text-decoration: none; }
+	.sep {
+		margin-top: 2rem;
+		margin-bottom: 1rem;
+		margin-left:0;
+		width: 24rem;
+		border-top: 2px solid #ff8181; }
+</style>
+
+</head>
+
+<body>
+<header class="container no-print">
+	<div class="u-header">
+		<nav class="bar">
+	<ul><li>
+			<a href="/">
+				<img class="icon-text" src="/img/prev.svg"/>
+			</a>
+		</li><li><a href="/blog/">Blog</a></li></ul>
+</nav>
+
+	</div>
+</header>
+<main class="container">
+
+<article>
+    <header><hgroup id="brand">
+	<h1>译文:Understanding ASTs by Building Your Own Babel Plugin</h1>
+	<h5>
+		
+		<time datetime="2017-08-13 15:29:40 &#43;0800 CST">Aug 13, 2017</time>
+		<span class="no-print">
+			-
+				
+				<a href="/tags/FrontEnd">FrontEnd</a>
+				
+				<a href="/tags/AST">AST</a>
+				
+				<a href="/tags/Babel">Babel</a>
+				<span>
+	</h5>
+	
+</hgroup>
+<hr class="sep" />
+</header>
+    <section id="markdown">
+        
+
+<p><a href="https://www.sitepoint.com/understanding-asts-building-babel-plugin/">原文地址</a></p>
+
+<h3 id="language-overview">Language Overview</h3>
+
+<blockquote>
+<p>We want to design a plugin that will allow us to use regular object and array literals, which will be transformed into persistent data structures using <a href="https://www.sitepoint.com/immutable-data-functional-javascript-mori/">Mori</a></p>
+</blockquote>
+
+<p>我们想要设计一个插件：它将允许我们通过使用常规对象和数值文本，可以使用<a href="https://www.sitepoint.com/immutable-data-functional-javascript-mori/">Mori</a>转化为持久性的数据结构。</p>
+
+<blockquote>
+<p>We want to write code like this:</p>
+</blockquote>
+
+<p>我们要写这样的代码：</p>
+
+<pre><code>var foo = { a: 1 };
+var baz = foo.a = 2;
+foo.a === 1;
+baz.a === 2;
+</code></pre>
+
+<blockquote>
+<p>And transform it into code like this:</p>
+</blockquote>
+
+<p>然后把它转化成这样的代码：</p>
+
+<pre><code>var foo = mori.hashMap('a', 1);
+var baz = mori.assoc(foo, 'a', 2);
+mori.get(foo, 'a') === 1;
+mori.get(baz, 'a') === 2;
+</code></pre>
+
+<blockquote>
+<p>Let’s get started with <code>MoriScript</code>!</p>
+</blockquote>
+
+<p>让我们开始使用 <code>MoriScript</code>。</p>
+
+<h3 id="babel-overview">Babel Overview</h3>
+
+<blockquote>
+<p>if we look beneath the surface of <code>Babel</code>, we’ll find three important tools that handle the majority of the process.</p>
+</blockquote>
+
+<p>如果我们来看看 <code>Babel</code> 的表面，我们会发现这里有3个重要的工具来处理大部分的流程：</p>
+
+<p><img src="https://oga6csqie.qnssl.com/MTQ1OTk0OTgwOGJhYmVsLnBuZz90eXBlPWltYWdlL3BuZyZ0aW1lPTE0ODc2MDEwMDcwNDcmc2l6ZT0zMDAxMQ==" alt="babel overview" /></p>
+
+<h4 id="parse">Parse</h4>
+
+<blockquote>
+<p><a href="https://github.com/babel/babylon">Babylon</a> is the parser and it understands how to take a string of JavaScript code and turn it into a computer friendly representation called an Abstract Syntax Tree (AST).</p>
+</blockquote>
+
+<p><a href="https://github.com/babel/babylon">Babylon</a>是解析器，它知道如何提取一串JavaScript代码，并将其转换为计算机友好的表示方式，称为抽象语法树（AST）。</p>
+
+<h4 id="transform">Transform</h4>
+
+<blockquote>
+<p>The <a href="https://www.npmjs.com/package/babel-traverse">babel-traverse</a> module allows you to explore, analyse and potentially modify the AST.</p>
+</blockquote>
+
+<p><a href="https://www.npmjs.com/package/babel-traverse">babel-traverse</a> 模块允许你探索、分析、潜在修改 AST。</p>
+
+<h4 id="generate">Generate</h4>
+
+<blockquote>
+<p>Finally, the <a href="https://www.npmjs.com/package/babel-generator">babel-generator</a> module is used to turn the transformed AST back into regular code.</p>
+</blockquote>
+
+<p>最后，通过<a href="https://www.npmjs.com/package/babel-generator">babel-generator</a> 模块被用来将转换后的 AST 恢复成正常的代码。</p>
+
+<h3 id="what-is-an-ast">What is an AST?</h3>
+
+<blockquote>
+<p>It’s fundamental that we understand the purpose of an AST before continuing with this tutorial. So let’s dive in to see what they are and why we need them.</p>
+</blockquote>
+
+<p>在继续本教程之前，我们了解 <a href="https://en.wikipedia.org/wiki/Abstract_syntax_tree">AST</a>是非常重要的事情。 所以让我们来看看它们是什么以及为什么我们需要它们。</p>
+
+<blockquote>
+<p>JavaScript programs are generally made up of a sequence of characters, each with some visual meaning for our human brains. This works really well for us, as it allows us to use matching characters ([], {}, ()), pairs of characters (&ldquo;, &ldquo;&rdquo;) and indentation to make our programs easier for us to interpret.</p>
+</blockquote>
+
+<p>JavaScript程序通常由一系列字符组成，每个字符对我们的人类大脑来说都有一些视觉意义。 这对我们真的非常有用，因为它允许我们使用匹配的字符（[]，{}，（）），字符对（&rdquo;，“”）和缩进，使我们的程序对我们来说更容易解释、抽象。</p>
+
+<blockquote>
+<p>However, this isn’t very helpful for computers. For them, each of these characters is just a numeric value in memory and they can’t use them to ask high level questions like “How many variables are there in this declaration?”. Instead we need to compromise and find a way to turn our code into something that we can program and computers can understand.</p>
+</blockquote>
+
+<p>但是，这对计算机来说不是很有帮助。 对于它们，这些字符中的每一个只是内存中的一个数字值，他们不能使用它们来问高级问题，例如 “这个声明中有多少个变量”？ 相反，我们需要妥协，并找到一种方式将我们的代码转换成我们可以编程并且计算机可以理解的东西。</p>
+
+<blockquote>
+<p>Have a look at the following code.</p>
+</blockquote>
+
+<p>看看下面的代码</p>
+
+<pre><code class="language-javascript">var a = 3;
+a + 5
+</code></pre>
+
+<blockquote>
+<p>When we generate an AST for this program, we end up with a structure that looks like this:</p>
+</blockquote>
+
+<p>当我们为这个程序生成一个 AST 的时候，我们最终得到一个如下所示的结构:</p>
+
+<p><img src="https://oga6csqie.qnssl.com/MTQ1OTkzNDM3MGFzdC5wbmc/dHlwZT1pbWFnZS9wbmcmdGltZT0xNDg3NjAwOTAwOTE1JnNpemU9NTA2NzI=" alt="AST for example code" /></p>
+
+<blockquote>
+<p>All ASTs start with a Program node at the root of the tree, which contains all of the top level statements in our program. In this case, we only have two:</p>
+</blockquote>
+
+<p>所有的 AST 程序都从树结构的根节点开始，它包含我们程序中所有的顶层语句，在这种情况下，我们只有2个：</p>
+
+<blockquote>
+<p>A VariableDeclaration with one VariableDeclarator that assigns the Identifier &ldquo;a&rdquo; to the NumericLiteral &ldquo;3&rdquo;.</p>
+</blockquote>
+
+<p>一个包含变量声明的变量声明符，将标识符&rsquo;a&rsquo;分配给数字字面量 &lsquo;3&rsquo;。</p>
+
+<blockquote>
+<p>An ExpressionStatement which is in turn is made up of a BinaryExpression, which is described as an Identifier &ldquo;a&rdquo;, an operator &ldquo;+&rdquo; and another NumericLiteral &ldquo;5&rdquo;.</p>
+</blockquote>
+
+<p>一个表达式语句由二进制表达式组成，在这里被描述为一个标识符“a”、运算符“+”以及另一个数字字面量“5”。</p>
+
+<blockquote>
+<p>Despite the fact that they are made up of simple building blocks, the size of ASTs means they are often quite complex, especially for nontrivial programs. Rather than trying to figure out ASTs ourselves, we can use <a href="https://astexplorer.net/">astexplorer.net</a>, which allows us to input JavaScript on the left, then outputs an explorable representation of the AST on the right. We’ll use this tool exclusively to understand and experiment with code as we continue.</p>
+</blockquote>
+
+<p>事实上它们尽管由一些简单的组件组成，AST的大小意味着它们往往相当复杂，特别是对于非平凡的程序，我们可以使用<a href="https://astexplorer.net/">astexplorer.net</a>，它允许我们在左边输入JavaScript，然后在右边输出一个可探索的AST视图，而不是试图我们自己来找出AST。 我们将继续使用此工具专门用于理解和实验代码。</p>
+
+<blockquote>
+<p>To stay consistent with <code>Babel</code>, make sure you choose <code>babylon6</code> as a parser.</p>
+</blockquote>
+
+<p>为了和 <code>Babel</code> 转换保持一致，确保你选择了 <code>babylon6</code> 作为解析器。</p>
+
+<blockquote>
+<p>When writing a <code>Babel</code> plugin, it’s our job to take an AST then insert/move/replace/delete some nodes to create a new AST which can be used to generate code.</p>
+</blockquote>
+
+<p>当开始去写一个 <code>Babel</code> 插件的时候,我们的工作便是：提取一个AST，然后插入/移动/替换/删除一些节点创建一个新的AST，这些可用于生成代码。</p>
+
+<h3 id="setup">Setup</h3>
+
+<blockquote>
+<p>Make sure you have <code>Node</code> and <code>Npm</code> installed before you start. Then create a folder for the project, create a <code>package.json</code> file and install the following dev dependencies.</p>
+</blockquote>
+
+<p>在你开始前确认你已经装过 <code>Node</code> 和 <code>Npm</code>，然后为项目创建一个文件目录、创建 <code>package.json</code>文件，然后安装下面的一些开发依赖。</p>
+
+<pre><code class="language-javascript">mkdir moriscript &amp;&amp; cd moriscript
+npm init -y
+npm install --save-dev babel-core
+</code></pre>
+
+<blockquote>
+<p>Then we’ll create a file for our plugin and inside we’ll export a default function.</p>
+</blockquote>
+
+<p>接下来我们要为我们的插件创建一个文件，然后内部我们将会导出一个默认函数。</p>
+
+<pre><code class="language-javascript">// moriscript.js
+module.exports = function(babel) {
+  var t = babel.types;
+  return {
+    visitor: {
+
+    }
+  };
+};
+</code></pre>
+
+<blockquote>
+<p>This function exposes an interface for the visitor pattern, which we’ll come back to later.</p>
+</blockquote>
+
+<p>此函数为访问者模式提供了一个接口，稍后我们将返回这里。</p>
+
+<blockquote>
+<p>Finally we’ll create an runner that we can use to test our plugin as we go.</p>
+</blockquote>
+
+<p>最后，我们将创建一个运行器以便我们可以用它来测试我们的插件。</p>
+
+<pre><code class="language-javascript">// run.js
+var fs = require('fs');
+var babel = require('babel-core');
+var moriscript = require('./moriscript');
+
+// read the filename from the command line arguments
+var fileName = process.argv[2];
+
+// read the code from this file
+fs.readFile(fileName, function(err, data) {
+  if(err) throw err;
+
+  // convert from a buffer to a string
+  var src = data.toString();
+
+  // use our plugin to transform the source
+  var out = babel.transform(src, {
+    plugins: [moriscript]
+  });
+
+  // print the generated code to screen
+  console.log(out.code);
+});
+
+</code></pre>
+
+<blockquote>
+<p>We can call this script with the name of an example <code>MoriScript</code> file to check that it generates the JavaScript we are expecting. For example, <code>node run.js example.js</code></p>
+</blockquote>
+
+<p>我们可以使用一个示例 <code>MoriScript</code> 文件的名称来调用此脚本，以检查它是否生成我们期望的JavaScript，例如：<code>node run.js example.js</code></p>
+
+<h3 id="arrays">Arrays</h3>
+
+<blockquote>
+<p>The first and foremost goal for <code>MoriScript</code> is to convert <code>Object</code> and <code>Array</code> literals into their Mori counterparts:<code>HashMaps</code> and<code>Vectors</code>. We’ll tackle arrays first, as they’re slightly simpler.</p>
+</blockquote>
+
+<p><code>MoriScript</code>的首要目标是将<code>Object</code>和<code>Array</code>字面量转换为Mori对应函数：<code>HashMaps</code>和<code>Vectors</code>。 我们将首先处理数组，因为它们稍微简单一些。</p>
+
+<pre><code class="language-javascript">var bar = [1, 2, 3];
+// should become
+var bar = mori.vector(1, 2, 3);
+</code></pre>
+
+<blockquote>
+<p>Paste the code from above into <a href="https://astexplorer.net/">astexplorer</a> and highlight the array literal [1, 2, 3] to see the corresponding AST nodes.</p>
+</blockquote>
+
+<p>将上面的代码粘贴到<a href="https://astexplorer.net/">astexplorer</a>中并突出显示数组文本[1，2，3]以查看对应的AST节点。</p>
+
+<blockquote>
+<p>For the sake of readability, we’ll omit the metadata fields that we don’t need to worry about.</p>
+</blockquote>
+
+<p>为了便于阅读，我们将省略我们不需要关心的元数据字段内容。</p>
+
+<pre><code class="language-javascript">{
+  &quot;type&quot;: &quot;ArrayExpression&quot;,
+  &quot;elements&quot;: [
+    {
+      &quot;type&quot;: &quot;NumericLiteral&quot;,
+      &quot;value&quot;: 1
+    },
+    {
+      &quot;type&quot;: &quot;NumericLiteral&quot;,
+      &quot;value&quot;: 2
+    },
+    {
+      &quot;type&quot;: &quot;NumericLiteral&quot;,
+      &quot;value&quot;: 3
+    }
+  ]
+}
+</code></pre>
+
+<blockquote>
+<p>Now let’s do the same with the call to <code>mori.vector(1, 2, 3)</code>.</p>
+</blockquote>
+
+<p>现在让我们对调用<code>mori.vector（1，2，3）</code>做同样的事情。</p>
+
+<pre><code class="language-javascript">{
+  &quot;type&quot;: &quot;CallExpression&quot;,
+  &quot;callee&quot;: {
+    &quot;type&quot;: &quot;MemberExpression&quot;,
+    &quot;object&quot;: {
+      &quot;type&quot;: &quot;Identifier&quot;,
+      &quot;name&quot;: &quot;mori&quot;
+    },
+    &quot;property&quot;: {
+      &quot;type&quot;: &quot;Identifier&quot;,
+      &quot;name&quot;: &quot;vector&quot;
+    }
+  },
+  &quot;arguments&quot;: [
+    {
+      &quot;type&quot;: &quot;NumericLiteral&quot;,
+      &quot;value&quot;: 1
+    },
+    {
+      &quot;type&quot;: &quot;NumericLiteral&quot;,
+      &quot;value&quot;: 2
+    },
+    {
+      &quot;type&quot;: &quot;NumericLiteral&quot;,
+      &quot;value&quot;: 3
+    }
+  ]
+}
+</code></pre>
+
+<blockquote>
+<p>If we express this visually, we’ll get a better sense of what needs to change between the two trees.</p>
+</blockquote>
+
+<p>如果我们通过可视图进行表达，我们将可以更好地了解需要在两棵树之间改变什么。</p>
+
+<p><img src="https://oga6csqie.qnssl.com/MTQ1OTk0NzUzOGFycmF5LnBuZz90eXBlPWltYWdlL3BuZyZ0aW1lPTE0ODc2MDA4NDE1MDEmc2l6ZT02MjMwMQ==" alt="visually diff" /></p>
+
+    </section>
+    <nav class="no-print post-nav">
+        
+        <a class="prev-post" href="https://t-tom.me/blog/2017-07-04-mavic-pro-%E8%AF%84%E6%B5%8B/">
+            <img class="icon-text" src="/img/prev.svg"/>Mavic Pro 初见</a>
+        
+        
+        <a class="next-post" href="https://t-tom.me/blog/2017-09-12-rn%E6%80%A7%E8%83%BD%E6%A3%80%E6%B5%8B%E5%92%8C%E9%94%99%E8%AF%AF%E6%8D%95%E6%8D%89/">RN性能检测和错误捕捉<img class="icon-text" src="/img/next.svg"/>
+        </a>
+        
+    </nav>
+</article>
+<script src="/js/bundle.js"></script>
+
+
+
+<div id="disqus_thread" class="no-print"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'toms-blog-1';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+			<hr class="sep" />
+		</main>
+		<footer class="container no-print">
+			<div class="u-footer">
+				
+<a href="mailto:iamnomand@gmail.com"><img class="icon-social" src="/img/email.svg" alt="Email Me!"/></a>
+
+
+<a href="https://github.com/v-tom/"><img class="icon-social" src="/img/github.svg" alt="Github"/></a>
+
+
+<a href="https://twitter.com/iamnomand"><img class="icon-social" src="/img/twitter.svg" alt="Twitter"/></a>
+
+<a href="https://t-tom.me/index.xml" target="_blank"><img class="icon-social" src="/img/feed.svg" alt="Feed"></a>
+
+				<p>
+					
+					
+					
+				</p>
+				
+				<a href="#brand">
+					<img class="icon-text" src="/img/toup.svg" alt="To Up"/>
+					<span>Back to Up</span>
+				</a>
+				
+			</div>
+		</footer>
+		
+		<script>hljs.initHighlightingOnLoad();</script>
+		
+	</body>
+</html>
+

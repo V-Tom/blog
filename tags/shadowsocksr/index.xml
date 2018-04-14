@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Shadowsocksr on TOM&#39;s zone</title>
+    <link>https://t-tom.me/tags/shadowsocksr/</link>
+    <description>Recent content in Shadowsocksr on TOM&#39;s zone</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ZH-CN</language>
+    <lastBuildDate>Mon, 03 Apr 2017 15:29:40 +0800</lastBuildDate>
+    
+	<atom:link href="https://t-tom.me/tags/shadowsocksr/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>利用 Shadowsocksr 和云主机翻墙</title>
+      <link>https://t-tom.me/blog/2017-04-03-%E5%88%A9%E7%94%A8-shadowsocksr-%E5%92%8C%E4%BA%91%E4%B8%BB%E6%9C%BA%E7%BF%BB%E5%A2%99/</link>
+      <pubDate>Mon, 03 Apr 2017 15:29:40 +0800</pubDate>
+      
+      <guid>https://t-tom.me/blog/2017-04-03-%E5%88%A9%E7%94%A8-shadowsocksr-%E5%92%8C%E4%BA%91%E4%B8%BB%E6%9C%BA%E7%BF%BB%E5%A2%99/</guid>
+      <description>世界那么大，我想去看看，但是被墙了… 以前用的VPN，叫做什么green vpn，总体来说，还不错，但是最近老断，于是就搞了个新的法子。申请一台云主机，在上面搭一个Shadowsocks，然后就可以在所有客户端看 YouTube 了，当然，这所有的一切都是免费的。
+ Shadowsocks已经河蟹，这里不再说ss，只说ssr：一个基于ss的新分支
+ 搭建Shadowsocksr服务器 首先需要搭建一台云主机，首先阿里云或者青云都是挺好的，但是都需要国外的主机，要不然怎么去翻墙，你也可以选择linecode、vultr、aws、azure、GCE（google）。这些大部分都有一年的免费期限，也会有免费赠送不定的体验金的福利。中间会要求绑定信用卡。
+主机建议选择Ubuntu或者debian，申请下来了后就可以安装ssr了。
+可以从这个地址上找到ssr，然后可以参照这个wiki来进行配置安装，在这里记录一下步骤吧：
+ 如果你的服务端python版本在2.6以下，那么必须更新python到2.6.x或2.7.x版本。
+ 首先需要有git：
+apt-get update &amp;amp;&amp;amp; apt-get install -y git  获取源代码：
+git clone -b manyuser https://github.com/shadowsocksr/shadowsocksr.git  进入子目录：
+cd ~/shadowsocksr &amp;amp;&amp;amp; bash initcfg.sh &amp;amp;&amp;amp; cd ~/shadowsocksr/shadowsocks  快速运行，当然也可以通过配置文件运行，具体请看wiki：
+python server.py -p 443 -k password -m aes-256-cfb -O auth_sha1_v4 -o http 说明：-p 端口 -k 密码 -m 加密方式 -O 协议插件 -o 混淆插件  配置文件参考：
+{ &amp;quot;server&amp;quot;: &amp;quot;0.0.0.0&amp;quot;, &amp;quot;server_ipv6&amp;quot;: &amp;quot;::&amp;quot;, &amp;quot;server_port&amp;quot;: 8388, &amp;quot;local_address&amp;quot;: &amp;quot;127.</description>
+    </item>
+    
+  </channel>
+</rss>

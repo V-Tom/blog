@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.38.2" />
+    <title>前端的10000个小时 - TOM&#39;s zone</title>
+
+    <meta name="description" content="我又开始扯淡了
+ 本篇文章出自原文，深有感触，有删改。
+ 10000小时定律 著名的10000小时定律，我想大家都不陌生，『要成为某个领域的专家，需要10000小时』，这个定律来源于《异类》的作者，格拉德威尔。
+作为一个程序员，每天工作10小时，每周工作五天，大约4年就能达到10000小时，那是不是每个程序员认真工作，勤勤恳恳的过完4年他就能成为专家呢？答案是显而易见的。
+首先10000小时只是必要条件，并非充分条件，也就是说，即使你花了这10000小时，可能也没什么用，再次简单的工作重复10000小时并不能给你带来什么提高，自然也就成不了专家
+ 一万小时定律 并非适合所有领域，即使有很强意志力，也很难在某些领域成为世界顶级，这里只是强调在某些领域去努力、去花费很大的精力。我觉得，这需要 实力与运气共同作用的结果
+ 简单的工作重复10000小时 吴军老师在《智能时代》一书中提过一个这样的观点：
+ 在未来的智能时代，真正受益于技术进步的个人可能不超过人口的2%。
+ 之后他又补充了一句：
+ 坦率的讲，仅仅会写几行 JavaScript 的人不属于我说的2%的行列，这些人恰恰在未来是要被计算机淘汰的。
+ 当时看到这里，我其实十分不解，吴军老师是不是太久没撸码了，现在 JavaScript 这么火，Node 那么牛掰，什么 React Native，Grunt，Gulp，Webpack，Vue，Weex，微信小程序等等，这些都是风生水起啊，怎么 JavaScript 就跪了呢？还有，我们高大上的前端工作怎么就挤不进这 2% 呢？
+后来仔细想想，这里定义的是『仅仅会写几行 JavaScript 』，事实上，如果10000小时都花在改界面，修改 DOM，改个色值，切个图，替换下图标这种简单重复的工作里面，当然挤不进这 2% 。事实上，要学的东西远远不够，前端要有危机意识。
+再来看，前端工作怎么就挤不进 2% 的人呢？ 2% 看起来还挺多，可是想想，每种职业都有其 2% ， 搬砖的有搬砖的 2%，写程序的有些程序的 2%，总不可能写程序的去抢搬砖的活儿吧。能不能挤进这 2% 要看是否善于使用智能工具，很不幸，我发现一些热门的技术的发起都和前端没啥关系，什么数字化，VR/AR，基因测序，大数据，机器学习，人工智能……
+说到这里，智能手机的飞速发展带起了移动互联网，但是这波红利被终端开发给占了一大半，直到近两年，手机性能提升才让前端开始发力。为什么 PhoneGap （现已改名 Cordova）搞了那么久没什么人用，React Native 才出了没多久就已经炙手可热。除了 React Native 师出名门，还因为它的出现是为了解决终端开发效率低以及更新审核慢的问题。
+好吧，前端不那么容易称为 2%，那我们还是继续付出10000小时，争取做个专家吧。
+那么简单的重复不足以称为专家，那对于前端来说应该要怎么做呢？我的想法是『跨界』，不满足于做前端，而是去更多的学习终端，学习后端的知识，带来思维的转变和编程能力的提高。
+ 当然也可以去阅读那些框架的源码，比如React,Koa等等，去思考和借鉴一下它们的架构和内部实现，去看看算法方面的内容来提高自己的逻辑思维能力
+ 跨界 看看现在非常热门的 JavaScript 编译器 Babel，其作者 Sebastian McKenzie 写出这样一个编译器，必须具有很强的编程能力和熟悉编译原理、AST。这样一个人虽然写的是 JavaScript，但是已经不是一个前端了，而是大神。">
+
+
+    
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato|Raleway">
+
+    
+    <link rel="stylesheet"
+          href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/ocean.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/javascript.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/python.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/go.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/css.min.js"></script>
+    
+    
+    <link rel="stylesheet" href="/css/bundle.css"/>
+    <style>
+	a { color: #ff8181; }
+	blockquote {
+		border-left-color: #ff8181;
+		border-right-color: #ff8181; }
+	.bar a:hover {
+		color: #ff8181;
+		text-decoration: none; }
+	.sep {
+		margin-top: 2rem;
+		margin-bottom: 1rem;
+		margin-left:0;
+		width: 24rem;
+		border-top: 2px solid #ff8181; }
+</style>
+
+</head>
+
+<body>
+<header class="container no-print">
+	<div class="u-header">
+		<nav class="bar">
+	<ul><li>
+			<a href="/">
+				<img class="icon-text" src="/img/prev.svg"/>
+			</a>
+		</li><li><a href="/blog/">Blog</a></li></ul>
+</nav>
+
+	</div>
+</header>
+<main class="container">
+
+<article>
+    <header><hgroup id="brand">
+	<h1>前端的10000个小时</h1>
+	<h5>
+		
+		<time datetime="2017-06-24 15:29:40 &#43;0800 CST">Jun 24, 2017</time>
+		<span class="no-print">
+			-
+				
+				<a href="/tags/FrontEnd">FrontEnd</a>
+				
+				<a href="/tags/%e6%89%af%e6%b7%a1">扯淡</a>
+				<span>
+	</h5>
+	
+</hgroup>
+<hr class="sep" />
+</header>
+    <section id="markdown">
+        
+
+<p>我又开始扯淡了</p>
+
+<blockquote>
+<p>本篇文章出自<a href="http://mp.weixin.qq.com/s?__biz=MzI5NDE2NTY3NA==&amp;mid=2247483679&amp;idx=1&amp;sn=27983af89bd092f0d916fa4afd732be9&amp;chksm=ec664cdadb11c5ccd373d4283c56f824fff7c4b0edc1f5bce3195049c014b3518defe7c8a441&amp;scene=21%23wechat_redirect">原文</a>，深有感触，有删改。</p>
+</blockquote>
+
+<h3 id="10000小时定律">10000小时定律</h3>
+
+<p>著名的10000小时定律，我想大家都不陌生，『要成为某个领域的专家，需要10000小时』，这个定律来源于《异类》的作者，格拉德威尔。</p>
+
+<p>作为一个程序员，每天工作10小时，每周工作五天，大约4年就能达到10000小时，那是不是每个程序员认真工作，勤勤恳恳的过完4年他就能成为专家呢？答案是显而易见的。</p>
+
+<p>首先10000小时只是必要条件，并非充分条件，也就是说，即使你花了这10000小时，可能也没什么用，再次简单的工作重复10000小时并不能给你带来什么提高，自然也就成不了专家</p>
+
+<blockquote>
+<p><code>一万小时定律</code> 并非适合所有领域，即使有很强意志力，也很难在某些领域成为世界顶级，这里只是强调在某些领域去努力、去花费很大的精力。我觉得，这需要 <strong>实力与运气共同作用的结果</strong></p>
+</blockquote>
+
+<h3 id="简单的工作重复10000小时">简单的工作重复10000小时</h3>
+
+<p>吴军老师在<a href="https://book.douban.com/subject/26838557/">《智能时代》</a>一书中提过一个这样的观点：</p>
+
+<blockquote>
+<p>在未来的智能时代，真正受益于技术进步的个人可能不超过人口的2%。</p>
+</blockquote>
+
+<p>之后他又补充了一句：</p>
+
+<blockquote>
+<p>坦率的讲，仅仅会写几行 JavaScript 的人不属于我说的2%的行列，这些人恰恰在未来是要被计算机淘汰的。</p>
+</blockquote>
+
+<p>当时看到这里，我其实十分不解，吴军老师是不是太久没撸码了，现在 <code>JavaScript</code> 这么火，<code>Node</code> 那么牛掰，什么 <code>React Native</code>，<code>Grunt</code>，<code>Gulp</code>，<code>Webpack</code>，<code>Vue</code>，<code>Weex</code>，微信小程序等等，这些都是风生水起啊，怎么 <code>JavaScript</code> 就跪了呢？还有，我们高大上的前端工作怎么就挤不进这 2% 呢？</p>
+
+<p>后来仔细想想，这里定义的是『仅仅会写几行 JavaScript 』，事实上，如果10000小时都花在改界面，修改 DOM，改个色值，切个图，替换下图标这种简单重复的工作里面，当然挤不进这 2% 。事实上，要学的东西远远不够，前端要有危机意识。</p>
+
+<p>再来看，前端工作怎么就挤不进 2% 的人呢？ 2% 看起来还挺多，可是想想，每种职业都有其 2% ， 搬砖的有搬砖的 2%，写程序的有些程序的 2%，总不可能写程序的去抢搬砖的活儿吧。能不能挤进这 2% 要看是否善于使用智能工具，很不幸，我发现一些热门的技术的发起都和前端没啥关系，什么数字化，VR/AR，基因测序，大数据，机器学习，人工智能……</p>
+
+<p>说到这里，智能手机的飞速发展带起了移动互联网，但是这波红利被终端开发给占了一大半，直到近两年，手机性能提升才让前端开始发力。为什么 <code>PhoneGap</code> （现已改名 Cordova）搞了那么久没什么人用，<code>React Native</code> 才出了没多久就已经炙手可热。除了 <code>React Native</code> 师出名门，还因为它的出现是为了解决终端开发效率低以及更新审核慢的问题。</p>
+
+<p>好吧，前端不那么容易称为 2%，那我们还是继续付出10000小时，争取做个专家吧。</p>
+
+<p>那么简单的重复不足以称为专家，那对于前端来说应该要怎么做呢？我的想法是『跨界』，不满足于做前端，而是去更多的学习终端，学习后端的知识，带来思维的转变和编程能力的提高。</p>
+
+<blockquote>
+<p>当然也可以去阅读那些框架的源码，比如<code>React</code>,<code>Koa</code>等等，去思考和借鉴一下它们的架构和内部实现，去看看算法方面的内容来提高自己的逻辑思维能力</p>
+</blockquote>
+
+<h3 id="跨界">跨界</h3>
+
+<p>看看现在非常热门的 <code>JavaScript</code> 编译器 <code>Babel</code>，其作者 <code>Sebastian McKenzie</code> 写出这样一个编译器，必须具有很强的编程能力和熟悉编译原理、AST。这样一个人虽然写的是 <code>JavaScript</code>，但是已经不是一个前端了，而是大神。</p>
+
+<p>上文中说到的 <code>React Native</code> 虽然写的也是 <code>JavaScript</code>，但是学了一段时间，你就会发现需要用到非常非常多的终端知识，包括封装原生控件，做和终端混合的应用，这个时候你必须去了解终端开发，去看 <code>Java</code> 和 <code>OC</code>，去学习终端知识。</p>
+
+<p>当然，首先要做好本职工作，也就是把前端做好，毕竟这是让你养家糊口的根本。</p>
+
+<p>在做好本职工作的前提下：不要守着这一点东西进行低水平的重复(我一直对切图方向的前端很不感冒)，在工作中积累一定的分析问题解决问题的能力，同时跨界的时候不要像一张白纸，而是要能复用之前做前端的时候的知识，能力，这样才是一个好的跨界。</p>
+
+<p><strong>跨界，更多的是思维的转变和能力的提高</strong></p>
+
+<p>前段时间有很严重的学习焦虑症，每天没看书就懊恼不已，以至于叫我干什么与看书学习无关的事情我都会觉得浪费时间，而且人也会很焦虑。读了一些文章，调整了心态，勤奋学习和享受生活并不是对立的，而是互为补充的。</p>
+
+<blockquote>
+<p>有了良好的身体素质和健康的生活方式，才能沉下心来认真学习来补充自己。</p>
+</blockquote>
+
+<p><strong>10000小时只是一场长跑，唯一的对手是你自己。</strong></p>
+
+<h3 id="额外的话">额外的话</h3>
+
+<p>想起刚毕业的时候在第一家公司实习的时候学习过 <code>Python</code>，后来专职前端方向，在业余时间用<code>Express</code>，<code>Koa</code>都写过这套完整的博客，确实从中学习到了很多后端方向的内容，这也算是跨界吧</p>
+
+<p>大厂要求对某一方面熟悉甚至精通，小厂需要多元。</p>
+
+<p>对于我这种无限向往大厂的人来说，还是继续在前端方向努力吧：</p>
+
+<ul>
+<li>主要吃饭的家伙，继续定期整理知识、消化、理解并以博客(当然我在扯淡)的形式来记录下来来提高自己。</li>
+<li>跨界方面多看看 <code>koa</code>,<code>flask</code>源码来作为提升、以及算法方面(毕竟为了面试)的内容。</li>
+</ul>
+
+    </section>
+    <nav class="no-print post-nav">
+        
+        <a class="prev-post" href="https://t-tom.me/blog/2017-05-03-koa%E6%BA%90%E7%A0%81%E7%AE%80%E5%8D%95%E8%A7%A3%E8%AF%BB/">
+            <img class="icon-text" src="/img/prev.svg"/>koa 源码简单解读</a>
+        
+        
+        <a class="next-post" href="https://t-tom.me/blog/2017-07-04-mavic-pro-%E8%AF%84%E6%B5%8B/">Mavic Pro 初见<img class="icon-text" src="/img/next.svg"/>
+        </a>
+        
+    </nav>
+</article>
+<script src="/js/bundle.js"></script>
+
+
+
+<div id="disqus_thread" class="no-print"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'toms-blog-1';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+			<hr class="sep" />
+		</main>
+		<footer class="container no-print">
+			<div class="u-footer">
+				
+<a href="mailto:iamnomand@gmail.com"><img class="icon-social" src="/img/email.svg" alt="Email Me!"/></a>
+
+
+<a href="https://github.com/v-tom/"><img class="icon-social" src="/img/github.svg" alt="Github"/></a>
+
+
+<a href="https://twitter.com/iamnomand"><img class="icon-social" src="/img/twitter.svg" alt="Twitter"/></a>
+
+<a href="https://t-tom.me/index.xml" target="_blank"><img class="icon-social" src="/img/feed.svg" alt="Feed"></a>
+
+				<p>
+					
+					
+					
+				</p>
+				
+				<a href="#brand">
+					<img class="icon-text" src="/img/toup.svg" alt="To Up"/>
+					<span>Back to Up</span>
+				</a>
+				
+			</div>
+		</footer>
+		
+		<script>hljs.initHighlightingOnLoad();</script>
+		
+	</body>
+</html>
+

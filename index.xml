@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>TOM&#39;s zone</title>
+    <link>https://t-tom.me/</link>
+    <description>Recent content on TOM&#39;s zone</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ZH-CN</language>
+    <lastBuildDate>Sun, 08 Apr 2018 14:22:25 +0800</lastBuildDate>
+    
+	<atom:link href="https://t-tom.me/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>谈谈 Node.js 的单线程</title>
+      <link>https://t-tom.me/blog/2018-04-08-%E8%B0%88%E8%B0%88node.js%E7%9A%84%E5%8D%95%E7%BA%BF%E7%A8%8B/</link>
+      <pubDate>Sun, 08 Apr 2018 14:22:25 +0800</pubDate>
+      
+      <guid>https://t-tom.me/blog/2018-04-08-%E8%B0%88%E8%B0%88node.js%E7%9A%84%E5%8D%95%E7%BA%BF%E7%A8%8B/</guid>
+      <description>前言 从Node.js进入人们的视野时，我们所知道的它就由这些关键字组成 事件驱动、非阻塞I/O、高效、轻量，它在官网中也是这么描述自己的。
+ Node.js® is a JavaScript runtime built on Chrome’s V8 JavaScript engine. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient.
+ Node.js 结构 我们可以看到，Node.js 的结构大致分为三个层次：
+ Node.js 标准库，这部分是由 Javascript 编写的，即我们使用过程中直接能调用的 API。在源码中的 lib 目录下可以看到。 Node bindings，这一层是 Javascript 与底层 C/C++ 能够沟通的关键，前者通过 bindings 调用后者，相互交换数据。实现在 node.cc 这一层是支撑 Node.js 运行的关键，由 C/C++ 实现。  V8：Google 推出的 Javascript VM，也是 Node.js 为什么使用的是 Javascript 的关键，它为 Javascript 提供了在非浏览器端运行的环境，它的高效是 Node.js 之所以高效的原因之一。 Libuv：它为 Node.</description>
+    </item>
+    
+    <item>
+      <title>从jwt到OAuth</title>
+      <link>https://t-tom.me/blog/2018-04-02-%E4%BB%8Ejwt%E5%88%B0oauth/</link>
+      <pubDate>Mon, 02 Apr 2018 11:31:25 +0800</pubDate>
+      
+      <guid>https://t-tom.me/blog/2018-04-02-%E4%BB%8Ejwt%E5%88%B0oauth/</guid>
+      <description>JWT JWT 是 JSON Web Token 的缩写，可以简单理解为生产者颁发给消费者一个令牌。参照 JWT 规范 对其所做的描述是：
+ JSON Web令牌（JWT）是一种紧凑的、URL安全的方式，用来表示要在双方之间传递的“声明”。JWT中的声明被编码为JSON对象，用作JSON Web签名（JWS）结构的有效内容或JSON Web加密（JWE）结构的明文，使得声明能够被：数字签名、或利用消息认证码（MAC）保护完整性、加密。
+ 这个规范允许我们使用JWT在用户和服务器之间传递安全可靠的信息。
+JWT的构成 JWT 由三部分构成：
+ Header ：头部，即 JOSE Header Claims ：声明，即 JWT Payload Signature ：签名，即 JWT Signature  JWT由这三部分组成，每一部分都是使用base64url编码的，并使用句点（.）连接起来
+ 这里使用base64url编码而不是普通的base64，是因为base64编码会产生+和/，这两个字符在URL中是有特殊意义的，会导致JWT不是URL安全的。
+ 头部(JOSE Header) JSOE 是 JSON Object Signing and Encryption，即JSON对象签名与加密的缩写。
+{ &amp;quot;typ&amp;quot;: &amp;quot;JWT&amp;quot;, &amp;quot;alg&amp;quot;: &amp;quot;HS256&amp;quot; }  示例中给出了两个声明：
+ typ：类型，在JOSE Header中这是个可选参数，但这里我们需要指明类型是JWT。 alg：算法，必须是 jwt 支持的算法，算法列表可以在jwt 规范当中找到。  简单示例：
+package main import &amp;quot;bytes&amp;quot; import ( &amp;quot;encoding/json&amp;quot; &amp;quot;encoding/base64&amp;quot; &amp;quot;fmt&amp;quot; ) func header() string { header := struct { Alg string `json:&amp;quot;alg&amp;quot;` Typ string `json:&amp;quot;typ&amp;quot;` }{ Alg: &amp;quot;HS256&amp;quot;, Typ: &amp;quot;JWT&amp;quot;, } data, _ := json.</description>
+    </item>
+    
+    <item>
+      <title>React Native ART 介绍与实践</title>
+      <link>https://t-tom.me/blog/2018-01-13-react-native-art/</link>
+      <pubDate>Sat, 13 Jan 2018 15:29:40 +0800</pubDate>
+      
+      <guid>https://t-tom.me/blog/2018-01-13-react-native-art/</guid>
+      <description>TBD
+ React Native ART 由来 React-Art  是 Reactjs 团队基于 Art（一个兼容各个浏览器SVG绘制的API封装）开发的模块，让 React 开发者能使用 jsx 语法绘制 svg。
+React Native 团队分别在0.10.0和0.18.0也添加了iOS和Android平台对 react-art 的支持，官网文档至今对其只字未提。本文旨在介绍安静躺在 react-native/Libraries/ 里的ART，并展示一些实践结果。
+在React Native中ART是个非常重要的库，它让非常酷炫的绘图及动画变成了可能。但是可能是知道的人真的不多导致文档及少中文更少。很多都是把英文的参数列表翻译过来，也没有案例。
+为什么用 ART React Native 本身自带的 &amp;lt;Image&amp;gt; 有很多缺陷：
+首先是不支持 SVG 格式的资源，目前的解决方案有通过 ReactNative-SVG 进行实现，但是这个库需要更改客户端bundle文件，带来一定的风险。
+其次是 Image decoding can take more than a frame-worth of time，图片的解码由于不在主线程中进行，所以不能确保所有图片和内容在同一帧内出现，使用 &amp;lt;Image&amp;gt;标签的制作的组件里的图（比如icon）可能是三三两两“闪现”出来的，让人怀疑是个webview，体验远不如原生，尤其是在开发环境下最为明显。
+其次就是不能支持矢量图形，必须放置 @2x 或者 @3x 对应的图片。
+ART能干什么 俗话说，库如其名，背负着如此具有“艺术感”名字的ART生来就是为了绘制矢量图的，或者说是 画UI的，ART可以解决上诉的所有缺陷。
+在我看来，或者说我目前业务需求用到的功能：
+ ART 可以解决上诉 &amp;lt;Image&amp;gt; 的缺陷：解码和矢量图形 ART 可以实现 UI 上的一些渐变，比如渐变按钮，渐变背景或者底色。以及一些交互性较强的动画——画UI ART 另外一个场景就是简单数据可视化。  使用 ART  本文使用的 RN版本为0.</description>
+    </item>
+    
+    <item>
+      <title>React 模式，技巧，技巧和窍门</title>
+      <link>https://t-tom.me/blog/2017-11-02-react-%E6%A8%A1%E5%BC%8F%E6%8A%80%E5%B7%A7%E6%8A%80%E5%B7%A7%E5%92%8C%E7%AA%8D%E9%97%A8/</link>
+      <pubDate>Thu, 02 Nov 2017 15:29:40 +0800</pubDate>
+      
+      <guid>https://t-tom.me/blog/2017-11-02-react-%E6%A8%A1%E5%BC%8F%E6%8A%80%E5%B7%A7%E6%8A%80%E5%B7%A7%E5%92%8C%E7%AA%8D%E9%97%A8/</guid>
+      <description>这篇文章整理了学习 React 过程中以及实际开发应用当中一些模式，技巧，技巧和窍门。
+大部门内容是基于 React 框架下面产生的一些内容，有很大的局限性，但是确实带来了新的理念和开发方式，仁者见仁智者见智，多学习一点内容总归对职业生涯有好处。
+ 本篇文章还在持续更新中，如果有错误烦请指正。
+ Normally React 一些常见的关于React需要了解的内容，就简单列举如下。下面只会列到本人认为比较值得重视的部分进行详细陈述。
+ 语法层面——基础入门
+  JSX语法、React基本内容等 Derocator 或者 async await 等常见ES6、ES7的内容 React Lists and Keys   常用层面——日常开发必备
+  smart component and dumb component container component and presentation component stateless component Events handler bind this：bind this 或者 Derocator 或者 proposal-class-public-fields-declarations Conditionals render in JSX 或者 IIFE render in JSX 或者 methods render in JSX Dynamic router 以及 dynamic component，甚至于 dynamic redux injection HOC   进阶层面——性能优化和业务解耦必备</description>
+    </item>
+    
+    <item>
+      <title>RN性能检测和错误捕捉</title>
+      <link>https://t-tom.me/blog/2017-09-12-rn%E6%80%A7%E8%83%BD%E6%A3%80%E6%B5%8B%E5%92%8C%E9%94%99%E8%AF%AF%E6%8D%95%E6%8D%89/</link>
+      <pubDate>Tue, 12 Sep 2017 15:29:40 +0800</pubDate>
+      
+      <guid>https://t-tom.me/blog/2017-09-12-rn%E6%80%A7%E8%83%BD%E6%A3%80%E6%B5%8B%E5%92%8C%E9%94%99%E8%AF%AF%E6%8D%95%E6%8D%89/</guid>
+      <description>在复杂的网络环境和浏览器环境下，自测、QA测试以及 Code Review 都是不够的，如果对页面稳定性和准确性要求较高，就必须有一套完善的代码异常监控体系好的产品，这样才能很好的得到用户的反馈从而不断的迭代改进我们的产品。
+而且复杂的用户终端设备，也需要通过性能监控发现部分前端性能瓶颈，以便进行优化；通过错误日志收集，及时获得前端的运行时错误
+收集错误异常  错误异常分为 web 错误异常和React-native 错误异常
+ web 错误异常 总体来说：平时收集日志的手段，可以归类为两个方面，一个是逻辑中的错误判断，为主动判断，如try...catch；一个是利用语言给我们提供的捷径，暴力式获取错误信息，如 window.onerror；当然也存在另外一种错误，那就是Promise unhandlerejection
+try…catch 判断一个代码段中可能存在的错误：
+try { doSomeThing() // code... } catch(e){ // send format error Reporter.send(format(e)) }  window.onerror 这个用来捕获全局错误：
+window.onerror = function() { // send format error var errInfo = format(arguments); Reporter.send(errInfo) return true };  在上面的函数中返回 return true，错误便不会暴露到控制台中。下面是它的参数信息：
+/** * @param {String} errorMessage 错误信息 * @param {String} scriptURI 出错的文件 * @param {Long} lineNumber 出错代码的行号 * @param {Long} columnNumber 出错代码的列号 * @param {Object} errorObj 错误的详细信息，Anything */ window.</description>
+    </item>
+    
+    <item>
+      <title>译文:Understanding ASTs by Building Your Own Babel Plugin</title>
+      <link>https://t-tom.me/blog/2017-08-13-%E8%AF%91%E6%96%87understanding-asts-by-building-your-own-babel-plugin/</link>
+      <pubDate>Sun, 13 Aug 2017 15:29:40 +0800</pubDate>
+      
+      <guid>https://t-tom.me/blog/2017-08-13-%E8%AF%91%E6%96%87understanding-asts-by-building-your-own-babel-plugin/</guid>
+      <description>原文地址
+Language Overview  We want to design a plugin that will allow us to use regular object and array literals, which will be transformed into persistent data structures using Mori
+ 我们想要设计一个插件：它将允许我们通过使用常规对象和数值文本，可以使用Mori转化为持久性的数据结构。
+ We want to write code like this:
+ 我们要写这样的代码：
+var foo = { a: 1 }; var baz = foo.a = 2; foo.a === 1; baz.a === 2;   And transform it into code like this:</description>
+    </item>
+    
+    <item>
+      <title>Mavic Pro 初见</title>
+      <link>https://t-tom.me/blog/2017-07-04-mavic-pro-%E8%AF%84%E6%B5%8B/</link>
+      <pubDate>Tue, 04 Jul 2017 15:29:40 +0800</pubDate>
+      
+      <guid>https://t-tom.me/blog/2017-07-04-mavic-pro-%E8%AF%84%E6%B5%8B/</guid>
+      <description>  早在今年2、3月份的时候，我就已经知道御姐Mavic Pro的存在了，当然是通过（万恶）的微信朋友圈，被安利、洗脑了一波，当时就很感兴趣，想买一个自己玩玩:haha:。
+ 下定决心要买 为什么会买呢，我也不知道，感觉是脑子一热吧
+最近刚换了一份新的工作，压力有点大，中午的时候无聊看了一下官网，晚上就直接叫着女朋友去了新天地的专卖店看了下，然后就直接剁手了。。。
+感觉最近不单单要吃土，还要吃灰了。。
+初见 刚拿回来的时候好大的一个箱子，现在就只剩下一点东西（东西太多，放不下就直接把无用的盒子扔掉了），还好我提前拍了一张整体开箱图：
+另附一张机箱开箱图：
+机身和Mac大小对比图：
+Mavic pro 装上防撞翼：
+为什么选择Mavic  无人机目前主要市面上的分为多旋翼、固定翼、直升机，Mavic Pro就属于四轴的固定翼
+ 就拿大疆目前的产品线来说，几款主流品类为精灵3、精灵4、悟1、御，价格从2k+到2W+不等，最早入手的基友们应该买的是精灵3或者4。
+精灵3有几种款型，Standard相对来说比较初级因为图传距离理论可以1km实际也就六七百米，很容易失去图传对于新手而言看不见图像就会非常的慌乱，所以我自己不太推荐精灵3S及之前的款型作为入门机型。
+大家购买的时候可以从Phantom 3 Adavanced及之后开始考虑，图传距离可以达到5km且比较稳定，上升高度也可以达到500m。
+然而如果你看过价格和开箱对比图的话，最好的还是御姐，适合经常需要轻装旅行的朋友，因为足够小巧加上高性能的传感器、相机，非常便于携带（把妹神器。
+按照官方的性能数据：
+ 重量：743克 飞行速度：最大18m/s（65km/h 飞行时间：27分钟（实际有折扣 图传距离：国内4km国外7km（详见FCC与CE与SRRC 高度：500m 相机：4k@30fps/1080p@96fps 云台角度：78°  这已经很强了好不好！4k，27分钟，4km图传，500m高度（可以自己改装飞到1.5km
+装备清单 默认是自带一节电池、遥控器和2套机翼，我买了全能套装加上dji care，整体下来：
+ 电池：3块 遥控器：1部 机身：1部 机翼：8套 随身包，电池管家（管家的意义在于可以同时把四块电池放入其中，但是每次都是单独给一块电池进行充电，这样可以保持充电电压稳定），充电宝转换器   切记，一定要买dji care（都是泪
+ 后来在群里人的安利下，又买了一个DJI 飞行眼镜，双1920×1080高分辨率显示屏。这玩意在飞行的时候确实很爽，一个人操控，一个人可以以上帝视角看风景，当然云台角度是可以根据体感控制的。
+ 感觉有点鸡肋，1080p只有30fps，720p才有60fps，但是这种体感眼睛120fps才完全没有晕的感觉，不过为了情怀，还是剁了，闲来没事接上HDMI来看冰与火。
+ 最后的话 想有情怀，当然要 give me money，总体算了一下：
+ 7999+2999=10998  不说了，我去吃土了
+参考：
+ Mavic Pro 从入门到精通  </description>
+    </item>
+    
+    <item>
+      <title>前端的10000个小时</title>
+      <link>https://t-tom.me/blog/2017-06-24-%E5%89%8D%E7%AB%AF%E7%9A%8410000%E4%B8%AA%E5%B0%8F%E6%97%B6/</link>
+      <pubDate>Sat, 24 Jun 2017 15:29:40 +0800</pubDate>
+      
+      <guid>https://t-tom.me/blog/2017-06-24-%E5%89%8D%E7%AB%AF%E7%9A%8410000%E4%B8%AA%E5%B0%8F%E6%97%B6/</guid>
+      <description>我又开始扯淡了
+ 本篇文章出自原文，深有感触，有删改。
+ 10000小时定律 著名的10000小时定律，我想大家都不陌生，『要成为某个领域的专家，需要10000小时』，这个定律来源于《异类》的作者，格拉德威尔。
+作为一个程序员，每天工作10小时，每周工作五天，大约4年就能达到10000小时，那是不是每个程序员认真工作，勤勤恳恳的过完4年他就能成为专家呢？答案是显而易见的。
+首先10000小时只是必要条件，并非充分条件，也就是说，即使你花了这10000小时，可能也没什么用，再次简单的工作重复10000小时并不能给你带来什么提高，自然也就成不了专家
+ 一万小时定律 并非适合所有领域，即使有很强意志力，也很难在某些领域成为世界顶级，这里只是强调在某些领域去努力、去花费很大的精力。我觉得，这需要 实力与运气共同作用的结果
+ 简单的工作重复10000小时 吴军老师在《智能时代》一书中提过一个这样的观点：
+ 在未来的智能时代，真正受益于技术进步的个人可能不超过人口的2%。
+ 之后他又补充了一句：
+ 坦率的讲，仅仅会写几行 JavaScript 的人不属于我说的2%的行列，这些人恰恰在未来是要被计算机淘汰的。
+ 当时看到这里，我其实十分不解，吴军老师是不是太久没撸码了，现在 JavaScript 这么火，Node 那么牛掰，什么 React Native，Grunt，Gulp，Webpack，Vue，Weex，微信小程序等等，这些都是风生水起啊，怎么 JavaScript 就跪了呢？还有，我们高大上的前端工作怎么就挤不进这 2% 呢？
+后来仔细想想，这里定义的是『仅仅会写几行 JavaScript 』，事实上，如果10000小时都花在改界面，修改 DOM，改个色值，切个图，替换下图标这种简单重复的工作里面，当然挤不进这 2% 。事实上，要学的东西远远不够，前端要有危机意识。
+再来看，前端工作怎么就挤不进 2% 的人呢？ 2% 看起来还挺多，可是想想，每种职业都有其 2% ， 搬砖的有搬砖的 2%，写程序的有些程序的 2%，总不可能写程序的去抢搬砖的活儿吧。能不能挤进这 2% 要看是否善于使用智能工具，很不幸，我发现一些热门的技术的发起都和前端没啥关系，什么数字化，VR/AR，基因测序，大数据，机器学习，人工智能……
+说到这里，智能手机的飞速发展带起了移动互联网，但是这波红利被终端开发给占了一大半，直到近两年，手机性能提升才让前端开始发力。为什么 PhoneGap （现已改名 Cordova）搞了那么久没什么人用，React Native 才出了没多久就已经炙手可热。除了 React Native 师出名门，还因为它的出现是为了解决终端开发效率低以及更新审核慢的问题。
+好吧，前端不那么容易称为 2%，那我们还是继续付出10000小时，争取做个专家吧。
+那么简单的重复不足以称为专家，那对于前端来说应该要怎么做呢？我的想法是『跨界』，不满足于做前端，而是去更多的学习终端，学习后端的知识，带来思维的转变和编程能力的提高。
+ 当然也可以去阅读那些框架的源码，比如React,Koa等等，去思考和借鉴一下它们的架构和内部实现，去看看算法方面的内容来提高自己的逻辑思维能力
+ 跨界 看看现在非常热门的 JavaScript 编译器 Babel，其作者 Sebastian McKenzie 写出这样一个编译器，必须具有很强的编程能力和熟悉编译原理、AST。这样一个人虽然写的是 JavaScript，但是已经不是一个前端了，而是大神。</description>
+    </item>
+    
+    <item>
+      <title>koa 源码简单解读</title>
+      <link>https://t-tom.me/blog/2017-05-03-koa%E6%BA%90%E7%A0%81%E7%AE%80%E5%8D%95%E8%A7%A3%E8%AF%BB/</link>
+      <pubDate>Wed, 03 May 2017 15:29:40 +0800</pubDate>
+      
+      <guid>https://t-tom.me/blog/2017-05-03-koa%E6%BA%90%E7%A0%81%E7%AE%80%E5%8D%95%E8%A7%A3%E8%AF%BB/</guid>
+      <description>[Koa]() 是一个类似于 [Express]() 的 Web开发框架，创始人也都是[TJ]()
+[Koa]() 的主要特点是，使用了ES6 的 Generator 函数，进行了架构的重新设计。Koa 的原理和内部结构很像[Express]()，但是语法和内部结构进行了升级，最近已经发布了2.x版本，我们来直接看一下2.x版本的koa
+创建 Koa 应用 我们可以按照官方的说明很简单的创建一个koa应用
+const koa = require(&#39;koa&#39;) const app = new koa() app.listen(3000)  或者可以这样：
+var koa = require(&#39;koa&#39;); var http = require(&#39;http&#39;); var app = new koa(); http.createServer(app.callback()).listen(4000);  这两种方式是等价的：
+第一种方式:listen在内部主动创建一个一个http server并调用实例内部的 callback方法，把返回的handleRequest函数作为创建http server服务的回调函数，然后内部主动去listen。
+参考源码 listen方法：
+listen() { debug(&#39;listen&#39;); const server = http.createServer(this.callback()); return server.listen.apply(server, arguments); }  第二种方式:主动创建一个http server并主动调用实例的callback方法来生成一个handleRequest函数，最后listen端口号。
+我们先以第一种写法作为入口，切入进去来分析源码。
+首先实例化了一个koa实例，然后调用了listen方法:
+简单解读: koa 本身是没有定义事件处理机制的，其事件处理机制继承自Node 的events模块，本身就是在events模块上继承的一个实例</description>
+    </item>
+    
+    <item>
+      <title>如何创建一个Node.js 的 Docker 开发环境</title>
+      <link>https://t-tom.me/blog/2017-04-22-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AAnode.js-%E7%9A%84-docker-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</link>
+      <pubDate>Sat, 22 Apr 2017 15:29:40 +0800</pubDate>
+      
+      <guid>https://t-tom.me/blog/2017-04-22-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AAnode.js-%E7%9A%84-docker-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</guid>
+      <description>本文以构建一个 Node.js Docker应用 为目标写的一个教程。当前操作系统环境 Mac OSX Sierra 10.12.4
+ Docker介绍  Docker 是个划时代的开源项目，它彻底释放了计算虚拟化的威力，极大提高了应用的运行效率，降低了云计算资源供应的成本！ 使用 Docker，可以让应用的部署、测试和分发都变得前所未有的高效和轻松！
+ Docker引擎的基础是Linuxring器(Linux Containers，LXC)技术。这个并不是一个新生的概念，很早前已经出现，比如操作系统上的chroot工具、以及Solaris Containers和FreeBSD jail等等，虽然这个技术非常成熟，然而这些工具使用起来非常不方便。Docker的出现解决了这些问题。
+Docker容器虚拟化有很多好处：
+ 更高效的利用系统资源：由于容器不需要进行硬件虚拟以及运行完整操作系统等额外开销，Docker 对系统资源的利用率更高。 更快速的启动时间，Docker容器应用启动时间很快 一致的运行环境和环境隔离 持续交付和部署 更轻松的迁移服务  既然Docker这么好，我们来试试如何跑一个Node.js Docker应用。
+安装Docker 使用Docker之前，我们需要安装。Docker支持在主流操作平台上使用：包括Ubuntu、CenterOS、Windows已经MacOS系统。
+Ubuntu 在Ubuntu上安装Docker可以直接使用以下shell script
+// 最新的Docker安装需要先移除老的Docker sudo apt-get remove docker docker-engine sudo apt-get update sudo curl -sSL https://get.docker.com/ | sh  Windows Windows 上我们可以直接下载 Docker GUI
+Mac OSX Mac OSX 上我们也可以直接下载 Docker GUI。
+Docker的主要目标是Build ship and run any app,any where.</description>
+    </item>
+    
+    <item>
+      <title>利用 Shadowsocksr 和云主机翻墙</title>
+      <link>https://t-tom.me/blog/2017-04-03-%E5%88%A9%E7%94%A8-shadowsocksr-%E5%92%8C%E4%BA%91%E4%B8%BB%E6%9C%BA%E7%BF%BB%E5%A2%99/</link>
+      <pubDate>Mon, 03 Apr 2017 15:29:40 +0800</pubDate>
+      
+      <guid>https://t-tom.me/blog/2017-04-03-%E5%88%A9%E7%94%A8-shadowsocksr-%E5%92%8C%E4%BA%91%E4%B8%BB%E6%9C%BA%E7%BF%BB%E5%A2%99/</guid>
+      <description>世界那么大，我想去看看，但是被墙了… 以前用的VPN，叫做什么green vpn，总体来说，还不错，但是最近老断，于是就搞了个新的法子。申请一台云主机，在上面搭一个Shadowsocks，然后就可以在所有客户端看 YouTube 了，当然，这所有的一切都是免费的。
+ Shadowsocks已经河蟹，这里不再说ss，只说ssr：一个基于ss的新分支
+ 搭建Shadowsocksr服务器 首先需要搭建一台云主机，首先阿里云或者青云都是挺好的，但是都需要国外的主机，要不然怎么去翻墙，你也可以选择linecode、vultr、aws、azure、GCE（google）。这些大部分都有一年的免费期限，也会有免费赠送不定的体验金的福利。中间会要求绑定信用卡。
+主机建议选择Ubuntu或者debian，申请下来了后就可以安装ssr了。
+可以从这个地址上找到ssr，然后可以参照这个wiki来进行配置安装，在这里记录一下步骤吧：
+ 如果你的服务端python版本在2.6以下，那么必须更新python到2.6.x或2.7.x版本。
+ 首先需要有git：
+apt-get update &amp;amp;&amp;amp; apt-get install -y git  获取源代码：
+git clone -b manyuser https://github.com/shadowsocksr/shadowsocksr.git  进入子目录：
+cd ~/shadowsocksr &amp;amp;&amp;amp; bash initcfg.sh &amp;amp;&amp;amp; cd ~/shadowsocksr/shadowsocks  快速运行，当然也可以通过配置文件运行，具体请看wiki：
+python server.py -p 443 -k password -m aes-256-cfb -O auth_sha1_v4 -o http 说明：-p 端口 -k 密码 -m 加密方式 -O 协议插件 -o 混淆插件  配置文件参考：
+{ &amp;quot;server&amp;quot;: &amp;quot;0.0.0.0&amp;quot;, &amp;quot;server_ipv6&amp;quot;: &amp;quot;::&amp;quot;, &amp;quot;server_port&amp;quot;: 8388, &amp;quot;local_address&amp;quot;: &amp;quot;127.</description>
+    </item>
+    
+  </channel>
+</rss>

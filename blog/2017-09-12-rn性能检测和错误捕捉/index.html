@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.38.2" />
+    <title>RN性能检测和错误捕捉 - TOM&#39;s zone</title>
+
+    <meta name="description" content="在复杂的网络环境和浏览器环境下，自测、QA测试以及 Code Review 都是不够的，如果对页面稳定性和准确性要求较高，就必须有一套完善的代码异常监控体系好的产品，这样才能很好的得到用户的反馈从而不断的迭代改进我们的产品。
+而且复杂的用户终端设备，也需要通过性能监控发现部分前端性能瓶颈，以便进行优化；通过错误日志收集，及时获得前端的运行时错误
+收集错误异常  错误异常分为 web 错误异常和React-native 错误异常
+ web 错误异常 总体来说：平时收集日志的手段，可以归类为两个方面，一个是逻辑中的错误判断，为主动判断，如try...catch；一个是利用语言给我们提供的捷径，暴力式获取错误信息，如 window.onerror；当然也存在另外一种错误，那就是Promise unhandlerejection
+try…catch 判断一个代码段中可能存在的错误：
+try { doSomeThing() // code... } catch(e){ // send format error Reporter.send(format(e)) }  window.onerror 这个用来捕获全局错误：
+window.onerror = function() { // send format error var errInfo = format(arguments); Reporter.send(errInfo) return true };  在上面的函数中返回 return true，错误便不会暴露到控制台中。下面是它的参数信息：
+/** * @param {String} errorMessage 错误信息 * @param {String} scriptURI 出错的文件 * @param {Long} lineNumber 出错代码的行号 * @param {Long} columnNumber 出错代码的列号 * @param {Object} errorObj 错误的详细信息，Anything */ window.">
+
+
+    
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato|Raleway">
+
+    
+    <link rel="stylesheet"
+          href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/ocean.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/javascript.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/python.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/go.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/css.min.js"></script>
+    
+    
+    <link rel="stylesheet" href="/css/bundle.css"/>
+    <style>
+	a { color: #ff8181; }
+	blockquote {
+		border-left-color: #ff8181;
+		border-right-color: #ff8181; }
+	.bar a:hover {
+		color: #ff8181;
+		text-decoration: none; }
+	.sep {
+		margin-top: 2rem;
+		margin-bottom: 1rem;
+		margin-left:0;
+		width: 24rem;
+		border-top: 2px solid #ff8181; }
+</style>
+
+</head>
+
+<body>
+<header class="container no-print">
+	<div class="u-header">
+		<nav class="bar">
+	<ul><li>
+			<a href="/">
+				<img class="icon-text" src="/img/prev.svg"/>
+			</a>
+		</li><li><a href="/blog/">Blog</a></li></ul>
+</nav>
+
+	</div>
+</header>
+<main class="container">
+
+<article>
+    <header><hgroup id="brand">
+	<h1>RN性能检测和错误捕捉</h1>
+	<h5>
+		
+		<time datetime="2017-09-12 15:29:40 &#43;0800 CST">Sep 12, 2017</time>
+		<span class="no-print">
+			-
+				
+				<a href="/tags/RN">RN</a>
+				
+				<a href="/tags/FrontEnd">FrontEnd</a>
+				
+				<a href="/tags/Monitor">Monitor</a>
+				<span>
+	</h5>
+	
+</hgroup>
+<hr class="sep" />
+</header>
+    <section id="markdown">
+        
+
+<p>在复杂的网络环境和浏览器环境下，自测、QA测试以及 Code Review 都是不够的，如果对页面稳定性和准确性要求较高，就必须有一套完善的代码异常监控体系好的产品，这样才能很好的得到用户的反馈从而不断的迭代改进我们的产品。</p>
+
+<p>而且复杂的用户终端设备，也需要通过性能监控发现部分前端性能瓶颈，以便进行优化；通过错误日志收集，及时获得前端的运行时错误</p>
+
+<h2 id="收集错误异常">收集错误异常</h2>
+
+<blockquote>
+<p>错误异常分为 <strong>web 错误异常</strong>和<strong>React-native 错误异常</strong></p>
+</blockquote>
+
+<h3 id="web-错误异常">web 错误异常</h3>
+
+<p>总体来说：平时收集日志的手段，可以归类为两个方面，一个是逻辑中的错误判断，为主动判断，如<code>try...catch</code>；一个是利用语言给我们提供的捷径，暴力式获取错误信息，如  <code>window.onerror</code>；当然也存在另外一种错误，那就是<code>Promise unhandlerejection</code></p>
+
+<h4 id="try-catch">try…catch</h4>
+
+<p>判断一个代码段中可能存在的错误：</p>
+
+<pre><code class="language-javascript">try {
+  doSomeThing()
+  // code...
+} catch(e){
+  // send format error
+  Reporter.send(format(e))
+}
+</code></pre>
+
+<h4 id="window-onerror">window.onerror</h4>
+
+<p>这个用来捕获全局错误：</p>
+
+<pre><code class="language-javascript">window.onerror = function() {
+  // send format error
+  var errInfo = format(arguments);
+  Reporter.send(errInfo)
+  return true
+};
+</code></pre>
+
+<p>在上面的函数中返回 <code>return true</code>，错误便不会暴露到控制台中。下面是它的参数信息：</p>
+
+<pre><code class="language-javascript">/**
+ * @param {String}  errorMessage   错误信息
+ * @param {String}  scriptURI      出错的文件
+ * @param {Long}    lineNumber     出错代码的行号
+ * @param {Long}    columnNumber   出错代码的列号
+ * @param {Object}  errorObj       错误的详细信息，Anything
+ */
+window.onerror = function(errorMessage, scriptURI, lineNumber,columnNumber,errorObj) { 
+    // code..
+}
+</code></pre>
+
+<h4 id="unhandledrejection">unhandledrejection</h4>
+
+<p><code>Promise</code>内部未捕获的异常可以通过监听<code>onunhandledrejection</code>来捕获</p>
+
+<pre><code class="language-javascript">window.addEventListener('unhandledrejection',(error,id)=&gt;{
+    
+  })
+</code></pre>
+
+<h3 id="react-native-错误异常">React-native 错误异常</h3>
+
+<p>下面我们看如何在RN环境当中收集异常，当然这个异常也分为2个方面：</p>
+
+<h4 id="runtime-error">Runtime Error</h4>
+
+<p>由于在RN环境当中并不存在<code>window</code>这种宿主对象。</p>
+
+<p>只存在<code>javascriptCore</code>，所以官方提供了方法：<code>global.ErrorUtils.setGlobalHandler</code>来监听全局的错误，可以参考以下代码：</p>
+
+<pre><code class="language-javascript">import { Platform } from 'react-native'
+
+// 保留原来内部的error handler
+const originalHandler = global.ErrorUtils.getGlobalHandler()
+
+// 配置我们自定义的错误 handler
+global.ErrorUtils.setGlobalHandler(ErrorHandler)
+
+function ErrorHandler(e, isFatal) {
+  
+  if (Platform.OS === 'ios') {
+    CrashHandler.originalHandler(arguments)
+  } else {
+    setTimeout(() =&gt; {
+      CrashHandler.originalHandler(arguments)
+    }, 300)
+  }
+  
+  __DEV__ &amp;&amp; throwErrorToNative()
+  
+  // 我们自己的错误处理方式
+  // 发送检测数据
+  Report.send(e)
+}
+</code></pre>
+
+<blockquote>
+<p>资料：<a href="https://github.com/facebook/react-native/blob/d33b554f5d4bb7856cf2fc21175bab23d8225fe4/packager/react-packager/src/Resolver/polyfills/error-guard.js#L20-L28">参考官方源码</a></p>
+</blockquote>
+
+<p>然而，在RN当中的错误并没有显式的返回line和column这两个很重要的值，不要怕，我们有<code>error.stack</code>，可以在这上面做文章：</p>
+
+<pre><code class="language-javascript">/**
+ * lsErrorStack
+ * @param e
+ * @returns {{line: *, column: *}}
+ */
+function lsErrorStack(e) {
+
+  if (!e || !e instanceof Error || !e.stack) return {}
+
+  try {
+    const stack = e.stack.toString().split(/\r\n|\n/), frameRE = /:(\d+:\d+)[^\d]*$/;
+
+    while (stack.length) {
+      const frame = frameRE.exec(stack.shift())
+      if (frame) {
+        const position = frame[1].split(':')
+        return { line: position[0], column: position[1] }
+      }
+    }
+  } catch ( e ) {
+    return {}
+  }
+}
+
+const error = new Error('this is a test')
+  
+  // 我们可以得到 line 和 column
+console.log(lsErrorStack(e))
+</code></pre>
+
+<h4 id="promise-error">Promise Error</h4>
+
+<p>同理，RN环境当中当然也不能通过上面的<code>unhandledrejection</code>来进行监听。</p>
+
+<p>事实上，RN内部执行的JavaScript是通过babel编译后的代码，而且这个babel上的Promise是依赖于一个<a href="https://github.com/then/promise">Promise lib</a>，刚好这个lib上有提供监听未捕获rejection的钩子：</p>
+
+<pre><code class="language-javascript">// 在非开发环境下进行监听    
+if (!__DEV__) {
+
+      require('promise/setimmediate/rejection-tracking').enable({
+
+        allRejections: true,
+
+        /**
+         * onUnhandled
+         * @param id
+         * @param error
+         */
+        onUnhandled: (id, error) =&gt; {
+          // Promise 错误
+          this.onUnhandled(id, error)
+        },
+
+        /**
+         * onHandled
+         * @param id
+         */
+        onHandled: (id) =&gt; {
+          this.onHandled(id)
+        }
+      })
+
+    }
+</code></pre>
+
+<blockquote>
+<p>资料：<a href="https://github.com/facebook/react-native/blob/b0640946873945ee95d2cab8f549c915dbfffd70/Libraries/Promise.js#L28-L47">官方PR-1</a></p>
+
+<p>资料：<a href="https://github.com/facebook/react-native/commit/b0640946873945ee95d2cab8f549c915dbfffd70">官方PR-2</a></p>
+
+<p>资料：<a href="https://github.com/then/promise#unhandled-rejections">Promise polyfill</a></p>
+</blockquote>
+
+<p>同理，promise error 也可以通过这个方式来得到真正的 line 和 column</p>
+
+<h4 id="sourcemap-还原错误完整信息">SourceMap 还原错误完整信息</h4>
+
+<p>当runtime当中发生了错误，我们收集到了错误，怎么进行还原事发现场呢？</p>
+
+<blockquote>
+<p>我们可以通过完整的<code>srouceMap</code>和出错的<code>line</code>、<code>column</code>来准确还原发生错误时代码上下文。</p>
+</blockquote>
+
+<p>在RN当中我们可以在执行打包命令的时候带上<code>--sourcemap-output youbundle.map</code>来生成。</p>
+
+<p>web环境下就很灵活了，对比常用的打包工具<code>webpack</code>、<code>Rollup</code>等都提供了很简便的方式去生成sourcemap。</p>
+
+<p>当然我们可以参照 <a href="https://github.com/mozilla/source-map">moz sourcemap</a> 来自己生成自定义sourcemap。</p>
+
+<p>接下来我们可以很简单的还原事发现场：</p>
+
+<pre><code class="language-javascript">const { SourceMapConsumer, SourceMapGenerator, SourceNode } = require('source-map')
+const fs = require('fs')
+
+/**
+ * rawMap
+ */
+const rawMap = JSON.parse(fs.readFileSync('./index.map').toString())
+
+const smc = new SourceMapConsumer(rawMap)
+const position = smc.originalPositionFor({
+    line: 1,
+    column: 75422
+  })
+
+const { source, line, column } = position
+
+// output
+console.log(`事故发生现场：${source}，位于第${line}行，第${column}列！`)
+</code></pre>
+
+<p>当然如果是带有 <code>sourceContent</code> 的sourcemap，我们还能继续还原到具体原始文件，可以参考一下代码：</p>
+
+<blockquote>
+<p>这个方法只针对于存在 sourceContents 的 sourcemap，个别部分不带，比如RN（RN需要改打包源码</p>
+</blockquote>
+
+<pre><code class="language-javascript">/**
+ * 这里认为我们已经按照上诉代码拿到了 consumer 以及 错误的 position
+ */
+const { source, line, column } = position
+
+/**
+ * 我们想还原原始代码上下10行
+ */
+const showOriginCodeLines = 10
+const finalSource = []
+
+/**
+ * 通过 consumer sourceContentFor 方法拿到 原始的 代码，并处理换行，转换成数组
+ */
+const sourceContent = consumer.sourceContentFor(source)
+const sourceContentMaps = sourceContent.toString().split(/\r\n|\n/)
+
+/**
+ * 这里是垃圾代码，凑合看吧
+ * 取上下 showOriginCodeLines 行 组合在一起
+ */
+for (let i = 0; i &lt; showOriginCodeLines; i++) {
+  finalSource.unshift(sourceContentMaps[line - 1 - i])
+}
+
+for (let i = 1; i &lt; showOriginCodeLines + 1; i++) {
+  finalSource.push(sourceContentMaps[line - 1 + i])
+}
+
+/**
+ * 输出最终结果
+ */
+console.log(finalSource.join('\n'))
+</code></pre>
+
+<p>这里拿到原始代码后，我们可以通过一些插件做些简单的高亮，美化等处理，完全可以做一个低配版本的 Sentry 平台。</p>
+
+<h2 id="收集性能数据">收集性能数据</h2>
+
+<p>收集性能数据分为web性能数据和RN性能数据。</p>
+
+<h3 id="web-性能数据">web 性能数据</h3>
+
+<p>web上的性能数据我们可以通过<code>performance</code>API来收集。</p>
+
+<blockquote>
+<p>当然这个有兼容性的问题，IE和Safari都只能在11上得到支持。</p>
+</blockquote>
+
+<p>具体我们参考这篇 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Performance">mdn介绍</a>，以及下面这张简单的介绍图：</p>
+
+<p><img src="https://www.w3.org/TR/navigation-timing/timing-overview.png" alt="performance api overview" /></p>
+
+<p>简单来说就是在 <code>window.onload</code> 后来去按照需要获取 <code>performance</code> 数据并上传到服务器主机。</p>
+
+<p>目前来说我觉得有用的数据大概是以下几个，仅供参考：</p>
+
+<ul>
+<li><code>domComplete</code></li>
+<li><code>loadEvent</code></li>
+<li><code>unloadEvent</code></li>
+<li><code>request</code></li>
+<li><code>domContentLoaded</code></li>
+<li><code>totalImageLoaded</code></li>
+</ul>
+
+<h3 id="react-native-性能数据">React-native 性能数据</h3>
+
+<p>RN上的性能数据其实在<strong>开发</strong>环境当中已经可以查看</p>
+
+<blockquote>
+<p>prod环境需要更改RN源码来打开 monitor</p>
+</blockquote>
+
+<p>TBD</p>
+
+    </section>
+    <nav class="no-print post-nav">
+        
+        <a class="prev-post" href="https://t-tom.me/blog/2017-08-13-%E8%AF%91%E6%96%87understanding-asts-by-building-your-own-babel-plugin/">
+            <img class="icon-text" src="/img/prev.svg"/>译文:Understanding ASTs by Building Your Own Babel Plugin</a>
+        
+        
+        <a class="next-post" href="https://t-tom.me/blog/2017-11-02-react-%E6%A8%A1%E5%BC%8F%E6%8A%80%E5%B7%A7%E6%8A%80%E5%B7%A7%E5%92%8C%E7%AA%8D%E9%97%A8/">React 模式，技巧，技巧和窍门<img class="icon-text" src="/img/next.svg"/>
+        </a>
+        
+    </nav>
+</article>
+<script src="/js/bundle.js"></script>
+
+
+
+<div id="disqus_thread" class="no-print"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'toms-blog-1';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+			<hr class="sep" />
+		</main>
+		<footer class="container no-print">
+			<div class="u-footer">
+				
+<a href="mailto:iamnomand@gmail.com"><img class="icon-social" src="/img/email.svg" alt="Email Me!"/></a>
+
+
+<a href="https://github.com/v-tom/"><img class="icon-social" src="/img/github.svg" alt="Github"/></a>
+
+
+<a href="https://twitter.com/iamnomand"><img class="icon-social" src="/img/twitter.svg" alt="Twitter"/></a>
+
+<a href="https://t-tom.me/index.xml" target="_blank"><img class="icon-social" src="/img/feed.svg" alt="Feed"></a>
+
+				<p>
+					
+					
+					
+				</p>
+				
+				<a href="#brand">
+					<img class="icon-text" src="/img/toup.svg" alt="To Up"/>
+					<span>Back to Up</span>
+				</a>
+				
+			</div>
+		</footer>
+		
+		<script>hljs.initHighlightingOnLoad();</script>
+		
+	</body>
+</html>
+
