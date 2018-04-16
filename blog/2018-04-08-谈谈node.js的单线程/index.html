@@ -219,6 +219,8 @@ if __name__ == &quot;__main__&quot;:
 
 <h4 id="线程模型">线程模型</h4>
 
+<p><strong>线程，是cpu调度的基本单位，是最小的执行单元</strong></p>
+
 <p>线程模型的优点是更轻量，建立和释放速度更快，而且多个上下文间的通讯速度非常快。</p>
 
 <p>服务器的线程数量也是有上限的。</p>
@@ -501,7 +503,7 @@ setImmediate
 <ul>
 <li><code>spawn</code> 创建一个子进程来执行命令，结果以 stream 的形式返回</li>
 <li><code>exec</code> 创建一个子进程来执行命令，和spawn()不同的是方法参数不同，它可以传入回调函数来获取子进程的状态，结果立即返回</li>
-<li><code>execFile</code> 启动一个子进程来执行指定文件。注意，该文件的顶部必须声明 <code>SHEBANG</code>符号(#!)用来指定进程类型。</li>
+<li><code>execFile</code> 启动一个子进程来执行指定文件。注意，该文件的顶部必须声明 <a href="https://en.wikipedia.org/wiki/Shebang_(Unix)">SHEBANG</a>符号(#!)用来指定进程类型。</li>
 <li><code>fork</code> 这个和 <code>spawn</code> 类似，不同点在于它创建 Node 的子进程只需要执定要执行的 JavaScript 文件模块即可。</li>
 </ul>
 
@@ -545,9 +547,13 @@ console.log('hello');                          // | |    都执行了
 
 <p>子进程死亡不会影响父进程, 不过子进程死亡时（线程组的最后一个线程，通常是“领头”线程死亡时），会向它的父进程发送死亡信号。</p>
 
-<p>父进程死亡, 一般情况下子进程也会随之死亡, 但如果此时子进程处于可运行态、僵死状态等等的话, 子进程将被 init 进程收养，从而成为孤儿进程。</p>
+<p>父进程死亡, 一般情况下子进程也会随之死亡, 但如果此时子进程处于可运行态、僵死状态等等的话, 子进程将被 [init 进程](<a href="https://zh.wikipedia.org/wiki/Init收养，从而成为孤儿进程。">https://zh.wikipedia.org/wiki/Init收养，从而成为孤儿进程。</a></p>
 
 <p>另外, 子进程死亡的时候（处于“终止状态”），父进程没有及时调用 <code>wait()</code> 或 <code>waitpid()</code> 来返回死亡进程的相关信息，此时子进程还有一个 <code>PCB</code> 残留在进程表中，被称作僵尸进程。</p>
+
+<blockquote>
+<p>有兴趣的话可以看一下守护进程（daemon）以及实现。</p>
+</blockquote>
 
 <h4 id="cluster">Cluster</h4>
 
@@ -583,11 +589,15 @@ console.log('hello');                          // | |    都执行了
 
 <p>为了保证多个进程工作量公平，Node 必然会遇到负载均衡的问题。</p>
 
-<p>Node 默认提供的机制采用操作系统的抢占式策略：一堆工作进程中，闲着的进程对到来的请求进行争抢，谁抢到谁服务，这也可以叫做惊群现象：</p>
+<p>Node 默认提供的机制采用操作系统的抢占式策略：一堆工作进程中，闲着的进程对到来的请求进行争抢，谁抢到谁服务，但是这在高并发、大客户端链接的时候会产生<a href="https://en.wikipedia.org/wiki/Thundering_herd_problem">惊群问题</a>：</p>
+
+<p><img src="./thundering-herd.png" alt="Thundering herd problem" /></p>
 
 <blockquote>
 <p>多线程/多进程等待同一个 socket 事件，当这个事件发生时，这些线程/进程被同时唤醒，就是惊群现象。</p>
 </blockquote>
+
+<p>感兴趣的话可以看一下 <code>C10K problem</code> 以及 <code>c10M problem</code></p>
 
 <p>这种模式有着明显的问题：</p>
 
@@ -596,7 +606,9 @@ console.log('hello');                          // | |    都执行了
 <li>由于无法控制一个新的连接由哪个进程来处理，必然导致各 worker 进程之间的负载非常不均衡。</li>
 </ul>
 
-<p>后来 Node 提供了新的策略使得负载均衡更合理，这种策略叫做 Round-Robin，又叫轮叫调度，如何传递以及传递给哪个 worker 完全是可控的。</p>
+<p>后来 Node 提供了新的策略使得负载均衡更合理，这种策略叫做 Round-Robin，又叫轮叫调度，如何传递以及传递给哪个 worker 完全是可控的，参照下图的 <code>dispatch</code></p>
+
+<p><img src="./Round-Robin.png" alt="Round-Robin" /></p>
 
 <p>在 Cluster 模块当中启用的方式如下：</p>
 
@@ -608,9 +620,9 @@ console.log('hello');                          // | |    都执行了
 <pre><code class="language-bash">export NODE_CLUSTER_SCHED_POLICY=none
 </code></pre>
 
-<p>其次，负载均衡策略也可以通过代理服务器实现，比如 Nginx：</p>
+<p>其次，负载均衡策略也可以通过代理服务器实现，比如 <code>Nginx</code>：</p>
 
-<pre><code>http { 
+<pre><code class="language-nginx">http { 
   upstream cluster { 
       server 127.0.0.1:3000; 
       server 127.0.0.1:3001; 
@@ -658,6 +670,7 @@ cluster.on('disconnect', function(){
 <li><a href="https://segmentfault.com/a/1190000001813992">Python 中的进程、线程、协程、同步、异步、回调</a></li>
 <li><a href="http://blog.shell909090.org/blog/archives/2703/">上下文切换技术</a></li>
 <li><a href="https://en.wikipedia.org/wiki/C10k_problem">c10k</a></li>
+<li><a href="https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/"><code>event loop</code> 官方解释</a></li>
 <li><a href="http://www.cnblogs.com/aylin/p/5601969.html">Python 当中的多线程，多进程，协程</a></li>
 <li><a href="https://blog.csdn.net/shenlei19911210/article/details/61194617">协程(Coroutine)-ES中关于Generator/async/await的学习思考</a></li>
 <li><a href="https://www.zhihu.com/question/32218874/answer/56255707">为什么协程是趋势</a></li>
