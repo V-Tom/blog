@@ -446,7 +446,9 @@ loop.close()
 },0)
 </code></pre>
 
-<p>实际上这样写不但浪费性能，而且根据 event loop 顺序，setTimeout 的优先级也不高。</p>
+<p>实际上这样写不但浪费性能，而且根据 event loop 顺序，setTimeout 的优先级也不高。实际上 <code>process.nextTick</code> 方法操作较为轻量、高效，功能实现上也较为符合需求。</p>
+
+<p>根据 event loop，<strong>process.nextTick()不在event loop的任何阶段执行，而是在各个阶段切换的中间执行</strong>,即从一个阶段切换到下个阶段前执行。</p>
 
 <h4 id="setimmediate">setImmediate</h4>
 
