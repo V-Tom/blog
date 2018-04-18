@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tag on TOM&#39;s zone</title>
+    <link>https://t-tom.me/tag/</link>
+    <description>Recent content in Tag on TOM&#39;s zone</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ZH-CN</language>
+    <copyright>&amp;copy; 2017~2018 TOM&#39;s Zone</copyright>
+    
+	<atom:link href="https://t-tom.me/tag/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+  </channel>
+</rss>

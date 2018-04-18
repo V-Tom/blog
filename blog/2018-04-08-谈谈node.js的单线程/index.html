@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Hugo 0.37" />
+    <meta name="generator" content="Hugo 0.38.2" />
     <title>谈谈 Node.js 的单线程 - TOM&#39;s zone</title>
 
     <meta name="description" content="前言 从Node.js进入人们的视野时，我们所知道的它就由这些关键字组成 事件驱动、非阻塞I/O、高效、轻量，它在官网中也是这么描述自己的。
@@ -124,13 +124,7 @@
 
 <p>当我们说“上下文”的时候，指的是程序在执行中的一个状态。通常我们会用调用栈来表示这个状态——栈记载了每个调用层级执行到哪里，还有执行时的环境情况等所有有关的信息。</p>
 
-<blockquote>
-<p>由于单核 CPU 无法被平行使用(多个程序同时运行在一个CPU上)。为了创造*共享CPU*的假象，设计人员就搞出了一个叫做时间片的概念，将时间分割成为连续的时间片段，让多个程序在这些连续的时间片中交叉获得CPU使用权限，这样看起来就好像多个程序在同时运行一样。后来，给任务分配时间片并进行调度的调度器成为了操作系统的核心组件;</p>
-
-<p><strong>摘自《深入理解计算机操作系统》</strong></p>
-</blockquote>
-
-<p>当我们说“上下文切换”的时候，表达的是一种从一个上下文切换到另一个上下文执行的技术。</p>
+<p>当我们说“上下文切换”的时候，表达的是一种从一个上下文切换到另一个上下文执行的技术。而“调度”指的是决定哪个上下文可以获得接下去的CPU时间的方法。</p>
 
 <h4 id="进程">进程</h4>
 
@@ -155,10 +149,10 @@
 <p>进程和线程的关系：</p>
 
 <ul>
-<li>一个线程只能属于一个进程，而一个进程可以有多个线程，但至少有一个线程</li>
-<li>线程在进程内部，处理并发的逻辑，拥有独立的栈，却共享线程的资源</li>
-<li>处理机分给线程，即真正在处理机上运行的是线程</li>
-<li>线程在执行过程中，需要协作同步。不同进程的线程间要利用消息通信的办法实现同步</li>
+<li>一个线程只能属于一个进程，而一个进程可以有多个线程，但至少有一个线程。</li>
+<li>资源分配给进程，同一进程的所有线程共享该进程的所有资源。</li>
+<li>处理机分给线程，即真正在处理机上运行的是线程。</li>
+<li>线程在执行过程中，需要协作同步。不同进程的线程间要利用消息通信的办法实现同步。</li>
 </ul>
 
 <p>由于线程是操作系统直接支持的执行单元，很多高级语言都基本上内置了对 <code>thread</code> 的操作。</p>
@@ -213,19 +207,11 @@ if __name__ == &quot;__main__&quot;:
 
 </code></pre>
 
-<blockquote>
-<p>Web 当中可以通过创建 <code>webworkers</code> 来创建额外的进程。</p>
-</blockquote>
-
 <h4 id="线程模型">线程模型</h4>
-
-<p><strong>线程，是cpu调度的基本单位，是最小的执行单元</strong></p>
 
 <p>线程模型的优点是更轻量，建立和释放速度更快，而且多个上下文间的通讯速度非常快。</p>
 
 <p>服务器的线程数量也是有上限的。</p>
-
-<p>线程上下文由系统来切换控制，调度是由操作系统负责，线程的睡眠、等待、唤醒的时机是由操作系统控制，开发者无法精确的控制它们。</p>
 
 <p>一个线程出现问题容易将整个系统搞崩溃，也面临锁的问题。</p>
 
@@ -261,13 +247,9 @@ for i in range(10):
 <p>实际上线程确实比协程性能更好，协程比较适合 I/O密集型任务。</p>
 </blockquote>
 
-<p>协程属于非抢占式任务，也可以叫做<strong>用户态线程</strong></p>
+<p>协程可以在不陷入内核的情况进行上下文切换，属于非抢占式任务，导致多任务时间片不能公平分享，所以后来全部废弃了协程改成抢占式的线程。协程所能调度的，只有在同一进程中的不同上下文而已。</p>
 
-<blockquote>
-<p>用户态线程就是程序自己控制状态切换，进程不用陷入内核态，开发者可以按照程序的特性来选择更适合的调度算法，</p>
-</blockquote>
-
-<p>协程属于语言级别的调度算法实现，通过在线程中实现调度，避免了陷入内核级别的上下文切换造成的性能损失，协程所能调度的，只有在同一进程中的不同上下文而已。可以看做用户控件下的进程，进而突破了线程在IO上的性能瓶颈。</p>
+<p>协程通过在线程中实现调度，避免了陷入内核级别的上下文切换造成的性能损失，可以看做用户控件下的进程，进而突破了线程在IO上的性能瓶颈。</p>
 
 <p>协程是一种编程组件，减少 callback 的使用，以看是同步的方式来编程，把这些异步伪装成同步，让写代码的人爽一些。</p>
 
@@ -295,10 +277,10 @@ loop.close()
 </code></pre>
 
 <blockquote>
-<p>Node 作者视乎<a href="https://news.ycombinator.com/item?id=1549168">不愿加入 coroutine，</a>理由是一种哲学、信仰的问题。对协程感兴趣可以看一下 <a href="http://fibjs.org/">fib.js</a>，以及 TJ 的 co 语法糖</p>
+<p>Node 作者视乎<a href="https://news.ycombinator.com/item?id=1549168">不愿加入 coroutine，</a>理由是一种哲学、信仰的问题。对协程感兴趣可以看一下 <a href="http://fibjs.org/">fib.js</a></p>
 </blockquote>
 
-<p>ES6 当中已经加入 <code>yield/Generator/GeneratorFunction</code> 来支持协程，不过是半协程（semi-coroutine），而且async 应该不单单只是 <code>generator</code> 的升级语法糖。</p>
+<p>ES6 当中已经加入 <code>yield/Generator/GeneratorFunction</code> 来支持协程，我怀疑这些也是通过 event loop 实现的？！Node 端 和 web 端的 协程实现有差别？async 应该不单单只是 <code>generator</code> 的升级语法糖。</p>
 
 <h4 id="cps模型">CPS模型</h4>
 
@@ -333,30 +315,7 @@ loop.close()
 
 <p>这些方案有好有坏，其实这些从根本上讲还是算是一种同步，应用程序仍然需要等待 I/O 完全返回。</p>
 
-<p>Node 本身有自己的事件模型—— <code>event loop</code>：</p>
-
-<pre><code>   ┌───────────────────────┐
-┌─&gt;│        timers         │
-│  └──────────┬────────────┘
-│  ┌──────────┴────────────┐
-│  │     I/O callbacks     │
-│  └──────────┬────────────┘
-│  ┌──────────┴────────────┐
-│  │     idle, prepare     │
-│  └──────────┬────────────┘      ┌───────────────┐
-│  ┌──────────┴────────────┐      │   incoming:   │
-│  │         poll          │&lt;─────┤  connections, │
-│  └──────────┬────────────┘      │   data, etc.  │
-│  ┌──────────┴────────────┐      └───────────────┘
-│  │        check          │
-│  └──────────┬────────────┘
-│  ┌──────────┴────────────┐
-└──┤    close callbacks    │
-   └───────────────────────┘
-
-</code></pre>
-
-<p>这里不仔细介绍。</p>
+<p>Node 本身有自己的事件模型—— <code>event loop</code>。</p>
 
 <h3 id="单线程的-node">单线程的 Node</h3>
 
@@ -428,7 +387,7 @@ loop.close()
 </ul>
 
 <blockquote>
-<p>从上面这些 API 当中也引发出一个常见的问题 macrotask 和 microtask 的区别，其实还是 event loop</p>
+<p>从上面这些 API 当中也引发出一个常见的问题 macrotask 和 microtask 的区别。</p>
 </blockquote>
 
 <h4 id="settimeout和setinterval">setTimeout和setInterval</h4>
@@ -448,9 +407,7 @@ loop.close()
 },0)
 </code></pre>
 
-<p>实际上这样写不但浪费性能，而且根据 event loop 顺序，setTimeout 的优先级也不高。实际上 <code>process.nextTick</code> 方法操作较为轻量、高效，功能实现上也较为符合需求。</p>
-
-<p>根据 event loop，<strong>process.nextTick()不在event loop的任何阶段执行，而是在各个阶段切换的中间执行</strong>,即从一个阶段切换到下个阶段前执行。</p>
+<p>实际上这样写不但浪费性能，而且根据 event loop 顺序，setTimeout 的优先级也不高。</p>
 
 <h4 id="setimmediate">setImmediate</h4>
 
@@ -474,21 +431,13 @@ nextTick
 setImmediate
 </code></pre>
 
-<p>从这里可以看出，<code>process.nextTick</code>中的回调函数优先级高级 <code>setImmediate</code>，这是因为前者属于 <code>idle</code> 阶段，后者属于 <code>check</code> 阶段，每一次事件循环当中，<code>idle</code> 优先级大于 <code>check</code> 阶段。</p>
+<p>从这里可以看出，<code>process.nextTick</code>中的回调函数优先级高级 <code>setImmediate</code>，这是因为前者属于 <code>idle</code> 观察者，后者属于 <code>check</code> 观察者，每一次事件循环当中，<code>idle</code> 优先级大于</p>
 
 <h3 id="多进程的-node">多进程的 Node</h3>
 
 <p>如果你运行 Node.js 的机器是像i5，i7这样多核cpu，那么将无法充分利用多核cpu的性能来为Node.js服务。</p>
 
 <p>在C++、C#、python等其他语言都有与之对应的多线程编程，能够充分的利用多核 CPU。</p>
-
-<p>我们可以通过以下方式实现多进程：</p>
-
-<ul>
-<li>fork</li>
-<li>cluster</li>
-<li>第三方库 <code>tagg</code>、<code>tagg2</code>（对v8，libuv进行拓展</li>
-</ul>
 
 <h4 id="fork">fork</h4>
 
@@ -503,7 +452,7 @@ setImmediate
 <ul>
 <li><code>spawn</code> 创建一个子进程来执行命令，结果以 stream 的形式返回</li>
 <li><code>exec</code> 创建一个子进程来执行命令，和spawn()不同的是方法参数不同，它可以传入回调函数来获取子进程的状态，结果立即返回</li>
-<li><code>execFile</code> 启动一个子进程来执行指定文件。注意，该文件的顶部必须声明 <a href="https://en.wikipedia.org/wiki/Shebang_(Unix)">SHEBANG</a>符号(#!)用来指定进程类型。</li>
+<li><code>execFile</code> 启动一个子进程来执行指定文件。注意，该文件的顶部必须声明 <code>SHEBANG</code>符号(#!)用来指定进程类型。</li>
 <li><code>fork</code> 这个和 <code>spawn</code> 类似，不同点在于它创建 Node 的子进程只需要执定要执行的 JavaScript 文件模块即可。</li>
 </ul>
 
@@ -547,13 +496,9 @@ console.log('hello');                          // | |    都执行了
 
 <p>子进程死亡不会影响父进程, 不过子进程死亡时（线程组的最后一个线程，通常是“领头”线程死亡时），会向它的父进程发送死亡信号。</p>
 
-<p>父进程死亡, 一般情况下子进程也会随之死亡, 但如果此时子进程处于可运行态、僵死状态等等的话, 子进程将被 [init 进程](<a href="https://zh.wikipedia.org/wiki/Init收养，从而成为孤儿进程。">https://zh.wikipedia.org/wiki/Init收养，从而成为孤儿进程。</a></p>
+<p>父进程死亡, 一般情况下子进程也会随之死亡, 但如果此时子进程处于可运行态、僵死状态等等的话, 子进程将被 init 进程收养，从而成为孤儿进程。</p>
 
 <p>另外, 子进程死亡的时候（处于“终止状态”），父进程没有及时调用 <code>wait()</code> 或 <code>waitpid()</code> 来返回死亡进程的相关信息，此时子进程还有一个 <code>PCB</code> 残留在进程表中，被称作僵尸进程。</p>
-
-<blockquote>
-<p>有兴趣的话可以看一下守护进程（daemon）以及实现。</p>
-</blockquote>
 
 <h4 id="cluster">Cluster</h4>
 
@@ -585,19 +530,15 @@ console.log('hello');                          // | |    都执行了
 
 <p>通过 <code>fork()</code> 复制的进程都是一个<code>独立</code>的进程，这个进程中有着独立而全新的V8实例。</p>
 
-<h3 id="负载均衡">负载均衡</h3>
+<h4 id="负载均衡">负载均衡</h4>
 
 <p>为了保证多个进程工作量公平，Node 必然会遇到负载均衡的问题。</p>
 
-<p>Node 默认提供的机制采用操作系统的抢占式策略：一堆工作进程中，闲着的进程对到来的请求进行争抢，谁抢到谁服务，但是这在高并发、大客户端链接的时候会产生<a href="https://en.wikipedia.org/wiki/Thundering_herd_problem">惊群问题</a>：</p>
-
-<p><img src="./thundering-herd.png" alt="Thundering herd problem" /></p>
+<p>Node 默认提供的机制采用操作系统的抢占式策略：一堆工作进程中，闲着的进程对到来的请求进行争抢，谁抢到谁服务，这也可以叫做惊群现象：</p>
 
 <blockquote>
 <p>多线程/多进程等待同一个 socket 事件，当这个事件发生时，这些线程/进程被同时唤醒，就是惊群现象。</p>
 </blockquote>
-
-<p>感兴趣的话可以看一下 <code>C10K problem</code> 以及 <code>c10M problem</code></p>
 
 <p>这种模式有着明显的问题：</p>
 
@@ -606,9 +547,7 @@ console.log('hello');                          // | |    都执行了
 <li>由于无法控制一个新的连接由哪个进程来处理，必然导致各 worker 进程之间的负载非常不均衡。</li>
 </ul>
 
-<p>后来 Node 提供了新的策略使得负载均衡更合理，这种策略叫做 Round-Robin，又叫轮叫调度，如何传递以及传递给哪个 worker 完全是可控的，参照下图的 <code>dispatch</code></p>
-
-<p><img src="./Round-Robin.png" alt="Round-Robin" /></p>
+<p>后来 Node 提供了新的策略使得负载均衡更合理，这种策略叫做 Round-Robin，又叫轮叫调度，如何传递以及传递给哪个 worker 完全是可控的。</p>
 
 <p>在 Cluster 模块当中启用的方式如下：</p>
 
@@ -620,9 +559,9 @@ console.log('hello');                          // | |    都执行了
 <pre><code class="language-bash">export NODE_CLUSTER_SCHED_POLICY=none
 </code></pre>
 
-<p>其次，负载均衡策略也可以通过代理服务器实现，比如 <code>Nginx</code>：</p>
+<p>其次，负载均衡策略也可以通过代理服务器实现，比如 Nginx：</p>
 
-<pre><code class="language-nginx">http { 
+<pre><code>http { 
   upstream cluster { 
       server 127.0.0.1:3000; 
       server 127.0.0.1:3001; 
@@ -639,7 +578,7 @@ console.log('hello');                          // | |    都执行了
 }
 </code></pre>
 
-<h3 id="进程守护">进程守护</h3>
+<h4 id="进程守护">进程守护</h4>
 
 <p>master 进程除了负责接收新的连接，分发给各 <code>worker</code> 进程处理之外，还得守护每一个 worker 进程，保证整个应用的稳定性，一旦某个 <code>worker</code> 异常退出就需要 <code>fork</code> 一个新的进程上去。</p>
 
@@ -660,19 +599,17 @@ cluster.on('disconnect', function(){
 
 <h3 id="个人看法">个人看法</h3>
 
-<p>Node 虽然隐藏了 <code>event loop</code> 和 <code>async io</code> 的细节，但是它的特点是易于上手，非常容易编写，开发效率高，同时写出来性能还不差。</p>
+<p>Node 虽然隐藏了 <code>event-loop</code> 和 <code>async io</code> 的细节，但是它的特点是易于上手，非常容易编写，开发效率高，同时写出来性能还不差。</p>
 
 <p>问题在于，到了一定的复杂程度之后，代码编写就比较困难了，开发者需要深入了解它所有的隐藏的细节才有保障构建复杂、大型的应用。</p>
 
-<h3 id="reference">Reference</h3>
+<h3 id="reference">Reference:</h3>
 
 <ul>
 <li><a href="https://segmentfault.com/a/1190000001813992">Python 中的进程、线程、协程、同步、异步、回调</a></li>
 <li><a href="http://blog.shell909090.org/blog/archives/2703/">上下文切换技术</a></li>
 <li><a href="https://en.wikipedia.org/wiki/C10k_problem">c10k</a></li>
-<li><a href="https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/"><code>event loop</code> 官方解释</a></li>
 <li><a href="http://www.cnblogs.com/aylin/p/5601969.html">Python 当中的多线程，多进程，协程</a></li>
-<li><a href="https://blog.csdn.net/shenlei19911210/article/details/61194617">协程(Coroutine)-ES中关于Generator/async/await的学习思考</a></li>
 <li><a href="https://www.zhihu.com/question/32218874/answer/56255707">为什么协程是趋势</a></li>
 <li><a href="http://shiningray.cn/node-js-coroutine.html">Node 的协程</a></li>
 <li><a href="http://www.cnblogs.com/lizheng19822003/p/5337792.html">理解事件驱动select,poll,epoll三种模型</a></li>
@@ -730,6 +667,8 @@ cluster.on('disconnect', function(){
 
 				<p>
 					
+					
+					&copy; 2017~2018 TOM's Zone
 					
 					
 				</p>
