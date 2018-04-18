@@ -7,5 +7,4 @@ tags = [
   "tutorial",
   "opini"
 ]
-draft = true
 +++

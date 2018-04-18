@@ -4,6 +4,7 @@ title: "TOM's zone"
 DisqusShortname: "toms-blog-1"
 defaultContentLanguage: "en"
 disableHugoGeneratorInject: true
+copyright: "&copy; 2017~2018 TOM's Zone"
 
 Params:
 
@@ -42,9 +43,11 @@ Params:
   github: "https://github.com/v-tom/"
   twitter: "https://twitter.com/iamnomand"
 
-taxonomies:
-  tags: "tags"
+  postSection: "blog"
+  workSection: 'work'
 
+taxonomies:
+  tags: "tag"
 
 Paginate: 24
 
