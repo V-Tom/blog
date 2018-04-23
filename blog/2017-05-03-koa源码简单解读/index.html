@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Hugo 0.38.2" />
+    <meta name="generator" content="Hugo 0.37" />
     <title>koa 源码简单解读 - TOM&#39;s zone</title>
 
     <meta name="description" content="[Koa]() 是一个类似于 [Express]() 的 Web开发框架，创始人也都是[TJ]()
@@ -52,6 +52,9 @@ listen() { debug(&#39;listen&#39;); const server = http.createServer(this.callba
 		margin-left:0;
 		width: 24rem;
 		border-top: 2px solid #ff8181; }
+    .bar li.active a{
+        color:#ff8181;
+    }
 </style>
 
 </head>
@@ -64,7 +67,10 @@ listen() { debug(&#39;listen&#39;); const server = http.createServer(this.callba
 			<a href="/">
 				<img class="icon-text" src="/img/prev.svg"/>
 			</a>
-		</li><li><a href="/blog/">Blog</a></li></ul>
+		</li>
+		
+		<li class="active"><a href="/blog/">Blog</a></li>
+		<li class=""><a href="/life/">Life</a></li></ul>
 </nav>
 
 	</div>
@@ -80,9 +86,9 @@ listen() { debug(&#39;listen&#39;); const server = http.createServer(this.callba
 		<span class="no-print">
 			-
 				
-				<a href="/tags/Node.js">Node.js</a>
+				<a href="/tags/node.js">Node.js</a>
 				
-				<a href="/tags/BackEnd">BackEnd</a>
+				<a href="/tags/backend">BackEnd</a>
 				<span>
 	</h5>
 	
@@ -483,7 +489,7 @@ module.exports = class Application extends Emitter {}
 				<p>
 					
 					
-					&copy; 2017~2018 TOM's Zone
+					Early 2016 ~ 2018 &copy; TOM's Zone
 					
 					
 				</p>

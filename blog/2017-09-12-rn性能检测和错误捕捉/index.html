@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Hugo 0.38.2" />
+    <meta name="generator" content="Hugo 0.37" />
     <title>RN性能检测和错误捕捉 - TOM&#39;s zone</title>
 
     <meta name="description" content="在复杂的网络环境和浏览器环境下，自测、QA测试以及 Code Review 都是不够的，如果对页面稳定性和准确性要求较高，就必须有一套完善的代码异常监控体系好的产品，这样才能很好的得到用户的反馈从而不断的迭代改进我们的产品。
@@ -49,6 +49,9 @@ window.onerror = function() { // send format error var errInfo = format(argument
 		margin-left:0;
 		width: 24rem;
 		border-top: 2px solid #ff8181; }
+    .bar li.active a{
+        color:#ff8181;
+    }
 </style>
 
 </head>
@@ -61,7 +64,10 @@ window.onerror = function() { // send format error var errInfo = format(argument
 			<a href="/">
 				<img class="icon-text" src="/img/prev.svg"/>
 			</a>
-		</li><li><a href="/blog/">Blog</a></li></ul>
+		</li>
+		
+		<li class="active"><a href="/blog/">Blog</a></li>
+		<li class=""><a href="/life/">Life</a></li></ul>
 </nav>
 
 	</div>
@@ -77,11 +83,11 @@ window.onerror = function() { // send format error var errInfo = format(argument
 		<span class="no-print">
 			-
 				
-				<a href="/tags/RN">RN</a>
+				<a href="/tags/rn">RN</a>
 				
-				<a href="/tags/FrontEnd">FrontEnd</a>
+				<a href="/tags/frontend">FrontEnd</a>
 				
-				<a href="/tags/Monitor">Monitor</a>
+				<a href="/tags/monitor">Monitor</a>
 				<span>
 	</h5>
 	
@@ -439,7 +445,7 @@ console.log(finalSource.join('\n'))
 				<p>
 					
 					
-					&copy; 2017~2018 TOM's Zone
+					Early 2016 ~ 2018 &copy; TOM's Zone
 					
 					
 				</p>

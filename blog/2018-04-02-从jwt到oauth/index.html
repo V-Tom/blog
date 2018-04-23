@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Hugo 0.38.2" />
+    <meta name="generator" content="Hugo 0.37" />
     <title>从jwt到OAuth - TOM&#39;s zone</title>
 
     <meta name="description" content="JWT JWT 是 JSON Web Token 的缩写，可以简单理解为生产者颁发给消费者一个令牌。参照 JWT 规范 对其所做的描述是：
@@ -51,6 +51,9 @@ package main import &quot;bytes&quot; import ( &quot;encoding/json&quot; &quot;e
 		margin-left:0;
 		width: 24rem;
 		border-top: 2px solid #ff8181; }
+    .bar li.active a{
+        color:#ff8181;
+    }
 </style>
 
 </head>
@@ -63,7 +66,10 @@ package main import &quot;bytes&quot; import ( &quot;encoding/json&quot; &quot;e
 			<a href="/">
 				<img class="icon-text" src="/img/prev.svg"/>
 			</a>
-		</li><li><a href="/blog/">Blog</a></li></ul>
+		</li>
+		
+		<li class="active"><a href="/blog/">Blog</a></li>
+		<li class=""><a href="/life/">Life</a></li></ul>
 </nav>
 
 	</div>
@@ -79,9 +85,9 @@ package main import &quot;bytes&quot; import ( &quot;encoding/json&quot; &quot;e
 		<span class="no-print">
 			-
 				
-				<a href="/tags/OAuth">OAuth</a>
+				<a href="/tags/oauth">OAuth</a>
 				
-				<a href="/tags/BackEnd">BackEnd</a>
+				<a href="/tags/backend">BackEnd</a>
 				<span>
 	</h5>
 	
@@ -802,7 +808,7 @@ func GetUser(code string) (string, error) {
 				<p>
 					
 					
-					&copy; 2017~2018 TOM's Zone
+					Early 2016 ~ 2018 &copy; TOM's Zone
 					
 					
 				</p>

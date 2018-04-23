@@ -6,6 +6,7 @@
     <description>Recent content in Tags on TOM&#39;s zone</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ZH-CN</language>
+    <copyright>Early 2016 ~ 2018 &amp;copy; TOM&#39;s Zone</copyright>
     <lastBuildDate>Sun, 13 Aug 2017 15:29:40 +0800</lastBuildDate>
     
 	<atom:link href="https://t-tom.me/tags/index.xml" rel="self" type="application/rss+xml" />
@@ -71,6 +72,15 @@
       <pubDate>Sat, 13 Jan 2018 15:29:40 +0800</pubDate>
       
       <guid>https://t-tom.me/tags/frontend/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Life</title>
+      <link>https://t-tom.me/tags/life/</link>
+      <pubDate>Mon, 23 Apr 2018 11:29:40 +0800</pubDate>
+      
+      <guid>https://t-tom.me/tags/life/</guid>
       <description></description>
     </item>
     

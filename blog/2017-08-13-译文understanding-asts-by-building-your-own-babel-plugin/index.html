@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Hugo 0.38.2" />
+    <meta name="generator" content="Hugo 0.37" />
     <title>译文:Understanding ASTs by Building Your Own Babel Plugin - TOM&#39;s zone</title>
 
     <meta name="description" content="原文地址
@@ -47,6 +47,9 @@ var foo = { a: 1 }; var baz = foo.a = 2; foo.a === 1; baz.a === 2;   And transfo
 		margin-left:0;
 		width: 24rem;
 		border-top: 2px solid #ff8181; }
+    .bar li.active a{
+        color:#ff8181;
+    }
 </style>
 
 </head>
@@ -59,7 +62,10 @@ var foo = { a: 1 }; var baz = foo.a = 2; foo.a === 1; baz.a === 2;   And transfo
 			<a href="/">
 				<img class="icon-text" src="/img/prev.svg"/>
 			</a>
-		</li><li><a href="/blog/">Blog</a></li></ul>
+		</li>
+		
+		<li class="active"><a href="/blog/">Blog</a></li>
+		<li class=""><a href="/life/">Life</a></li></ul>
 </nav>
 
 	</div>
@@ -75,11 +81,11 @@ var foo = { a: 1 }; var baz = foo.a = 2; foo.a === 1; baz.a === 2;   And transfo
 		<span class="no-print">
 			-
 				
-				<a href="/tags/FrontEnd">FrontEnd</a>
+				<a href="/tags/frontend">FrontEnd</a>
 				
-				<a href="/tags/AST">AST</a>
+				<a href="/tags/ast">AST</a>
 				
-				<a href="/tags/Babel">Babel</a>
+				<a href="/tags/babel">Babel</a>
 				<span>
 	</h5>
 	
@@ -450,7 +456,7 @@ var bar = mori.vector(1, 2, 3);
 				<p>
 					
 					
-					&copy; 2017~2018 TOM's Zone
+					Early 2016 ~ 2018 &copy; TOM's Zone
 					
 					
 				</p>

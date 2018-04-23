@@ -6,11 +6,22 @@
     <description>Recent content on TOM&#39;s zone</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ZH-CN</language>
-    <copyright>&amp;copy; 2017~2018 TOM&#39;s Zone</copyright>
-    <lastBuildDate>Sun, 08 Apr 2018 14:22:25 +0800</lastBuildDate>
+    <copyright>Early 2016 ~ 2018 &amp;copy; TOM&#39;s Zone</copyright>
+    <lastBuildDate>Mon, 23 Apr 2018 11:29:40 +0800</lastBuildDate>
     
 	<atom:link href="https://t-tom.me/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>生活联想</title>
+      <link>https://t-tom.me/life/%E7%94%9F%E6%B4%BB%E8%81%94%E6%83%B3/</link>
+      <pubDate>Mon, 23 Apr 2018 11:29:40 +0800</pubDate>
+      
+      <guid>https://t-tom.me/life/%E7%94%9F%E6%B4%BB%E8%81%94%E6%83%B3/</guid>
+      <description>下面准备开始扯淡
+ TBD
+ </description>
+    </item>
     
     <item>
       <title>谈谈 Node.js 的单线程</title>
