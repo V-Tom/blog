@@ -4,5 +4,8 @@ dev:
 css:
 	lessc -x ./less/index.less ./static/css/bundle.css
 
+addSubmodule:
+	git submodule add -b gh-pages -f git@github.com:V-Tom/blog.git  public
+
 deploy:
 	chmod +x ./deploy.sh && ./deploy.sh

@@ -1,14 +1,18 @@
 baseURL: "https://t-tom.me"
 languageCode: "ZH-CN"
 title: "TOM's zone"
+pluralizeListTitles: false
 DisqusShortname: "toms-blog-1"
 defaultContentLanguage: "en"
 disableHugoGeneratorInject: true
-copyright: "&copy; 2017~2018 TOM's Zone"
+copyright: "Early 2016 ~ 2018 &copy; TOM's Zone"
+SectionPagesMenu: "main"
+Paginate: 24
+
+taxonomies:
+  tags: "tags"
 
 Params:
-
-  DebugCSS: true
 
   # Site meta description
   description: "Welcome to TOM's zone"
@@ -20,11 +24,6 @@ Params:
 
   head404: "Sorry, I can't find what you want."
   sub404: "Back to <a href='/'>Home</a>."
-
-  # Configure which section for Latest Posts
-  postSection: "blog"
-  # Configure which section for Latest Works
-  workSection: "work"
 
   # Maximum number of item in Latest Posts or Works
   latestCount: 5
@@ -45,15 +44,3 @@ Params:
 
   postSection: "blog"
   workSection: 'work'
-
-taxonomies:
-  tags: "tag"
-
-Paginate: 24
-
-menu:
-  main:
-    - name: "Blog"
-      url: "/blog/"
-      title: "Blog"
-      Identifier: "Blog"

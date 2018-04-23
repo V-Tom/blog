@@ -16,7 +16,7 @@
 			{{ with .Params.tags -}}
 			-
 				{{ range . }}
-				<a href="/tags/{{.}}">{{.}}</a>
+				<a href="/tags/{{. | urlize | lower }}">{{.}}</a>
 				{{ end }}
 			{{- end -}}
 			{{- with .Params.workURL -}}
