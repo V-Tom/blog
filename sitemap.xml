@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://t-tom.me/blog/2018-04-23-%E4%BD%BF%E7%94%A8swift%E5%BC%80%E5%8F%91react-native%E7%BB%84%E4%BB%B6/</loc>
+    <lastmod>2018-04-23T14:28:25+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://t-tom.me/life/%E7%94%9F%E6%B4%BB%E8%81%94%E6%83%B3/</loc>
     <lastmod>2018-04-23T11:29:40+08:00</lastmod>
   </url>
@@ -82,7 +87,7 @@
   
   <url>
     <loc>https://t-tom.me/blog/</loc>
-    <lastmod>2018-04-08T14:22:25+08:00</lastmod>
+    <lastmod>2018-04-23T14:28:25+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -106,7 +111,7 @@
   
   <url>
     <loc>https://t-tom.me/tags/frontend/</loc>
-    <lastmod>2018-01-13T15:29:40+08:00</lastmod>
+    <lastmod>2018-04-23T14:28:25+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -131,6 +136,12 @@
   <url>
     <loc>https://t-tom.me/tags/monitor/</loc>
     <lastmod>2017-09-12T15:29:40+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://t-tom.me/tags/native/</loc>
+    <lastmod>2018-04-23T14:28:25+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -160,7 +171,7 @@
   
   <url>
     <loc>https://t-tom.me/tags/rn/</loc>
-    <lastmod>2018-01-13T15:29:40+08:00</lastmod>
+    <lastmod>2018-04-23T14:28:25+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -172,7 +183,7 @@
   
   <url>
     <loc>https://t-tom.me/</loc>
-    <lastmod>2018-04-23T11:29:40+08:00</lastmod>
+    <lastmod>2018-04-23T14:28:25+08:00</lastmod>
     <priority>0</priority>
   </url>
   

@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ZH-CN</language>
     <copyright>Early 2016 ~ 2018 &amp;copy; TOM&#39;s Zone</copyright>
-    <lastBuildDate>Sun, 08 Apr 2018 14:22:25 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 23 Apr 2018 14:28:25 +0800</lastBuildDate>
     
 	<atom:link href="https://t-tom.me/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>使用Swift开发React Native组件</title>
+      <link>https://t-tom.me/blog/2018-04-23-%E4%BD%BF%E7%94%A8swift%E5%BC%80%E5%8F%91react-native%E7%BB%84%E4%BB%B6/</link>
+      <pubDate>Mon, 23 Apr 2018 14:28:25 +0800</pubDate>
+      
+      <guid>https://t-tom.me/blog/2018-04-23-%E4%BD%BF%E7%94%A8swift%E5%BC%80%E5%8F%91react-native%E7%BB%84%E4%BB%B6/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>谈谈 Node.js 的单线程</title>

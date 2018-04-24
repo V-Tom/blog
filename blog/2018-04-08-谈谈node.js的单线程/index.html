@@ -513,6 +513,50 @@ setImmediate
 <li><code>fork</code> 这个和 <code>spawn</code> 类似，不同点在于它创建 Node 的子进程只需要执定要执行的 JavaScript 文件模块即可。</li>
 </ul>
 
+<p>对于这些创建进程的方式一般有以下问题：</p>
+
+<blockquote>
+<p>1、child_process.fork 与 POSIX 的 fork 有什么区别?</p>
+</blockquote>
+
+<p>Node 的 <code>child_process.fork()</code> 在 Unix 上的实现最终调用了 POSIX <a href="http://man7.org/linux/man-pages/man2/fork.2.html">fork(2)</a></p>
+
+<p>而 POSIX 的 fork 需要手动管理子进程的资源释放 (waitpid)</p>
+
+<p><code>child_process.fork</code> 则不用关心这个问题, Node.js 会自动释放, 并且可以在 option 中选择父进程死后是否允许子进程存活.</p>
+
+<blockquote>
+<p>2、父进程或子进程的死亡是否会影响对方? 什么是孤儿进程?</p>
+</blockquote>
+
+<p>子进程死亡不会影响父进程, 不过子进程死亡时（线程组的最后一个线程，通常是“领头”线程死亡时），会向它的父进程发送死亡信号。</p>
+
+<p>父进程死亡, 一般情况下子进程也会随之死亡, 但如果此时子进程处于可运行态、僵死状态等等的话, 子进程将被 [init 进程](<a href="https://zh.wikipedia.org/wiki/Init收养，从而成为孤儿进程。">https://zh.wikipedia.org/wiki/Init收养，从而成为孤儿进程。</a></p>
+
+<p>另外, 子进程死亡的时候（处于“终止状态”），父进程没有及时调用 <code>wait()</code> 或 <code>waitpid()</code> 来返回死亡进程的相关信息，此时子进程还有一个 <code>PCB</code> 残留在进程表中，被称作僵尸进程。</p>
+
+<blockquote>
+<p>3、有兴趣的话可以看一下守护进程（daemon）以及实现。</p>
+</blockquote>
+
+<p>在这里值得一提的是：<code>fork</code> 出来的应用程序如果都监听相同的端口会出现常见的 <code>EADDRINNUSE</code> 错误，早期的解决办法是 <code>进程间发送句柄，共享 fd</code> 。</p>
+
+<h4 id="cluster">Cluster</h4>
+
+<p>官方的介绍的作用是，通过 cluster 模块可以帮助应用程序在多核的系统上轻松创建共享服务器端口的子进程。</p>
+
+<blockquote>
+<p>A single instance of Node.js runs in a single thread. To take advantage of multi-core systems, the user will sometimes want to launch a cluster of Node.js processes to handle the load.</p>
+
+<p>The cluster module allows easy creation of child processes that all share server ports.</p>
+</blockquote>
+
+<p>cluster 模块对 child_process 模块提供了一层封装，简单的一个 fork，不需要开发者修改任何的应用代码便能够实现多进程部署。</p>
+
+<p>cluster 通过加入 <code>cluster.isMaster</code> 这个标识, 来区分父进程以及子进程，父进程起到了协调,调度的作用,他把客户端过来的请求分发给子进程.</p>
+
+<p>下面是采用 <code>cluster</code> 来创建一个简单的集群：</p>
+
 <pre><code class="language-javascript">const cluster = require('cluster');            // | | 
 const http = require('http');                  // | | 
 const numCPUs = require('os').cpus().length;   // | |    都执行了
@@ -537,49 +581,11 @@ if (cluster.isMaster) {                        // |-|-----------------
 console.log('hello');                          // | |    都执行了
 </code></pre>
 
-<blockquote>
-<p>child_process.fork 与 POSIX 的 fork 有什么区别?</p>
-</blockquote>
-
-<p>Node 的 <code>child_process.fork()</code> 在 Unix 上的实现最终调用了 POSIX <a href="http://man7.org/linux/man-pages/man2/fork.2.html">fork(2)</a></p>
-
-<p>而 POSIX 的 fork 需要手动管理子进程的资源释放 (waitpid)</p>
-
-<p><code>child_process.fork</code> 则不用关心这个问题, Node.js 会自动释放, 并且可以在 option 中选择父进程死后是否允许子进程存活.</p>
-
-<blockquote>
-<p>父进程或子进程的死亡是否会影响对方? 什么是孤儿进程?</p>
-</blockquote>
-
-<p>子进程死亡不会影响父进程, 不过子进程死亡时（线程组的最后一个线程，通常是“领头”线程死亡时），会向它的父进程发送死亡信号。</p>
-
-<p>父进程死亡, 一般情况下子进程也会随之死亡, 但如果此时子进程处于可运行态、僵死状态等等的话, 子进程将被 [init 进程](<a href="https://zh.wikipedia.org/wiki/Init收养，从而成为孤儿进程。">https://zh.wikipedia.org/wiki/Init收养，从而成为孤儿进程。</a></p>
-
-<p>另外, 子进程死亡的时候（处于“终止状态”），父进程没有及时调用 <code>wait()</code> 或 <code>waitpid()</code> 来返回死亡进程的相关信息，此时子进程还有一个 <code>PCB</code> 残留在进程表中，被称作僵尸进程。</p>
-
-<blockquote>
-<p>有兴趣的话可以看一下守护进程（daemon）以及实现。</p>
-</blockquote>
-
-<h4 id="cluster">Cluster</h4>
-
-<p>官方的介绍的作用是，通过 cluster 模块可以帮助应用程序在多核的系统上轻松创建共享服务器端口的子进程。</p>
-
-<blockquote>
-<p>A single instance of Node.js runs in a single thread. To take advantage of multi-core systems, the user will sometimes want to launch a cluster of Node.js processes to handle the load.</p>
-
-<p>The cluster module allows easy creation of child processes that all share server ports.</p>
-</blockquote>
-
-<p>cluster 模块对 child_process 模块提供了一层封装，简单的一个 fork，不需要开发者修改任何的应用代码便能够实现多进程部署，比如 <code>pm2</code></p>
-
-<p>cluster 通过加入 <code>cluster.isMaster</code> 这个标识, 来区分父进程以及子进程</p>
-
-<p>父进程起到了协调,调度的作用,他把客户端过来的请求分发给子进程.</p>
-
 <p>真实的工作进程是通过使用 <code>child_process.fork</code> 方法实现并派送的,他们可以通过 IPC （Inter-Process Communication）进行进程间的通信。</p>
 
+<blockquote>
 <p>Node.js 中的 IPC 通信是由 <code>libuv</code> 通过管道技术实现的, 在 windows 下由命名管道（named pipe）实现也就是上表中的最后第二个, *nix 系统则采用 UDS (Unix Domain Socket) 实现。</p>
+</blockquote>
 
 <p>IPC的创建和实现示意图：</p>
 
@@ -595,7 +601,7 @@ console.log('hello');                          // | |    都执行了
 
 <p>为了保证多个进程工作量公平，Node 必然会遇到负载均衡的问题。</p>
 
-<p>Node 默认提供的机制采用操作系统的抢占式策略：一堆工作进程中，闲着的进程对到来的请求进行争抢，谁抢到谁服务，但是这在高并发、大客户端链接的时候会产生<a href="https://en.wikipedia.org/wiki/Thundering_herd_problem">惊群问题</a>：</p>
+<p>首先，Node 默认提供的机制采用操作系统的抢占式策略：一堆工作进程中，闲着的进程对到来的请求进行争抢，谁抢到谁服务，一般而言这个对大家都是公平的。但是这在高并发、大客户端链接的时候会产生<a href="https://en.wikipedia.org/wiki/Thundering_herd_problem">惊群问题</a>：</p>
 
 <p><img src="./thundering-herd.png" alt="Thundering herd problem" /></p>
 
@@ -609,24 +615,38 @@ console.log('hello');                          // | |    都执行了
 
 <ul>
 <li>多个进程之间会竞争，产生惊群现象，效率比较低，许多进程被内核重新调度唤醒，同时去响应这一个事件，只有一个进程能处理事件成功，其他的进程在处理该事件失败后重新休眠。</li>
-<li>由于无法控制一个新的连接由哪个进程来处理，必然导致各 worker 进程之间的负载非常不均衡。</li>
+<li>由于无法控制一个新的连接由哪个进程来处理，Node 的繁忙分为 CPU 和 I/O 繁忙，影响抢占的是 CPU 的繁忙度，必然导致各 worker 进程之间的负载非常不均衡。</li>
 </ul>
 
-<p>后来 Node 提供了新的策略使得负载均衡更合理，这种策略叫做 Round-Robin，又叫轮叫调度，如何传递以及传递给哪个 worker 完全是可控的，参照下图的 <code>dispatch</code></p>
+<p>其次，后来 Node 提供了新的策略使得负载均衡更合理，这种策略叫做 <code>Round-Robin</code> ，又叫轮叫调度。</p>
+
+<blockquote>
+<p>Windows 上是采用 句柄共享 ，*nix 是 Round-Robin</p>
+</blockquote>
+
+<p>如何传递以及传递给哪个 worker 完全是可控的，参照下图的 <code>dispatch</code></p>
 
 <p><img src="./Round-Robin.png" alt="Round-Robin" /></p>
 
 <p>在 Cluster 模块当中启用的方式如下：</p>
 
-<pre><code class="language-bash">cluster.schedulingPolicy = cluster.SCHED_RR
+<pre><code class="language-bash">// 启用 Round-Robin
+cluster.schedulingPolicy = cluster.SCHED_RR
+
+// 不启用 Round-Robin
+cluster.schedulingPolicy = cluster.SCHED_NONE
 </code></pre>
 
 <p>或者在环境变量当中这种 <code>NODE_CLUSTER_SCHED_POLICY</code>：</p>
 
-<pre><code class="language-bash">export NODE_CLUSTER_SCHED_POLICY=none
+<pre><code class="language-bash"># 启用 Round-Robin
+export NODE_CLUSTER_SCHED_POLICY=rr
+
+# 不启用 Round-Robin
+export NODE_CLUSTER_SCHED_POLICY=none
 </code></pre>
 
-<p>其次，负载均衡策略也可以通过代理服务器实现，比如 <code>Nginx</code>：</p>
+<p>当然负载均衡策略也可以通过代理服务器 nginx 配置 <code>upstream</code> 实现：</p>
 
 <pre><code class="language-nginx">http { 
   upstream cluster { 
@@ -645,13 +665,38 @@ console.log('hello');                          // | |    都执行了
 }
 </code></pre>
 
+<p>可以简单理解为：</p>
+
+<p><img src="./nginx-upstream.jpg" alt="nginx-upstream.jpg" /></p>
+
 <h3 id="进程守护">进程守护</h3>
 
 <p>master 进程除了负责接收新的连接，分发给各 <code>worker</code> 进程处理之外，还得守护每一个 worker 进程，保证整个应用的稳定性，一旦某个 <code>worker</code> 异常退出就需要 <code>fork</code> 一个新的进程上去。</p>
 
-<p>我们可以给 <code>process</code> 对象 添加 <code>uncaughtException</code> 事件绑定来避免异常发生时直接退出，可以在回调当中停止任务，告诉 <code>master</code> 进程该进程已经 <code>died</code>。</p>
+<p>我们可以给 <code>process</code> 对象 添加 <code>uncaughtException</code> 事件绑定来避免异常发生时直接退出，可以在回调当中停止任务，告诉 <code>master</code> 进程该进程已经 <code>died</code>：</p>
 
-<p>这些在 <code>cluster</code> 模块都已经好处理了：</p>
+<pre><code class="language-javascript">process.on('uncaughtException', err =&gt; {
+
+  // 记录日志
+  logger.error(err)
+
+  // 发送自杀信号
+  process.send({ act: 'suicide' })
+
+  // 停止接收新的连接
+  worker.close(function () {
+    process.exit(1)
+  })
+
+  // 5秒后自动退出
+  setTimeout(function () {
+    process.exit(1)
+  }, 5e3)
+
+})
+</code></pre>
+
+<p>在 <code>cluster</code> 模块当中我们可以这样进行处理：</p>
 
 <pre><code class="language-javascript">cluster.on('exit', function(){
     clsuter.fork();
@@ -681,8 +726,10 @@ cluster.on('disconnect', function(){
 <li><a href="https://blog.csdn.net/shenlei19911210/article/details/61194617">协程(Coroutine)-ES中关于Generator/async/await的学习思考</a></li>
 <li><a href="https://www.zhihu.com/question/32218874/answer/56255707">为什么协程是趋势</a></li>
 <li><a href="http://shiningray.cn/node-js-coroutine.html">Node 的协程</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/27069865">Node.js cluster 踩坑小结</a></li>
 <li><a href="http://www.cnblogs.com/lizheng19822003/p/5337792.html">理解事件驱动select,poll,epoll三种模型</a></li>
 <li><a href="http://jolestar.com/parallel-programming-model-thread-goroutine-actor/">并发之痛 Thread，Goroutine，Actor</a></li>
+<li><a href="https://github.com/DavidCai1993/my-blog/issues/31">通过源码解析 Node.js 中进程间通信中的 socket 句柄传递</a></li>
 <li><a href="https://blog.csdn.net/gatieme/article/details/51058797">linux下进程的进程最大数、最大线程数、进程打开的文件数和ulimit命令修改硬件资源限制</a></li>
 <li><a href="https://blog.csdn.net/great3779/article/details/5930190">一个进程(Process)最多可以生成多少个线程(Thread)</a></li>
 <li><a href="https://segmentfault.com/q/1010000000190024">既然nodejs是单线程的，那么它怎么处理并发，难道要排队么</a></li>
@@ -695,6 +742,9 @@ cluster.on('disconnect', function(){
         <a class="prev-post" href="https://t-tom.me/blog/2018-04-02-%E4%BB%8Ejwt%E5%88%B0oauth/">
             <img class="icon-text" src="/img/prev.svg"/>从jwt到OAuth</a>
         
+        
+        <a class="next-post" href="https://t-tom.me/blog/2018-04-23-%E4%BD%BF%E7%94%A8swift%E5%BC%80%E5%8F%91react-native%E7%BB%84%E4%BB%B6/">使用Swift开发React Native组件<img class="icon-text" src="/img/next.svg"/>
+        </a>
         
     </nav>
 </article>
