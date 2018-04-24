@@ -12,7 +12,6 @@ const CACHE_HOST = ['https://t-tom.me/', 'http://localhost:1313/', 'http://cdnjs
 
 const isValidResponse = _ => true;
 const isShouldBeCachedURI = ({ method, url }) => {
-  debugger
   return (
     method.toUpperCase() === 'GET' &&
     CACHE_HOST.some(host => url.search(host) !== -1)
