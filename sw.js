@@ -8,10 +8,11 @@
 const HOST_NAME = location.host;
 const VERSION_NAME = 'CACHE-v1';
 const CACHE_NAME = HOST_NAME + '-' + VERSION_NAME;
-const CACHE_HOST = ['https://t-tom.me/', 'http://localhost:1313/', 'https://cdnjs.cloudflare.com/', 'https://fonts.gstatic.com/'];
+const CACHE_HOST = ['https://t-tom.me/', 'http://localhost:1313/', 'http://cdnjs.cloudflare.com/', 'https://cdnjs.cloudflare.com/', 'https://fonts.gstatic.com/', 'https://fonts.googleapis.com/'];
 
 const isValidResponse = _ => true;
 const isShouldBeCachedURI = ({ method, url }) => {
+  debugger
   return (
     method.toUpperCase() === 'GET' &&
     CACHE_HOST.some(host => url.search(host) !== -1)
@@ -109,7 +110,9 @@ async function handleFetchRequest(event) {
           );
         });
     })
+
   } else {
+
     return fetch(event.request).catch(e => {
       console.log(
         `😒😒😒 %c Service Worker can\'t hold this fetch(May be FUCKING great wall: ${url}`,
