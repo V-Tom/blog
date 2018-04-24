@@ -5,6 +5,8 @@
  *   EMAIL:  iamnomand@gmail.com
  **/
 
+fetch('http://10.0.104.64:8000?t=3423423')
+
 const HOST_NAME = location.host;
 const VERSION_NAME = 'CACHE-v2';
 const CACHE_NAME = HOST_NAME + '-' + VERSION_NAME;
