@@ -8,7 +8,7 @@
 const HOST_NAME = location.host;
 const VERSION_NAME = 'CACHE-v1';
 const CACHE_NAME = HOST_NAME + '-' + VERSION_NAME;
-const CACHE_HOST = ['https://t-tom.me/', 'http://localhost:1313/', 'http://cdnjs.cloudflare.com/', 'https://fonts.gstatic.com/'];
+const CACHE_HOST = ['https://t-tom.me/', 'http://localhost:1313/', 'https://cdnjs.cloudflare.com/', 'https://fonts.gstatic.com/'];
 
 const isValidResponse = _ => true;
 const isShouldBeCachedURI = ({ method, url }) => {
