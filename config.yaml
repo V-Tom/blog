@@ -15,7 +15,10 @@ taxonomies:
 Params:
 
   # Site meta description
-  description: "Welcome to TOM's zone"
+  description: "TOM's zone"
+
+  webAppTitle: "TOM's zone"
+
   # Site's Tagline (Subtitle or Keyword)
   tagline: "Nothing sweeter than this"
 

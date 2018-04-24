@@ -1,12 +1,24 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="Keywords" content="">
+    <meta name="full-screen" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#006cb4">
+    <meta name="apple-mobile-web-app-title" content="{{  .Site.Params.WebAppTitle  }}">
+    <meta name="description" content="{{  .Site.Params.Description  }}">
+    <link rel="dns-prefetch" href="https://t-tom.me">
+    <link rel="preconnect" href="https://t-tom.me">
+    <link rel="manifest" href="/sw/manifest.json"/>
     {{ .Hugo.Generator }}
     {{ partial "metatitle" . }}
     {{ partial "metadesc" . }}
 
     {{ with .Site.Params.FaviconImg }}
     <link rel="shortcut icon" href="{{.}}">
+
     {{ end }}
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato|Raleway">
