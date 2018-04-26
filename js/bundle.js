@@ -41,3 +41,19 @@ window.addEventListener('DOMContentLoaded', _ => {
   })();
 
 });
+
+if (navigator.serviceWorker && !location.host.includes('localhost')) {
+
+  navigator.serviceWorker.register(
+    location.host.includes('localhost') ? 'http://localhost:1313/sw.js' : 'https://t-tom.me/sw.js'
+  ).catch(error => {
+    console.error(`ServiceWorker registration failed: ${error}`);
+  });
+
+  navigator.serviceWorker.ready.then(registration => {
+    console.info(
+      '👏👏👏 %c Service Worker registered success. ',
+      'color:#1534fa',
+    );
+  })
+}

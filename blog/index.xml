@@ -1,16 +1,37 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Blogs on TOM&#39;s zone</title>
+    <title>Blog on TOM&#39;s zone</title>
     <link>https://t-tom.me/blog/</link>
-    <description>Recent content in Blogs on TOM&#39;s zone</description>
+    <description>Recent content in Blog on TOM&#39;s zone</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ZH-CN</language>
-    <copyright>&amp;copy; 2017~2018 TOM&#39;s Zone</copyright>
-    <lastBuildDate>Sun, 08 Apr 2018 14:22:25 +0800</lastBuildDate>
+    <copyright>Early 2016 ~ 2018 &amp;copy; TOM&#39;s Zone</copyright>
+    <lastBuildDate>Mon, 23 Apr 2018 14:28:25 +0800</lastBuildDate>
     
 	<atom:link href="https://t-tom.me/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>使用Swift开发React Native组件</title>
+      <link>https://t-tom.me/blog/2018-04-23-%E4%BD%BF%E7%94%A8swift%E5%BC%80%E5%8F%91react-native%E7%BB%84%E4%BB%B6/</link>
+      <pubDate>Mon, 23 Apr 2018 14:28:25 +0800</pubDate>
+      
+      <guid>https://t-tom.me/blog/2018-04-23-%E4%BD%BF%E7%94%A8swift%E5%BC%80%E5%8F%91react-native%E7%BB%84%E4%BB%B6/</guid>
+      <description>https://blog.csdn.net/jancywen/article/details/77945296
+https://www.jianshu.com/p/82d0ba43f8c3
+https://reactnative.cn/docs/0.51/linking-libraries-ios.html#content
+CocoaPods CocoaPods是专门为 iOS 工程提供对第三方库的依赖的管理工具，通过 CocoaPods ，我们可以更方便地管理每个第三方库的版本，而且不需要我们做太多的配置。直观、集中和自动化地管理我们项目的第三方库。
+我们都有这样的经历，当我们添加第三方库的时候，需要导入一堆相关依赖库，更新的时候也要删掉重新导入然后再配置。当我们需要更新某个第三方库的时候，我们又要手动移除该库，导入新的库，然后再配置。这些是很麻烦且没有意义的工作。
+安装 CocoaPods 需要用到 gem 。gem 是 RubyGems 的缩写，属于 ruby 上的包管理工具。
+这里建议切换国内镜像源地址，当然你也可以加上 -p 参数来配置 proxy
+gem sources --remove https://rubygems.org/ &amp;amp;&amp;amp; gem sources -a https://gems.ruby-china.org/  将 RubyGems 升级到最新版本，不然有可能导致配置 CocoaPods 失败。
+sudo gem update --system  可以使用下面命令来查看替换镜像位置是否成功：
+gem sources -l  结果应该是：
+*** CURRENT SOURCES *** https://gems.ruby-china.org/  接下来就可以放心的安装 CocoaPods了：
+sudo gem install cocoapods  然后继续进行 setUp：
+pod setup  这一步是将Github上的开源库都托管都安装Podspec索引安装到到本地，这一步会很慢，建议添加本地 proxy。</description>
+    </item>
     
     <item>
       <title>谈谈 Node.js 的单线程</title>

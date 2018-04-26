@@ -3,6 +3,17 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="Keywords" content="">
+    <meta name="full-screen" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#006cb4">
+    <meta name="apple-mobile-web-app-title" content="TOM&#39;s zone">
+    <meta name="description" content="TOM&#39;s zone">
+    <link rel="dns-prefetch" href="https://t-tom.me">
+    <link rel="preconnect" href="https://t-tom.me">
+    <link rel="manifest" href="/sw/manifest.json"/>
     <meta name="generator" content="Hugo 0.38.2" />
     <title>从jwt到OAuth - TOM&#39;s zone</title>
 
@@ -51,6 +62,9 @@ package main import &quot;bytes&quot; import ( &quot;encoding/json&quot; &quot;e
 		margin-left:0;
 		width: 24rem;
 		border-top: 2px solid #ff8181; }
+    .bar li.active a{
+        color:#ff8181;
+    }
 </style>
 
 </head>
@@ -63,7 +77,10 @@ package main import &quot;bytes&quot; import ( &quot;encoding/json&quot; &quot;e
 			<a href="/">
 				<img class="icon-text" src="/img/prev.svg"/>
 			</a>
-		</li><li><a href="/blog/">Blog</a></li></ul>
+		</li>
+		
+		<li class="active"><a href="/blog/">Blog</a></li>
+		<li class=""><a href="/life/">Life</a></li></ul>
 </nav>
 
 	</div>
@@ -79,9 +96,9 @@ package main import &quot;bytes&quot; import ( &quot;encoding/json&quot; &quot;e
 		<span class="no-print">
 			-
 				
-				<a href="/tags/OAuth">OAuth</a>
+				<a href="/tags/oauth">OAuth</a>
 				
-				<a href="/tags/BackEnd">BackEnd</a>
+				<a href="/tags/backend">BackEnd</a>
 				<span>
 	</h5>
 	
@@ -770,19 +787,34 @@ func GetUser(code string) (string, error) {
 <div id="disqus_thread" class="no-print"></div>
 <script type="text/javascript">
 
-(function() {
-    
+  (function () {
     
     if (window.location.hostname == "localhost")
-        return;
+      return;
 
-    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-    var disqus_shortname = 'toms-blog-1';
-    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-})();
+    const disqus_thread = document.querySelector('#disqus_thread')
+    new IntersectionObserver(function (entries, observer) {
+        entries.forEach(entry => {
+          if (entry.intersectionRatio > 0 && !disqus_thread.classList.contains('active')) {
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            var disqus_shortname = 'toms-blog-1';
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            disqus_thread.classList.add('active')
+          }
+        })
+      }, {
+        rootMargin: '0px',
+        threshold: 1.0
+      }
+    ).observe(disqus_thread)
+
+  })();
 </script>
-<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+</noscript>
 
 			<hr class="sep" />
 		</main>
@@ -802,7 +834,7 @@ func GetUser(code string) (string, error) {
 				<p>
 					
 					
-					&copy; 2017~2018 TOM's Zone
+					Early 2016 ~ 2018 &copy; TOM's Zone
 					
 					
 				</p>

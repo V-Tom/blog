@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="Keywords" content="">
+    <meta name="full-screen" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#006cb4">
+    <meta name="apple-mobile-web-app-title" content="TOM&#39;s zone">
+    <meta name="description" content="TOM&#39;s zone">
+    <link rel="dns-prefetch" href="https://t-tom.me">
+    <link rel="preconnect" href="https://t-tom.me">
+    <link rel="manifest" href="/sw/manifest.json"/>
+    <meta name="generator" content="Hugo 0.38.2" />
+    <title>使用Swift开发React Native组件 - TOM&#39;s zone</title>
+
+    <meta name="description" content="使用Swift开发React Native组件">
+
+
+    
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato|Raleway">
+
+    
+    <link rel="stylesheet"
+          href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/ocean.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/javascript.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/python.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/go.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/css.min.js"></script>
+    
+    
+    <link rel="stylesheet" href="/css/bundle.css"/>
+    <style>
+	a { color: #ff8181; }
+	blockquote {
+		border-left-color: #ff8181;
+		border-right-color: #ff8181; }
+	.bar a:hover {
+		color: #ff8181;
+		text-decoration: none; }
+	.sep {
+		margin-top: 2rem;
+		margin-bottom: 1rem;
+		margin-left:0;
+		width: 24rem;
+		border-top: 2px solid #ff8181; }
+    .bar li.active a{
+        color:#ff8181;
+    }
+</style>
+
+</head>
+
+<body>
+<header class="container no-print">
+	<div class="u-header">
+		<nav class="bar">
+	<ul><li>
+			<a href="/">
+				<img class="icon-text" src="/img/prev.svg"/>
+			</a>
+		</li>
+		
+		<li class="active"><a href="/blog/">Blog</a></li>
+		<li class=""><a href="/life/">Life</a></li></ul>
+</nav>
+
+	</div>
+</header>
+<main class="container">
+
+<article>
+    <header><hgroup id="brand">
+	<h1>使用Swift开发React Native组件</h1>
+	<h5>
+		
+		<time datetime="2018-04-23 14:28:25 &#43;0800 CST">Apr 23, 2018</time>
+		<span class="no-print">
+			-
+				
+				<a href="/tags/native">Native</a>
+				
+				<a href="/tags/frontend">FrontEnd</a>
+				
+				<a href="/tags/rn">RN</a>
+				<span>
+	</h5>
+	
+</hgroup>
+<hr class="sep" />
+</header>
+    <section id="markdown">
+        
+
+<p><a href="https://blog.csdn.net/jancywen/article/details/77945296">https://blog.csdn.net/jancywen/article/details/77945296</a></p>
+
+<p><a href="https://www.jianshu.com/p/82d0ba43f8c3">https://www.jianshu.com/p/82d0ba43f8c3</a></p>
+
+<p><a href="https://reactnative.cn/docs/0.51/linking-libraries-ios.html#content">https://reactnative.cn/docs/0.51/linking-libraries-ios.html#content</a></p>
+
+<h3 id="cocoapods">CocoaPods</h3>
+
+<p>CocoaPods是专门为 iOS 工程提供对第三方库的依赖的管理工具，通过 CocoaPods ，我们可以更方便地管理每个第三方库的版本，而且不需要我们做太多的配置。直观、集中和自动化地管理我们项目的第三方库。</p>
+
+<p>我们都有这样的经历，当我们添加第三方库的时候，需要导入一堆相关依赖库，更新的时候也要删掉重新导入然后再配置。当我们需要更新某个第三方库的时候，我们又要手动移除该库，导入新的库，然后再配置。这些是很麻烦且没有意义的工作。</p>
+
+<p>安装 CocoaPods 需要用到 gem 。gem 是 <a href="http://rubygems.org/">RubyGems</a> 的缩写，属于 ruby 上的包管理工具。</p>
+
+<p>这里建议切换国内镜像源地址，当然你也可以加上 <code>-p</code> 参数来配置 proxy</p>
+
+<pre><code class="language-bash">gem sources --remove https://rubygems.org/ &amp;&amp; gem sources -a https://gems.ruby-china.org/
+</code></pre>
+
+<p>将 RubyGems 升级到最新版本，不然有可能导致配置 CocoaPods 失败。</p>
+
+<pre><code class="language-bash">sudo gem update --system
+</code></pre>
+
+<p>可以使用下面命令来查看替换镜像位置是否成功：</p>
+
+<pre><code class="language-bash">gem sources -l
+</code></pre>
+
+<p>结果应该是：</p>
+
+<pre><code>*** CURRENT SOURCES ***
+
+https://gems.ruby-china.org/
+</code></pre>
+
+<p>接下来就可以放心的安装 CocoaPods了：</p>
+
+<pre><code class="language-bash">sudo gem install cocoapods
+</code></pre>
+
+<p>然后继续进行 setUp：</p>
+
+<pre><code class="language-bash">pod setup
+</code></pre>
+
+<p>这一步是将Github上的开源库都托管都安装Podspec索引安装到到本地，这一步会很慢，建议添加本地 proxy。</p>
+
+<p>我使用 ShadowsocksR 代理，默认代理端口为1080，配置好代理之后去终端输入git配置命令。</p>
+
+<p>如果你同事电脑上有安装好,你其实可以从你同事电脑上拷贝过来。也可以直接访问 <a href="https://link.jianshu.com/?t=https://github.com/CocoaPods/Specs">https://github.com/CocoaPods/Specs</a> 这个源地址直接 download 下来。</p>
+
+<blockquote>
+<p>如何恢复 git config proxy 可以采用 <code>git config --global --unset http.proxy</code></p>
+</blockquote>
+
+<pre><code class="language-bash"># gloabl proxy
+git config --global http.proxy socks5://127.0.0.1:1080
+
+# only github proxy
+git config --global http.https://github.com.proxy socks5://127.0.0.1:1080
+</code></pre>
+
+<p>下载安装完毕后会是如下图：</p>
+
+<p><img src="./pod-setup.png" alt="pod-setup.png" /></p>
+
+<p>然后检测版本：<code>pod --version</code>，我这里显示是 1.5.0，至此 CocoaPods 安装完毕。</p>
+
+<p>接下来 <code>pod install</code> 的时候也会遇到速度较慢的问题，可以切换为<a href="https://mirror.tuna.tsinghua.edu.cn/help/CocoaPods/">国内镜像</a>，我这里直接添加 proxy了。</p>
+
+<h3 id="创建项目">创建项目</h3>
+
+<h4 id="创建-podfile">创建 Podfile</h4>
+
+<p>进入项目根目录，打开 terminal，初始化 Podfile，建议不要手动创建 Podfile：</p>
+
+<pre><code class="language-bash">pod init
+</code></pre>
+
+<h3 id="reference">Reference</h3>
+
+<ul>
+<li><a href="https://www.jianshu.com/p/adad5ee721af">CocoaPods最新安装(不使用淘宝镜像)</a></li>
+<li><a href="https://www.jianshu.com/p/1711e131987d">看一遍就会的CocoaPods的安装和使用教程</a></li>
+<li><a href="https://gems.ruby-china.org/">RubyGems <em>- Ruby China</em></a></li>
+<li><a href="https://github.com/facebook/react-native/issues/7775">[IOS/MAC] -Integrating react-native app with existing apps not creating .workspace</a></li>
+</ul>
+
+    </section>
+    <nav class="no-print post-nav">
+        
+        <a class="prev-post" href="https://t-tom.me/blog/2018-04-08-%E8%B0%88%E8%B0%88node.js%E7%9A%84%E5%8D%95%E7%BA%BF%E7%A8%8B/">
+            <img class="icon-text" src="/img/prev.svg"/>谈谈 Node.js 的单线程</a>
+        
+        
+    </nav>
+</article>
+<script src="/js/bundle.js"></script>
+
+
+
+<div id="disqus_thread" class="no-print"></div>
+<script type="text/javascript">
+
+  (function () {
+    
+    if (window.location.hostname == "localhost")
+      return;
+
+    const disqus_thread = document.querySelector('#disqus_thread')
+    new IntersectionObserver(function (entries, observer) {
+        entries.forEach(entry => {
+          if (entry.intersectionRatio > 0 && !disqus_thread.classList.contains('active')) {
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            var disqus_shortname = 'toms-blog-1';
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            disqus_thread.classList.add('active')
+          }
+        })
+      }, {
+        rootMargin: '0px',
+        threshold: 1.0
+      }
+    ).observe(disqus_thread)
+
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+</noscript>
+
+			<hr class="sep" />
+		</main>
+		<footer class="container no-print">
+			<div class="u-footer">
+				
+<a href="mailto:iamnomand@gmail.com"><img class="icon-social" src="/img/email.svg" alt="Email Me!"/></a>
+
+
+<a href="https://github.com/v-tom/"><img class="icon-social" src="/img/github.svg" alt="Github"/></a>
+
+
+<a href="https://twitter.com/iamnomand"><img class="icon-social" src="/img/twitter.svg" alt="Twitter"/></a>
+
+<a href="https://t-tom.me/index.xml" target="_blank"><img class="icon-social" src="/img/feed.svg" alt="Feed"></a>
+
+				<p>
+					
+					
+					Early 2016 ~ 2018 &copy; TOM's Zone
+					
+					
+				</p>
+				
+				<a href="#brand">
+					<img class="icon-text" src="/img/toup.svg" alt="To Up"/>
+					<span>Back to Up</span>
+				</a>
+				
+			</div>
+		</footer>
+		
+		<script>hljs.initHighlightingOnLoad();</script>
+		
+	</body>
+</html>
+
