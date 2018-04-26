@@ -42,7 +42,7 @@ window.addEventListener('DOMContentLoaded', _ => {
 
 });
 
-if (navigator.serviceWorker) {
+if (navigator.serviceWorker && !location.host.includes('localhost')) {
 
   navigator.serviceWorker.register(
     location.host.includes('localhost') ? 'http://localhost:1313/sw.js' : 'https://t-tom.me/sw.js'
