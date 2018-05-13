@@ -1,3 +1,5 @@
+const VERSION_NAME = 'CACHE-v1526221938293';
+const VERSION_NAME = 'CACHE-v1526221901780';
 /**
  * PROJECT:  gh-pages
  * AUTHOR:  Nomand
@@ -6,7 +8,6 @@
  **/
 
 const HOST_NAME = location.host;
-const VERSION_NAME = 'CACHE-v3';
 const CACHE_NAME = HOST_NAME + '-' + VERSION_NAME;
 const CACHE_HOST = ['https://t-tom.me/', 'http://localhost:1313/', 'http://cdnjs.cloudflare.com/', 'https://cdnjs.cloudflare.com/', 'https://fonts.gstatic.com/', 'https://fonts.googleapis.com/'];
 
