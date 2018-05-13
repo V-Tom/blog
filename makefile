@@ -8,4 +8,4 @@ sub:
 	git submodule add -b gh-pages -f git@github.com:V-Tom/blog.git  public
 
 deploy:
-	make css && chmod +x ./deploy.sh && ./deploy.sh
+	node ./deploy.js && make css && chmod +x ./deploy.sh && ./deploy.sh
