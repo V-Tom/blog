@@ -1,16 +1,26 @@
 window.addEventListener('DOMContentLoaded', _ => {
+
+  /**
+   * set all target blank for href link
+   */
+  (function () {
+    Array.from(document.querySelectorAll('a'))
+      .forEach($node => $node.setAttribute('target', '_blank'))
+  })();
+
   /**
    * Rewrite head anchor links
    */
   (function () {
-    Array.from(document.querySelectorAll('#markdown [id]')).forEach($node => {
-      const text = $node.textContent;
-      const $a = document.createElement('a');
-      $a.setAttribute('href', `#${text}`);
-      $a.textContent = text;
-      $node.innerHTML = '';
-      $node.appendChild($a)
-    });
+    Array.from(document.querySelectorAll('#markdown [id]'))
+      .forEach($node => {
+        const text = $node.textContent;
+        const $a = document.createElement('a');
+        $a.setAttribute('href', `#${text}`);
+        $a.textContent = text;
+        $node.innerHTML = '';
+        $node.appendChild($a)
+      });
 
   })();
 
