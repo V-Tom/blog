@@ -54,3 +54,33 @@ GCE 最新价格，按照最小的 vps 实例来计算：
 - 可视化：每日暂定8点定时任务记录所有用户使用情况，计算当日流量，并写入数据库，供以后汇总查询。
 - 可视化：提供一个可视化平台可以随时查看当前用户使用情况并鉴权，间隔大概在 10s 内（通过 websocket 通信
 
+#### proxy
+
+绝大部分应用程序都支持 proxy，下面简单罗列一些常用应用程序配置代理的方法。
+
+> 个人理解如果流量过大，或者 proxy 也不行的情况下，应该采用更换镜像的方式。
+
+##### git 设置只代理 GitHub
+
+直接在 terminal 当中执行下面 bash
+
+```bash
+# 设置
+git config --global http.https://github.com.proxy socks5://127.0.0.1:1080
+
+# 取消代理
+git config --global --unset http.https://github.com.proxy
+```
+
+执行后配置内容会默认保存在 `~/.gitconfig` 当中。
+
+##### terminal 设置代理
+
+把下面命令放置在 `~/.zshrc` 或者直接写成 alias 的形式
+
+```bash
+# ~/.zshrc
+export http_proxy="socks5://127.0.0.1:1086"
+export https_proxy="socks5://127.0.0.1:1086"
+```
+

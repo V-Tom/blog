@@ -293,6 +293,8 @@ M0,100L60,160L120,60L180,140L240,100L300,120
 - [Symbols](https://github.com/d3/d3-shape#symbols)
 
 
+> 这里推荐一个在线查看 [D3 shape demo](https://www.pshrmn.com/tutorials/d3/shapes/)
+
 我们暂时只简单的用到了 `Lines` 生成器。
 
 首先生明一个 `line generator`：
