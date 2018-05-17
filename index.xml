@@ -7,31 +7,10 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ZH-CN</language>
     <copyright>Early 2016 ~ 2018 &amp;copy; TOM&#39;s Zone</copyright>
-    <lastBuildDate>Mon, 23 Apr 2018 14:28:25 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 23 Apr 2018 11:29:40 +0800</lastBuildDate>
     
 	<atom:link href="https://t-tom.me/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>使用Swift开发React Native组件</title>
-      <link>https://t-tom.me/blog/2018-04-23-%E4%BD%BF%E7%94%A8swift%E5%BC%80%E5%8F%91react-native%E7%BB%84%E4%BB%B6/</link>
-      <pubDate>Mon, 23 Apr 2018 14:28:25 +0800</pubDate>
-      
-      <guid>https://t-tom.me/blog/2018-04-23-%E4%BD%BF%E7%94%A8swift%E5%BC%80%E5%8F%91react-native%E7%BB%84%E4%BB%B6/</guid>
-      <description>https://blog.csdn.net/jancywen/article/details/77945296
-https://www.jianshu.com/p/82d0ba43f8c3
-https://reactnative.cn/docs/0.51/linking-libraries-ios.html#content
-CocoaPods CocoaPods是专门为 iOS 工程提供对第三方库的依赖的管理工具，通过 CocoaPods ，我们可以更方便地管理每个第三方库的版本，而且不需要我们做太多的配置。直观、集中和自动化地管理我们项目的第三方库。
-我们都有这样的经历，当我们添加第三方库的时候，需要导入一堆相关依赖库，更新的时候也要删掉重新导入然后再配置。当我们需要更新某个第三方库的时候，我们又要手动移除该库，导入新的库，然后再配置。这些是很麻烦且没有意义的工作。
-安装 CocoaPods 需要用到 gem 。gem 是 RubyGems 的缩写，属于 ruby 上的包管理工具。
-这里建议切换国内镜像源地址，当然你也可以加上 -p 参数来配置 proxy
-gem sources --remove https://rubygems.org/ &amp;amp;&amp;amp; gem sources -a https://gems.ruby-china.org/  将 RubyGems 升级到最新版本，不然有可能导致配置 CocoaPods 失败。
-sudo gem update --system  可以使用下面命令来查看替换镜像位置是否成功：
-gem sources -l  结果应该是：
-*** CURRENT SOURCES *** https://gems.ruby-china.org/  接下来就可以放心的安装 CocoaPods了：
-sudo gem install cocoapods  然后继续进行 setUp：
-pod setup  这一步是将Github上的开源库都托管都安装Podspec索引安装到到本地，这一步会很慢，建议添加本地 proxy。</description>
-    </item>
     
     <item>
       <title>众筹计划</title>
@@ -46,8 +25,8 @@ overview 我提供的内容：
  稳定的两种科学上网服务（带宽：100mib/s）以及后续平台拓展（IOS 和 ANDROID 完善的技术支持以及分享  你需要提供的义务：
  每月账单根据个人使用量按照 GCE 标准付费，外加平摊 GCE 平台基础费 保密  cost GCE 最新价格，按照最小的 vps 实例来计算：
  月基础费用 $5，按照人头平分 流量按量付费 0.1$/1gb  tech plan 暂定技术内容：
- golang gin http web(websocket) server D3-charts SQLIT shell script crontab、iptables  目前需要实现以下功能：
- 提供一个 ping test 工具，不同的 ip 可能不同用户存在延迟大的情况，目前的办法只能是换主机 可视化：提供一个完整的 GCE 收费情况以及账单查询渠道，可以考虑在可视化平台当中公布 给每个用户提供一个密匙可以登入 共享GCE，确保大家只操作自己的 workspace，建立服务尽量统一采用 docker 来减少 environment 污染 可视化：每日暂定8点定时任务记录所有用户使用情况，计算当日流量，并写入数据库，供以后汇总查询。 可视化：提供一个可视化平台可以随时查看当前用户使用情况并鉴权，间隔大概在 10s 内（通过 websocket 通信  billing list  GCE 的价格计算方式可以在这里查看官方介绍，或者查看前人总结</description>
+ golang gin http web(websocket) server D3-charts SQLIT shell script crontab、iptables、awake  目前需要实现以下功能：
+ 提供一个 ping test 工具，不同的 ip 可能不同用户存在延迟大的情况，目前的办法只能是换主机 可视化：提供一个完整的 GCE 收费情况以及账单查询渠道，可以考虑在可视化平台当中公布 给每个用户提供一个密匙可以登入 共享GCE，确保大家只操作自己的 workspace，建立服务尽量统一采用 docker 来减少 environment 污染 可视化：每日暂定8点定时任务记录所有用户使用情况，计算当日流量，并写入数据库，供以后汇总查询。 可视化：提供一个可视化平台可以随时查看当前用户使用情况并鉴权，间隔大概在 10s 内（通过 websocket 通信  proxy 绝大部分应用程序都支持 proxy，下面简单罗列一些常用应用程序配置代理的方法。</description>
     </item>
     
     <item>
@@ -256,6 +235,24 @@ git clone -b manyuser https://github.com/shadowsocksr/shadowsocksr.git  进入�
 cd ~/shadowsocksr &amp;amp;&amp;amp; bash initcfg.sh &amp;amp;&amp;amp; cd ~/shadowsocksr/shadowsocks  快速运行，当然也可以通过配置文件运行，具体请看wiki：
 python server.py -p 443 -k password -m aes-256-cfb -O auth_sha1_v4 -o http 说明：-p 端口 -k 密码 -m 加密方式 -O 协议插件 -o 混淆插件  配置文件参考：
 { &amp;quot;server&amp;quot;: &amp;quot;0.0.0.0&amp;quot;, &amp;quot;server_ipv6&amp;quot;: &amp;quot;::&amp;quot;, &amp;quot;server_port&amp;quot;: 8388, &amp;quot;local_address&amp;quot;: &amp;quot;127.</description>
+    </item>
+    
+    <item>
+      <title>使用Swift开发React Native组件</title>
+      <link>https://t-tom.me/blog/2018-04-23-%E4%BD%BF%E7%94%A8swift%E5%BC%80%E5%8F%91react-native%E7%BB%84%E4%BB%B6/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://t-tom.me/blog/2018-04-23-%E4%BD%BF%E7%94%A8swift%E5%BC%80%E5%8F%91react-native%E7%BB%84%E4%BB%B6/</guid>
+      <description>本人只是一个前端，偶尔写一点其他语言来拓展开发技能。
+因业务当中使用到 RN，所以对如何实现 RN custom module 也比较感兴趣并简单学习实现了一些功能。本文可能有些地方可能比较浅显或者有错误，还望读者海涵并指正。
+ 环境准备 因为 swift 的断崖式升级以及 RN 不同版本，所以下面的例子可能会存在一些误差。本机环境为：
+ RN：0.45.1 swift：4.1 Xcode：9.3 OS：high sierra 10.13.4  CocoaPods CocoaPods是专门为 iOS 工程提供对第三方库的依赖的管理工具，通过 CocoaPods ，我们可以更方便地管理每个第三方库的版本，而且不需要我们做太多的配置。直观、集中和自动化地管理我们项目的第三方库。
+我们都有这样的经历，当我们添加第三方库的时候，需要导入一堆相关依赖库，更新的时候也要删掉重新导入然后再配置。当我们需要更新某个第三方库的时候，我们又要手动移除该库，导入新的库，然后再配置。这些是很麻烦且没有意义的工作。
+安装 CocoaPods 需要用到 gem 。gem 是 RubyGems 的缩写，属于 ruby 上的包管理工具。
+这里建议切换国内镜像源地址，当然你也可以加上 -p 参数来配置 proxy
+gem sources --remove https://rubygems.org/ &amp;amp;&amp;amp; gem sources -a https://gems.ruby-china.org/  将 RubyGems 升级到最新版本，不然有可能导致配置 CocoaPods 失败。
+sudo gem update --system  可以使用下面命令来查看替换镜像位置是否成功：
+gem sources -l  结果应该是：</description>
     </item>
     
   </channel>

@@ -14,7 +14,7 @@
     <link rel="dns-prefetch" href="https://t-tom.me">
     <link rel="preconnect" href="https://t-tom.me">
     <link rel="manifest" href="/sw/manifest.json"/>
-    <meta name="generator" content="Hugo 0.38.2" />
+    <meta name="generator" content="Hugo 0.37" />
     <title>众筹计划 - TOM&#39;s zone</title>
 
     <meta name="description" content="众筹计划  TBD 后续内容待补充当中
@@ -24,8 +24,8 @@ overview 我提供的内容：
  稳定的两种科学上网服务（带宽：100mib/s）以及后续平台拓展（IOS 和 ANDROID 完善的技术支持以及分享  你需要提供的义务：
  每月账单根据个人使用量按照 GCE 标准付费，外加平摊 GCE 平台基础费 保密  cost GCE 最新价格，按照最小的 vps 实例来计算：
  月基础费用 $5，按照人头平分 流量按量付费 0.1$/1gb  tech plan 暂定技术内容：
- golang gin http web(websocket) server D3-charts SQLIT shell script crontab、iptables  目前需要实现以下功能：
- 提供一个 ping test 工具，不同的 ip 可能不同用户存在延迟大的情况，目前的办法只能是换主机 可视化：提供一个完整的 GCE 收费情况以及账单查询渠道，可以考虑在可视化平台当中公布 给每个用户提供一个密匙可以登入 共享GCE，确保大家只操作自己的 workspace，建立服务尽量统一采用 docker 来减少 environment 污染 可视化：每日暂定8点定时任务记录所有用户使用情况，计算当日流量，并写入数据库，供以后汇总查询。 可视化：提供一个可视化平台可以随时查看当前用户使用情况并鉴权，间隔大概在 10s 内（通过 websocket 通信  billing list  GCE 的价格计算方式可以在这里查看官方介绍，或者查看前人总结">
+ golang gin http web(websocket) server D3-charts SQLIT shell script crontab、iptables、awake  目前需要实现以下功能：
+ 提供一个 ping test 工具，不同的 ip 可能不同用户存在延迟大的情况，目前的办法只能是换主机 可视化：提供一个完整的 GCE 收费情况以及账单查询渠道，可以考虑在可视化平台当中公布 给每个用户提供一个密匙可以登入 共享GCE，确保大家只操作自己的 workspace，建立服务尽量统一采用 docker 来减少 environment 污染 可视化：每日暂定8点定时任务记录所有用户使用情况，计算当日流量，并写入数据库，供以后汇总查询。 可视化：提供一个可视化平台可以随时查看当前用户使用情况并鉴权，间隔大概在 10s 内（通过 websocket 通信  proxy 绝大部分应用程序都支持 proxy，下面简单罗列一些常用应用程序配置代理的方法。">
 
 
     
@@ -148,10 +148,10 @@ overview 我提供的内容：
 
 <ul>
 <li>golang gin http web(websocket) server</li>
-<li><del>D3-charts</del></li>
-<li><del>SQLIT</del></li>
+<li>D3-charts</li>
+<li>SQLIT</li>
 <li>shell script</li>
-<li>crontab、iptables</li>
+<li>crontab、iptables、awake</li>
 </ul>
 
 <p>目前需要实现以下功能：</p>
@@ -160,21 +160,39 @@ overview 我提供的内容：
 <li>提供一个 ping test 工具，不同的 ip 可能不同用户存在延迟大的情况，目前的办法只能是换主机</li>
 <li>可视化：提供一个完整的 GCE 收费情况以及账单查询渠道，可以考虑在可视化平台当中公布</li>
 <li>给每个用户提供一个密匙可以登入 共享GCE，确保大家只操作自己的 workspace，建立服务尽量统一采用 docker 来减少 environment 污染</li>
-<li><del>可视化：每日暂定8点定时任务记录所有用户使用情况，计算当日流量，并写入数据库，供以后汇总查询。</del></li>
-<li><del>可视化：提供一个可视化平台可以随时查看当前用户使用情况并鉴权，间隔大概在 10s 内（通过 websocket 通信</del></li>
+<li>可视化：每日暂定8点定时任务记录所有用户使用情况，计算当日流量，并写入数据库，供以后汇总查询。</li>
+<li>可视化：提供一个可视化平台可以随时查看当前用户使用情况并鉴权，间隔大概在 10s 内（通过 websocket 通信</li>
 </ul>
 
-<h4 id="billing-list">billing list</h4>
+<h4 id="proxy">proxy</h4>
+
+<p>绝大部分应用程序都支持 proxy，下面简单罗列一些常用应用程序配置代理的方法。</p>
 
 <blockquote>
-<p>GCE 的价格计算方式可以在这里查看<a href="https://cloud.google.com/compute/pricing?hl=zh-cn">官方介绍</a>，或者查看<a href="https://guozeyu.com/2016/10/asia-google-compute-engine/">前人总结</a></p>
+<p>个人理解如果流量过大，或者 proxy 也不行的情况下，应该采用更换镜像的方式。</p>
 </blockquote>
 
-<p>我会在下面列表当中把近期所有的 billing PDF 罗列出来。</p>
+<h5 id="git-设置只代理-github">git 设置只代理 GitHub</h5>
 
-<ul>
-<li><a href="http://p8q4gtjsz.bkt.clouddn.com/Apr%201%20%E2%80%93%2030,%202018.pdf">Apr 1 – 30, 2018 已经结算完毕</a></li>
-</ul>
+<p>直接在 terminal 当中执行下面 bash</p>
+
+<pre><code class="language-bash"># 设置
+git config --global http.https://github.com.proxy socks5://127.0.0.1:1080
+
+# 取消代理
+git config --global --unset http.https://github.com.proxy
+</code></pre>
+
+<p>执行后配置内容会默认保存在 <code>~/.gitconfig</code> 当中。</p>
+
+<h5 id="terminal-设置代理">terminal 设置代理</h5>
+
+<p>把下面命令放置在 <code>~/.zshrc</code> 或者直接写成 alias 的形式</p>
+
+<pre><code class="language-bash"># ~/.zshrc
+export http_proxy=&quot;socks5://127.0.0.1:1086&quot;
+export https_proxy=&quot;socks5://127.0.0.1:1086&quot;
+</code></pre>
 
     </section>
     <nav class="no-print post-nav">
