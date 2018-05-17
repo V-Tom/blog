@@ -7,6 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ZH-CN</language>
     <copyright>Early 2016 ~ 2018 &amp;copy; TOM&#39;s Zone</copyright>
+    <lastBuildDate>Mon, 23 Apr 2018 14:28:25 +0800</lastBuildDate>
     
 	<atom:link href="https://t-tom.me/tags/native/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +15,7 @@
     <item>
       <title>使用Swift开发React Native组件</title>
       <link>https://t-tom.me/blog/2018-04-23-%E4%BD%BF%E7%94%A8swift%E5%BC%80%E5%8F%91react-native%E7%BB%84%E4%BB%B6/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 23 Apr 2018 14:28:25 +0800</pubDate>
       
       <guid>https://t-tom.me/blog/2018-04-23-%E4%BD%BF%E7%94%A8swift%E5%BC%80%E5%8F%91react-native%E7%BB%84%E4%BB%B6/</guid>
       <description>本人只是一个前端，偶尔写一点其他语言来拓展开发技能。
