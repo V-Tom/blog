@@ -311,16 +311,16 @@ AppRegistry.registerComponent('App', () =&gt; Root);
 
 <p>我们需要设置 <strong>RCTRootView</strong> 来渲染我们的 RN，因为我们创建的是一个 <code>Tabbed App</code>，所以默认项目结构是这样：</p>
 
-<p><img src="../2018-04-23-%E4%BD%BF%E7%94%A8Swift%E5%BC%80%E5%8F%91React%20Native%E7%BB%84%E4%BB%B6/xcode-workspace-overview.png" alt="xcode-workspace-overview.png" /></p>
+<p><img src="./xcode-workspace-overview.png" alt="xcode-workspace-overview.png" /></p>
 
 <p>简单介绍一下项目文件的用途：</p>
 
 <ul>
-<li><code>XXViewController.swift</code> XX view control</li>
-<li><code>AppDelegate.swift</code> 主入口文件</li>
-<li><code>Main.storyboard</code> 主要的 storyboard</li>
+<li><code>XXViewController.swift</code> 根视图控制器。</li>
+<li><code>AppDelegate.swift</code> 继承至 UIApplicationDelegate ，整个应用的一个代理，尽量保持干净、整洁，并且带有生命周期，可以在这里对全局状态进行更新、重置。</li>
+<li><code>Main.storyboard</code> 主入口 storyboard，描述软件界面，用来把界面和代码分离。</li>
 <li><code>LaunchScreen.storyboard</code> 闪屏 storyboard</li>
-<li><code>Info.plist</code> 配置文件</li>
+<li><code>Info.plist</code> 工程配置文件</li>
 </ul>
 
 <p>我们需要在 <code>FirstViewController.swift</code> 当中指定 <strong>RNViewController</strong> ，首先在头部引入 React：</p>
@@ -365,7 +365,7 @@ AppRegistry.registerComponent('App', () =&gt; Root);
 
 <p>配置结果如下：</p>
 
-<p><img src="../2018-04-23-%E4%BD%BF%E7%94%A8Swift%E5%BC%80%E5%8F%91React%20Native%E7%BB%84%E4%BB%B6/info-list.png" alt="info-list.png" /></p>
+<p><img src="./info-list.png" alt="info-list.png" /></p>
 
 <blockquote>
 <p>Xcode 一直打印：nw_connection_get_connected_socket_block_invoke 3 Connection has no connected handler</p>
