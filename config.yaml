@@ -39,6 +39,8 @@ Params:
     - python
     - go
     - css
+    - swift
+    - objectivec
 
   # Social Links
   email: "iamnomand@gmail.com"
