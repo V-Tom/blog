@@ -464,7 +464,7 @@ class RNDemoModule: NSObject {
 <pre><code class="language-swift">// ... class RNDemoModule
     
 	// 导出常量
-    @objc func constantsToExport() -&gt; [AnyHashable: Any]! {
+    func constantsToExport() -&gt; [AnyHashable: Any]! {
         return [
             &quot;SDKVersion&quot;: &quot;0.45.1&quot;,
             &quot;NativeModuleVersion&quot;:&quot;0.0.0&quot;
@@ -666,7 +666,96 @@ RNDemoModule.callWithPromise('TOM').then(value =&gt; console.info(`callWithPromi
 
 <h4 id="功能实现-event-emitter">功能实现:Event Emitter</h4>
 
-<p>TODO:尚未完成</p>
+<p>实现 Event Emitter 目前好像有两种方案：</p>
+
+<ul>
+<li>Bridge.eventDispatcher().sendAppEvent</li>
+<li>继承 RCTEventEmitter</li>
+</ul>
+
+<p>官方推荐第二种方式来实现。</p>
+
+<blockquote>
+<p>新的类需要继承 RCTEventEmitter，其实这个 RCTEventEmitter 也是继承 NSObject，我尝试更改老的 module 继承对象，一直报错。</p>
+</blockquote>
+
+<p>我们需要新建一个 swift 文件命名为 <code>RNDemoEventEmitter.swift</code>，内容大致如下：</p>
+
+<pre><code class="language-swift">import Foundation
+import React
+
+@objc(RNDemoEventEmitter)
+class RNDemoEventEmitter: RCTEventEmitter {
+
+}
+</code></pre>
+
+<p>官方要求是通过实现 <code>supportedEvents</code> 方法来指定导出的 event name ，这里我们假设一个命名为 <code>progress</code> 的 event。</p>
+
+<pre><code class="language-swift">// ... class RNDemoEventEmitter
+
+  @objc override func supportedEvents() -&gt; [String]?{
+        return [&quot;progress&quot;]
+    }
+
+// ... class RNDemoEventEmitter
+</code></pre>
+
+<p>还要实现 <code>startObserving</code> 和 <code>stopObserving</code> 方法，用来优化无监听处理的事件，在实现之前我们定义一个变量来表示是否已经开始监听。</p>
+
+<pre><code class="language-swift">var _hasListeners:Bool = false	
+</code></pre>
+
+<p>我们希望能够模拟被监听的事件触发的情况。所以我们需要开始监听的时候设定一个定时器，每过特定的时间去调用监听方法：也就是下面的方法 <code>onProgress</code> 来调用 <code>RCTEventEmitter.sendEvent</code>。</p>
+
+<pre><code class="language-swift">// ... class RNDemoEventEmitter
+  
+  // var _hasListeners:Bool = false
+  var timer: Timer?
+
+  @objc func onProgress()-&gt;Void{
+       // 如果已经监听了就向 javascript 发送事件
+        if self._hasListeners{
+            // 发送特定监听名称 withName 的事件并带上自定义数据
+            self.sendEvent(withName: &quot;progress&quot;, body: 1232)
+        }
+    }
+
+  @objc override func startObserving()-&gt;Void{
+      
+        self._hasListeners = true
+        
+      	// 类似 setinterval 定时器
+        self.timer?.invalidate()
+        self.timer = Timer.scheduledTimer(
+            timeInterval: 1,
+            target: self,
+            selector: #selector(self.hello),
+            userInfo: nil,
+            repeats: true
+        )
+        
+    }
+    
+    @objc override func stopObserving()-&gt;Void{
+        // 关闭 timer
+        self.timer?.invalidate()
+        self._hasListeners = false
+    }
+    
+// ... class RNDemoEventEmitter    
+</code></pre>
+
+<p>我们在前端项目主入口文件 <code>index.ios.js</code> 当中添加监听：</p>
+
+<pre><code class="language-javascript">import { NativeEventEmitter, NativeModules } from 'react-native'
+
+const emitter = new NativeEventEmitter(NativeModules.RNDemoEventEmitter)
+const subscription = emitter.addListener('progress', data =&gt; console.info(data))
+
+</code></pre>
+
+<p>我们可以在 chrome console 看到每隔一段时间会输出特定数据，注意别忘记在  RN 的<code>componentWillUnMount</code> 周期内解除这个事件监听。</p>
 
 <h3 id="reference">Reference</h3>
 
