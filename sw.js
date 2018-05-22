@@ -1,4 +1,4 @@
-const VERSION_NAME = 'CACHE-v1526896022216';
+const VERSION_NAME = 'CACHE-v1526987052896';
 /**
  * PROJECT:  gh-pages
  * AUTHOR:  Nomand

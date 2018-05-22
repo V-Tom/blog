@@ -7,45 +7,10 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ZH-CN</language>
     <copyright>Early 2016 ~ 2018 &amp;copy; TOM&#39;s Zone</copyright>
-    <lastBuildDate>Mon, 21 May 2018 17:43:01 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 23 Apr 2018 11:29:40 +0800</lastBuildDate>
     
 	<atom:link href="https://t-tom.me/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>sandbox of javascript</title>
-      <link>https://t-tom.me/blog/2018-05-21-javascript%E6%B2%99%E7%AE%B1/</link>
-      <pubDate>Mon, 21 May 2018 17:43:01 +0800</pubDate>
-      
-      <guid>https://t-tom.me/blog/2018-05-21-javascript%E6%B2%99%E7%AE%B1/</guid>
-      <description>在一些业务场景当中，我们提供给用户插入自定义逻辑的能力，类似于沙盒、沙箱，允许执行自定义代码，产生的变化可以随后随时删除。
-无论是客户端上的沙箱还是服务器端上的沙箱，我们都要确保安全性，用户自定义的脚本必须收到限制和隔离，不能影响到当前宿主程序。
-javascript 本身有很多种方式可以实现沙箱，各有千秋，各有使用的地方。
- eval new Function with proxy Node VM  eval 最简单的方式就是直接使用 eval 执行：
-eval(&#39;console.log(&amp;quot;a simple script&amp;quot;);&#39;); // a simple script  eval 只是一个普通的函数，只不过他有一个快速通道通向编译器，可以将 string 变成可执行的代码。
- eval 的特性是如果当前域里面没有，则会向上遍历，一直到最顶层的 global scope：比如 window global ，他还可以访问closure内的变量。
- 使用 eval 也带来了安全隐患，首先它可以访问和修改它外部作用域中的变量，其次被执行的代码（例如从网络来）可能已被篡改。
-global.name = &#39;TOM&#39; eval(&#39;console.log(&amp;quot;i am &amp;quot; + name + &amp;quot; from eval&amp;quot;);&#39;); // i am TOM from eval  并且 eval 可读性较差，调试难度较高，也会轻微增加性能消耗。
-对于 eval 开发者是贬褒不一，eval 是魔鬼 以及 eval 不是魔鬼</description>
-    </item>
-    
-    <item>
-      <title>使用Swift开发React Native组件</title>
-      <link>https://t-tom.me/blog/2018-04-23-%E4%BD%BF%E7%94%A8swift%E5%BC%80%E5%8F%91react-native%E7%BB%84%E4%BB%B6/</link>
-      <pubDate>Mon, 23 Apr 2018 14:28:25 +0800</pubDate>
-      
-      <guid>https://t-tom.me/blog/2018-04-23-%E4%BD%BF%E7%94%A8swift%E5%BC%80%E5%8F%91react-native%E7%BB%84%E4%BB%B6/</guid>
-      <description>本人只是一个前端，偶尔写一点其他语言来拓展开发技能。
-因业务当中使用到 RN，所以对如何实现 RN custom module 也比较感兴趣并简单学习实现了一些功能。本文可能有些地方可能比较浅显或者有错误，还望读者海涵并指正。
- 环境准备 因为 swift 的断崖式升级以及 RN 不同版本，所以下面的例子可能会存在一些误差。本机环境为：
- RN：0.45.1 swift：4.1 Xcode：9.3 OS：high sierra 10.13.4  CocoaPods CocoaPods是专门为 iOS 工程提供对第三方库的依赖的管理工具，通过 CocoaPods ，我们可以更方便地管理每个第三方库的版本，而且不需要我们做太多的配置。直观、集中和自动化地管理我们项目的第三方库。
-我们都有这样的经历，当我们添加第三方库的时候，需要导入一堆相关依赖库，更新的时候也要删掉重新导入然后再配置。当我们需要更新某个第三方库的时候，我们又要手动移除该库，导入新的库，然后再配置。这些是很麻烦且没有意义的工作。
-安装 CocoaPods 需要用到 gem 。gem 是 RubyGems 的缩写，属于 ruby 上的包管理工具。
-这里建议切换国内镜像源地址，当然你也可以加上 -p 参数来配置 proxy
-gem sources --remove https://rubygems.org/ &amp;amp;&amp;amp; gem sources -a https://gems.ruby-china.org/  将 RubyGems 升级到最新版本，不然有可能导致配置 CocoaPods 失败。
-sudo gem update --system  可以使用下面命令来查看替换镜像位置是否成功：
-gem sources -l  结果应该是：</description>
-    </item>
     
     <item>
       <title>众筹计划</title>
@@ -65,11 +30,46 @@ overview 我提供的内容：
     </item>
     
     <item>
-      <title>谈谈 Node.js 的单线程</title>
-      <link>https://t-tom.me/blog/2018-04-08-%E8%B0%88%E8%B0%88node.js%E7%9A%84%E5%8D%95%E7%BA%BF%E7%A8%8B/</link>
-      <pubDate>Sun, 08 Apr 2018 14:22:25 +0800</pubDate>
+      <title>sandbox of javascript</title>
+      <link>https://t-tom.me/blog/2018-04-21-javascript%E6%B2%99%E7%AE%B1/</link>
+      <pubDate>Sat, 21 Apr 2018 17:43:01 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2018-04-08-%E8%B0%88%E8%B0%88node.js%E7%9A%84%E5%8D%95%E7%BA%BF%E7%A8%8B/</guid>
+      <guid>https://t-tom.me/blog/2018-04-21-javascript%E6%B2%99%E7%AE%B1/</guid>
+      <description>在一些业务场景当中，我们提供给用户插入自定义逻辑的能力，类似于沙盒、沙箱，允许执行自定义代码，产生的变化可以随后随时删除。
+无论是客户端上的沙箱还是服务器端上的沙箱，我们都要确保安全性，用户自定义的脚本必须收到限制和隔离，不能影响到当前宿主程序。
+javascript 本身有很多种方式可以实现沙箱，各有千秋，各有使用的地方。
+ eval new Function with proxy Node VM  eval 最简单的方式就是直接使用 eval 执行：
+eval(&#39;console.log(&amp;quot;a simple script&amp;quot;);&#39;); // a simple script  eval 只是一个普通的函数，只不过他有一个快速通道通向编译器，可以将 string 变成可执行的代码。
+ eval 的特性是如果当前域里面没有，则会向上遍历，一直到最顶层的 global scope：比如 window global ，他还可以访问closure内的变量。
+ 使用 eval 也带来了安全隐患，首先它可以访问和修改它外部作用域中的变量，其次被执行的代码（例如从网络来）可能已被篡改。
+global.name = &#39;TOM&#39; eval(&#39;console.log(&amp;quot;i am &amp;quot; + name + &amp;quot; from eval&amp;quot;);&#39;); // i am TOM from eval  并且 eval 可读性较差，调试难度较高，也会轻微增加性能消耗。
+对于 eval 开发者是贬褒不一，eval 是魔鬼 以及 eval 不是魔鬼</description>
+    </item>
+    
+    <item>
+      <title>使用Swift开发React Native组件</title>
+      <link>https://t-tom.me/blog/2018-03-23-%E4%BD%BF%E7%94%A8swift%E5%BC%80%E5%8F%91react-native%E7%BB%84%E4%BB%B6/</link>
+      <pubDate>Fri, 23 Mar 2018 14:28:25 +0800</pubDate>
+      
+      <guid>https://t-tom.me/blog/2018-03-23-%E4%BD%BF%E7%94%A8swift%E5%BC%80%E5%8F%91react-native%E7%BB%84%E4%BB%B6/</guid>
+      <description>本人只是一个前端，偶尔写一点其他语言来拓展开发技能。
+因业务当中使用到 RN，所以对如何实现 RN custom module 也比较感兴趣并简单学习实现了一些功能。本文可能有些地方可能比较浅显或者有错误，还望读者海涵并指正。
+ 环境准备 因为 swift 的断崖式升级以及 RN 不同版本，所以下面的例子可能会存在一些误差。本机环境为：
+ RN：0.45.1 swift：4.1 Xcode：9.3 OS：high sierra 10.13.4  CocoaPods CocoaPods是专门为 iOS 工程提供对第三方库的依赖的管理工具，通过 CocoaPods ，我们可以更方便地管理每个第三方库的版本，而且不需要我们做太多的配置。直观、集中和自动化地管理我们项目的第三方库。
+我们都有这样的经历，当我们添加第三方库的时候，需要导入一堆相关依赖库，更新的时候也要删掉重新导入然后再配置。当我们需要更新某个第三方库的时候，我们又要手动移除该库，导入新的库，然后再配置。这些是很麻烦且没有意义的工作。
+安装 CocoaPods 需要用到 gem 。gem 是 RubyGems 的缩写，属于 ruby 上的包管理工具。
+这里建议切换国内镜像源地址，当然你也可以加上 -p 参数来配置 proxy
+gem sources --remove https://rubygems.org/ &amp;amp;&amp;amp; gem sources -a https://gems.ruby-china.org/  将 RubyGems 升级到最新版本，不然有可能导致配置 CocoaPods 失败。
+sudo gem update --system  可以使用下面命令来查看替换镜像位置是否成功：
+gem sources -l  结果应该是：</description>
+    </item>
+    
+    <item>
+      <title>谈谈 Node.js 的单线程</title>
+      <link>https://t-tom.me/blog/2018-02-08-%E8%B0%88%E8%B0%88node.js%E7%9A%84%E5%8D%95%E7%BA%BF%E7%A8%8B/</link>
+      <pubDate>Thu, 08 Feb 2018 14:22:25 +0800</pubDate>
+      
+      <guid>https://t-tom.me/blog/2018-02-08-%E8%B0%88%E8%B0%88node.js%E7%9A%84%E5%8D%95%E7%BA%BF%E7%A8%8B/</guid>
       <description>前言 从Node.js进入人们的视野时，我们所知道的它就由这些关键字组成 事件驱动、非阻塞I/O、高效、轻量，它在官网中也是这么描述自己的。
  Node.js® is a JavaScript runtime built on Chrome’s V8 JavaScript engine. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient.
  Node.js 结构 我们可以看到，Node.js 的结构大致分为三个层次：
@@ -78,10 +78,10 @@ overview 我提供的内容：
     
     <item>
       <title>从jwt到OAuth</title>
-      <link>https://t-tom.me/blog/2018-04-02-%E4%BB%8Ejwt%E5%88%B0oauth/</link>
-      <pubDate>Mon, 02 Apr 2018 11:31:25 +0800</pubDate>
+      <link>https://t-tom.me/blog/2018-01-02-%E4%BB%8Ejwt%E5%88%B0oauth/</link>
+      <pubDate>Tue, 02 Jan 2018 11:31:25 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2018-04-02-%E4%BB%8Ejwt%E5%88%B0oauth/</guid>
+      <guid>https://t-tom.me/blog/2018-01-02-%E4%BB%8Ejwt%E5%88%B0oauth/</guid>
       <description>JWT JWT 是 JSON Web Token 的缩写，可以简单理解为生产者颁发给消费者一个令牌。参照 JWT 规范 对其所做的描述是：
  JSON Web令牌（JWT）是一种紧凑的、URL安全的方式，用来表示要在双方之间传递的“声明”。JWT中的声明被编码为JSON对象，用作JSON Web签名（JWS）结构的有效内容或JSON Web加密（JWE）结构的明文，使得声明能够被：数字签名、或利用消息认证码（MAC）保护完整性、加密。
  这个规范允许我们使用JWT在用户和服务器之间传递安全可靠的信息。
@@ -96,12 +96,11 @@ package main import &amp;quot;bytes&amp;quot; import ( &amp;quot;encoding/json&a
     
     <item>
       <title>React Native ART 介绍与实践</title>
-      <link>https://t-tom.me/blog/2018-01-13-react-native-art/</link>
-      <pubDate>Sat, 13 Jan 2018 15:29:40 +0800</pubDate>
+      <link>https://t-tom.me/blog/2017-12-13-react-native-art/</link>
+      <pubDate>Wed, 13 Dec 2017 15:29:40 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2018-01-13-react-native-art/</guid>
-      <description>TBD
- React Native ART 由来 React-Art  是 Reactjs 团队基于 Art（一个兼容各个浏览器SVG绘制的API封装）开发的模块，让 React 开发者能使用 jsx 语法绘制 svg。
+      <guid>https://t-tom.me/blog/2017-12-13-react-native-art/</guid>
+      <description>React Native ART 由来 React-Art  是 Reactjs 团队基于 Art（一个兼容各个浏览器SVG绘制的API封装）开发的模块，让 React 开发者能使用 jsx 语法绘制 svg。
 React Native 团队分别在0.10.0和0.18.0也添加了iOS和Android平台对 react-art 的支持，官网文档至今对其只字未提。本文旨在介绍安静躺在 react-native/Libraries/ 里的ART，并展示一些实践结果。
 在React Native中ART是个非常重要的库，它让非常酷炫的绘图及动画变成了可能。但是可能是知道的人真的不多导致文档及少中文更少。很多都是把英文的参数列表翻译过来，也没有案例。
 为什么用 ART React Native 本身自带的 &amp;lt;Image&amp;gt; 有很多缺陷：
@@ -191,10 +190,10 @@ Mavic pro 装上防撞翼：
     
     <item>
       <title>前端的10000个小时</title>
-      <link>https://t-tom.me/blog/2017-06-24-%E5%89%8D%E7%AB%AF%E7%9A%8410000%E4%B8%AA%E5%B0%8F%E6%97%B6/</link>
-      <pubDate>Sat, 24 Jun 2017 15:29:40 +0800</pubDate>
+      <link>https://t-tom.me/blog/2017-03-24-%E5%89%8D%E7%AB%AF%E7%9A%8410000%E4%B8%AA%E5%B0%8F%E6%97%B6/</link>
+      <pubDate>Fri, 24 Mar 2017 15:29:40 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2017-06-24-%E5%89%8D%E7%AB%AF%E7%9A%8410000%E4%B8%AA%E5%B0%8F%E6%97%B6/</guid>
+      <guid>https://t-tom.me/blog/2017-03-24-%E5%89%8D%E7%AB%AF%E7%9A%8410000%E4%B8%AA%E5%B0%8F%E6%97%B6/</guid>
       <description>我又开始扯淡了
  本篇文章出自原文，深有感触，有删改。
  10000小时定律 著名的10000小时定律，我想大家都不陌生，『要成为某个领域的专家，需要10000小时』，这个定律来源于《异类》的作者，格拉德威尔。
@@ -217,10 +216,10 @@ Mavic pro 装上防撞翼：
     
     <item>
       <title>koa 源码简单解读</title>
-      <link>https://t-tom.me/blog/2017-05-03-koa%E6%BA%90%E7%A0%81%E7%AE%80%E5%8D%95%E8%A7%A3%E8%AF%BB/</link>
-      <pubDate>Wed, 03 May 2017 15:29:40 +0800</pubDate>
+      <link>https://t-tom.me/blog/2016-09-03-koa%E6%BA%90%E7%A0%81%E7%AE%80%E5%8D%95%E8%A7%A3%E8%AF%BB/</link>
+      <pubDate>Sat, 03 Sep 2016 15:29:40 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2017-05-03-koa%E6%BA%90%E7%A0%81%E7%AE%80%E5%8D%95%E8%A7%A3%E8%AF%BB/</guid>
+      <guid>https://t-tom.me/blog/2016-09-03-koa%E6%BA%90%E7%A0%81%E7%AE%80%E5%8D%95%E8%A7%A3%E8%AF%BB/</guid>
       <description>[Koa]() 是一个类似于 [Express]() 的 Web开发框架，创始人也都是[TJ]()
 [Koa]() 的主要特点是，使用了ES6 的 Generator 函数，进行了架构的重新设计。Koa 的原理和内部结构很像[Express]()，但是语法和内部结构进行了升级，最近已经发布了2.x版本，我们来直接看一下2.x版本的koa
 创建 Koa 应用 我们可以按照官方的说明很简单的创建一个koa应用
@@ -236,10 +235,10 @@ listen() { debug(&#39;listen&#39;); const server = http.createServer(this.callba
     
     <item>
       <title>如何创建一个Node.js 的 Docker 开发环境</title>
-      <link>https://t-tom.me/blog/2017-04-22-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AAnode.js-%E7%9A%84-docker-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</link>
-      <pubDate>Sat, 22 Apr 2017 15:29:40 +0800</pubDate>
+      <link>https://t-tom.me/blog/2016-06-22-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AAnode.js-%E7%9A%84-docker-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</link>
+      <pubDate>Wed, 22 Jun 2016 15:29:40 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2017-04-22-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AAnode.js-%E7%9A%84-docker-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</guid>
+      <guid>https://t-tom.me/blog/2016-06-22-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AAnode.js-%E7%9A%84-docker-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</guid>
       <description>本文以构建一个 Node.js Docker应用 为目标写的一个教程。当前操作系统环境 Mac OSX Sierra 10.12.4
  Docker介绍  Docker 是个划时代的开源项目，它彻底释放了计算虚拟化的威力，极大提高了应用的运行效率，降低了云计算资源供应的成本！ 使用 Docker，可以让应用的部署、测试和分发都变得前所未有的高效和轻松！
  Docker引擎的基础是Linuxring器(Linux Containers，LXC)技术。这个并不是一个新生的概念，很早前已经出现，比如操作系统上的chroot工具、以及Solaris Containers和FreeBSD jail等等，虽然这个技术非常成熟，然而这些工具使用起来非常不方便。Docker的出现解决了这些问题。
@@ -254,10 +253,10 @@ Docker的主要目标是Build ship and run any app,any where.</description>
     
     <item>
       <title>利用 Shadowsocksr 和云主机翻墙</title>
-      <link>https://t-tom.me/blog/2017-04-03-%E5%88%A9%E7%94%A8-shadowsocksr-%E5%92%8C%E4%BA%91%E4%B8%BB%E6%9C%BA%E7%BF%BB%E5%A2%99/</link>
-      <pubDate>Mon, 03 Apr 2017 15:29:40 +0800</pubDate>
+      <link>https://t-tom.me/blog/2016-04-03-%E5%88%A9%E7%94%A8-shadowsocksr-%E5%92%8C%E4%BA%91%E4%B8%BB%E6%9C%BA%E7%BF%BB%E5%A2%99/</link>
+      <pubDate>Sun, 03 Apr 2016 15:29:40 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2017-04-03-%E5%88%A9%E7%94%A8-shadowsocksr-%E5%92%8C%E4%BA%91%E4%B8%BB%E6%9C%BA%E7%BF%BB%E5%A2%99/</guid>
+      <guid>https://t-tom.me/blog/2016-04-03-%E5%88%A9%E7%94%A8-shadowsocksr-%E5%92%8C%E4%BA%91%E4%B8%BB%E6%9C%BA%E7%BF%BB%E5%A2%99/</guid>
       <description>世界那么大，我想去看看，但是被墙了… 以前用的VPN，叫做什么green vpn，总体来说，还不错，但是最近老断，于是就搞了个新的法子。申请一台云主机，在上面搭一个Shadowsocks，然后就可以在所有客户端看 YouTube 了，当然，这所有的一切都是免费的。
  Shadowsocks已经河蟹，这里不再说ss，只说ssr：一个基于ss的新分支
  搭建Shadowsocksr服务器 首先需要搭建一台云主机，首先阿里云或者青云都是挺好的，但是都需要国外的主机，要不然怎么去翻墙，你也可以选择linecode、vultr、aws、azure、GCE（google）。这些大部分都有一年的免费期限，也会有免费赠送不定的体验金的福利。中间会要求绑定信用卡。

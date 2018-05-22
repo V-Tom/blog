@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="Keywords" content="">
+    <meta name="full-screen" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#006cb4">
+    <meta name="apple-mobile-web-app-title" content="TOM&#39;s zone">
+    <meta name="description" content="TOM&#39;s zone">
+    <link rel="dns-prefetch" href="https://t-tom.me">
+    <link rel="preconnect" href="https://t-tom.me">
+    <link rel="manifest" href="/sw/manifest.json"/>
+    <meta name="generator" content="Hugo 0.37" />
+    <title>利用 Shadowsocksr 和云主机翻墙 - TOM&#39;s zone</title>
+
+    <meta name="description" content="世界那么大，我想去看看，但是被墙了… 以前用的VPN，叫做什么green vpn，总体来说，还不错，但是最近老断，于是就搞了个新的法子。申请一台云主机，在上面搭一个Shadowsocks，然后就可以在所有客户端看 YouTube 了，当然，这所有的一切都是免费的。
+ Shadowsocks已经河蟹，这里不再说ss，只说ssr：一个基于ss的新分支
+ 搭建Shadowsocksr服务器 首先需要搭建一台云主机，首先阿里云或者青云都是挺好的，但是都需要国外的主机，要不然怎么去翻墙，你也可以选择linecode、vultr、aws、azure、GCE（google）。这些大部分都有一年的免费期限，也会有免费赠送不定的体验金的福利。中间会要求绑定信用卡。
+主机建议选择Ubuntu或者debian，申请下来了后就可以安装ssr了。
+可以从这个地址上找到ssr，然后可以参照这个wiki来进行配置安装，在这里记录一下步骤吧：
+ 如果你的服务端python版本在2.6以下，那么必须更新python到2.6.x或2.7.x版本。
+ 首先需要有git：
+apt-get update &amp;&amp; apt-get install -y git  获取源代码：
+git clone -b manyuser https://github.com/shadowsocksr/shadowsocksr.git  进入子目录：
+cd ~/shadowsocksr &amp;&amp; bash initcfg.sh &amp;&amp; cd ~/shadowsocksr/shadowsocks  快速运行，当然也可以通过配置文件运行，具体请看wiki：
+python server.py -p 443 -k password -m aes-256-cfb -O auth_sha1_v4 -o http 说明：-p 端口 -k 密码 -m 加密方式 -O 协议插件 -o 混淆插件  配置文件参考：
+{ &quot;server&quot;: &quot;0.0.0.0&quot;, &quot;server_ipv6&quot;: &quot;::&quot;, &quot;server_port&quot;: 8388, &quot;local_address&quot;: &quot;127.">
+
+
+    
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato|Raleway">
+
+    
+    <link rel="stylesheet"
+          href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/ocean.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/javascript.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/python.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/go.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/css.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/swift.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/objectivec.min.js"></script>
+    
+    
+    <link rel="stylesheet" href="/css/bundle.min.css"/>
+    <style>
+	a { color: #ff8181; }
+	blockquote {
+		border-left-color: #ff8181;
+		border-right-color: #ff8181; }
+	.bar a:hover {
+		color: #ff8181;
+		text-decoration: none; }
+	.sep {
+		margin-top: 2rem;
+		margin-bottom: 1rem;
+		margin-left:0;
+		width: 24rem;
+		border-top: 2px solid #ff8181; }
+    .bar li.active a{
+        color:#ff8181;
+    }
+</style>
+
+</head>
+
+<body>
+<header class="container no-print">
+	<div class="u-header">
+		<nav class="bar">
+	<ul><li>
+			<a href="/">
+				<img class="icon-text" src="/img/prev.svg"/>
+			</a>
+		</li>
+		
+		<li class="active"><a href="/blog/">Blog</a></li>
+		<li class=""><a href="/life/">Life</a></li></ul>
+</nav>
+
+	</div>
+</header>
+<main class="container">
+
+<article>
+    <header><hgroup id="brand">
+	<h1>利用 Shadowsocksr 和云主机翻墙</h1>
+	<h5>
+		
+		<time datetime="2016-04-03 15:29:40 &#43;0800 CST">Apr 03, 2016</time>
+		<span class="no-print">
+			-
+				
+				<a href="/tags/shadowsocksr">Shadowsocksr</a>
+				
+				<a href="/tags/vps">vps</a>
+				<span>
+	</h5>
+	
+</hgroup>
+<hr class="sep" />
+</header>
+    <section id="markdown">
+        
+
+<p>世界那么大，我想去看看，但是被墙了…
+以前用的VPN，叫做什么<code>green vpn</code>，总体来说，还不错，但是最近老断，于是就搞了个新的法子。申请一台云主机，在上面搭一个Shadowsocks，然后就可以在所有客户端看 YouTube 了，当然，这所有的一切都是免费的。</p>
+
+<blockquote>
+<p>Shadowsocks已经河蟹，这里不再说ss，只说ssr：一个基于ss的新分支</p>
+</blockquote>
+
+<h3 id="搭建shadowsocksr服务器">搭建Shadowsocksr服务器</h3>
+
+<p>首先需要搭建一台云主机，首先阿里云或者青云都是挺好的，但是都需要国外的主机，要不然怎么去翻墙，你也可以选择linecode、vultr、aws、azure、GCE（google）。这些大部分都有一年的免费期限，也会有免费赠送不定的体验金的福利。中间会要求绑定信用卡。</p>
+
+<p>主机建议选择Ubuntu或者debian，申请下来了后就可以安装ssr了。</p>
+
+<p>可以从这个<a href="https://github.com/shadowsocksr/shadowsocksr">地址</a>上找到ssr，然后可以参照这个<a href="https://github.com/breakwa11/shadowsocks-rss/wiki/Server-Setup">wiki</a>来进行配置安装，在这里记录一下步骤吧：</p>
+
+<blockquote>
+<p>如果你的服务端python版本在2.6以下，那么必须更新python到2.6.x或2.7.x版本。</p>
+</blockquote>
+
+<p>首先需要有git：</p>
+
+<pre><code class="language-shell">apt-get update &amp;&amp; apt-get install -y git
+</code></pre>
+
+<p>获取源代码：</p>
+
+<pre><code class="language-shell">git clone -b manyuser https://github.com/shadowsocksr/shadowsocksr.git
+</code></pre>
+
+<p>进入子目录：</p>
+
+<pre><code class="language-shell">cd ~/shadowsocksr &amp;&amp; bash initcfg.sh &amp;&amp; cd ~/shadowsocksr/shadowsocks
+</code></pre>
+
+<p>快速运行，当然也可以通过配置文件运行，具体请看<a href="https://github.com/breakwa11/shadowsocks-rss/wiki/Server-Setup">wiki</a>：</p>
+
+<pre><code class="language-shell">python server.py -p 443 -k password -m aes-256-cfb -O auth_sha1_v4 -o http
+说明：-p 端口 -k 密码  -m 加密方式 -O 协议插件 -o 混淆插件
+</code></pre>
+
+<p>配置文件参考：</p>
+
+<pre><code class="language-json">{
+    &quot;server&quot;: &quot;0.0.0.0&quot;,
+    &quot;server_ipv6&quot;: &quot;::&quot;,
+    &quot;server_port&quot;: 8388,
+    &quot;local_address&quot;: &quot;127.0.0.1&quot;,
+    &quot;local_port&quot;: 1080,
+  
+  	// pass word
+    &quot;password&quot;: &quot;XXXXXXXX&quot;,
+  
+    &quot;method&quot;: &quot;aes-128-ctr&quot;,
+    &quot;protocol&quot;: &quot;auth_aes128_md5&quot;,
+    &quot;protocol_param&quot;: &quot;&quot;,
+    &quot;obfs&quot;: &quot;tls1.2_ticket_auth&quot;,
+    &quot;obfs_param&quot;: &quot;&quot;,
+    &quot;speed_limit_per_con&quot;: 0,
+    &quot;speed_limit_per_user&quot;: 0,
+    &quot;additional_ports&quot; : {},
+    &quot;timeout&quot;: 120,
+    &quot;udp_timeout&quot;: 60,
+    &quot;dns_ipv6&quot;: false,
+    &quot;connect_verbose_info&quot;: 0,
+    &quot;redirect&quot;: &quot;&quot;,
+    &quot;fast_open&quot;: false
+}
+</code></pre>
+
+<p>如果要后台运行：</p>
+
+<pre><code class="language-shell">python server.py -p 443 -k password -m aes-256-cfb -O auth_sha1_v4 -o http
+</code></pre>
+
+<p>如果要停止/重启：</p>
+
+<pre><code class="language-shell">python server.py -d stop/restart
+</code></pre>
+
+<p>查看日志：</p>
+
+<pre><code class="language-bash">tail -f /var/log/shadowsocksr.log
+</code></pre>
+
+<p>如果想要更新源代码。可以直接进入目录执行:</p>
+
+<pre><code class="language-shell">git pull
+</code></pre>
+
+<h3 id="客户端">客户端</h3>
+
+<p>服务器端配置好后，就需要来搞客户端了。这个客户端和常规的ss客户端不一致：ssr客户端可以兼容ss客户端，但是反过来不可以的。基本上全平台都有ssr的客户端。这里OSX的客户端来做一个例子：</p>
+
+<p>可以从这里下载 <a href="https://github.com/yichengchen/ShadowsocksX-R/releases">ssr OSX 客户端</a>，然后启动ShadowsocksR，客户端配置参照下图:</p>
+
+<p><img src="./UVEyMDE3MDQxOC0yMzA3NTJAMngucG5nP3R5cGU9aW1hZ2UvcG5nJnRpbWU9MTQ5MjUyODY4MTE0NSZzaXplPTI2NTU1MA==.png" alt="客户端配置图1" /></p>
+
+<p>选择新建服务，然后根据ssr的配置依次填写:</p>
+
+<p><img src="./UVEyMDE3MDQxOC0yMzQ0MzBAMngucG5nP3R5cGU9aW1hZ2UvcG5nJnRpbWU9MTQ5MjUzMDI4OTMwNCZzaXplPTEwNzI0OA==.png" alt="客户端配置图2" /></p>
+
+<p>然后可以选择代理方式：</p>
+
+<p><img src="./UVEyMDE3MDQxOS0xMzMwNTBAMngucG5nP3R5cGU9aW1hZ2UvcG5nJnRpbWU9MTQ5MjU3OTg3NTg5MiZzaXplPTExNjE1Mg==.png" alt="代理方式" /></p>
+
+<p>你可以选择 <code>global mode</code> 和 <code>by pass china</code> 、<code>gfw list</code>、<code>manual mode</code> 来设置代理方式。</p>
+
+<p>当然也可以导出当前服务器的二维码（其实是一个服务器配置进行base64处理后生成的二维码，也可以为 <code>ssr://(base64)</code>，这样把二维码分享给其他人，其他人直接ssr自动的 <strong>通过扫描二维码导入</strong>就可以链接服务了。</p>
+
+    </section>
+    <nav class="no-print post-nav">
+        
+        
+        <a class="next-post" href="https://t-tom.me/blog/2016-06-22-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AAnode.js-%E7%9A%84-docker-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">如何创建一个Node.js 的 Docker 开发环境<img class="icon-text" src="/img/next.svg"/>
+        </a>
+        
+    </nav>
+</article>
+<script src="/js/bundle.js"></script>
+
+
+
+<div id="disqus_thread" class="no-print"></div>
+<script type="text/javascript">
+
+  (function () {
+    
+    if (window.location.hostname == "localhost")
+      return;
+
+    const disqus_thread = document.querySelector('#disqus_thread')
+    new IntersectionObserver(function (entries, observer) {
+        entries.forEach(entry => {
+          if (entry.intersectionRatio > 0 && !disqus_thread.classList.contains('active')) {
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            var disqus_shortname = 'toms-blog-1';
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            disqus_thread.classList.add('active')
+          }
+        })
+      }, {
+        rootMargin: '0px',
+        threshold: 1.0
+      }
+    ).observe(disqus_thread)
+
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+</noscript>
+
+			<hr class="sep" />
+		</main>
+		<footer class="container no-print">
+			<div class="u-footer">
+				
+<a href="mailto:iamnomand@gmail.com"><img class="icon-social" src="/img/email.svg" alt="Email Me!"/></a>
+
+
+<a href="https://github.com/v-tom/"><img class="icon-social" src="/img/github.svg" alt="Github"/></a>
+
+
+<a href="https://twitter.com/iamnomand"><img class="icon-social" src="/img/twitter.svg" alt="Twitter"/></a>
+
+<a href="https://t-tom.me/index.xml" target="_blank"><img class="icon-social" src="/img/feed.svg" alt="Feed"></a>
+
+				<p>
+					
+					
+					Early 2016 ~ 2018 &copy; TOM's Zone
+					
+					
+				</p>
+				
+				<a href="#brand">
+					<img class="icon-text" src="/img/toup.svg" alt="To Up"/>
+					<span>Back to Up</span>
+				</a>
+				
+			</div>
+		</footer>
+		
+		<script>hljs.initHighlightingOnLoad();</script>
+		
+	</body>
+</html>
+

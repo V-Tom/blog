@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="Keywords" content="">
+    <meta name="full-screen" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#006cb4">
+    <meta name="apple-mobile-web-app-title" content="TOM&#39;s zone">
+    <meta name="description" content="TOM&#39;s zone">
+    <link rel="dns-prefetch" href="https://t-tom.me">
+    <link rel="preconnect" href="https://t-tom.me">
+    <link rel="manifest" href="/sw/manifest.json"/>
+    <meta name="generator" content="Hugo 0.37" />
+    <title>从jwt到OAuth - TOM&#39;s zone</title>
+
+    <meta name="description" content="JWT JWT 是 JSON Web Token 的缩写，可以简单理解为生产者颁发给消费者一个令牌。参照 JWT 规范 对其所做的描述是：
+ JSON Web令牌（JWT）是一种紧凑的、URL安全的方式，用来表示要在双方之间传递的“声明”。JWT中的声明被编码为JSON对象，用作JSON Web签名（JWS）结构的有效内容或JSON Web加密（JWE）结构的明文，使得声明能够被：数字签名、或利用消息认证码（MAC）保护完整性、加密。
+ 这个规范允许我们使用JWT在用户和服务器之间传递安全可靠的信息。
+JWT的构成 JWT 由三部分构成：
+ Header ：头部，即 JOSE Header Claims ：声明，即 JWT Payload Signature ：签名，即 JWT Signature  JWT由这三部分组成，每一部分都是使用base64url编码的，并使用句点（.）连接起来
+ 这里使用base64url编码而不是普通的base64，是因为base64编码会产生&#43;和/，这两个字符在URL中是有特殊意义的，会导致JWT不是URL安全的。
+ 头部(JOSE Header) JSOE 是 JSON Object Signing and Encryption，即JSON对象签名与加密的缩写。
+{ &quot;typ&quot;: &quot;JWT&quot;, &quot;alg&quot;: &quot;HS256&quot; }  示例中给出了两个声明：
+ typ：类型，在JOSE Header中这是个可选参数，但这里我们需要指明类型是JWT。 alg：算法，必须是 jwt 支持的算法，算法列表可以在jwt 规范当中找到。  简单示例：
+package main import &quot;bytes&quot; import ( &quot;encoding/json&quot; &quot;encoding/base64&quot; &quot;fmt&quot; ) func header() string { header := struct { Alg string `json:&quot;alg&quot;` Typ string `json:&quot;typ&quot;` }{ Alg: &quot;HS256&quot;, Typ: &quot;JWT&quot;, } data, _ := json.">
+
+
+    
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato|Raleway">
+
+    
+    <link rel="stylesheet"
+          href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/ocean.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/javascript.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/python.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/go.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/css.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/swift.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/objectivec.min.js"></script>
+    
+    
+    <link rel="stylesheet" href="/css/bundle.min.css"/>
+    <style>
+	a { color: #ff8181; }
+	blockquote {
+		border-left-color: #ff8181;
+		border-right-color: #ff8181; }
+	.bar a:hover {
+		color: #ff8181;
+		text-decoration: none; }
+	.sep {
+		margin-top: 2rem;
+		margin-bottom: 1rem;
+		margin-left:0;
+		width: 24rem;
+		border-top: 2px solid #ff8181; }
+    .bar li.active a{
+        color:#ff8181;
+    }
+</style>
+
+</head>
+
+<body>
+<header class="container no-print">
+	<div class="u-header">
+		<nav class="bar">
+	<ul><li>
+			<a href="/">
+				<img class="icon-text" src="/img/prev.svg"/>
+			</a>
+		</li>
+		
+		<li class="active"><a href="/blog/">Blog</a></li>
+		<li class=""><a href="/life/">Life</a></li></ul>
+</nav>
+
+	</div>
+</header>
+<main class="container">
+
+<article>
+    <header><hgroup id="brand">
+	<h1>从jwt到OAuth</h1>
+	<h5>
+		
+		<time datetime="2018-01-02 11:31:25 &#43;0800 CST">Jan 02, 2018</time>
+		<span class="no-print">
+			-
+				
+				<a href="/tags/oauth">OAuth</a>
+				
+				<a href="/tags/backend">BackEnd</a>
+				<span>
+	</h5>
+	
+</hgroup>
+<hr class="sep" />
+</header>
+    <section id="markdown">
+        
+
+<h3 id="jwt">JWT</h3>
+
+<p><code>JWT</code> 是 <code>JSON Web Token</code> 的缩写，可以简单理解为生产者颁发给消费者一个令牌。参照 <a href="https://tools.ietf.org/html/rfc7519">JWT 规范</a> 对其所做的描述是：</p>
+
+<blockquote>
+<p>JSON Web令牌（JWT）是一种紧凑的、URL安全的方式，用来表示要在双方之间传递的“声明”。JWT中的声明被编码为JSON对象，用作JSON Web签名（JWS）结构的有效内容或JSON Web加密（JWE）结构的明文，使得声明能够被：数字签名、或利用消息认证码（MAC）保护完整性、加密。</p>
+</blockquote>
+
+<p>这个规范允许我们使用JWT在用户和服务器之间传递安全可靠的信息。</p>
+
+<h4 id="jwt的构成">JWT的构成</h4>
+
+<p><code>JWT</code> 由三部分构成：</p>
+
+<ul>
+<li><code>Header</code>  ：头部，即 <code>JOSE Header</code></li>
+<li><code>Claims</code> ：声明，即 <code>JWT Payload</code></li>
+<li><code>Signature</code> ：签名，即 <code>JWT Signature</code></li>
+</ul>
+
+<p>JWT由这三部分组成，每一部分都是使用base64url编码的，并使用句点（<code>.</code>）连接起来</p>
+
+<blockquote>
+<p>这里使用<a href="https://tools.ietf.org/html/rfc4648#section-5">base64url</a>编码而不是普通的base64，是因为base64编码会产生+和/，这两个字符在URL中是有特殊意义的，会导致JWT不是URL安全的。</p>
+</blockquote>
+
+<h5 id="头部-jose-header">头部(JOSE Header)</h5>
+
+<p><code>JSOE</code> 是 <code>JSON Object Signing and Encryption</code>，即<code>JSON对象签名与加密</code>的缩写。</p>
+
+<pre><code class="language-json">{
+  &quot;typ&quot;: &quot;JWT&quot;,
+  &quot;alg&quot;: &quot;HS256&quot;
+}
+</code></pre>
+
+<p>示例中给出了两个声明：</p>
+
+<ul>
+<li><code>typ</code>：类型，在JOSE Header中这是个可选参数，但这里我们需要指明类型是<code>JWT</code>。</li>
+<li><code>alg</code>：算法，必须是 <code>jwt</code> 支持的算法，算法列表可以在jwt 规范当中找到。</li>
+</ul>
+
+<p>简单示例：</p>
+
+<pre><code class="language-go">package main
+
+import &quot;bytes&quot;
+import (
+	&quot;encoding/json&quot;
+	&quot;encoding/base64&quot;
+	&quot;fmt&quot;
+)
+
+func header() string {
+
+	header := struct {
+		Alg string `json:&quot;alg&quot;`
+		Typ string `json:&quot;typ&quot;`
+	}{
+		Alg: &quot;HS256&quot;,
+		Typ: &quot;JWT&quot;,
+	}
+
+	data, _ := json.Marshal(header)
+
+	// base64
+	jwtHeader := base64.URLEncoding.EncodeToString([]byte(data))
+
+	return jwtHeader
+
+}
+
+func main(){
+    fmt.println(header())
+}
+
+</code></pre>
+
+<p>上述代码片段会输出 <code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9</code>，这就是编码后的JWT头部。</p>
+
+<h5 id="声明-jwt-claims">声明（JWT Claims）</h5>
+
+<p>声明包括：</p>
+
+<ul>
+<li><code>Registered Claim Names</code></li>
+<li><code>Public Claim Names</code></li>
+<li><code>Private Claim Names</code></li>
+</ul>
+
+<p>在一个 <code>Registered Claim Names</code> 声明集当中，一般会有如下注册的声明名字：</p>
+
+<ul>
+<li><code>iss</code>: （Issuer）签发者</li>
+<li><code>iat</code>: （Issued At）签发时间，用Unix时间戳表示</li>
+<li><code>exp</code>: （Expiration Time）过期时间，用Unix时间戳表示</li>
+<li><code>aud</code>: （Audience）接收该JWT的一方</li>
+<li><code>sub</code>: （Subject）该JWT的主题</li>
+<li><code>nbf</code>: （Not Before）不要早于这个时间</li>
+<li><code>jti</code>: （JWT ID）用于标识JWT的唯一ID</li>
+</ul>
+
+<blockquote>
+<p>注意：上面的声明都是可选的，但是一般都达成共识。注册的声明是在 <a href="https://tools.ietf.org/html/rfc7519#section-10.1">IANA</a> 中注册的。</p>
+</blockquote>
+
+<p>至于 <code>Public Claim Names</code> ，公开的声明可以由使用 <code>JWT</code> 的人员来定义，名称或值的定义者都需要采取合理的预防措施，以确保他们能够控制它们用来定义声明名称的部分名称空间，并且要求保证和已经注册的声明发生命名冲突。</p>
+
+<p>接下来就是<code>Private Claim Names</code> ，<code>JWT</code> 的生产者和消费者都可以使用的声明名称，可能会发生冲突，我们一般用来定义 token 的详细内容。</p>
+
+<p>上面详细的介绍和解释可以在  <a href="https://tools.ietf.org/html/rfc7519">JWT 规范</a> 当中找到。</p>
+
+<p>示例代码：</p>
+
+<pre><code class="language-go">// ......
+
+type Claims struct {
+	Iss    string `json:&quot;iss&quot;`
+	Exp    int64  `json:&quot;exp&quot;`
+	Public string `json:&quot;public&quot;`
+}
+func claims() string {
+
+	claims := Claims{
+		Iss:    &quot;TOM&quot;,
+		Exp:    time.Now().Unix() + 1000*60,
+		Public: &quot;this is user public information&quot;,
+	}
+
+	data, _ := json.Marshal(claims)
+
+	// base64
+	jwtClaims := base64.URLEncoding.EncodeToString([]byte(data))
+
+	return jwtClaims
+
+}
+
+func main(){
+    fmt.println(claims())
+}
+</code></pre>
+
+<p>上述代码片段会输出 <code>eyJpc3MiOiJUT00iLCJleHAiOjE1MjI3MTUzMzEsInB1YmxpYyI6InRoaXMgaXMgdXNlciBwdWJsaWMgaW5mb3JtYXRpb24ifQ==</code>，这就是编码后的 <code>JWT</code> 声明。</p>
+
+<h5 id="签名-signature">签名（Signature）</h5>
+
+<p>按照头部中指定的，我们要使用 <code>HS256</code> 算法对上面的编码后的字符串进行签名，头部和声明用<code>.</code>号连接起来：</p>
+
+<pre><code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUT00iLCJleHAiOjE1MjI3MTUzMzEsInB1YmxpYyI6InRoaXMgaXMgdXNlciBwdWJsaWMgaW5mb3JtYXRpb24ifQ==.EVxVgfx1mU9CWqW-UmAte60LCdrqKPmERKcrKCkG30E
+</code></pre>
+
+<p>我们要做的就是对这个字符串进行签名。</p>
+
+<pre><code class="language-go">func sign() string {
+    
+	header := header()
+	claims := claims()
+
+	s := strings.Join([]string{header, claims}, &quot;.&quot;)
+
+	// HS256算法，key是 private secret key
+	mac := hmac.New(sha256.New, []byte(&quot;secret&quot;))
+	mac.Write([]byte(s))
+	expectedMAC := mac.Sum(nil)
+    
+    // signature
+	signature := strings.TrimRight(base64.URLEncoding.EncodeToString(expectedMAC), &quot;=&quot;)
+
+	return signature
+}
+</code></pre>
+
+<p>上诉代码输出 <code>oItJnEd5o5soC6RzlySQnjX4c7hIBh_N4-Me9k5ZcQs</code> ，这就是 <code>JWT</code> 的签名。</p>
+
+<p>接下来，将头部、声明、签名用<code>.</code>号连在一起就得到了我们要的 <code>JWT</code>。</p>
+
+<pre><code class="language-go">fmt.Println(strings.Join([]string{header(), claims(), sign()}, &quot;.&quot;))
+</code></pre>
+
+<p>最后的结果为：</p>
+
+<pre><code>eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE0OTMwOTAwMDEsIm5hbWUiOiLlvKDkuIkifQ==.oItJnEd5o5soC6RzlySQnjX4c7hIBh_N4-Me9k5ZcQs
+</code></pre>
+
+<h4 id="签名的目的">签名的目的</h4>
+
+<p>最后一步签名的过程，实际上是对 <code>header</code> 以及 <code>claims</code> 内容进行签名。一般而言，加密算法对于不同的输入产生的输出总是不一样的。对于两个不同的输入，产生同样的输出的概率极其地小</p>
+
+<p>所以，如果有人对头部以及载荷的内容解码之后进行修改，再进行编码的话，那么新的头部和载荷的签名和之前的签名就将是不一样的。</p>
+
+<p>如果不知道服务器加密的时候用的<strong>private 密钥</strong>的话，得出来的签名也一定会是不一样的。</p>
+
+<p>服务器应用在接受到JWT后，会首先对头部和载荷的内容用同一算法再次签名（我们在JWT的头部中已经用 <code>alg</code> 字段指明了我们的加密算法了。</p>
+
+<p>如果服务器应用对头部和载荷再次以同样方法签名之后发现，自己计算出来的签名和接受到的签名不一样，那么就说明这个 <code>Token</code> 的内容被别人动过的，我们应该拒绝这个 <code>Token</code>，返回一个 <code>HTTP 401 Unauthorized</code> 响应。</p>
+
+<p>当然也包括 jwt 格式是否合法，数据内容是否过期等其他验证内容。</p>
+
+<h4 id="信息会暴露">信息会暴露？</h4>
+
+<p>Base64是一种编码，是可逆的。</p>
+
+<p>所以，在 <code>JWT</code> 中，不应该在载荷里面加入任何敏感的数据。在上面的例子中，我们传输的是用户的<code>User ID</code>。这个值实际上不是什么敏感内容，一般情况下被知道也是安全的。</p>
+
+<p>但是像密码这样的内容就不能被放在 <code>JWT</code> 中了。如果将用户的密码放在了 <code>JWT</code> 中，那么怀有恶意的第三方通过Base64解码就能很快地知道你的密码了。</p>
+
+<p>所以 <code>JWT</code> 适合用于向Web应用传递一些非敏感信息</p>
+
+<h4 id="解码">解码</h4>
+
+<p>下述代码简单实现了 <code>JWT</code> 的解码：</p>
+
+<pre><code class="language-go">
+// hmac256
+func hmac256(src string, secret string) string {
+	key := []byte(secret)
+	h := hmac.New(sha256.New, key)
+	h.Write([]byte(src))
+	return base64.URLEncoding.EncodeToString(h.Sum(nil))
+}
+
+// compareHmac
+func compareHmac(message string, messageHmac string, secret string) bool {
+	return messageHmac == hmac256(message, secret)
+}
+
+// main decode
+func Decode(jwt string, secret string) (interface{}, error) {
+    
+    // 按照 JWT 规范，我们可以得到：
+    // token[0] 是 header
+    // token[1] 是 claims
+    // token[2] 是 Signature
+	token := strings.Split(jwt, &quot;.&quot;)
+
+    // 简单判断是会否合法
+	if len(token) != 3 {
+		splitErr := errors.New(&quot;token不合法&quot;)
+		return nil, splitErr
+	}
+
+	// decode payload
+	decodedPayload, PayloadErr := Base64Decode(token[1])
+	if PayloadErr != nil {
+        return nil, fmt.Errorf(&quot;Base64Decode failed: %s&quot;, PayloadErr.Error())
+	}
+    
+	payload := Claims{}
+
+	// parse
+	ParseErr := json.Unmarshal([]byte(decodedPayload), &amp;Claims)
+	if ParseErr != nil {
+		return nil, fmt.Errorf(&quot;Invalid payload: %s&quot;, ParseErr.Error())
+	}
+
+	// 是否过期
+	if payload.Exp != 0 &amp;&amp; time.Now().Unix() &gt; payload.Exp {
+		return nil, errors.New(&quot;Expired token: token has expired&quot;)
+	}
+
+    // 我们知道 签名是 头部和声明用 . 号连接起来加密生成的
+	signatureValue := token[0] + &quot;.&quot; + token[1]
+
+	// 是否是生产者本身提供的签名
+	if compareHmac(signatureValue, token[2], secret) == false {
+		return nil, errors.New(&quot;Invalid token&quot;)
+	}
+
+    // JWT 解码通过
+	return payload, nil
+}
+</code></pre>
+
+<h4 id="jwt-和-session-的区别">JWT 和 session 的区别</h4>
+
+<p>session需要在服务器中存储标记用户的信息，比如 <code>session_id</code>，而JWT则需要服务器端需要一定量的计算来确定用户身份。</p>
+
+<p>在分布式系统中，使用Session的方式，需要在多台服务器之间 <code>session id</code>，增加了服务器的内存和IO压力。</p>
+
+<p>而JWT方式则免去了同步的麻烦。因为用户的状态已经存储在客户端中了，虽然增加了一些计算开销，但是与IO开销比起来，还是要好很多的。</p>
+
+<h4 id="应用-jwt-的案例">应用 JWT 的案例</h4>
+
+<ul>
+<li>更适合RESTful方案</li>
+<li>验证用户，客户端持久化登录</li>
+<li>单点登录</li>
+<li>免登录退订邮件</li>
+</ul>
+
+<h4 id="实际开发当中需要注意的安全问题">实际开发当中需要注意的安全问题：</h4>
+
+<ul>
+<li>使用随机复杂的密钥 (<code>JWT Secret</code>) ，甚至加密，加盐，采用慢哈希，以增加暴力破解的难度.</li>
+<li>不要在请求体中直接提取数据, 要对数据进行加密 (<code>HS256</code> 或 <code>RS256</code>).</li>
+<li>使 <code>token</code> 的过期时间尽量的短 (<code>TTL</code>, <code>RTTL</code>).</li>
+<li>不要在 <code>JWT</code> 的请求体中存放敏感数据, 它是<a href="https://link.zhihu.com/?target=https%3A//jwt.io/%23debugger-io">可破解的</a>.</li>
+</ul>
+
+<h3 id="oauth">OAuth</h3>
+
+<p>很多网站、APP 弱化甚至没有搭建自己的账号体系，而是直接使用社会化登录的方式，这样不仅免去了用户注册账号的麻烦、还可以获取用户的好友关系来增强自身的社交功能。</p>
+
+<p>传统的办法是用户在第三方应用程序那里登录自己的账号，但是这样会有很多严重的缺点。</p>
+
+<p>为了解决以上的问题，OAuth 协议应运而生。</p>
+
+<p>按照 <a href="https://www.ietf.org/rfc/rfc6749.txt">OAuth RFC 6749</a> 的定义：</p>
+
+<blockquote>
+<p>OAuth通过引入授权层并将客户端的角色与资源所有者的角色分开来解决这些问题。</p>
+
+<p>在OAuth中，客户端请求访问由资源所有者控制并由资源服务器托管的资源，并发出与资源所有者不同的凭据集。</p>
+</blockquote>
+
+<p>具体流程可以大致理解为：</p>
+
+<blockquote>
+<p>客户端获取访问令牌：一个表示特定范围，生命周期和其他访问属性的字符串。</p>
+
+<p>授权服务器在获得资源所有者（也就是用户本身）的同意后向第三方客户端颁发访问令牌。 客户端使用访问令牌访问资源服务器托管的受保护资源。</p>
+</blockquote>
+
+<h4 id="roles-角色">Roles（角色</h4>
+
+<p>OAuth 定义了一些角色：</p>
+
+<ul>
+<li><code>resource owner</code> 资源所有者，也可以理解为用户</li>
+<li><code>resource server</code> 资源服务器，即服务提供商存放用户生成的资源的服务器。它与认证服务器，可以是同一台服务器，也可以是不同的服务器</li>
+<li><code>client</code> 官方翻译是：资源所有者及其授权的应用程序进行受保护的资源请求，个人觉得可以理解为 第三方的应用程序</li>
+<li><code>authorization server</code> 认证服务器，即服务提供商专门用来处理认证的服务器。</li>
+</ul>
+
+<h4 id="protocol-flow-协议流程">Protocol Flow（协议流程</h4>
+
+<p>下图摘自 <a href="https://www.ietf.org/rfc/rfc6749.txt">OAuth RFC 6749</a>：</p>
+
+<p><img src="./oauth-protocol-flow.png" alt="OAuth Protocol Flow" /></p>
+
+<p>流程可以理解为：</p>
+
+<ul>
+<li>（A）用户打开客户端以后，客户端要求用户给予授权。</li>
+<li>（B）用户同意给予客户端授权。</li>
+<li>（C）客户端使用上一步获得的授权，向认证服务器申请令牌。</li>
+<li>（D）认证服务器对客户端进行认证以后，确认无误，同意发放令牌，这一步也可以叫做 renewToken。</li>
+<li>（E）客户端使用令牌，向资源服务器申请获取资源。</li>
+<li>（F）资源服务器确认令牌无误，同意向客户端开放受保护的资源。</li>
+</ul>
+
+<h4 id="authorization-grant-授权方式">Authorization Grant（授权方式</h4>
+
+<p>上面授权流程的关键点在于 B ，用户怎样才能给于客户端授权。</p>
+
+<p>OAuth 2.0定义了四种授权方式以及对应的可拓展性，定义了一些附加类型：</p>
+
+<ul>
+<li>授权码模式（authorization code）</li>
+<li>简化模式（implicit）</li>
+<li>密码模式（resource owner password credentials）</li>
+<li>客户端模式（client credentials）</li>
+</ul>
+
+<p>本文当中只简单实现一下 授权码模式。</p>
+
+<h4 id="授权码模式">授权码模式</h4>
+
+<p>授权码授权类型用于获取访问令牌和刷新令牌，并针对机密客户端进行了优化。</p>
+
+<p>参照 RFC 6749，是这样定义：</p>
+
+<p><img src="./oauth-authori-code-auth.png" alt="oauth.authori.code.auth.png" /></p>
+
+<blockquote>
+<p>流程解释的过程中会参考 GitHub OAuth 的例子来进行更好的理解，你也可以通过 GitHub 官方的 <a href="https://github.com/settings/developers">OAuth App</a> 来实践，以及 <a href="https://developer.github.com/apps/building-oauth-apps/authorization-options-for-oauth-apps/">GitHub OAuth develop doc</a></p>
+</blockquote>
+
+<p>流程可以理解为：</p>
+
+<p><strong>流程A）</strong>用户访问客户端，然后被导向认证服务器（有可能需要在认证服务器进行登录。</p>
+
+<p>按照官方定义，这个流程，客户端申请认证的 URI 包含以下参数：</p>
+
+<blockquote>
+<p>每个流程对应的规范以及响应、返回参数可以在标准文档当中找到，下文不再一一介绍</p>
+</blockquote>
+
+<ul>
+<li><code>response_type</code> 默认必须设置为 <code>code</code></li>
+<li><code>client_id</code> 表示客户端的ID，必选项</li>
+<li><code>redirect_uri</code> 重定向的uri，可选项</li>
+<li><code>scope</code> 申请的权限范围，可选项</li>
+<li><code>state</code> 客户端的当前状态，可以指定任意值，认证服务器会原封不动地返回这个值</li>
+</ul>
+
+<p>在进行第三方登录的时候，用户被主动导向这个页面：</p>
+
+<blockquote>
+<p><a href="https://developer.github.com/apps/building-oauth-apps/authorization-options-for-oauth-apps/#1-users-are-redirected-to-request-their-github-identity">GitHub 文档</a></p>
+</blockquote>
+
+<pre><code>GET https://github.com/login/oauth/authorize?client_id=${client_id}&amp;state=${state}&amp;redirect_uri=${redirect_uri}
+</code></pre>
+
+<p>如果用户没有登录，GitHub 会要求用户登录：</p>
+
+<p><img src="./github-auth-login.png" alt="github auth login" /></p>
+
+<p><strong>流程B）</strong>用户选择是否给予客户端授权。</p>
+
+<p>用户选择是否愿意授权：</p>
+
+<p><img src="./github-authorize-confirm.png" alt="github-authorize-confirm.png" /></p>
+
+<p><strong>流程C）</strong>假设用户给予授权，<code>authorize</code> 认证服务器将用户导向客户端事先指定的&rdquo;重定向URI&rdquo;（redirection URI），同时附上一个授权码 <code>code</code>。</p>
+
+<p>如果授权后，GitHub 会重定向到到 <code>Authorization callback URL</code> 或者 <code>redirect uri</code>，并且会附带一个 <code>code</code> 授权码。</p>
+
+<p><strong>流程D）</strong>客户端收到授权码，附上早先的重定向URI，向认证服务器申请令牌：<code>access_token</code> 这一步是在客户端的后台的服务器上完成的，对用户不可见。</p>
+
+<p>第三方应用在得到这个授权码后，会拿刚才得到的 <code>code</code> 和 <code>client_id</code> 以及私有的 <code>client_secret</code> 和 GitHub 进行通信，这对用户是不可见的</p>
+
+<blockquote>
+<p><a href="https://developer.github.com/apps/building-oauth-apps/authorization-options-for-oauth-apps/#2-users-are-redirected-back-to-your-site-by-github">GitHub 文档</a></p>
+</blockquote>
+
+<pre><code>POST https://github.com/login/oauth/access_token
+</code></pre>
+
+<p>结果会响应 <code>access_token</code></p>
+
+<p><strong>流程E）</strong>认证服务器核对了授权码和重定向URI，确认无误后，向客户端再次发送访问令牌（access token）和更新令牌（refresh token）</p>
+
+<p>根据刚才拿到的 <code>access_token</code>，第三方应用去调用 GitHub 的 API 根据 <code>sope</code> 来拿到 登录用户的一些信息。</p>
+
+<blockquote>
+<p><a href="https://developer.github.com/apps/building-oauth-apps/authorization-options-for-oauth-apps/#3-use-the-access-token-to-access-the-api">GitHub 文档</a></p>
+</blockquote>
+
+<pre><code>GET https://api.github.com/user?access_token=...
+</code></pre>
+
+<p>至此，OAuth 流程完毕。</p>
+
+<p>关于 授权码模式，这里通过 GitHub 的例子详细说明了一下，还有其他一些授权方式，这里不再一一介绍。</p>
+
+<h4 id="简单实现">简单实现：</h4>
+
+<p>我们这里采用 echo 来做 http server 来简单实现一下 OAuth 当中的 授权码模式：</p>
+
+<blockquote>
+<p>我们通过定义不同的路由 prefix 的形式来定义不同的 server</p>
+</blockquote>
+
+<p>首先定义一些路由，其中：</p>
+
+<ul>
+<li><code>third_part</code>  代表第三方应用程序</li>
+<li><code>auth_server</code> 代表验证服务器</li>
+<li><code>resource_server</code> 代表资源服务器</li>
+</ul>
+
+<p>代码简单如下：</p>
+
+<pre><code class="language-go">func main() {
+
+	App := echo.New()
+	App.Debug = true
+
+	// index route
+	App.GET(&quot;/&quot;, IndexRoute)
+
+	// 第三方服务 callback
+	App.GET(&quot;/third_part/callback&quot;, Callback)
+	App.GET(&quot;/third_part/show_user_info&quot;, ShowUserInfo)
+
+	// auth server
+	App.GET(&quot;/auth_server/authorize&quot;, Authorize)
+
+	//App.POST(&quot;/auth_server/access_token&quot;, AccessToken)
+
+	// resource server
+	//App.POST(&quot;/resource_server/get_user_info&quot;, GetUser)
+
+	App.Logger.Fatal(App.Start(&quot;0.0.0.0:8000&quot;))
+
+}
+</code></pre>
+
+<p>按照 授权码模式 ，我们可以再次理解一下流程：</p>
+
+<ul>
+<li>用户访问 <code>\</code> ，这个已经是步骤 A ，用户可以选择是否授权</li>
+<li>如果授权，跳向 <code>/auth_server/authorize</code> 来验证第三方应用，并在重定向的 URI 上带上 <code>code</code></li>
+<li>接下来访问 <code>/third_part/callback</code> ，第三方服务通过和授权服务器路由  <code>/auth_server/access_token</code> 通信来验证 <code>code</code>，获取新的 <code>token</code> 或者 <code>refresh token</code></li>
+<li>然后 第三方服务器 <code>/resource_server/get_user_info</code>可以根据拿到的新的 <code>token</code> 去资源服务器</li>
+<li>为了显示出来 <code>OAuth</code> 的结果，我添加了额外一个路由 <code>/third_part/show_user_info</code> ，在和资源服务器通信成功后，第三方服务器重定向到这个路由上来显示结果</li>
+</ul>
+
+<p>准备工作：</p>
+
+<pre><code class="language-go">
+// 模拟 token
+type Token struct {
+	Exp int64 `json:&quot;exp&quot;`
+}
+
+// 模拟用户信息
+type User struct {
+	Name string `json:&quot;name&quot;`
+}
+
+func ParseToken(token string) Token {
+	var raw Token
+	err := json.Unmarshal([]byte(token), &amp;raw)
+
+	if err != nil {
+		panic(err)
+	}
+	return raw
+}
+
+func base64Encode(src string) string {
+	return base64.StdEncoding.EncodeToString([]byte(src))
+}
+
+func base64Decode(src string) (string, error) {
+	decoded, err := base64.StdEncoding.DecodeString(src)
+
+	if err != nil {
+		errMsg := fmt.Errorf(&quot;Decoding Error %s&quot;, err)
+		return &quot;&quot;, errMsg
+	}
+
+	return string(decoded), nil
+}
+
+// 模拟第三方应用的 id
+// uuidgen
+const ThirdClientUUID = &quot;F83F583C-16A0-4B3C-9E73-4B0FF2842B21&quot;
+
+// 模拟从资源服务器拿到的用户信息
+var userInfo string
+</code></pre>
+
+<p>剩下的 路由 handler 代码如下：</p>
+
+<pre><code class="language-go">func IndexRoute(Context echo.Context) error {
+	return Context.HTML(http.StatusOK,
+		fmt.Sprintf(`
+			&lt;h4&gt;登录应用&lt;/h4&gt;
+			&lt;a href=&quot;http://0.0.0.0:8000/auth_server/authorize?client_id=%s&amp;redirect_uri=http://0.0.0.0:8000/third_part/callback&quot;&gt;登录验证服务器&lt;/a&gt;
+	`, ThirdClientUUID))
+}
+
+func Callback(Context echo.Context) error {
+
+	code, _ := base64Decode(Context.QueryParam(&quot;code&quot;))
+
+	// 和验证服务器通信生成新的 token 
+    // 为了方便，我这里直接调用方法来代替验证服务器通信
+	reNewToken, err := AccessToken(code)
+
+    // access token 失败
+	if err != nil {
+		return Context.Redirect(http.StatusOK, &quot;/authorize_failed_route&quot;)
+	}
+
+	// 和资源服务器通信
+    // 为了方便，我这里直接调用方法来代替资源服务器通信
+	user, err := GetUser(reNewToken)
+
+	if err != nil {
+		return Context.Redirect(http.StatusOK, &quot;/show_user_failed_route&quot;)
+	}
+
+	// set global user info
+	userInfo = user
+
+    // 返回 user info
+	return Context.Redirect(http.StatusFound, &quot;/third_part/show_user_info&quot;)
+
+}
+func ShowUserInfo(Context echo.Context) error {
+	return Context.String(http.StatusOK, userInfo)
+}
+
+func Authorize(Context echo.Context) error {
+
+	clientId := Context.QueryParam(&quot;client_id&quot;)
+	redirectUri := Context.QueryParam(&quot;redirect_uri&quot;)
+
+	code, _ := json.Marshal(Token{
+		Exp: time.Now().Add(time.Second * 10).Unix(),
+	})
+	
+    // 判断 client id 是否符合
+	if clientId == ThirdClientUUID {
+		Context.Redirect(http.StatusFound, redirectUri+&quot;?code=&quot;+base64Encode(string(code)))
+	}
+
+	return nil
+}
+
+func AccessToken(code string) (string, error) {
+
+	token := ParseToken(code)
+
+    // 我这里通过验证 token 是否过期来判断是否符合要求
+	if token.Exp &gt; time.Now().Unix() {
+
+		reNewToken, _ := json.Marshal(Token{
+			Exp: time.Now().Add(time.Second * 10).Unix(),
+		})
+
+		return string(reNewToken), nil
+	}
+	return &quot;&quot;, errors.New(&quot;code access failed&quot;)
+
+}
+func GetUser(code string) (string, error) {
+
+	token := ParseToken(code)
+    
+    // 我这里通过验证 token 是否过期来判断是否符合要求
+	if token.Exp &gt; time.Now().Unix() {
+		// 返回构造的 user info
+		user, _ := json.Marshal(User{
+			Name: &quot;TOM&quot;,
+		})
+
+		return string(user), nil
+	}
+
+	return &quot;&quot;, errors.New(&quot;show user failed&quot;)
+}
+</code></pre>
+
+<p>web 端配合 OAuth， 可以通过 <code>postmessage</code>、<code>storage change event</code> 来实现跨 <code>iframe</code> 或者跨 tab 通信来刷新 <code>window.opener</code> 来刷新用户登录状态。</p>
+
+<h4 id="应用-oauth-的场景">应用 OAuth 的场景</h4>
+
+<p><code>OAuth</code> 的适用场合很多：</p>
+
+<ul>
+<li>第三方应用接入，比如 GitHub，Facebook。</li>
+</ul>
+
+<h3 id="reference">Reference：</h3>
+
+<ul>
+<li><a href="http://jwt.io">jwt.io</a></li>
+<li><a href="http://websecurityinfo.blogspot.com/2017/06/base64-encoding-vs-base64url-encoding.html">Base64 encoding vs Base64url encoding</a></li>
+<li><a href="https://tools.ietf.org/html/rfc7519">jwt RFC 7519</a></li>
+<li><a href="https://www.ietf.org/rfc/rfc6749.txt">OAuth RFC 6749</a></li>
+</ul>
+
+    </section>
+    <nav class="no-print post-nav">
+        
+        <a class="prev-post" href="https://t-tom.me/blog/2017-12-13-react-native-art/">
+            <img class="icon-text" src="/img/prev.svg"/>React Native ART 介绍与实践</a>
+        
+        
+        <a class="next-post" href="https://t-tom.me/blog/2018-02-08-%E8%B0%88%E8%B0%88node.js%E7%9A%84%E5%8D%95%E7%BA%BF%E7%A8%8B/">谈谈 Node.js 的单线程<img class="icon-text" src="/img/next.svg"/>
+        </a>
+        
+    </nav>
+</article>
+<script src="/js/bundle.js"></script>
+
+
+
+<div id="disqus_thread" class="no-print"></div>
+<script type="text/javascript">
+
+  (function () {
+    
+    if (window.location.hostname == "localhost")
+      return;
+
+    const disqus_thread = document.querySelector('#disqus_thread')
+    new IntersectionObserver(function (entries, observer) {
+        entries.forEach(entry => {
+          if (entry.intersectionRatio > 0 && !disqus_thread.classList.contains('active')) {
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            var disqus_shortname = 'toms-blog-1';
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            disqus_thread.classList.add('active')
+          }
+        })
+      }, {
+        rootMargin: '0px',
+        threshold: 1.0
+      }
+    ).observe(disqus_thread)
+
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+</noscript>
+
+			<hr class="sep" />
+		</main>
+		<footer class="container no-print">
+			<div class="u-footer">
+				
+<a href="mailto:iamnomand@gmail.com"><img class="icon-social" src="/img/email.svg" alt="Email Me!"/></a>
+
+
+<a href="https://github.com/v-tom/"><img class="icon-social" src="/img/github.svg" alt="Github"/></a>
+
+
+<a href="https://twitter.com/iamnomand"><img class="icon-social" src="/img/twitter.svg" alt="Twitter"/></a>
+
+<a href="https://t-tom.me/index.xml" target="_blank"><img class="icon-social" src="/img/feed.svg" alt="Feed"></a>
+
+				<p>
+					
+					
+					Early 2016 ~ 2018 &copy; TOM's Zone
+					
+					
+				</p>
+				
+				<a href="#brand">
+					<img class="icon-text" src="/img/toup.svg" alt="To Up"/>
+					<span>Back to Up</span>
+				</a>
+				
+			</div>
+		</footer>
+		
+		<script>hljs.initHighlightingOnLoad();</script>
+		
+	</body>
+</html>
+

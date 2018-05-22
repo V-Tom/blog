@@ -7,17 +7,17 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ZH-CN</language>
     <copyright>Early 2016 ~ 2018 &amp;copy; TOM&#39;s Zone</copyright>
-    <lastBuildDate>Mon, 02 Apr 2018 11:31:25 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 02 Jan 2018 11:31:25 +0800</lastBuildDate>
     
 	<atom:link href="https://t-tom.me/tags/oauth/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>从jwt到OAuth</title>
-      <link>https://t-tom.me/blog/2018-04-02-%E4%BB%8Ejwt%E5%88%B0oauth/</link>
-      <pubDate>Mon, 02 Apr 2018 11:31:25 +0800</pubDate>
+      <link>https://t-tom.me/blog/2018-01-02-%E4%BB%8Ejwt%E5%88%B0oauth/</link>
+      <pubDate>Tue, 02 Jan 2018 11:31:25 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2018-04-02-%E4%BB%8Ejwt%E5%88%B0oauth/</guid>
+      <guid>https://t-tom.me/blog/2018-01-02-%E4%BB%8Ejwt%E5%88%B0oauth/</guid>
       <description>JWT JWT 是 JSON Web Token 的缩写，可以简单理解为生产者颁发给消费者一个令牌。参照 JWT 规范 对其所做的描述是：
  JSON Web令牌（JWT）是一种紧凑的、URL安全的方式，用来表示要在双方之间传递的“声明”。JWT中的声明被编码为JSON对象，用作JSON Web签名（JWS）结构的有效内容或JSON Web加密（JWE）结构的明文，使得声明能够被：数字签名、或利用消息认证码（MAC）保护完整性、加密。
  这个规范允许我们使用JWT在用户和服务器之间传递安全可靠的信息。

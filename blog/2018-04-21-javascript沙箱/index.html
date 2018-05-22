@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="Keywords" content="">
+    <meta name="full-screen" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#006cb4">
+    <meta name="apple-mobile-web-app-title" content="TOM&#39;s zone">
+    <meta name="description" content="TOM&#39;s zone">
+    <link rel="dns-prefetch" href="https://t-tom.me">
+    <link rel="preconnect" href="https://t-tom.me">
+    <link rel="manifest" href="/sw/manifest.json"/>
+    <meta name="generator" content="Hugo 0.37" />
+    <title>sandbox of javascript - TOM&#39;s zone</title>
+
+    <meta name="description" content="javascript 沙箱">
+
+
+    
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato|Raleway">
+
+    
+    <link rel="stylesheet"
+          href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/ocean.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/javascript.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/python.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/go.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/css.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/swift.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/objectivec.min.js"></script>
+    
+    
+    <link rel="stylesheet" href="/css/bundle.min.css"/>
+    <style>
+	a { color: #ff8181; }
+	blockquote {
+		border-left-color: #ff8181;
+		border-right-color: #ff8181; }
+	.bar a:hover {
+		color: #ff8181;
+		text-decoration: none; }
+	.sep {
+		margin-top: 2rem;
+		margin-bottom: 1rem;
+		margin-left:0;
+		width: 24rem;
+		border-top: 2px solid #ff8181; }
+    .bar li.active a{
+        color:#ff8181;
+    }
+</style>
+
+</head>
+
+<body>
+<header class="container no-print">
+	<div class="u-header">
+		<nav class="bar">
+	<ul><li>
+			<a href="/">
+				<img class="icon-text" src="/img/prev.svg"/>
+			</a>
+		</li>
+		
+		<li class="active"><a href="/blog/">Blog</a></li>
+		<li class=""><a href="/life/">Life</a></li></ul>
+</nav>
+
+	</div>
+</header>
+<main class="container">
+
+<article>
+    <header><hgroup id="brand">
+	<h1>sandbox of javascript</h1>
+	<h5>
+		
+		<time datetime="2018-04-21 17:43:01 &#43;0800 CST">Apr 21, 2018</time>
+		<span class="no-print">
+			-
+				
+				<a href="/tags/javascript">javascript</a>
+				
+				<a href="/tags/web">web</a>
+				
+				<a href="/tags/node">Node</a>
+				<span>
+	</h5>
+	
+</hgroup>
+<hr class="sep" />
+</header>
+    <section id="markdown">
+        
+
+<p>在一些业务场景当中，我们提供给用户插入自定义逻辑的能力，类似于沙盒、沙箱，允许执行自定义代码，产生的变化可以随后随时删除。</p>
+
+<p>无论是客户端上的沙箱还是服务器端上的沙箱，我们都要确保安全性，用户自定义的脚本必须收到限制和隔离，不能影响到当前宿主程序。</p>
+
+<p>javascript 本身有很多种方式可以实现沙箱，各有千秋，各有使用的地方。</p>
+
+<ul>
+<li><code>eval</code></li>
+<li><code>new Function</code></li>
+<li><code>with</code></li>
+<li><code>proxy</code></li>
+<li><code>Node VM</code></li>
+</ul>
+
+<h3 id="eval">eval</h3>
+
+<p>最简单的方式就是直接使用 <code>eval</code> 执行：</p>
+
+<pre><code class="language-javascript">eval('console.log(&quot;a simple script&quot;);'); // a simple script
+</code></pre>
+
+<p>eval 只是一个普通的函数，只不过他有一个快速通道通向编译器，可以将 string 变成可执行的代码。</p>
+
+<blockquote>
+<p>eval 的特性是如果当前域里面没有，则会向上遍历，一直到最顶层的 global scope：比如 window global ，他还可以访问closure内的变量。</p>
+</blockquote>
+
+<p>使用 eval 也带来了安全隐患，首先它可以访问和修改它外部作用域中的变量，其次被执行的代码（例如从网络来）可能已被篡改。</p>
+
+<pre><code class="language-javascript">global.name = 'TOM'
+
+eval('console.log(&quot;i am &quot; + name + &quot; from eval&quot;);');
+// i am TOM from eval
+</code></pre>
+
+<p>并且 eval 可读性较差，调试难度较高，也会轻微增加性能消耗。</p>
+
+<p>对于 eval 开发者是贬褒不一，<a href="http://www.nowamagic.net/librarys/veda/detail/1627">eval 是魔鬼</a> 以及 <a href="https://www.nczonline.net/blog/2013/06/25/eval-isnt-evil-just-misunderstood/">eval 不是魔鬼</a></p>
+
+<h3 id="function">function</h3>
+
+<p>Function 构造函数会创建一个新的函数对象，它可以作为 <code>eval</code> 的替代品，如果你绝对必须使用 eval ，我们可以考虑使用 new Function() 代替。</p>
+
+<p><code>new Function</code> 中作代码评估是在局部函数作用域中运行，所以代码中任何被评估的通过var 定义的变量都不会自动变成全局变量。最常用的使用场景就是模板，可以参照 <a href="https://johnresig.com/blog/javascript-micro-templating/">javascript-micro-templating</a></p>
+
+<pre><code class="language-javascript">global.name = 'TOM'
+
+function runNewFunction() {
+  const script = 'console.log(&quot;i am &quot; + name + &quot; from new function&quot;);'
+  new Function(script)()  // i am TOM and my age is 21 from new function
+}
+
+runNewFunction()
+</code></pre>
+
+<p>我们注意到 new Function 还是可以访问到全局作用域，如何阻止？</p>
+
+<h3 id="with">with</h3>
+
+<p><code>with</code> 是阻止程序访问上一级作用域的一道防火墙：</p>
+
+<pre><code class="language-javascript">global.name = 'TOM'
+
+function runWith() {
+
+  // 由于 with 的缘故，不会访问到这个 name
+  var name = 'jerry'
+  
+  function compileCode(code) {
+    code = 'with (sandbox) {' + code + '}';
+      
+    // sandbox 是形参, code 是实参
+    return new Function('sandbox', code);
+  }
+
+  const sandBox = {
+    sex: 'female'
+  }
+
+  compileCode('console.log(&quot;i am &quot; + name + &quot; and my age is &quot; + sandbox.age + &quot; from with&quot; );')(sandBox)
+  // i am TOM and my age is 21 from with
+
+}
+
+runWith()
+</code></pre>
+
+<p>如上代码，<code>code</code> 被执行时，首先会寻找 <code>sandbox</code> 中的变量，如果不存在，会往上追溯<code>global</code> 对象，虽然有一道防火墙，但是依然不能阻止 fn 访问全局作用域。</p>
+
+<h3 id="iframe">iframe</h3>
+
+<p>浏览器当中我们可以通过 <code>iframe</code> 标签来添加一个 <code>sandbox</code> attribute 来实现真正的沙箱。</p>
+
+<pre><code class="language-html">&lt;iframe sandbox src=”...”&gt;&lt;/iframe&gt;
+</code></pre>
+
+<p>参照 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/iframe">MDN Iframe</a>，关于 attribute <code>sandbox</code> 如果指定了空字符串，该属性对呈现在iframe框架中的内容启用一些额外的限制条件。属性值可以是用空格分隔的一系列指定的字符串</p>
+
+<p>下面简单列出一些常用的配置项，更详细的内容我们可以参考 mdn。</p>
+
+<table>
+<thead>
+<tr>
+<th align="left">配置</th>
+<th align="left">效果</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">allow-forms</td>
+<td align="left">允许进行提交表单</td>
+</tr>
+
+<tr>
+<td align="left">allow-scripts</td>
+<td align="left">运行执行脚本</td>
+</tr>
+
+<tr>
+<td align="left">allow-same-origin</td>
+<td align="left">允许同域请求,比如ajax,storage</td>
+</tr>
+
+<tr>
+<td align="left">allow-popups</td>
+<td align="left">允许iframe中弹出新窗口,比如,window.open,target=&rdquo;_blank&rdquo;</td>
+</tr>
+
+<tr>
+<td align="left">&hellip;</td>
+<td align="left">&hellip;</td>
+</tr>
+</tbody>
+</table>
+
+<p>可以通过添加自定义的 value 来实现不同的权限：</p>
+
+<pre><code class="language-html">&lt;iframe sandbox=”allow-forms allow-same-origin allow-scripts” src=”...”&gt;&lt;/iframe&gt;
+</code></pre>
+
+<p>只需要添加一个 <code>allow-scripts</code> 的 sandbox attribute value，我们就可以使用 eval 或者 new function 在 iframe 当中执行自定义代码。</p>
+
+<p>然后主 window 当中和 iframe 通过 <code>postmessage</code> 通信来传递结果，在下面的例子当中，我们通过 <code>sandbox.html</code> 主 window 和 iframe <code>sandboxeval.html</code> 进行通信。</p>
+
+<blockquote>
+<p>读者可以自行线下学习 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage">postmessage API</a></p>
+</blockquote>
+
+<p>下面是 <code>sandbox.html</code></p>
+
+<pre><code class="language-html">&lt;!--sandbox.html--&gt;
+
+&lt;button id='eval'&gt;eval() in a sandboxed frame.&lt;/button&gt;
+&lt;textarea&gt;
+    &quot;a simple script from &quot; + name + &quot; by use iframe&quot;
+&lt;/textarea&gt;
+&lt;iframe src=&quot;./sandboxeval.html&quot;&gt;&lt;/iframe&gt;
+&lt;script&gt;
+
+  const iframe = document.querySelector(&quot;iframe&quot;)
+  const textarea = document.querySelector('textarea')
+
+  // 执行 eval command
+  document.querySelector(&quot;#eval&quot;).addEventListener('click', _ =&gt; {
+    iframe.contentWindow.postMessage(textarea.textContent, '/')
+  })
+
+  // 接受 iframe eval result
+  window.addEventListener('message',
+    e =&gt; {
+      // 进行信息来源的验证
+      if (e.source === iframe.contentWindow)
+        alert('Result: ' + e.data);
+    });
+
+&lt;/script&gt;
+</code></pre>
+
+<p>下面是 <code>sandboxeval.html</code></p>
+
+<pre><code class="language-html">&lt;!--sandboxeval.html--&gt;
+&lt;script&gt;
+
+  window.name = 'iframe TOM'
+
+  window.addEventListener('message', function (e) {
+    // 相当于window.top.currentWindow.
+    const mainWindow = e.source;
+    let result = '';
+    try {
+      result = eval(e.data);
+    } catch ( e ) {
+      result = 'eval() threw an exception.';
+    }
+
+    // e.origin 就是原来window的url
+    mainWindow.postMessage(result, e.origin);
+  });
+&lt;/script&gt;
+</code></pre>
+
+<p>可以查看在线 HTML5 rock 的一个 <a href="https://www.html5rocks.com/static/demos/evalbox/index.html">例子</a>。</p>
+
+<p>看了 iframe 的例子会发现这种实现方式过于臃肿、麻烦，有些时候也要考虑浏览器的兼容性，似乎也不是完美的解决方案。</p>
+
+<h3 id="proxy">proxy</h3>
+
+<p>ES6 中提供了一个 Proxy 函数，它是访问对象前的一个拦截器，在目标对象之前架设一层“拦截”，外界对该对象的访问，都必须先通过这层拦截，因此提供了一种机制，可以对外界的访问进行过滤和改写，配合 Reflect 来用十分强大，下面举一个简单的例子：</p>
+
+<pre><code class="language-javascript">(_ =&gt; {
+  const p = new Proxy({}, {
+    get(target, key) {
+      if (key === 'name') {
+        return 'TOM';
+      }
+      Reflect.get(target, key);
+    }
+  });
+
+  console.log(p.name) // 'TOM'
+  console.log(p.sex) // undefined
+})();
+</code></pre>
+
+<p>上诉例子当中我们使用 <code>proxy</code> 对访问做拦截处理，<code>p</code> 本不存在的属性不会追溯到全局变量上访问，改进版本的 sandbox 看起来如下：</p>
+
+<pre><code class="language-javascript">function runProxy(){
+
+  function compileCode(src) {
+    const code = new Function('sandbox', src)
+    return function (sandbox) {
+      const sandboxProxy = new Proxy(sandbox, { has, get })
+      return code(sandboxProxy)
+    }
+  }
+
+  function has() {
+    return true
+  }
+
+  function get(target, key) {
+    const value = Reflect.get(target, key)
+    if (value) return value
+    // 获取不到 value 就返回 23
+    return 23
+  }
+
+  const script = 'with (sandbox) { log(&quot;i am &quot; + name + &quot; and my age is &quot; + age + &quot; by use Proxy &quot;); } '
+
+  const sandbox = Object.create(null)
+  sandbox.log = console.log
+  sandbox.name = 'TOM'
+
+  compileCode(script)(sandbox); // i am TOM and my age is 23 by use Proxy 
+}
+
+runProxy()
+</code></pre>
+
+<p>另外在 es6 当中有些方法是不会被 with scope 所影响，主要是通过Symbol.unscopables 这个特性来检测，比如：</p>
+
+<pre><code class="language-javascript">Object.keys(Array.prototype[Symbol.unscopables]); 
+//  [&quot;copyWithin&quot;, &quot;entries&quot;, &quot;fill&quot;, &quot;find&quot;, &quot;findIndex&quot;, &quot;includes&quot;, &quot;keys&quot;, &quot;values&quot;]
+</code></pre>
+
+<p>所以更改为：</p>
+
+<pre><code class="language-javascript">  function get(target, key) {
+
+    // Symbol.unscopables
+    if (key === Symbol.unscopables) return undefined
+      
+    const value = Reflect.get(target, key)
+    if (value) return value
+    // 获取不到 value 就返回 23
+    return 23
+  }
+</code></pre>
+
+<p>不过这里还是存在一些漏洞：</p>
+
+<ul>
+<li><code>code</code> 中可以提前关闭 <code>sandbox</code> 的 <code>with</code> 语境，如 <code>'} alert(this); {'</code></li>
+<li><code>code</code> 中可以使用 <code>eval</code> 和 <code>new Function</code> 直接逃逸</li>
+</ul>
+
+<h3 id="node-vm">Node VM</h3>
+
+<p>Node.js 当中默认提供了一个 <code>vm</code> 内建模块，提供了一些 API 用于在 V8 虚拟机环境中编译和运行代码。JavaScript 代码可以被编译并立即运行，或编译、保存然后再运行。</p>
+
+<pre><code class="language-javascript">function runVM() {
+  const vm = require('vm');
+  const script = new vm.Script('m + n');
+  const sandbox = { m: 1, n: 2 };
+  const context = new vm.createContext(sandbox);
+  console.log(script.runInContext(context))
+}
+
+runVM() // 3
+</code></pre>
+
+<h4 id="require-的实现">require 的实现</h4>
+
+<p>我们 <code>require</code> 一个 <code>.js</code> 文件的时候，Node 本身对一些特定 extension 文件有内建的处理，比如 <a href="https://github.com/nodejs/node/blob/master/lib/internal/modules/cjs/loader.js#L711-L714">.js</a>、<a href="https://github.com/nodejs/node/blob/master/lib/internal/modules/cjs/loader.js#L718-L726">.json</a> 等等，其实也就是Node.js 本身对<a href="https://github.com/nodejs/node/blob/master/lib/internal/modules/cjs/loader.js#L668-L674">common.js 的实现</a>。</p>
+
+<pre><code class="language-javascript">var wrapper = Module.wrap(content);
+
+var compiledWrapper = vm.runInThisContext(wrapper, {
+  filename: filename,
+  lineOffset: 0,
+  displayErrors: true
+});
+
+// ...
+
+var result = compiledWrapper.call(this.exports, this.exports, require, this,
+  filename, dirname);
+</code></pre>
+
+<p>让我们来一步步进行解释。</p>
+
+<p>1、content 可以理解为你的 .js 文件，例如：</p>
+
+<pre><code class="language-javascript">'console.log(module)'
+</code></pre>
+
+<p><code>Module.wrap(content)</code> 后生成一串字符串：</p>
+
+<pre><code class="language-javascript">'(function (exports, require, module, __filename, __dirname) { console.log(module)\n});'
+</code></pre>
+
+<p>2、通过 <code>VM.runInThisContext</code> 来执行，将上面的字符串输出变成了可执行的 JS 函数，实际上这个函数就是：</p>
+
+<pre><code class="language-javascript">function(exports, require, module, __filename, __dirname) {
+  console.log(module)
+});
+</code></pre>
+
+<p>3、最后执行这个函数，也就是 <code>compiledWrapper.call(this.exports, this.exports, require, this, filename, dirname)</code> 就是执行了这个模块。</p>
+
+<h4 id="vm用法">VM用法</h4>
+
+<p>我们也可以参照 API 添加<a href="https://nodejs.org/api/vm.html#vm_new_vm_script_code_options">各种参数</a>来配置这个 vm script，比如 <code>timeout</code>：如果执行 code 时间大于 timeout 将终止执行并抛出一个异常：</p>
+
+<pre><code class="language-javascript">try {
+  const script = new vm.Script('while(true){}',{ timeout: 50 });
+  ....
+} catch (err){
+  //打印超时的 log
+  console.log(err.message);
+}
+</code></pre>
+
+<p>但同时需要注意的是 <code>vm.Script</code> 的 <code>timeout</code> 选项「只针对同步代有效」，而不包括是异步调用的时间：</p>
+
+<pre><code class="language-javascript">  const script = new vm.Script('setTimeout(()=&gt;{},2000)',{ timeout: 50 });
+</code></pre>
+
+<p> <code>vm</code> 模块没有办法对异步代码直接限制执行时间。我们也不能额外通过一个 <code>timer</code> 去检查超时，因为检查了执行中的 vm 也没有方法去中止掉。</p>
+
+<p>另外，在 Node.js 通过 <code>vm.runInContext</code> 看起来似乎隔离了代码执行环境，但实际上却很容易「逃逸」出去：</p>
+
+<pre><code class="language-javascript">const vm = require('vm');
+const sandbox = {};
+const script = new vm.Script('this.constructor.constructor(&quot;return process&quot;)().exit()');
+const context = vm.createContext(sandbox);
+script.runInContext(context);
+</code></pre>
+
+<p>执行上边的代码，宿主程序立即就会退出。除了退出进程序之外，实际上还能干更多的事情。</p>
+
+<blockquote>
+<p>由于 JavaScript 本身的动态的特点，各种黑魔法防不胜防。事实 Node.js 的官方文档中也提到<strong>不要把 <code>VM</code> 当做一个安全的沙箱</strong>，去执行任意非信任的代码。</p>
+</blockquote>
+
+<p>在社区中有一些开源的模块用于运行不信任代码，例如 <code>sandbox</code>、<code>vm2</code>、<code>jailed</code> 等。相比较而言 <code>vm2</code> 对各方面做了更多的安全工作，相对安全些。</p>
+
+<p>用同样的测试代码来试试 <code>vm2</code> ：</p>
+
+<pre><code class="language-javascript">const { VM } = require('vm2');
+new VM().run('this.constructor.constructor(&quot;return process&quot;)().exit()');	
+</code></pre>
+
+<p>如上代码，并没有成功结束掉宿主程序。vm2 官方 REAME 中说 <strong>vm2 是一个沙盒，可以在 Node.js 中按全的执行不受信任的代码</strong>。</p>
+
+<p>然而实际上还是可以干一些坏的事情：</p>
+
+<pre><code class="language-javascript">const { VM } = require('vm2');
+const vm = new VM({ timeout: 1000, sandbox: {}});
+vm.run('new Promise(()=&gt;{})');
+</code></pre>
+
+<p>你会发现上边的代码永远不会结束，和Node.js 内建 VM 模块一样， vm2 的 <code>timeout</code> 对异步操作是无效的。</p>
+
+<p>或许是否我们提供一个假的 Promise 从而禁用掉 Promise 呢？</p>
+
+<pre><code class="language-javascript">const { VM } = require('vm2');
+const vm = new VM({ 
+  timeout: 1000, sandbox: { Promise: function(){}}
+});
+vm.run('Promise = (async function(){})().constructor;new Promise(()=&gt;{});');
+</code></pre>
+
+<p>事实上发现我们是提供了一个假的 Promise，但是通过 <code>Promise = (async function(){})().constructor</code> 再次又拿到了真正的 Promise。</p>
+
+<p>而且某些场景，或许我们本身希望用到 Promise。</p>
+
+    </section>
+    <nav class="no-print post-nav">
+        
+        <a class="prev-post" href="https://t-tom.me/blog/2018-03-23-%E4%BD%BF%E7%94%A8swift%E5%BC%80%E5%8F%91react-native%E7%BB%84%E4%BB%B6/">
+            <img class="icon-text" src="/img/prev.svg"/>使用Swift开发React Native组件</a>
+        
+        
+    </nav>
+</article>
+<script src="/js/bundle.js"></script>
+
+
+
+<div id="disqus_thread" class="no-print"></div>
+<script type="text/javascript">
+
+  (function () {
+    
+    if (window.location.hostname == "localhost")
+      return;
+
+    const disqus_thread = document.querySelector('#disqus_thread')
+    new IntersectionObserver(function (entries, observer) {
+        entries.forEach(entry => {
+          if (entry.intersectionRatio > 0 && !disqus_thread.classList.contains('active')) {
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            var disqus_shortname = 'toms-blog-1';
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            disqus_thread.classList.add('active')
+          }
+        })
+      }, {
+        rootMargin: '0px',
+        threshold: 1.0
+      }
+    ).observe(disqus_thread)
+
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+</noscript>
+
+			<hr class="sep" />
+		</main>
+		<footer class="container no-print">
+			<div class="u-footer">
+				
+<a href="mailto:iamnomand@gmail.com"><img class="icon-social" src="/img/email.svg" alt="Email Me!"/></a>
+
+
+<a href="https://github.com/v-tom/"><img class="icon-social" src="/img/github.svg" alt="Github"/></a>
+
+
+<a href="https://twitter.com/iamnomand"><img class="icon-social" src="/img/twitter.svg" alt="Twitter"/></a>
+
+<a href="https://t-tom.me/index.xml" target="_blank"><img class="icon-social" src="/img/feed.svg" alt="Feed"></a>
+
+				<p>
+					
+					
+					Early 2016 ~ 2018 &copy; TOM's Zone
+					
+					
+				</p>
+				
+				<a href="#brand">
+					<img class="icon-text" src="/img/toup.svg" alt="To Up"/>
+					<span>Back to Up</span>
+				</a>
+				
+			</div>
+		</footer>
+		
+		<script>hljs.initHighlightingOnLoad();</script>
+		
+	</body>
+</html>
+

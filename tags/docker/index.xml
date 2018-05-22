@@ -7,17 +7,17 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ZH-CN</language>
     <copyright>Early 2016 ~ 2018 &amp;copy; TOM&#39;s Zone</copyright>
-    <lastBuildDate>Sat, 22 Apr 2017 15:29:40 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 22 Jun 2016 15:29:40 +0800</lastBuildDate>
     
 	<atom:link href="https://t-tom.me/tags/docker/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>如何创建一个Node.js 的 Docker 开发环境</title>
-      <link>https://t-tom.me/blog/2017-04-22-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AAnode.js-%E7%9A%84-docker-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</link>
-      <pubDate>Sat, 22 Apr 2017 15:29:40 +0800</pubDate>
+      <link>https://t-tom.me/blog/2016-06-22-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AAnode.js-%E7%9A%84-docker-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</link>
+      <pubDate>Wed, 22 Jun 2016 15:29:40 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2017-04-22-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AAnode.js-%E7%9A%84-docker-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</guid>
+      <guid>https://t-tom.me/blog/2016-06-22-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AAnode.js-%E7%9A%84-docker-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</guid>
       <description>本文以构建一个 Node.js Docker应用 为目标写的一个教程。当前操作系统环境 Mac OSX Sierra 10.12.4
  Docker介绍  Docker 是个划时代的开源项目，它彻底释放了计算虚拟化的威力，极大提高了应用的运行效率，降低了云计算资源供应的成本！ 使用 Docker，可以让应用的部署、测试和分发都变得前所未有的高效和轻松！
  Docker引擎的基础是Linuxring器(Linux Containers，LXC)技术。这个并不是一个新生的概念，很早前已经出现，比如操作系统上的chroot工具、以及Solaris Containers和FreeBSD jail等等，虽然这个技术非常成熟，然而这些工具使用起来非常不方便。Docker的出现解决了这些问题。

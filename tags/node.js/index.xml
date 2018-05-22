@@ -7,17 +7,17 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ZH-CN</language>
     <copyright>Early 2016 ~ 2018 &amp;copy; TOM&#39;s Zone</copyright>
-    <lastBuildDate>Sun, 08 Apr 2018 14:22:25 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 08 Feb 2018 14:22:25 +0800</lastBuildDate>
     
 	<atom:link href="https://t-tom.me/tags/node.js/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>谈谈 Node.js 的单线程</title>
-      <link>https://t-tom.me/blog/2018-04-08-%E8%B0%88%E8%B0%88node.js%E7%9A%84%E5%8D%95%E7%BA%BF%E7%A8%8B/</link>
-      <pubDate>Sun, 08 Apr 2018 14:22:25 +0800</pubDate>
+      <link>https://t-tom.me/blog/2018-02-08-%E8%B0%88%E8%B0%88node.js%E7%9A%84%E5%8D%95%E7%BA%BF%E7%A8%8B/</link>
+      <pubDate>Thu, 08 Feb 2018 14:22:25 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2018-04-08-%E8%B0%88%E8%B0%88node.js%E7%9A%84%E5%8D%95%E7%BA%BF%E7%A8%8B/</guid>
+      <guid>https://t-tom.me/blog/2018-02-08-%E8%B0%88%E8%B0%88node.js%E7%9A%84%E5%8D%95%E7%BA%BF%E7%A8%8B/</guid>
       <description>前言 从Node.js进入人们的视野时，我们所知道的它就由这些关键字组成 事件驱动、非阻塞I/O、高效、轻量，它在官网中也是这么描述自己的。
  Node.js® is a JavaScript runtime built on Chrome’s V8 JavaScript engine. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient.
  Node.js 结构 我们可以看到，Node.js 的结构大致分为三个层次：
@@ -26,10 +26,10 @@
     
     <item>
       <title>koa 源码简单解读</title>
-      <link>https://t-tom.me/blog/2017-05-03-koa%E6%BA%90%E7%A0%81%E7%AE%80%E5%8D%95%E8%A7%A3%E8%AF%BB/</link>
-      <pubDate>Wed, 03 May 2017 15:29:40 +0800</pubDate>
+      <link>https://t-tom.me/blog/2016-09-03-koa%E6%BA%90%E7%A0%81%E7%AE%80%E5%8D%95%E8%A7%A3%E8%AF%BB/</link>
+      <pubDate>Sat, 03 Sep 2016 15:29:40 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2017-05-03-koa%E6%BA%90%E7%A0%81%E7%AE%80%E5%8D%95%E8%A7%A3%E8%AF%BB/</guid>
+      <guid>https://t-tom.me/blog/2016-09-03-koa%E6%BA%90%E7%A0%81%E7%AE%80%E5%8D%95%E8%A7%A3%E8%AF%BB/</guid>
       <description>[Koa]() 是一个类似于 [Express]() 的 Web开发框架，创始人也都是[TJ]()
 [Koa]() 的主要特点是，使用了ES6 的 Generator 函数，进行了架构的重新设计。Koa 的原理和内部结构很像[Express]()，但是语法和内部结构进行了升级，最近已经发布了2.x版本，我们来直接看一下2.x版本的koa
 创建 Koa 应用 我们可以按照官方的说明很简单的创建一个koa应用
@@ -45,10 +45,10 @@ listen() { debug(&#39;listen&#39;); const server = http.createServer(this.callba
     
     <item>
       <title>如何创建一个Node.js 的 Docker 开发环境</title>
-      <link>https://t-tom.me/blog/2017-04-22-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AAnode.js-%E7%9A%84-docker-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</link>
-      <pubDate>Sat, 22 Apr 2017 15:29:40 +0800</pubDate>
+      <link>https://t-tom.me/blog/2016-06-22-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AAnode.js-%E7%9A%84-docker-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</link>
+      <pubDate>Wed, 22 Jun 2016 15:29:40 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2017-04-22-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AAnode.js-%E7%9A%84-docker-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</guid>
+      <guid>https://t-tom.me/blog/2016-06-22-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AAnode.js-%E7%9A%84-docker-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</guid>
       <description>本文以构建一个 Node.js Docker应用 为目标写的一个教程。当前操作系统环境 Mac OSX Sierra 10.12.4
  Docker介绍  Docker 是个划时代的开源项目，它彻底释放了计算虚拟化的威力，极大提高了应用的运行效率，降低了云计算资源供应的成本！ 使用 Docker，可以让应用的部署、测试和分发都变得前所未有的高效和轻松！
  Docker引擎的基础是Linuxring器(Linux Containers，LXC)技术。这个并不是一个新生的概念，很早前已经出现，比如操作系统上的chroot工具、以及Solaris Containers和FreeBSD jail等等，虽然这个技术非常成熟，然而这些工具使用起来非常不方便。Docker的出现解决了这些问题。
