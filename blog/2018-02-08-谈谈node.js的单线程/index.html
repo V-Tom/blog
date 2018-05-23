@@ -193,7 +193,7 @@
 <li>进程模型（多进程</li>
 <li>线程模型（多线程</li>
 <li>协程模型（超线程</li>
-<li>CPS模型</li>
+<li>CPS模型（个人能力有限，针对该模型没有找到具体的描述和内容，所以就不详细介绍</li>
 <li>非阻塞式I/O</li>
 </ul>
 
@@ -207,15 +207,13 @@
 
 <h4 id="进程模型">进程模型</h4>
 
-<p>进程模型自然的隔离了连接。即使程序复杂且易崩溃，也只影响一个连接而不是在整个系统。</p>
-
-<p>服务器的进程数量是有上限的。</p>
+<p>进程模型自然的隔离了连接。即使程序复杂且易崩溃，也只影响一个连接而不是在整个系统，当然服务器的进程数量是有上限的。</p>
 
 <pre><code>cat /proc/sys/kernel/pid_max
 // Ubuntu 16.04 上结果为 32768
 </code></pre>
 
-<p>频繁的生成和释放开销很大，需要考虑复用，相同的状态会在内存中存在很多份，造成浪费，数据共享也是一个问题。</p>
+<p>进程是一个比较重的概念，拥有自己的堆和栈，占用内存较多，一台服务器能运行的进程数量有上限，大约也就在几千或者几万左右，频繁的生成和释放开销很大，需要考虑复用，相同的状态会在内存中存在很多份，造成浪费，数据共享也是一个问题。</p>
 
 <pre><code class="language-python">from multiprocessing import Pool
 
@@ -235,20 +233,20 @@ if __name__ == &quot;__main__&quot;:
 </code></pre>
 
 <blockquote>
-<p>Web 当中可以通过创建 <code>webworkers</code> 来创建额外的进程。</p>
+<p>早期的 <code>Apache</code> 服务器就是进程模型，以及后面提出的优化 <code>fastCGI</code> 属于进程池。</p>
 </blockquote>
+
+<p>在前端 browser 当中可以通过创建 <code>webworkers</code> 来创建额外的进程。</p>
 
 <h4 id="线程模型">线程模型</h4>
 
 <p><strong>线程，是cpu调度的基本单位，是最小的执行单元</strong></p>
 
-<p>线程模型的优点是更轻量，建立和释放速度更快，而且多个上下文间的通讯速度非常快。</p>
-
-<p>服务器的线程数量也是有上限的。</p>
+<p>线程模型的优点是更轻量，建立和释放速度更快，而且多个上下文间的通讯速度非常快，当然服务器的线程数量也是有上限的。</p>
 
 <p>线程上下文由系统来切换控制，调度是由操作系统负责，线程的睡眠、等待、唤醒的时机是由操作系统控制，开发者无法精确的控制它们。</p>
 
-<p>一个线程出现问题容易将整个系统搞崩溃，也面临锁的问题。</p>
+<p>线程虽然比进程轻量，但也是相对的。<a href="http://www.cnblogs.com/PurpleTide/archive/2010/11/12/1875763.html">有人测试过</a>，每个线程独享的栈的大小是 1M，依然不够高效。除此以外，多线程编程会带来各种麻烦，一个线程出现问题容易将整个系统搞崩溃，也面临锁的问题。</p>
 
 <pre><code class="language-python">import threading
 import time
@@ -272,6 +270,12 @@ for i in range(10):
     t.start()
 </code></pre>
 
+<blockquote>
+<p>现在的 <code>java</code> 我理解的就是线程模型，而且是深入内核态的线程。</p>
+</blockquote>
+
+<p>早期的 C10K 问题就是讨论如何利用单台服务器支持 10K 并发数。当然随着软硬件性能的提高，目前 C10K 已经不再是问题，我们开始尝试解决 C10M 问题，即单台服务器如何处理百万级的并发。如果不使用进程或者线程，还有两种解决方案，分别是使用协程(coroutine)和非阻塞 I/O。</p>
+
 <p>为了在寄存器当中快速的上下文切换，不牵扯到内核，其实还有一个叫做 <code>协程</code> 的解决方案。</p>
 
 <h4 id="协程模型">协程模型</h4>
@@ -290,7 +294,7 @@ for i in range(10):
 
 <p>协程属于语言级别的调度算法实现，通过在线程中实现调度，避免了陷入内核级别的上下文切换造成的性能损失，协程所能调度的，只有在同一进程中的不同上下文而已。可以看做用户控件下的进程，进而突破了线程在IO上的性能瓶颈。</p>
 
-<p>协程是一种编程组件，减少 callback 的使用，以看是同步的方式来编程，把这些异步伪装成同步，让写代码的人爽一些。</p>
+<p>协程也可以说是一种编程组件，减少 callback 的使用，以看是同步的方式来编程，把这些异步伪装成同步，让写代码的人爽一些。</p>
 
 <blockquote>
 <p>在事件驱动的编程里面 callback 可能更加合适。</p>
@@ -316,28 +320,43 @@ loop.close()
 </code></pre>
 
 <blockquote>
-<p>Node 作者视乎<a href="https://news.ycombinator.com/item?id=1549168">不愿加入 coroutine，</a>理由是一种哲学、信仰的问题。对协程感兴趣可以看一下 <a href="http://fibjs.org/">fib.js</a>，以及 TJ 的 co 语法糖</p>
+<p>协程模型这种技术在 <code>Go</code> 语言中被广泛使用。</p>
 </blockquote>
 
-<p>ES6 当中已经加入 <code>yield/Generator/GeneratorFunction</code> 来支持协程，不过是半协程（semi-coroutine），而且async 应该不单单只是 <code>generator</code> 的升级语法糖。</p>
+<p>Node 作者视乎 <a href="https://news.ycombinator.com/item?id=1549168">不愿加入 coroutine，</a>理由是一种哲学、信仰的问题。对协程感兴趣可以看一下 <a href="http://fibjs.org/">fib.js</a>，以及 TJ 的 <a href="https://github.com/tj/co">co</a> 语法糖。</p>
 
-<h4 id="cps模型">CPS模型</h4>
-
-<p>用一句话来描述CPS——他把一切操作都当作了IO，无论干什么，结果要通过回调函数来返回。</p>
-
-<blockquote>
-<p>这个我不太熟悉，callback 的高级说法？一些资料还在查找。</p>
-</blockquote>
+<p>ES6 当中已经加入 <code>yield/Generator/GeneratorFunction</code> 来支持协程，不过是半协程（semi-coroutine），而且我觉得 async 应该不单单只是 <code>generator</code> 的升级语法糖。</p>
 
 <h4 id="非阻塞式i-o">非阻塞式I/O</h4>
 
-<p>为了让 CPU 的处理能力得到充分利用，减少 I/O 浪费时间，提高性能，内核提供了非阻塞式 I/O，演变成异步编程。</p>
+<p>I/O 的处理方式分为：</p>
+
+<ul>
+<li>阻塞式</li>
+<li>非阻塞式。</li>
+</ul>
+
+<p>对于阻塞 I/O 来说，从发起读请求，到缓冲区就绪，再到用户进程获取数据，这两个步骤都是阻塞的。</p>
+
+<p>非阻塞 I/O 实际上是向内核轮询，缓冲区是否就绪，如果没有则继续执行其他操作。当缓冲区就绪时，讲缓冲区内容拷贝到用户进程，这一步实际上还是阻塞的。</p>
 
 <blockquote>
-<p>异步编程大多数情况下都伴随着用户态调度问题——即使不使用上下文技术</p>
+<p>什么是 I/O ?</p>
 </blockquote>
 
-<p>Linux 也提出了<a href="http://www.cnblogs.com/lizheng19822003/p/5337792.html">3种解决方案</a> 来实现非阻塞式 IO ：</p>
+<p>这里所说的 I/O 可以分为两种:</p>
+
+<ul>
+<li><p>网络 I/O</p></li>
+
+<li><p>文件 I/O</p></li>
+</ul>
+
+<p>实际上两者高度类似。 I/O 可以分为两个步骤，首先把文件(网络)中的内容拷贝到缓冲区，这个缓冲区位于操作系统独占的内存区域中。随后再把缓冲区中的内容拷贝到用户程序的内存区域中。</p>
+
+<p>为了让 CPU 的处理能力得到充分利用，减少 I/O 浪费时间，避免陷入内核态，提高性能，内核提供了非阻塞式 I/O，后来演变成异步编程。</p>
+
+<p>Linux 提出了<a href="http://www.cnblogs.com/lizheng19822003/p/5337792.html">3种解决方案</a> 来实现非阻塞式 IO ：</p>
 
 <ul>
 <li><code>select</code></li>
@@ -352,7 +371,9 @@ loop.close()
 <li><code>Event ports</code> Solaris</li>
 </ul>
 
-<p>这些方案有好有坏，其实这些从根本上讲还是算是一种同步，应用程序仍然需要等待 I/O 完全返回。</p>
+<p>这些方案有好有坏，其实这些从根本上讲还是算是一种同步，应用程序仍然需要等待 I/O 完全返回。比如 <code>Apache</code> 采用了前者，而 <code>Nginx</code> 和 <code>Node.js</code> 使用了后者，区别在于后者<a href="http://stackoverflow.com/questions/17355593/why-is-epoll-faster-than-select">效率更高</a></p>
+
+<p>当然异步 I/O 是最理想的 I/O 模型，然而可惜的是真正的异步 I/O 并不存在。 Linux 上的 AIO 通过信号和回调来传递数据，但是存在缺陷。现有的 libeio 以及 Windows 上的 IOCP，本质上都是利用线程池与阻塞 I/O 来模拟异步 I/O。</p>
 
 <p>Node 本身有自己的事件模型—— <code>event loop</code>：</p>
 
@@ -377,7 +398,7 @@ loop.close()
 
 </code></pre>
 
-<p>这里不仔细介绍。</p>
+<p>这里不仔细介绍，读者可以线下自行学习。</p>
 
 <h3 id="单线程的-node">单线程的 Node</h3>
 
@@ -726,9 +747,11 @@ cluster.on('disconnect', function(){
 
 <h3 id="个人看法">个人看法</h3>
 
-<p>Node 虽然隐藏了 <code>event loop</code> 和 <code>async io</code> 的细节，但是它的特点是易于上手，非常容易编写，开发效率高，同时写出来性能还不差。</p>
+<p>Node.js 非常适合为 I/O 密集型应用提供服务。但这种方式的缺陷就是不擅长处理 CPU 密集型任务。</p>
 
-<p>问题在于，到了一定的复杂程度之后，代码编写就比较困难了，开发者需要深入了解它所有的隐藏的细节才有保障构建复杂、大型的应用。</p>
+<p>对于高并发的长连接，事件驱动模型比线程轻量得多，Node 虽然隐藏了 <code>event loop</code> 和 <code>async io</code> 的细节，但是它的特点是易于上手，非常容易编写，开发效率高，同时写出来性能还不差。</p>
+
+<p>问题在于，到了一定的复杂程度之后，代码维护、提高性能瓶颈就比较困难了，开发者需要深入了解它大部分甚至所有隐藏的细节才有保障构建复杂、大型的应用。</p>
 
 <h3 id="reference">Reference</h3>
 
