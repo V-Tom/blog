@@ -3,7 +3,7 @@ title: "利用 Shadowsocksr 和云主机翻墙"
 subTitle: "利用 Shadowsocksr 和云主机翻墙"
 banner: "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=="
 tags: ["Shadowsocksr","vps"]
-date: 2017-04-03T15:29:40+08:00
+date: 2016-04-03T15:29:40+08:00
 ---
 
 世界那么大，我想去看看，但是被墙了…
