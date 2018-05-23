@@ -8,8 +8,11 @@ const path = require('path');
   const localSWPath = path.join(__dirname, './static/sw.origin.js')
   const targetSWPath = path.join(__dirname, './static/sw.js')
 
+  const version = Date.now()
   const makeVersion = version => `const VERSION_NAME = 'CACHE-v${version}';`
 
-  fs.writeFileSync(targetSWPath, `${makeVersion(Date.now())}\n${fs.readFileSync(localSWPath).toString()}`)
+  console.log(`\n Ready to rewrite sw.js with version : ${version} \n`)
+
+  fs.writeFileSync(targetSWPath, `${makeVersion(version)}\n${fs.readFileSync(localSWPath).toString()}`)
 
 })();
