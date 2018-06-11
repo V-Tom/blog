@@ -6,9 +6,9 @@ tags: ["Node.js","BackEnd"]
 date: 2016-09-03T15:29:40+08:00
 ---
 
-[Koa]() 是一个类似于 [Express]() 的 `Web`开发框架，创始人也都是[TJ]()
+[Koa](https://github.com/koajs/koa) 是一个类似于 [Express](https://expressjs.com/) 的 `Web`开发框架，创始人也都是 TJ
 
-[Koa]() 的主要特点是，使用了`ES6` 的 `Generator ` 函数，进行了架构的重新设计。Koa 的原理和内部结构很像[Express]()，但是语法和内部结构进行了升级，最近已经发布了`2.x`版本，我们来直接看一下`2.x`版本的`koa`
+Koa 的主要特点是，使用了`ES6` 的 `Generator ` 函数，进行了架构的重新设计。Koa 的原理和内部结构很像Express，但是语法和内部结构进行了升级，最近已经发布了`2.x`版本，我们来直接看一下`2.x`版本的`koa`
 
 ### 创建 `Koa` 应用
 
@@ -352,5 +352,13 @@ function respond(ctx) {
 
 ```
 
+至此基本上源码也就解读完了，也许会有人会问：koa 和 express 中间件的主要区别是什么？
 
-#### callback.onFinished
+> 可以参考这篇文章来详细介绍 [koa、express等中间件的区别](http://perkinzone.cn/2017/08/15/Redux,Koa,Express%E4%B9%8Bmiddleware%E6%9C%BA%E5%88%B6%E5%AF%B9%E6%AF%94/)
+
+其实两者的中间件都是以一系列数组的模式，只是对于中间件的处理方式不同
+
+koa 是洋葱型，内部实现中间件是以 Promise 的形式通过 `Promise based then` 来实现洋葱模型
+
+虽然都说 express 则是直线型，实际运行起来 express 也可以说是洋葱型，只是内部实现中间件是以 stack 的形式，通过 `callback` 的形式实现。
+

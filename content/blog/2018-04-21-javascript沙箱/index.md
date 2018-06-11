@@ -16,6 +16,7 @@ javascript 本身有很多种方式可以实现沙箱，各有千秋，各有使
 - `with`
 - `proxy`
 - `Node VM`
+- `Deno`
 
 ### eval
 
@@ -397,3 +398,15 @@ vm.run('Promise = (async function(){})().constructor;new Promise(()=>{});');
 事实上发现我们是提供了一个假的 Promise，但是通过 `Promise = (async function(){})().constructor` 再次又拿到了真正的 Promise。
 
 而且某些场景，或许我们本身希望用到 Promise。
+
+### Deno
+
+[deno](https://github.com/ry/deno) 属于 Node 之父 Ryan Dahl 发布新的开源项目，从官方介绍来看，可以认为它是下一代 Node，使用 Go 语言代替 C++ 重新编写跨平台底层内核驱动，上层仍然使用 V8 引擎，最终提供一个安全的 TypeScript runtime 
+
+它有很多新特性，有一点非常符合 sanbodx 的特性：可以控制文件系统和网络访问权限以运行沙盒代码，默认访问只读文件系统可访问，无网络权限。V8 和 Golang 之间的访问只能通过 `protobuf` 中定义的序列化消息完成
+
+- 在默认情况下，脚本应在不产生任何网络或文件系统写入访问的前提下运行。
+- 用户可通过标记介入访问: --allow-net --allow-write
+- 这种方式允许用户运行各类不受信实用程序（例如 linter）。
+
+![deno-sandbox.png](./deno-sandbox.png)

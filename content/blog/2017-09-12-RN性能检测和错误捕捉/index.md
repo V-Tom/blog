@@ -290,8 +290,45 @@ web上的性能数据我们可以通过`performance`API来收集。
 
 ### React-native 性能数据
 
-RN上的性能数据其实在**开发**环境当中已经可以查看
+RN上的性能数据其实在**开发**环境当中已经可以查看，生产环境下需要更改RN源码来打开 `monitor`，这里不做深入介绍。
 
-> prod环境需要更改RN源码来打开 monitor
+### 前端 browser 日志上报优化
 
-TBD
+日志上报可以选择 ajax 或者 empty GIF等形式来进行上报，但是如果前端业务复杂、访问量级较大，那么相应地，前端监控上报的日志类型及日志量也会快速增长。
+
+前端监控的最基本原则是日志获取和日志上报不能影响业务性能，所以需要优化上报的性能。
+
+这里大概有以下几种常见的方法：
+
+- HTTP No Content
+- HTTP/2 头部压缩，HTTP/2 多路复用
+- HTTP post 合并多条信息
+- [navigator.sendBeacon](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/sendBeacon)
+
+#### HTTP No Content
+
+日志上报只关心日志有没有上报，并不关心上报请求的返回内容，甚至完全可以不需要返回内容。所以使用 `HTTP HEAD` 的方式上报，并且返回的响应体为空，可避免响应体传输造成的资源损耗
+
+```javascript
+fetch(`${url}?t=perf&page=lazada-home&load=1168`, {mode:'no-cors',method:'HEAD'})
+```
+
+#### HTTP/2 头部压缩
+
+每次 HTTP 请求都会传输一系列的请求头来描述请求的资源及其特性，然而实际上每次请求都有很多相同的值，如 `Host:`、`user-agent:`、`Accept` 等。这些数据会占用 300-800 byte 的传输量，如果携带大的 cookie，请求头甚至会占据 1 kb 的空间，而实际真正需要上报的日志数据仅有 10~50 byte。在 HTTP 1.x 中，每次日志上报请求头都携带了大量的重复数据导致性能浪费。
+
+HTTP/2 [头部压缩](https://link.zhihu.com/?target=https%3A//www.oreilly.com/learning/http2-a-new-excerpt)采用 Huffman Code 压缩请求头，并用动态表更新每次请求不同的数据，从而将每次请求的头部压缩到很小。
+
+#### HTTP/2 多路复用
+
+用户浏览器和日志服务器之间产生多次 HTTP 请求，而在 **HTTP/1.1 Keep-Alive** 下，日志上报会以串行的方式传输，并让后面的日志上报延时。通过 HTTP/2 的多路复用来合并上报，可以节省网络连接的开销。
+
+#### sendBeacon
+
+> 详情可以参考 [MDN 文档](https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/sendBeacon)
+
+有些时候我们需要在 `unload` 或者 `beforeunload`  事件监听当中来进行发送**同步**的 ajax 来上传监控数据，但是同步的 ajax 会导致下一个页面加载能力较差。
+
+虽然采用 empty GIF 的方式可以实现，因为绝大多数用户代理会延迟卸载以保证图片的载入。但是这种方法有较差的编码方式而且不可靠，会影响页面性能。
+
+当使用 `sendBeacon` 方法将会使用户代理在有机会时异步地向服务器发送数据，同时不会延迟页面的卸载或影响下一导航的载入性能。这就解决了提交分析数据时的所有的问题：使它可靠，异步并且不会影响下一页面的加载。
