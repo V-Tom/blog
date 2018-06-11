@@ -117,6 +117,7 @@
 <li><code>with</code></li>
 <li><code>proxy</code></li>
 <li><code>Node VM</code></li>
+<li><code>Deno</code></li>
 </ul>
 
 <h3 id="eval">eval</h3>
@@ -512,6 +513,20 @@ vm.run('Promise = (async function(){})().constructor;new Promise(()=&gt;{});');
 <p>事实上发现我们是提供了一个假的 Promise，但是通过 <code>Promise = (async function(){})().constructor</code> 再次又拿到了真正的 Promise。</p>
 
 <p>而且某些场景，或许我们本身希望用到 Promise。</p>
+
+<h3 id="deno">Deno</h3>
+
+<p><a href="https://github.com/ry/deno">deno</a> 属于 Node 之父 Ryan Dahl 发布新的开源项目，从官方介绍来看，可以认为它是下一代 Node，使用 Go 语言代替 C++ 重新编写跨平台底层内核驱动，上层仍然使用 V8 引擎，最终提供一个安全的 TypeScript runtime</p>
+
+<p>它有很多新特性，有一点非常符合 sanbodx 的特性：可以控制文件系统和网络访问权限以运行沙盒代码，默认访问只读文件系统可访问，无网络权限。V8 和 Golang 之间的访问只能通过 <code>protobuf</code> 中定义的序列化消息完成</p>
+
+<ul>
+<li>在默认情况下，脚本应在不产生任何网络或文件系统写入访问的前提下运行。</li>
+<li>用户可通过标记介入访问: &ndash;allow-net &ndash;allow-write</li>
+<li>这种方式允许用户运行各类不受信实用程序（例如 linter）。</li>
+</ul>
+
+<p><img src="./deno-sandbox.png" alt="deno-sandbox.png" /></p>
 
     </section>
     <nav class="no-print post-nav">
