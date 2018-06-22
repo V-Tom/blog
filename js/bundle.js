@@ -4,7 +4,7 @@ window.addEventListener('DOMContentLoaded', _ => {
    * set all target blank for href link
    */
   (function () {
-    Array.from(document.querySelectorAll('a'))
+    [].slice.call(document.querySelectorAll('a'))
       .forEach($node => $node.setAttribute('target', '_blank'))
   })();
 
@@ -12,16 +12,22 @@ window.addEventListener('DOMContentLoaded', _ => {
    * Rewrite head anchor links
    */
   (function () {
-    Array.from(document.querySelectorAll('#markdown [id]'))
-      .forEach($node => {
-        const text = $node.textContent;
-        const $a = document.createElement('a');
-        $a.setAttribute('href', `#${text}`);
-        $a.textContent = text;
-        $node.innerHTML = '';
-        $node.appendChild($a)
-      });
+    const ids = [].slice.call(document.querySelectorAll('#markdown [id]'))
+    const hash = location.hash
 
+    ids.forEach($node => {
+      const text = $node.textContent;
+      const $a = document.createElement('a');
+      $a.setAttribute('href', `#${$node.getAttribute('id')}`);
+      $a.textContent = text;
+      $node.innerHTML = '';
+      $node.appendChild($a)
+    });
+
+    if (hash) {
+      const id = ids.find($node => $node.getAttribute('id') === hash.substr(1, hash.length))
+      setTimeout(_ => id && id.nodeType === 1 && id.firstChild.click(), 500)
+    }
   })();
 
   /**
