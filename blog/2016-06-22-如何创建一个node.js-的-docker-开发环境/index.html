@@ -14,10 +14,9 @@
     <link rel="dns-prefetch" href="https://t-tom.me">
     <link rel="preconnect" href="https://t-tom.me">
     <link rel="manifest" href="/sw/manifest.json"/>
-    <meta name="generator" content="Hugo 0.37" />
-    <title>如何创建一个Node.js 的 Docker 开发环境 - TOM&#39;s zone</title>
+<title>如何创建一个Node.js 的 Docker 开发环境 - TOM&#39;s zone</title>
 
-    <meta name="description" content="本文以构建一个 Node.js Docker应用 为目标写的一个教程。当前操作系统环境 Mac OSX Sierra 10.12.4
+<meta name="description" content="本文以构建一个 Node.js Docker应用 为目标写的一个教程。当前操作系统环境 Mac OSX Sierra 10.12.4
  Docker介绍  Docker 是个划时代的开源项目，它彻底释放了计算虚拟化的威力，极大提高了应用的运行效率，降低了云计算资源供应的成本！ 使用 Docker，可以让应用的部署、测试和分发都变得前所未有的高效和轻松！
  Docker引擎的基础是Linuxring器(Linux Containers，LXC)技术。这个并不是一个新生的概念，很早前已经出现，比如操作系统上的chroot工具、以及Solaris Containers和FreeBSD jail等等，虽然这个技术非常成熟，然而这些工具使用起来非常不方便。Docker的出现解决了这些问题。
 Docker容器虚拟化有很多好处：
@@ -29,30 +28,31 @@ Mac OSX Mac OSX 上我们也可以直接下载 Docker GUI。
 Docker的主要目标是Build ship and run any app,any where.">
 
 
-    
+
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato|Raleway">
 
-    
+
     <link rel="stylesheet"
           href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/ocean.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/javascript.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/python.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/go.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/css.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/swift.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/objectivec.min.js"></script>
-    
-    
+
+
     <link rel="stylesheet" href="/css/bundle.min.css"/>
-    <style>
+<script src="/js/bundle.min.js"></script>
+<style>
 	a { color: #ff8181; }
 	blockquote {
 		border-left-color: #ff8181;
@@ -112,7 +112,7 @@ Docker的主要目标是Build ship and run any app,any where.">
 <hr class="sep" />
 </header>
     <section id="markdown">
-        
+    
 
 <blockquote>
 <p>本文以构建一个 Node.js Docker应用 为目标写的一个教程。当前操作系统环境 Mac OSX Sierra 10.12.4</p>
@@ -615,48 +615,36 @@ sudo chmod +x /usr/local/bin/docker-compose
 
     </section>
     <nav class="no-print post-nav">
-        
+    
         <a class="prev-post" href="https://t-tom.me/blog/2016-04-03-%E5%88%A9%E7%94%A8-shadowsocksr-%E5%92%8C%E4%BA%91%E4%B8%BB%E6%9C%BA%E7%BF%BB%E5%A2%99/">
             <img class="icon-text" src="/img/prev.svg"/>利用 Shadowsocksr 和云主机翻墙</a>
-        
-        
+    
+    
         <a class="next-post" href="https://t-tom.me/blog/2016-09-03-koa%E6%BA%90%E7%A0%81%E7%AE%80%E5%8D%95%E8%A7%A3%E8%AF%BB/">koa 源码简单解读<img class="icon-text" src="/img/next.svg"/>
         </a>
-        
+    
     </nav>
 </article>
-<script src="/js/bundle.min.js"></script>
 
 
 
 <div id="disqus_thread" class="no-print"></div>
 <script type="text/javascript">
-
-  (function () {
-    
-    if (window.location.hostname == "localhost")
-      return;
-
-    const disqus_thread = document.querySelector('#disqus_thread')
-    new IntersectionObserver(function (entries, observer) {
-        entries.forEach(entry => {
-          if (entry.intersectionRatio > 0 && !disqus_thread.classList.contains('active')) {
-            var dsq = document.createElement('script');
-            dsq.type = 'text/javascript';
-            dsq.async = true;
-            var disqus_shortname = 'toms-blog-1';
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-            disqus_thread.classList.add('active')
-          }
-        })
-      }, {
-        rootMargin: '0px',
-        threshold: 1.0
-      }
-    ).observe(disqus_thread)
-
-  })();
+    'use strict';
+    (function () {
+        if ('localhost' != window.location.hostname) {
+            var a = document.querySelector('#disqus_thread');
+            new IntersectionObserver(function (b) {
+                b.forEach(function (d) {
+                    if (0 < d.intersectionRatio && !a.classList.contains('active')) {
+                        var e = document.createElement('script');
+                        e.type = 'text/javascript', e.async = !0;
+                        e.src = '//' + 'toms-blog-1' + '.disqus.com/embed.js', (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(e), a.classList.add('active')
+                    }
+                })
+            }, {rootMargin: '0px', threshold: 1}).observe(a)
+        }
+    })();
 </script>
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
 </noscript>

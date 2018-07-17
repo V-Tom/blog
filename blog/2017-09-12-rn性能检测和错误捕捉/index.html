@@ -14,10 +14,9 @@
     <link rel="dns-prefetch" href="https://t-tom.me">
     <link rel="preconnect" href="https://t-tom.me">
     <link rel="manifest" href="/sw/manifest.json"/>
-    <meta name="generator" content="Hugo 0.37" />
-    <title>RN性能检测和错误捕捉 - TOM&#39;s zone</title>
+<title>RN性能检测和错误捕捉 - TOM&#39;s zone</title>
 
-    <meta name="description" content="在复杂的网络环境和浏览器环境下，自测、QA测试以及 Code Review 都是不够的，如果对页面稳定性和准确性要求较高，就必须有一套完善的代码异常监控体系好的产品，这样才能很好的得到用户的反馈从而不断的迭代改进我们的产品。
+<meta name="description" content="在复杂的网络环境和浏览器环境下，自测、QA测试以及 Code Review 都是不够的，如果对页面稳定性和准确性要求较高，就必须有一套完善的代码异常监控体系好的产品，这样才能很好的得到用户的反馈从而不断的迭代改进我们的产品。
 而且复杂的用户终端设备，也需要通过性能监控发现部分前端性能瓶颈，以便进行优化；通过错误日志收集，及时获得前端的运行时错误
 收集错误异常  错误异常分为 web 错误异常和React-native 错误异常
  web 错误异常 总体来说：平时收集日志的手段，可以归类为两个方面，一个是逻辑中的错误判断，为主动判断，如try...catch；一个是利用语言给我们提供的捷径，暴力式获取错误信息，如 window.onerror；当然也存在另外一种错误，那就是Promise unhandlerejection
@@ -27,30 +26,31 @@ window.onerror = function() { // send format error var errInfo = format(argument
 /** * @param {String} errorMessage 错误信息 * @param {String} scriptURI 出错的文件 * @param {Long} lineNumber 出错代码的行号 * @param {Long} columnNumber 出错代码的列号 * @param {Object} errorObj 错误的详细信息，Anything */ window.">
 
 
-    
+
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato|Raleway">
 
-    
+
     <link rel="stylesheet"
           href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/ocean.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/javascript.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/python.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/go.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/css.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/swift.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/objectivec.min.js"></script>
-    
-    
+
+
     <link rel="stylesheet" href="/css/bundle.min.css"/>
-    <style>
+<script src="/js/bundle.min.js"></script>
+<style>
 	a { color: #ff8181; }
 	blockquote {
 		border-left-color: #ff8181;
@@ -110,7 +110,7 @@ window.onerror = function() { // send format error var errInfo = format(argument
 <hr class="sep" />
 </header>
     <section id="markdown">
-        
+    
 
 <p>在复杂的网络环境和浏览器环境下，自测、QA测试以及 Code Review 都是不够的，如果对页面稳定性和准确性要求较高，就必须有一套完善的代码异常监控体系好的产品，这样才能很好的得到用户的反馈从而不断的迭代改进我们的产品。</p>
 
@@ -449,48 +449,36 @@ console.log(finalSource.join('\n'))
 
     </section>
     <nav class="no-print post-nav">
-        
+    
         <a class="prev-post" href="https://t-tom.me/blog/2017-08-13-%E8%AF%91%E6%96%87understanding-asts-by-building-your-own-babel-plugin/">
             <img class="icon-text" src="/img/prev.svg"/>译文:Understanding ASTs by Building Your Own Babel Plugin</a>
-        
-        
+    
+    
         <a class="next-post" href="https://t-tom.me/blog/2017-11-02-react-%E6%A8%A1%E5%BC%8F%E6%8A%80%E5%B7%A7%E6%8A%80%E5%B7%A7%E5%92%8C%E7%AA%8D%E9%97%A8/">React 模式，技巧，技巧和窍门<img class="icon-text" src="/img/next.svg"/>
         </a>
-        
+    
     </nav>
 </article>
-<script src="/js/bundle.min.js"></script>
 
 
 
 <div id="disqus_thread" class="no-print"></div>
 <script type="text/javascript">
-
-  (function () {
-    
-    if (window.location.hostname == "localhost")
-      return;
-
-    const disqus_thread = document.querySelector('#disqus_thread')
-    new IntersectionObserver(function (entries, observer) {
-        entries.forEach(entry => {
-          if (entry.intersectionRatio > 0 && !disqus_thread.classList.contains('active')) {
-            var dsq = document.createElement('script');
-            dsq.type = 'text/javascript';
-            dsq.async = true;
-            var disqus_shortname = 'toms-blog-1';
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-            disqus_thread.classList.add('active')
-          }
-        })
-      }, {
-        rootMargin: '0px',
-        threshold: 1.0
-      }
-    ).observe(disqus_thread)
-
-  })();
+    'use strict';
+    (function () {
+        if ('localhost' != window.location.hostname) {
+            var a = document.querySelector('#disqus_thread');
+            new IntersectionObserver(function (b) {
+                b.forEach(function (d) {
+                    if (0 < d.intersectionRatio && !a.classList.contains('active')) {
+                        var e = document.createElement('script');
+                        e.type = 'text/javascript', e.async = !0;
+                        e.src = '//' + 'toms-blog-1' + '.disqus.com/embed.js', (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(e), a.classList.add('active')
+                    }
+                })
+            }, {rootMargin: '0px', threshold: 1}).observe(a)
+        }
+    })();
 </script>
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
 </noscript>

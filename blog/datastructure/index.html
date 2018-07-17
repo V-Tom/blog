@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="Keywords" content="">
+    <meta name="full-screen" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#006cb4">
+    <meta name="apple-mobile-web-app-title" content="TOM&#39;s zone">
+    <meta name="description" content="TOM&#39;s zone">
+    <link rel="dns-prefetch" href="https://t-tom.me">
+    <link rel="preconnect" href="https://t-tom.me">
+    <link rel="manifest" href="/sw/manifest.json"/>
+<title>learn Data Structure - TOM&#39;s zone</title>
+
+<meta name="description" content="Data Structure">
+
+
+
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato|Raleway">
+
+
+    <link rel="stylesheet"
+          href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/ocean.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/javascript.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/python.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/go.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/css.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/swift.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/objectivec.min.js"></script>
+
+
+    <link rel="stylesheet" href="/css/bundle.min.css"/>
+<script src="/js/bundle.min.js"></script>
+<style>
+	a { color: #ff8181; }
+	blockquote {
+		border-left-color: #ff8181;
+		border-right-color: #ff8181; }
+	.bar a:hover {
+		color: #ff8181;
+		text-decoration: none; }
+	.sep {
+		margin-top: 2rem;
+		margin-bottom: 1rem;
+		margin-left:0;
+		width: 24rem;
+		border-top: 2px solid #ff8181; }
+    .bar li.active a{
+        color:#ff8181;
+    }
+</style>
+
+</head>
+
+<body>
+<header class="container no-print">
+	<div class="u-header">
+		<nav class="bar">
+	<ul><li>
+			<a href="/">
+				<img class="icon-text" src="/img/prev.svg"/>
+			</a>
+		</li>
+		
+		<li class="active"><a href="/blog/">Blog</a></li>
+		<li class=""><a href="/life/">Life</a></li></ul>
+</nav>
+
+	</div>
+</header>
+<main class="container">
+
+<article>
+    <header><hgroup id="brand">
+	<h1>learn Data Structure</h1>
+	<h5>
+		
+		<time datetime="2018-05-23 12:33:21 &#43;0800 CST">May 23, 2018</time>
+		<span class="no-print">
+			-
+				
+				<a href="/tags/datastructure">DataStructure</a>
+				<span>
+	</h5>
+	
+</hgroup>
+<hr class="sep" />
+</header>
+    <section id="markdown">
+    
+
+<h3 id="list">List</h3>
+
+<h5 id="list-定义">list 定义</h5>
+
+<ul>
+<li>是<strong>n(n≥0)个相同类型</strong>的<strong>数据元素</strong>构成的<strong>有限</strong>序列。</li>
+</ul>
+
+<h5 id="list-adt">list ADT</h5>
+
+<pre><code class="language-adt">ADT List
+{
+    Data:
+    Operation:
+        InitList(&amp;L)
+        CreateList(&amp;L)
+        ListEmpty(L)
+        ListLength(L)
+        LocateElem(L,e)
+        PriorElem(L,cur_e,&amp;pre_e)
+        NextElem(L,cur_e,&amp;pre_e) 
+        ListInsert(&amp;L,i,e)
+        ListDelete(&amp;L,i,&amp;e)
+        GetElem(L,i,&amp;e)
+        ListTraverse(L)
+        DestroyList(&amp;L)
+    }//ADT List
+</code></pre>
+
+<h5 id="list-简单实现">list 简单实现</h5>
+
+<pre><code class="language-javascript">/**
+ * List Structure
+ */
+
+class List {
+
+  /**
+   * 顺序表初始化操作，申请使用内存
+   * @constructor
+   */
+  InitList() {
+    this.list = []
+  }
+
+  /**
+   * 判断顺序表是否为空
+   * @returns {boolean}
+   * @constructor
+   */
+  ListEmpty() {
+
+    return this.list.length === 0
+  }
+
+  /**
+   * 顺序表求表长操作
+   * @returns {number}
+   * @constructor
+   */
+  ListLength() {
+
+    return this.list.length
+  }
+
+  /**
+   * 顺序表定位元素(返回与e值相等的元素下标)
+   * @param item
+   * @returns {*}
+   * @constructor
+   */
+  LocateElem(item) {
+    return this.list.indexOf(item)
+  }
+
+  /**
+   * 获取指定元素的上一个元素
+   * @param item
+   * @returns {*}
+   * @constructor
+   */
+  PriorElem(item) {
+
+    const indexOf = this.list.indexOf(item)
+
+    if (indexOf &lt;= 0) {
+      return null
+    } else {
+      return this.list[indexOf - 1]
+    }
+
+  }
+
+  /**
+   * 获取指定元素的下一个元素
+   * @param item
+   * @returns {*}
+   * @constructor
+   */
+  NextElem(item) {
+
+    const indexOf = this.list.indexOf(item)
+
+    if (indexOf &gt;= this.list.length - 1) {
+      return null
+    } else {
+      return this.list[indexOf + 1]
+    }
+
+  }
+
+  /**
+   * 在顺序表L的第i个元素之前插入新的元素e
+   * @param i
+   * @param elem
+   * @returns {boolean}
+   * @constructor
+   */
+  ListInsertBefore(i, elem) {
+
+    if (i &lt;= 0) {
+      return false
+    }
+
+    this.list.splice(i - 1, 0, elem)
+
+    return true
+
+  }
+
+  /**
+   * 在顺序表L的第i个元素之后插入新的元素e
+   * @param i
+   * @param elem
+   * @returns {boolean}
+   * @constructor
+   */
+  ListInsertAfter(i, elem) {
+    if (i &lt;= 0) {
+      return false
+    }
+
+    this.list.splice(i, 0, elem)
+
+    return true
+  }
+
+  /**
+   * 在顺序表L的最后一个元素之后插入新的元素e
+   * @param elem
+   * @returns {boolean}
+   * @constructor
+   */
+  ListInsertBottom(elem) {
+    this.list.push(elem)
+
+    return true
+  }
+
+  /**
+   * 在递增有序顺序表L中查找插入新的元素e
+   * 暂时只支持 []int 类型的 list
+   * @param elem
+   * @returns {boolean}
+   * @constructor
+   */
+  ListInsertByOrder(elem) {
+    if (typeof elem !== &quot;number&quot;) {
+      return false
+    }
+
+    for (let i = 0; i &lt; this.list.length; i++) {
+      if (this.list[i] &lt;= elem &amp;&amp; this.list[i + 1] &gt;= elem) {
+        this.ListInsertBefore(i, elem)
+        return true
+      }
+    }
+
+    return false
+  }
+
+  /**
+   * 在顺序表L中删除第i个元素，并返回其值
+   * @param i
+   * @returns {*}
+   * @constructor
+   */
+  ListDelete(i) {
+
+    if (i &lt;= 0) return false
+
+    if (!this.list[i]) return false
+
+    return this.list.splice(i - 1, 1)[0]
+
+  }
+
+  /**
+   * 取出顺序表L中第i个元素，并返回其值
+   * @param i
+   * @returns {*}
+   * @constructor
+   */
+  GetElem(i) {
+
+    return this.list[i]
+  }
+
+  /**
+   * 顺序表遍历输出各元素
+   * @constructor
+   */
+  ListTraverse() {
+    this.list.forEach(item =&gt; console.log(item))
+  }
+
+  /**
+   * 删除顺序表
+   * @constructor
+   */
+  DestroyList() {
+    this.list = null
+  }
+}
+</code></pre>
+
+<h4 id="链表">链表</h4>
+
+<p>TBD</p>
+
+<h3 id="stack">Stack</h3>
+
+<h5 id="stack-定义">stack 定义：</h5>
+
+<ul>
+<li>是一种特殊的线性表，这种表只能在固定的一端进行插入与删除操作</li>
+<li>固定插入的一端叫<strong>栈顶(top)</strong>，而另一端称为<strong>栈底(bottom)</strong>。位于栈顶和栈底的元素分别称为<strong>顶元</strong>和<strong>底元</strong>。当表中无元素时，称为空栈</li>
+<li>栈的修改是按照<strong>后进先出</strong>的原则进行（简称 LIFO）</li>
+</ul>
+
+<h5 id="stack-adt">stack ADT</h5>
+
+<pre><code class="language-adt">ADT List
+{
+    Data:
+    Operation:
+        InitStack(&amp;S,maxsize,incresize)
+        ClearStack(&amp;S)
+        StackLength(S)
+        Push(&amp;S,e)
+        Pop(&amp;S,&amp;e)
+        GetTop(S,&amp;e)
+        StackTraverse(S)
+        StackEmpty(S)
+        DestroyStack(&amp;S)
+    }//ADT List
+</code></pre>
+
+<h5 id="stack-简单实现">stack 简单实现</h5>
+
+<pre><code class="language-go">package Stack
+
+import (
+	&quot;fmt&quot;
+)
+
+type Stack struct {
+	Stack []int
+}
+
+func (S *Stack) InitStack() []int {
+	S.Stack = []int{}
+	return S.Stack
+}
+
+func (S *Stack) StackLength() int {
+	return len(S.Stack)
+}
+
+func (S *Stack) Push(elem int) {
+	S.Stack = append(S.Stack, elem)
+}
+
+func (S *Stack) Pop() int {
+
+	len := len(S.Stack) - 1
+
+	elem := S.Stack[len]
+
+	S.Stack = S.Stack[:len]
+
+	return elem
+}
+
+func (S *Stack) GetTop() int {
+	return S.Stack[len(S.Stack)-1]
+}
+
+func (S *Stack) StackEmpty() bool {
+
+	return len(S.Stack) &lt;= 0
+}
+
+func (S *Stack) StackTraverse() {
+	for _, elem := range S.Stack {
+		fmt.Println(elem)
+	}
+}
+
+func (S *Stack) DestroyStack() {
+	S.Stack = []int{}
+}
+</code></pre>
+
+<h5 id="数制转换问题">数制转换问题</h5>
+
+<pre><code class="language-go">package main
+
+import (
+	&quot;DataStructure/Stack&quot;
+	&quot;strconv&quot;
+)
+
+/**
+	简单版本的 十进制转任意进制
+ */
+func Conversion(input int, radix int) string {
+
+	result := &quot;&quot;
+
+	if input &lt;= 0 || radix &lt;= 0 {
+		return result
+	}
+
+	S := Stack.Stack{}
+
+	S.InitStack()
+
+	for {
+
+		if input &lt;= 0 {
+			break
+		}
+
+		S.Push(input % radix)
+
+		input = input / radix
+
+	}
+
+	for {
+
+		if S.StackEmpty() {
+			break
+		}
+
+		result += strconv.Itoa(S.Pop())
+	}
+
+	return result
+
+}
+</code></pre>
+
+<h5 id="valid-parentheses">Valid Parentheses</h5>
+
+<p>本题参考自 <a href="https://leetcode.com/problems/valid-parentheses">leet code</a>，可以通过 栈 的特性完成</p>
+
+<pre><code class="language-javascript">const isValid = function (s) {
+
+    const stack = []
+
+    const map = {
+        &quot;(&quot;: -1,
+        &quot;)&quot;: 1,
+        &quot;[&quot;: -2,
+        &quot;]&quot;: 2,
+        &quot;{&quot;: -3,
+        &quot;}&quot;: 3
+    }
+
+    for (let i = 0; i &lt; s.length; i++) {
+        const current = map[s[i]]
+        if (current &lt;= 0) {
+            stack.push(current)
+        } else {
+            const last = stack.pop()
+            if (last + current !== 0) return false
+        }
+    }
+
+    return !stack.length &gt; 0
+};
+</code></pre>
+
+    </section>
+    <nav class="no-print post-nav">
+    
+        <a class="prev-post" href="https://t-tom.me/blog/2018-04-21-javascript%E6%B2%99%E7%AE%B1/">
+            <img class="icon-text" src="/img/prev.svg"/>sandbox of javascript</a>
+    
+    
+    </nav>
+</article>
+
+
+
+<div id="disqus_thread" class="no-print"></div>
+<script type="text/javascript">
+    'use strict';
+    (function () {
+        if ('localhost' != window.location.hostname) {
+            var a = document.querySelector('#disqus_thread');
+            new IntersectionObserver(function (b) {
+                b.forEach(function (d) {
+                    if (0 < d.intersectionRatio && !a.classList.contains('active')) {
+                        var e = document.createElement('script');
+                        e.type = 'text/javascript', e.async = !0;
+                        e.src = '//' + 'toms-blog-1' + '.disqus.com/embed.js', (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(e), a.classList.add('active')
+                    }
+                })
+            }, {rootMargin: '0px', threshold: 1}).observe(a)
+        }
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+</noscript>
+
+			<hr class="sep" />
+		</main>
+		<footer class="container no-print">
+			<div class="u-footer">
+				
+<a href="mailto:iamnomand@gmail.com"><img class="icon-social" src="/img/email.svg" alt="Email Me!"/></a>
+
+
+<a href="https://github.com/v-tom/"><img class="icon-social" src="/img/github.svg" alt="Github"/></a>
+
+
+<a href="https://twitter.com/iamnomand"><img class="icon-social" src="/img/twitter.svg" alt="Twitter"/></a>
+
+<a href="https://t-tom.me/index.xml" target="_blank"><img class="icon-social" src="/img/feed.svg" alt="Feed"></a>
+
+				<p>
+					
+					
+					Early 2016 ~ 2018 &copy; TOM's Zone
+					
+					
+				</p>
+				
+				<a href="#brand">
+					<img class="icon-text" src="/img/toup.svg" alt="To Up"/>
+					<span>Back to Up</span>
+				</a>
+				
+			</div>
+		</footer>
+		
+		<script>hljs.initHighlightingOnLoad();</script>
+		
+	</body>
+</html>
+

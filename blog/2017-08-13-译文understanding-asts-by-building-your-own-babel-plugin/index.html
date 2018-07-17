@@ -14,10 +14,9 @@
     <link rel="dns-prefetch" href="https://t-tom.me">
     <link rel="preconnect" href="https://t-tom.me">
     <link rel="manifest" href="/sw/manifest.json"/>
-    <meta name="generator" content="Hugo 0.37" />
-    <title>译文:Understanding ASTs by Building Your Own Babel Plugin - TOM&#39;s zone</title>
+<title>译文:Understanding ASTs by Building Your Own Babel Plugin - TOM&#39;s zone</title>
 
-    <meta name="description" content="原文地址
+<meta name="description" content="原文地址
 Language Overview  We want to design a plugin that will allow us to use regular object and array literals, which will be transformed into persistent data structures using Mori
  我们想要设计一个插件：它将允许我们通过使用常规对象和数值文本，可以使用Mori转化为持久性的数据结构。
  We want to write code like this:
@@ -25,30 +24,31 @@ Language Overview  We want to design a plugin that will allow us to use regular 
 var foo = { a: 1 }; var baz = foo.a = 2; foo.a === 1; baz.a === 2;   And transform it into code like this:">
 
 
-    
+
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato|Raleway">
 
-    
+
     <link rel="stylesheet"
           href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/ocean.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/javascript.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/python.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/go.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/css.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/swift.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/objectivec.min.js"></script>
-    
-    
+
+
     <link rel="stylesheet" href="/css/bundle.min.css"/>
-    <style>
+<script src="/js/bundle.min.js"></script>
+<style>
 	a { color: #ff8181; }
 	blockquote {
 		border-left-color: #ff8181;
@@ -108,7 +108,7 @@ var foo = { a: 1 }; var baz = foo.a = 2; foo.a === 1; baz.a === 2;   And transfo
 <hr class="sep" />
 </header>
     <section id="markdown">
-        
+    
 
 <p><a href="https://www.sitepoint.com/understanding-asts-building-babel-plugin/">原文地址</a></p>
 
@@ -422,48 +422,36 @@ var bar = mori.vector(1, 2, 3);
 
     </section>
     <nav class="no-print post-nav">
-        
+    
         <a class="prev-post" href="https://t-tom.me/blog/2017-07-04-mavic-pro-%E8%AF%84%E6%B5%8B/">
             <img class="icon-text" src="/img/prev.svg"/>Mavic Pro 初见</a>
-        
-        
+    
+    
         <a class="next-post" href="https://t-tom.me/blog/2017-09-12-rn%E6%80%A7%E8%83%BD%E6%A3%80%E6%B5%8B%E5%92%8C%E9%94%99%E8%AF%AF%E6%8D%95%E6%8D%89/">RN性能检测和错误捕捉<img class="icon-text" src="/img/next.svg"/>
         </a>
-        
+    
     </nav>
 </article>
-<script src="/js/bundle.min.js"></script>
 
 
 
 <div id="disqus_thread" class="no-print"></div>
 <script type="text/javascript">
-
-  (function () {
-    
-    if (window.location.hostname == "localhost")
-      return;
-
-    const disqus_thread = document.querySelector('#disqus_thread')
-    new IntersectionObserver(function (entries, observer) {
-        entries.forEach(entry => {
-          if (entry.intersectionRatio > 0 && !disqus_thread.classList.contains('active')) {
-            var dsq = document.createElement('script');
-            dsq.type = 'text/javascript';
-            dsq.async = true;
-            var disqus_shortname = 'toms-blog-1';
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-            disqus_thread.classList.add('active')
-          }
-        })
-      }, {
-        rootMargin: '0px',
-        threshold: 1.0
-      }
-    ).observe(disqus_thread)
-
-  })();
+    'use strict';
+    (function () {
+        if ('localhost' != window.location.hostname) {
+            var a = document.querySelector('#disqus_thread');
+            new IntersectionObserver(function (b) {
+                b.forEach(function (d) {
+                    if (0 < d.intersectionRatio && !a.classList.contains('active')) {
+                        var e = document.createElement('script');
+                        e.type = 'text/javascript', e.async = !0;
+                        e.src = '//' + 'toms-blog-1' + '.disqus.com/embed.js', (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(e), a.classList.add('active')
+                    }
+                })
+            }, {rootMargin: '0px', threshold: 1}).observe(a)
+        }
+    })();
 </script>
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
 </noscript>

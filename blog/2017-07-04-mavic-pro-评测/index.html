@@ -14,10 +14,9 @@
     <link rel="dns-prefetch" href="https://t-tom.me">
     <link rel="preconnect" href="https://t-tom.me">
     <link rel="manifest" href="/sw/manifest.json"/>
-    <meta name="generator" content="Hugo 0.37" />
-    <title>Mavic Pro 初见 - TOM&#39;s zone</title>
+<title>Mavic Pro 初见 - TOM&#39;s zone</title>
 
-    <meta name="description" content="  早在今年2、3月份的时候，我就已经知道御姐Mavic Pro的存在了，当然是通过（万恶）的微信朋友圈，被安利、洗脑了一波，当时就很感兴趣，想买一个自己玩玩:haha:。
+<meta name="description" content="  早在今年2、3月份的时候，我就已经知道御姐Mavic Pro的存在了，当然是通过（万恶）的微信朋友圈，被安利、洗脑了一波，当时就很感兴趣，想买一个自己玩玩:haha:。
  下定决心要买 为什么会买呢，我也不知道，感觉是脑子一热吧
 最近刚换了一份新的工作，压力有点大，中午的时候无聊看了一下官网，晚上就直接叫着女朋友去了新天地的专卖店看了下，然后就直接剁手了。。。
 感觉最近不单单要吃土，还要吃灰了。。
@@ -42,30 +41,31 @@ Mavic pro 装上防撞翼：
  Mavic Pro 从入门到精通  ">
 
 
-    
+
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato|Raleway">
 
-    
+
     <link rel="stylesheet"
           href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/ocean.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/javascript.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/python.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/go.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/css.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/swift.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/objectivec.min.js"></script>
-    
-    
+
+
     <link rel="stylesheet" href="/css/bundle.min.css"/>
-    <style>
+<script src="/js/bundle.min.js"></script>
+<style>
 	a { color: #ff8181; }
 	blockquote {
 		border-left-color: #ff8181;
@@ -123,7 +123,7 @@ Mavic pro 装上防撞翼：
 <hr class="sep" />
 </header>
     <section id="markdown">
-        
+    
 
 <blockquote>
 <p>早在今年2、3月份的时候，我就已经知道御姐Mavic Pro的存在了，当然是通过（万恶）的微信朋友圈，被安利、洗脑了一波，当时就很感兴趣，想买一个自己玩玩:haha:。</p>
@@ -227,48 +227,36 @@ Mavic pro 装上防撞翼：
 
     </section>
     <nav class="no-print post-nav">
-        
+    
         <a class="prev-post" href="https://t-tom.me/blog/2017-03-24-%E5%89%8D%E7%AB%AF%E7%9A%8410000%E4%B8%AA%E5%B0%8F%E6%97%B6/">
             <img class="icon-text" src="/img/prev.svg"/>前端的10000个小时</a>
-        
-        
+    
+    
         <a class="next-post" href="https://t-tom.me/blog/2017-08-13-%E8%AF%91%E6%96%87understanding-asts-by-building-your-own-babel-plugin/">译文:Understanding ASTs by Building Your Own Babel Plugin<img class="icon-text" src="/img/next.svg"/>
         </a>
-        
+    
     </nav>
 </article>
-<script src="/js/bundle.min.js"></script>
 
 
 
 <div id="disqus_thread" class="no-print"></div>
 <script type="text/javascript">
-
-  (function () {
-    
-    if (window.location.hostname == "localhost")
-      return;
-
-    const disqus_thread = document.querySelector('#disqus_thread')
-    new IntersectionObserver(function (entries, observer) {
-        entries.forEach(entry => {
-          if (entry.intersectionRatio > 0 && !disqus_thread.classList.contains('active')) {
-            var dsq = document.createElement('script');
-            dsq.type = 'text/javascript';
-            dsq.async = true;
-            var disqus_shortname = 'toms-blog-1';
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-            disqus_thread.classList.add('active')
-          }
-        })
-      }, {
-        rootMargin: '0px',
-        threshold: 1.0
-      }
-    ).observe(disqus_thread)
-
-  })();
+    'use strict';
+    (function () {
+        if ('localhost' != window.location.hostname) {
+            var a = document.querySelector('#disqus_thread');
+            new IntersectionObserver(function (b) {
+                b.forEach(function (d) {
+                    if (0 < d.intersectionRatio && !a.classList.contains('active')) {
+                        var e = document.createElement('script');
+                        e.type = 'text/javascript', e.async = !0;
+                        e.src = '//' + 'toms-blog-1' + '.disqus.com/embed.js', (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(e), a.classList.add('active')
+                    }
+                })
+            }, {rootMargin: '0px', threshold: 1}).observe(a)
+        }
+    })();
 </script>
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
 </noscript>

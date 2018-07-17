@@ -14,36 +14,36 @@
     <link rel="dns-prefetch" href="https://t-tom.me">
     <link rel="preconnect" href="https://t-tom.me">
     <link rel="manifest" href="/sw/manifest.json"/>
-    <meta name="generator" content="Hugo 0.37" />
-    <title>使用Swift开发React Native组件 - TOM&#39;s zone</title>
+<title>使用Swift开发React Native组件 - TOM&#39;s zone</title>
 
-    <meta name="description" content="使用Swift开发React Native组件">
+<meta name="description" content="使用Swift开发React Native组件">
 
 
-    
+
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato|Raleway">
 
-    
+
     <link rel="stylesheet"
           href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/ocean.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/javascript.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/python.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/go.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/css.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/swift.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/objectivec.min.js"></script>
-    
-    
+
+
     <link rel="stylesheet" href="/css/bundle.min.css"/>
-    <style>
+<script src="/js/bundle.min.js"></script>
+<style>
 	a { color: #ff8181; }
 	blockquote {
 		border-left-color: #ff8181;
@@ -103,7 +103,7 @@
 <hr class="sep" />
 </header>
     <section id="markdown">
-        
+    
 
 <blockquote>
 <p>本人只是一个前端，偶尔写一点其他语言来拓展开发技能。</p>
@@ -771,48 +771,36 @@ const subscription = emitter.addListener('progress', data =&gt; console.info(dat
 
     </section>
     <nav class="no-print post-nav">
-        
+    
         <a class="prev-post" href="https://t-tom.me/blog/2018-02-08-%E8%B0%88%E8%B0%88node.js%E7%9A%84%E5%8D%95%E7%BA%BF%E7%A8%8B/">
             <img class="icon-text" src="/img/prev.svg"/>谈谈 Node.js 的单线程</a>
-        
-        
+    
+    
         <a class="next-post" href="https://t-tom.me/blog/2018-04-21-javascript%E6%B2%99%E7%AE%B1/">sandbox of javascript<img class="icon-text" src="/img/next.svg"/>
         </a>
-        
+    
     </nav>
 </article>
-<script src="/js/bundle.min.js"></script>
 
 
 
 <div id="disqus_thread" class="no-print"></div>
 <script type="text/javascript">
-
-  (function () {
-    
-    if (window.location.hostname == "localhost")
-      return;
-
-    const disqus_thread = document.querySelector('#disqus_thread')
-    new IntersectionObserver(function (entries, observer) {
-        entries.forEach(entry => {
-          if (entry.intersectionRatio > 0 && !disqus_thread.classList.contains('active')) {
-            var dsq = document.createElement('script');
-            dsq.type = 'text/javascript';
-            dsq.async = true;
-            var disqus_shortname = 'toms-blog-1';
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-            disqus_thread.classList.add('active')
-          }
-        })
-      }, {
-        rootMargin: '0px',
-        threshold: 1.0
-      }
-    ).observe(disqus_thread)
-
-  })();
+    'use strict';
+    (function () {
+        if ('localhost' != window.location.hostname) {
+            var a = document.querySelector('#disqus_thread');
+            new IntersectionObserver(function (b) {
+                b.forEach(function (d) {
+                    if (0 < d.intersectionRatio && !a.classList.contains('active')) {
+                        var e = document.createElement('script');
+                        e.type = 'text/javascript', e.async = !0;
+                        e.src = '//' + 'toms-blog-1' + '.disqus.com/embed.js', (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(e), a.classList.add('active')
+                    }
+                })
+            }, {rootMargin: '0px', threshold: 1}).observe(a)
+        }
+    })();
 </script>
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
 </noscript>

@@ -14,10 +14,9 @@
     <link rel="dns-prefetch" href="https://t-tom.me">
     <link rel="preconnect" href="https://t-tom.me">
     <link rel="manifest" href="/sw/manifest.json"/>
-    <meta name="generator" content="Hugo 0.37" />
-    <title>React 模式，技巧，技巧和窍门 - TOM&#39;s zone</title>
+<title>React 模式，技巧，技巧和窍门 - TOM&#39;s zone</title>
 
-    <meta name="description" content="这篇文章整理了学习 React 过程中以及实际开发应用当中一些模式，技巧，技巧和窍门。
+<meta name="description" content="这篇文章整理了学习 React 过程中以及实际开发应用当中一些模式，技巧，技巧和窍门。
 大部门内容是基于 React 框架下面产生的一些内容，有很大的局限性，但是确实带来了新的理念和开发方式，仁者见仁智者见智，多学习一点内容总归对职业生涯有好处。
  本篇文章还在持续更新中，如果有错误烦请指正。
  Normally React 一些常见的关于React需要了解的内容，就简单列举如下。下面只会列到本人认为比较值得重视的部分进行详细陈述。
@@ -26,30 +25,31 @@
   smart component and dumb component container component and presentation component stateless component Events handler bind this：bind this 或者 Derocator 或者 proposal-class-public-fields-declarations Conditionals render in JSX 或者 IIFE render in JSX 或者 methods render in JSX Dynamic router 以及 dynamic component，甚至于 dynamic redux injection HOC   进阶层面——性能优化和业务解耦必备">
 
 
-    
+
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato|Raleway">
 
-    
+
     <link rel="stylesheet"
           href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/ocean.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/javascript.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/python.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/go.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/css.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/swift.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/objectivec.min.js"></script>
-    
-    
+
+
     <link rel="stylesheet" href="/css/bundle.min.css"/>
-    <style>
+<script src="/js/bundle.min.js"></script>
+<style>
 	a { color: #ff8181; }
 	blockquote {
 		border-left-color: #ff8181;
@@ -107,7 +107,7 @@
 <hr class="sep" />
 </header>
     <section id="markdown">
-        
+    
 
 <p>这篇文章整理了学习 <code>React</code> 过程中以及实际开发应用当中一些模式，技巧，技巧和窍门。</p>
 
@@ -490,48 +490,36 @@ this.setState(prevState =&gt; ({ expanded: !prevState.expanded }));
 
     </section>
     <nav class="no-print post-nav">
-        
+    
         <a class="prev-post" href="https://t-tom.me/blog/2017-09-12-rn%E6%80%A7%E8%83%BD%E6%A3%80%E6%B5%8B%E5%92%8C%E9%94%99%E8%AF%AF%E6%8D%95%E6%8D%89/">
             <img class="icon-text" src="/img/prev.svg"/>RN性能检测和错误捕捉</a>
-        
-        
+    
+    
         <a class="next-post" href="https://t-tom.me/blog/2017-12-13-react-native-art/">React Native ART 介绍与实践<img class="icon-text" src="/img/next.svg"/>
         </a>
-        
+    
     </nav>
 </article>
-<script src="/js/bundle.min.js"></script>
 
 
 
 <div id="disqus_thread" class="no-print"></div>
 <script type="text/javascript">
-
-  (function () {
-    
-    if (window.location.hostname == "localhost")
-      return;
-
-    const disqus_thread = document.querySelector('#disqus_thread')
-    new IntersectionObserver(function (entries, observer) {
-        entries.forEach(entry => {
-          if (entry.intersectionRatio > 0 && !disqus_thread.classList.contains('active')) {
-            var dsq = document.createElement('script');
-            dsq.type = 'text/javascript';
-            dsq.async = true;
-            var disqus_shortname = 'toms-blog-1';
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-            disqus_thread.classList.add('active')
-          }
-        })
-      }, {
-        rootMargin: '0px',
-        threshold: 1.0
-      }
-    ).observe(disqus_thread)
-
-  })();
+    'use strict';
+    (function () {
+        if ('localhost' != window.location.hostname) {
+            var a = document.querySelector('#disqus_thread');
+            new IntersectionObserver(function (b) {
+                b.forEach(function (d) {
+                    if (0 < d.intersectionRatio && !a.classList.contains('active')) {
+                        var e = document.createElement('script');
+                        e.type = 'text/javascript', e.async = !0;
+                        e.src = '//' + 'toms-blog-1' + '.disqus.com/embed.js', (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(e), a.classList.add('active')
+                    }
+                })
+            }, {rootMargin: '0px', threshold: 1}).observe(a)
+        }
+    })();
 </script>
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
 </noscript>

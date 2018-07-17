@@ -14,10 +14,9 @@
     <link rel="dns-prefetch" href="https://t-tom.me">
     <link rel="preconnect" href="https://t-tom.me">
     <link rel="manifest" href="/sw/manifest.json"/>
-    <meta name="generator" content="Hugo 0.37" />
-    <title>React Native ART 介绍与实践 - TOM&#39;s zone</title>
+<title>React Native ART 介绍与实践 - TOM&#39;s zone</title>
 
-    <meta name="description" content="React Native ART 由来 React-Art  是 Reactjs 团队基于 Art（一个兼容各个浏览器SVG绘制的API封装）开发的模块，让 React 开发者能使用 jsx 语法绘制 svg。
+<meta name="description" content="React Native ART 由来 React-Art  是 Reactjs 团队基于 Art（一个兼容各个浏览器SVG绘制的API封装）开发的模块，让 React 开发者能使用 jsx 语法绘制 svg。
 React Native 团队分别在0.10.0和0.18.0也添加了iOS和Android平台对 react-art 的支持，官网文档至今对其只字未提。本文旨在介绍安静躺在 react-native/Libraries/ 里的ART，并展示一些实践结果。
 在React Native中ART是个非常重要的库，它让非常酷炫的绘图及动画变成了可能。但是可能是知道的人真的不多导致文档及少中文更少。很多都是把英文的参数列表翻译过来，也没有案例。
 为什么用 ART React Native 本身自带的 &lt;Image&gt; 有很多缺陷：
@@ -29,30 +28,31 @@ ART能干什么 俗话说，库如其名，背负着如此具有“艺术感”�
  ART 可以解决上诉 &lt;Image&gt; 的缺陷：解码和矢量图形 ART 可以实现 UI 上的一些渐变，比如渐变按钮，渐变背景或者底色。以及一些交互性较强的动画——画UI ART 另外一个场景就是简单数据可视化。  使用 ART  本文使用的 RN版本为0.">
 
 
-    
+
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato|Raleway">
 
-    
+
     <link rel="stylesheet"
           href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/ocean.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/javascript.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/python.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/go.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/css.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/swift.min.js"></script>
-    
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/objectivec.min.js"></script>
-    
-    
+
+
     <link rel="stylesheet" href="/css/bundle.min.css"/>
-    <style>
+<script src="/js/bundle.min.js"></script>
+<style>
 	a { color: #ff8181; }
 	blockquote {
 		border-left-color: #ff8181;
@@ -114,7 +114,7 @@ ART能干什么 俗话说，库如其名，背负着如此具有“艺术感”�
 <hr class="sep" />
 </header>
     <section id="markdown">
-        
+    
 
 <h3 id="react-native-art-由来">React Native ART 由来</h3>
 
@@ -807,48 +807,36 @@ export default class ReactNativeART extends Component {
 
     </section>
     <nav class="no-print post-nav">
-        
+    
         <a class="prev-post" href="https://t-tom.me/blog/2017-11-02-react-%E6%A8%A1%E5%BC%8F%E6%8A%80%E5%B7%A7%E6%8A%80%E5%B7%A7%E5%92%8C%E7%AA%8D%E9%97%A8/">
             <img class="icon-text" src="/img/prev.svg"/>React 模式，技巧，技巧和窍门</a>
-        
-        
+    
+    
         <a class="next-post" href="https://t-tom.me/blog/2018-01-02-%E4%BB%8Ejwt%E5%88%B0oauth/">从jwt到OAuth<img class="icon-text" src="/img/next.svg"/>
         </a>
-        
+    
     </nav>
 </article>
-<script src="/js/bundle.min.js"></script>
 
 
 
 <div id="disqus_thread" class="no-print"></div>
 <script type="text/javascript">
-
-  (function () {
-    
-    if (window.location.hostname == "localhost")
-      return;
-
-    const disqus_thread = document.querySelector('#disqus_thread')
-    new IntersectionObserver(function (entries, observer) {
-        entries.forEach(entry => {
-          if (entry.intersectionRatio > 0 && !disqus_thread.classList.contains('active')) {
-            var dsq = document.createElement('script');
-            dsq.type = 'text/javascript';
-            dsq.async = true;
-            var disqus_shortname = 'toms-blog-1';
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-            disqus_thread.classList.add('active')
-          }
-        })
-      }, {
-        rootMargin: '0px',
-        threshold: 1.0
-      }
-    ).observe(disqus_thread)
-
-  })();
+    'use strict';
+    (function () {
+        if ('localhost' != window.location.hostname) {
+            var a = document.querySelector('#disqus_thread');
+            new IntersectionObserver(function (b) {
+                b.forEach(function (d) {
+                    if (0 < d.intersectionRatio && !a.classList.contains('active')) {
+                        var e = document.createElement('script');
+                        e.type = 'text/javascript', e.async = !0;
+                        e.src = '//' + 'toms-blog-1' + '.disqus.com/embed.js', (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(e), a.classList.add('active')
+                    }
+                })
+            }, {rootMargin: '0px', threshold: 1}).observe(a)
+        }
+    })();
 </script>
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
 </noscript>

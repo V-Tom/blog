@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ZH-CN</language>
     <copyright>Early 2016 ~ 2018 &amp;copy; TOM&#39;s Zone</copyright>
-    <lastBuildDate>Sat, 21 Apr 2018 17:43:01 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 23 May 2018 12:33:21 +0800</lastBuildDate>
     
 	<atom:link href="https://t-tom.me/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>learn Data Structure</title>
+      <link>https://t-tom.me/blog/datastructure/</link>
+      <pubDate>Wed, 23 May 2018 12:33:21 +0800</pubDate>
+      
+      <guid>https://t-tom.me/blog/datastructure/</guid>
+      <description>List list 定义  是n(n≥0)个相同类型的数据元素构成的有限序列。  list ADT ADT List { Data: Operation: InitList(&amp;amp;L) CreateList(&amp;amp;L) ListEmpty(L) ListLength(L) LocateElem(L,e) PriorElem(L,cur_e,&amp;amp;pre_e) NextElem(L,cur_e,&amp;amp;pre_e) ListInsert(&amp;amp;L,i,e) ListDelete(&amp;amp;L,i,&amp;amp;e) GetElem(L,i,&amp;amp;e) ListTraverse(L) DestroyList(&amp;amp;L) }//ADT List  list 简单实现 /** * List Structure */ class List { /** * 顺序表初始化操作，申请使用内存 * @constructor */ InitList() { this.list = [] } /** * 判断顺序表是否为空 * @returns {boolean} * @constructor */ ListEmpty() { return this.list.length === 0 } /** * 顺序表求表长操作 * @returns {number} * @constructor */ ListLength() { return this.</description>
+    </item>
     
     <item>
       <title>sandbox of javascript</title>
