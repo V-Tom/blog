@@ -2,24 +2,23 @@
 <article>
     <header>{{ partial "title" . }}</header>
     <section id="markdown">
-        {{ .Content }}
+    {{ .Content }}
     </section>
     <nav class="no-print post-nav">
-        {{ if .PrevInSection }}
+    {{ if .PrevInSection }}
         <a class="prev-post" href="{{ .PrevInSection.Permalink }}">
             <img class="icon-text" src="/img/prev.svg"/>
-            {{- .PrevInSection.Title -}}
+        {{- .PrevInSection.Title -}}
         </a>
-        {{ end }}
-        {{ if .NextInSection }}
+    {{ end }}
+    {{ if .NextInSection }}
         <a class="next-post" href="{{ .NextInSection.Permalink }}">
-            {{- .NextInSection.Title -}}
+        {{- .NextInSection.Title -}}
             <img class="icon-text" src="/img/next.svg"/>
         </a>
-        {{ end }}
+    {{ end }}
     </nav>
 </article>
-<script src="/js/bundle.min.js"></script>
 {{ partial "related" . }}
 {{ partial "disqus" . }}
 {{ partial "footer" . }}

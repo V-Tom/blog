@@ -1,5 +1,5 @@
 dev:
-	hugo server -w -D --disableFastRender dev
+	make css && hugo server -w -D --disableFastRender dev
 
 css:
 	lessc -x ./less/index.less ./static/css/bundle.min.css

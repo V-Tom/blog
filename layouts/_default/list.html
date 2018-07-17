@@ -1,15 +1,14 @@
 {{ partial "header" . }}
 <article>
-	<header>
-		{{ partial "title" . }}
+    <header>
+    {{ partial "title" . }}
 		{{ with .Content }}{{.}}{{ end }}
-	</header>
-	<ul class="no-bullet">
-	    {{ range .Paginator.Pages }}
+    </header>
+    <ul class="no-bullet">
+    {{ range .Paginator.Pages }}
 	    {{ partial "li" . }}
 	    {{ end }}
-	</ul>
-	{{ partial "paginator" . }}
+    </ul>
+{{ partial "paginator" . }}
 </article>
-<script src="/js/bundle.min.js"></script>
 {{ partial "footer" . }}
