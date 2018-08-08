@@ -177,11 +177,13 @@ function runWith() {
   }
 
   const sandBox = {
-    age: 21
+    sex: 'female'
   }
 
-  compileCode('console.log(&quot;i am &quot; + name + &quot; from with&quot; );')(sandBox)
-  // i am TOM from with
+  compileCode('console.log(&quot;i am &quot; + name + &quot; and my sex is &quot; + sandbox.sex + &quot; from with&quot; );')(sandBox)
+    
+  // i am TOM and my sex is female from with
+
 }
 
 runWith()
