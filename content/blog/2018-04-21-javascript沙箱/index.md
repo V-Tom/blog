@@ -54,7 +54,7 @@ global.name = 'TOM'
 
 function runNewFunction() {
   const script = 'console.log("i am " + name + " from new function");'
-  new Function(script)()  // i am TOM and my age is 21 from new function
+  new Function(script)()  // i am TOM from new function
 }
 
 runNewFunction()
@@ -71,23 +71,18 @@ global.name = 'TOM'
 
 function runWith() {
 
-  // 由于 with 的缘故，不会访问到这个 name
-  var name = 'jerry'
-  
   function compileCode(code) {
+    var name = 'jerry'
     code = 'with (sandbox) {' + code + '}';
-      
-    // sandbox 是形参, code 是实参
     return new Function('sandbox', code);
   }
 
   const sandBox = {
-    sex: 'female'
+    age: 21
   }
 
-  compileCode('console.log("i am " + name + " and my age is " + sandbox.age + " from with" );')(sandBox)
-  // i am TOM and my age is 21 from with
-
+  compileCode('console.log("i am " + name + " from with" );')(sandBox)
+  // i am TOM from with
 }
 
 runWith()
@@ -184,7 +179,7 @@ runWith()
 
 可以查看在线 HTML5 rock 的一个 [例子](https://www.html5rocks.com/static/demos/evalbox/index.html)。
 
-看了 iframe 的例子会发现这种实现方式过于臃肿、麻烦，有些时候也要考虑浏览器的兼容性，似乎也不是完美的解决方案。
+看了 iframe 的例子会发现这种实现方式过于臃肿、麻烦，有些时候也要考虑浏览器的兼容性，似乎也不是完美的解决方案
 
 ### proxy
 
@@ -226,8 +221,8 @@ function runProxy(){
   function get(target, key) {
     const value = Reflect.get(target, key)
     if (value) return value
-    // 获取不到 value 就返回 23
-    return 23
+    // 获取不到 value 就返回 'undefined_from_Reflect'
+    return 'undefined_from_Reflect'
   }
 
   const script = 'with (sandbox) { log("i am " + name + " and my age is " + age + " by use Proxy "); } '
@@ -236,7 +231,7 @@ function runProxy(){
   sandbox.log = console.log
   sandbox.name = 'TOM'
 
-  compileCode(script)(sandbox); // i am TOM and my age is 23 by use Proxy 
+  compileCode(script)(sandbox); // i am TOM and my age is undefined_from_Reflect by use Proxy 
 }
 
 runProxy()
@@ -259,8 +254,8 @@ Object.keys(Array.prototype[Symbol.unscopables]);
       
     const value = Reflect.get(target, key)
     if (value) return value
-    // 获取不到 value 就返回 23
-    return 23
+    // 获取不到 value 就返回 'undefined_from_Reflect'
+    return 'undefined_from_Reflect'
   }
 ```
 
@@ -285,9 +280,9 @@ function runVM() {
 runVM() // 3
 ```
 
-#### require 的实现
+#### Node require 的实现
 
-我们 `require` 一个 `.js` 文件的时候，Node 本身对一些特定 extension 文件有内建的处理，比如 [.js](https://github.com/nodejs/node/blob/master/lib/internal/modules/cjs/loader.js#L711-L714)、[.json](https://github.com/nodejs/node/blob/master/lib/internal/modules/cjs/loader.js#L718-L726) 等等，其实也就是Node.js 本身对[common.js 的实现](https://github.com/nodejs/node/blob/master/lib/internal/modules/cjs/loader.js#L668-L674)。
+我们 `require` 一个 `.js` 文件的时候，Node 本身对一些特定 extension 文件有内建的处理，比如 [.js](https://github.com/nodejs/node/blob/master/lib/internal/modules/cjs/loader.js#L711-L714)、[.json](https://github.com/nodejs/node/blob/master/lib/internal/modules/cjs/loader.js#L718-L726) 等等，其实也就是Node.js 本身对[common.js 的实现](https://github.com/nodejs/node/blob/master/lib/internal/modules/cjs/loader.js#L698-L701)。
 
 ```javascript
 var wrapper = Module.wrap(content);
@@ -348,7 +343,7 @@ try {
   const script = new vm.Script('setTimeout(()=>{},2000)',{ timeout: 50 });
 ```
 
- `vm` 模块没有办法对异步代码直接限制执行时间。我们也不能额外通过一个 `timer` 去检查超时，因为检查了执行中的 vm 也没有方法去中止掉。
+ `vm` 模块没有办法对异步代码直接限制执行时间。我们也不能额外通过一个 `timer` 去检查超时，因为检查了执行中的 vm 也没有方法去中止掉
 
 另外，在 Node.js 通过 `vm.runInContext` 看起来似乎隔离了代码执行环境，但实际上却很容易「逃逸」出去：
 
@@ -360,11 +355,11 @@ const context = vm.createContext(sandbox);
 script.runInContext(context);
 ```
 
-执行上边的代码，宿主程序立即就会退出。除了退出进程序之外，实际上还能干更多的事情。
+执行上边的代码，宿主程序立即就会退出。除了退出进程序之外，实际上还能干更多的事情
 
-> 由于 JavaScript 本身的动态的特点，各种黑魔法防不胜防。事实 Node.js 的官方文档中也提到**不要把 `VM` 当做一个安全的沙箱**，去执行任意非信任的代码。
+> 由于 JavaScript 本身的动态的特点，各种黑魔法防不胜防。事实 Node.js 的官方文档中也提到**不要把 `VM` 当做一个安全的沙箱**，去执行任意非信任的代码
 
-在社区中有一些开源的模块用于运行不信任代码，例如 `sandbox`、`vm2`、`jailed` 等。相比较而言 `vm2` 对各方面做了更多的安全工作，相对安全些。
+在社区中有一些开源的模块用于运行不信任代码，例如 `sandbox`、`vm2`、`jailed` 等。相比较而言 `vm2` 对各方面做了更多的安全工作，相对安全些
 
 用同样的测试代码来试试 `vm2` ：
 
@@ -373,7 +368,7 @@ const { VM } = require('vm2');
 new VM().run('this.constructor.constructor("return process")().exit()');	
 ```
 
-如上代码，并没有成功结束掉宿主程序。vm2 官方 REAME 中说 **vm2 是一个沙盒，可以在 Node.js 中按全的执行不受信任的代码**。
+如上代码，并没有成功结束掉宿主程序。vm2 官方 REAME 中说 **vm2 是一个沙盒，可以在 Node.js 中按全的执行不受信任的代码**
 
 然而实际上还是可以干一些坏的事情：
 
@@ -383,7 +378,7 @@ const vm = new VM({ timeout: 1000, sandbox: {}});
 vm.run('new Promise(()=>{})');
 ```
 
-你会发现上边的代码永远不会结束，和Node.js 内建 VM 模块一样， vm2 的 `timeout` 对异步操作是无效的。
+你会发现上边的代码永远不会结束，和 Node.js 内建 VM 模块一样， vm2 的 `timeout` 对异步操作是无效的
 
 或许是否我们提供一个假的 Promise 从而禁用掉 Promise 呢？
 
@@ -395,18 +390,22 @@ const vm = new VM({
 vm.run('Promise = (async function(){})().constructor;new Promise(()=>{});');
 ```
 
-事实上发现我们是提供了一个假的 Promise，但是通过 `Promise = (async function(){})().constructor` 再次又拿到了真正的 Promise。
+事实上发现我们是提供了一个假的 Promise，但是通过 `Promise = (async function(){})().constructor` 再次又拿到了真正的 Promise
 
-而且某些场景，或许我们本身希望用到 Promise。
+而且某些场景，或许我们本身希望用到 Promise
 
 ### Deno
 
+> **注意:**目前 deno 的最新进展是已经移除 Golang，主要原因是 双重 GC（ Go 和 TS ）。以后甚至会考虑把目前的 C++ 改写成 Rust
+
 [deno](https://github.com/ry/deno) 属于 Node 之父 Ryan Dahl 发布新的开源项目，从官方介绍来看，可以认为它是下一代 Node，使用 Go 语言代替 C++ 重新编写跨平台底层内核驱动，上层仍然使用 V8 引擎，最终提供一个安全的 TypeScript runtime 
+
+> 浏览器端的 js 运行不受信的代码，本身就是一个沙盒，但是服务器端运行受信的代码
 
 它有很多新特性，有一点非常符合 sanbodx 的特性：可以控制文件系统和网络访问权限以运行沙盒代码，默认访问只读文件系统可访问，无网络权限。V8 和 Golang 之间的访问只能通过 `protobuf` 中定义的序列化消息完成
 
-- 在默认情况下，脚本应在不产生任何网络或文件系统写入访问的前提下运行。
-- 用户可通过标记介入访问: --allow-net --allow-write
-- 这种方式允许用户运行各类不受信实用程序（例如 linter）。
+- 在默认情况下，脚本应在不产生任何网络或文件系统写入访问的前提下运行
+- 用户可通过标记介入访问: --allow-net --allow-write 等等
+- 这种方式允许用户运行各类不受信实用程序（例如 linter）
 
 ![deno-sandbox.png](./deno-sandbox.png)
