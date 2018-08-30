@@ -1,6 +1,6 @@
 ---
 title: "sandbox of javascript"
-tags: ["javascript","web","Node"]
+tags: ["javascript","web","Node.js"]
 description: "javascript 沙箱"
 date: 2018-04-21T17:43:01+08:00
 ---
@@ -78,11 +78,13 @@ function runWith() {
   }
 
   const sandBox = {
-    age: 21
+    sex: 'female'
   }
 
-  compileCode('console.log("i am " + name + " from with" );')(sandBox)
-  // i am TOM from with
+  compileCode('console.log("i am " + name + " and my sex is " + sandbox.sex + " from with" );')(sandBox)
+    
+  // i am TOM and my sex is female from with
+
 }
 
 runWith()
