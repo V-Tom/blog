@@ -523,7 +523,7 @@ export NODE_CLUSTER_SCHED_POLICY=rr
 export NODE_CLUSTER_SCHED_POLICY=none
 ```
 
-当然负载均衡策略也可以通过代理服务器 nginx 配置 `upstream` 实现：
+当然负载均衡策略也可以通过代理服务器 `nginx` 配置 `upstream` 实现：
 
 ```nginx
 http { 
@@ -615,3 +615,5 @@ Node.js 非常适合为 I/O 密集型应用提供服务。但这种方式的缺�
 - [一个进程(Process)最多可以生成多少个线程(Thread)](https://blog.csdn.net/great3779/article/details/5930190)
 - [既然nodejs是单线程的，那么它怎么处理并发，难道要排队么](https://segmentfault.com/q/1010000000190024)
 - [当我们谈论 cluster 时我们在谈论什么](https://github.com/hustxiaoc/node.js/issues/11)
+- [taobao fed 当我们谈论 cluster 时我们在谈论什么(上)](http://taobaofed.org/blog/2015/11/03/nodejs-cluster/)
+- [tabao fed 当我们谈论 cluster 时我们在谈论什么（下）](http://taobaofed.org/blog/2015/11/10/nodejs-cluster-2/)
