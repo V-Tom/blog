@@ -60,7 +60,7 @@ ART能干什么 俗话说，库如其名，背负着如此具有“艺术感”�
  Normally React 一些常见的关于React需要了解的内容，就简单列举如下。下面只会列到本人认为比较值得重视的部分进行详细陈述。
  语法层面——基础入门
   JSX语法、React基本内容等 Derocator 或者 async await 等常见ES6、ES7的内容 React Lists and Keys   常用层面——日常开发必备
-  smart component and dumb component container component and presentation component stateless component Events handler bind this：bind this 或者 Derocator 或者 proposal-class-public-fields-declarations Conditionals render in JSX 或者 IIFE render in JSX 或者 methods render in JSX Dynamic router 以及 dynamic component，甚至于 dynamic redux injection HOC   进阶层面——性能优化和业务解耦必备</description>
+  smart component and dumb component container component and presentation component stateless component Events handler bind this：bind this 或者 Derocator 或者 proposal-class-public-fields-declarations Conditionals render in JSX 或者 IIFE render in JSX 或者 methods render in JSX Dynamic router 以及 Dynamic component，甚至于 Dynamic redux injection HOC Render props 16.</description>
     </item>
     
     <item>

@@ -107,7 +107,7 @@ var foo = { a: 1 }; var baz = foo.a = 2; foo.a === 1; baz.a === 2;   And transfo
 <hr class="sep" />
 </header>
     <section id="markdown">
-    
+        
 
 <p><a href="https://www.sitepoint.com/understanding-asts-building-babel-plugin/">原文地址</a></p>
 
@@ -421,14 +421,14 @@ var bar = mori.vector(1, 2, 3);
 
     </section>
     <nav class="no-print post-nav">
-    
+        
         <a class="prev-post" href="https://t-tom.me/blog/2017-07-04-mavic-pro-%E8%AF%84%E6%B5%8B/">
             <img class="icon-text" src="/img/prev.svg"/>Mavic Pro 初见</a>
-    
-    
+        
+        
         <a class="next-post" href="https://t-tom.me/blog/2017-09-12-rn%E6%80%A7%E8%83%BD%E6%A3%80%E6%B5%8B%E5%92%8C%E9%94%99%E8%AF%AF%E6%8D%95%E6%8D%89/">RN性能检测和错误捕捉<img class="icon-text" src="/img/next.svg"/>
         </a>
-    
+        
     </nav>
 </article>
 
@@ -455,6 +455,298 @@ var bar = mori.vector(1, 2, 3);
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
 </noscript>
 
+
+<style rel="catalog">
+    #catalog {
+        position: fixed;
+        left: 3vw;
+        top: 8vh;
+    }
+
+    .cl-wrapper {
+        position: relative;
+    }
+
+    .cl-wrapper ul, .cl-wrapper li {
+        margin: 0;
+        -moz-padding-start: 12px;
+        -webkit-padding-start: 12px;
+        list-style: none;
+    }
+
+    .cl-wrapper li > .cl-link.cl-link-active {
+        color: #ff8181;
+        transition: .5s;
+    }
+
+    .cl-wrapper li > .cl-transform.cl-link-active {
+        transform: translate(3px);
+    }
+
+    .cl-wrapper .cl-link {
+        cursor: pointer;
+        color: rgba(52, 73, 94, 0.5);
+        font-size: 13px;
+        transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .cl-wrapper .cl-marker {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+
+    .cl-wrapper .cl-marker path {
+        transition: all 0.3s ease;
+    }
+</style>
+<main id="catalog"></main>
+<script rel="catalog">
+    void function () {
+        
+        
+        
+        const Catalog = (function () {
+            return function (opts) {
+                let defaultOpts = {
+                    linkClass: 'cl-link',                             
+                    linkActiveClass: 'cl-link-active',                
+                    datasetName: 'data-cata-target',                  
+                    selector: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],   
+                    scrollWrapper: null,                              
+                    activeHook: null,                                 
+                    topMargin: 0,
+                    bottomMargin: 0,
+                    cool: true                                        
+                }
+
+                const Opt = Object.assign({}, defaultOpts, opts)
+
+                const $content = document.getElementById(Opt.contentEl)                          
+                const $scroll_wrap = window   
+                const $catalog = document.getElementById(Opt.catalogEl)                          
+
+                let allCatalogs = $content.querySelectorAll(Opt.selector.join())
+                let tree = getCatalogsTree(allCatalogs)
+
+                try {
+                    $catalog.innerHTML = `<div class='cl-wrapper'>${generateHtmlTree(tree, {id: -1})}<svg class="cl-marker" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+            <path stroke="#ff8181" stroke-width="3" fill="transparent" stroke-dasharray="0, 0, 0, 1000" stroke-linecap="round" stroke-linejoin="round" transform="translate(-0.5, -0.5)" />
+            </svg></div>`
+                } catch (e) {
+                    console.error('error in progress-catalog', e)
+                }
+
+
+                const tocPath = $catalog.querySelector('.cl-marker path')
+                let tocItems, pathLength    
+
+                
+                window.addEventListener('resize', drawPath)
+                $catalog.addEventListener('click', clickHandler)
+                Opt.cool && $scroll_wrap.addEventListener('scroll', coolScrollHandler)
+                Opt.cool || $scroll_wrap.addEventListener('scroll', simpleScrollHandler)
+
+                setTimeout(drawPath)          
+
+                
+
+                function drawPath() {
+                    tocItems = [...$catalog.querySelectorAll('li')]
+                    tocItems = tocItems.map(function (liDom) {
+                        const anchor = liDom.querySelector(`.${Opt.linkClass}`)
+                        const target = document.getElementById(anchor.getAttribute('data-cata-target'))
+
+                        return {
+                            listItem: liDom,
+                            anchor: anchor,
+                            target: target
+                        }
+                    })
+                    tocItems = tocItems.filter(item => !!item.target)
+
+                    const path = []
+                    let pathIndent
+
+                    tocItems && tocItems.forEach(function (item, idx) {
+                        const {offsetLeft, offsetTop, offsetHeight} = item.anchor,
+                            x = Opt.cool ? offsetLeft - 5 : offsetLeft,
+                            y = offsetTop,
+                            height = offsetHeight
+
+                        if (idx === 0) {
+                            path.push('M', x, y, 'L', x, y + height)
+                            item.pathStart = 0
+                        }
+                        else {
+                            if (pathIndent !== x) path.push('L', pathIndent, y)     
+                            path.push('L', x, y)
+                            tocPath.setAttribute('d', path.join(' '))
+                            item.pathStart = tocPath.getTotalLength() || 0
+                            path.push('L', x, y + height)
+                        }
+                        pathIndent = x
+                        tocPath.setAttribute('d', path.join(' '))
+                        item.pathEnd = tocPath.getTotalLength()
+                    })
+                    pathLength = tocPath.getTotalLength()
+                    coolScrollHandler()
+                }
+
+                
+
+                function coolScrollHandler() {
+                    const wrapHeight = document.documentElement.offsetHeight
+                    let pathStart = pathLength,
+                        pathEnd = 0,
+                        visibleItems = 0
+                    tocItems.forEach(function (liItem) {
+                        const {bottom, top} = liItem.target.getBoundingClientRect(),
+                            firstChild = liItem.listItem.firstChild
+                        if (bottom > Opt.topMargin && top < wrapHeight - Opt.bottomMargin) {
+                            firstChild.classList.remove(Opt.linkActiveClass)
+                            Opt.cool && firstChild.classList.remove('cl-transform')
+                        } else {
+                            pathStart = Math.min(liItem.pathStart, pathStart)
+                            pathEnd = Math.max(liItem.pathEnd, pathEnd)
+                            visibleItems += 1
+                            firstChild.classList.add(Opt.linkActiveClass)
+                            Opt.cool && firstChild.classList.add('cl-transform')
+                        }
+                    })
+                    if (visibleItems > 0 && pathStart < pathEnd && Opt.cool) {
+                        tocPath.setAttribute('stroke-dashoffset', '1')
+                        tocPath.setAttribute('stroke-dasharray', `1, ${pathStart}, ${pathEnd - pathStart}, ${pathLength}`)
+                        tocPath.setAttribute('opacity', '1')
+                    }
+                    else {
+                        tocPath.setAttribute('opacity', '0')
+                    }
+                }
+
+                
+
+                function simpleScrollHandler(el) {
+                    let scrollToEl = null
+                    for (let i = allCatalogs.length - 1; i >= 0; i--) {
+                        if (allCatalogs[i].offsetTop <= $scroll_wrap.scrollTop) {
+                            scrollToEl = allCatalogs[i]
+                            break
+                        }
+                    }
+                    if (scrollToEl) setActiveItem(scrollToEl.id)
+                    else setActiveItem(null)            
+                }
+
+                
+
+                function clickHandler({target}) {
+                    const datasetId = target.getAttribute(Opt.datasetName)
+                    target.classList.contains(Opt.linkClass) &&
+                    document.getElementById(datasetId)
+                        .scrollIntoView({behavior: "smooth", block: "start"})
+                }
+
+                
+
+                function getCatalogsTree(catalogs) {
+                    let title, tagName, tree = [], treeItem = {}, parentItem = {id: -1}, lastTreeItem = null, id
+
+                    for (let i = 0; i < catalogs.length; i++) {
+                        title = catalogs[i].innerText || catalogs[i].textContent
+                        tagName = catalogs[i].tagName
+                        id = 'heading-' + i
+                        catalogs[i].id = id
+                        treeItem = {
+                            name: title,
+                            tagName: tagName,
+                            id: id,
+                            level: +getLevel(tagName),
+                            parent: parentItem
+                        }
+                        if (lastTreeItem) {
+                            if (getLevel(treeItem.tagName) > getLevel(lastTreeItem.tagName)) {
+                                treeItem.parent = lastTreeItem
+                            } else {
+                                treeItem.parent = findParent(treeItem, lastTreeItem)
+                            }
+                        }
+                        lastTreeItem = treeItem
+                        tree.push(treeItem)
+                    }
+                    return tree
+                }
+
+                
+
+                function findParent(currTreeItem, lastTreeItem) {
+                    let lastTreeParent = lastTreeItem.parent
+                    while (lastTreeParent && (getLevel(currTreeItem.tagName) <= getLevel(lastTreeParent.tagName))) {
+                        lastTreeParent = lastTreeParent.parent
+                    }
+                    return lastTreeParent || {id: -1}
+                }
+
+                
+
+                function getLevel(tagName) {
+                    return tagName ? tagName.slice(1) : 0
+                }
+
+                
+
+                function generateHtmlTree(tree, _parent) {
+                    let ul, hasChild = false
+                    if (tree) {
+                        ul = `<ul>`
+                        for (let i = 0; i < tree.length; i++) {
+                            if (isEqual(tree[i].parent, _parent)) {
+                                hasChild = true
+                                ul += `<li><div class='${ Opt.linkClass } cl-level-${ tree[i].level }' ${Opt.datasetName}='${ tree[i].id }'>${tree[i].name}</div>`
+                                ul += generateHtmlTree(tree, tree[i])
+                                ul += '</li>'
+                            }
+                        }
+                        ul += `</ul>`
+                    }
+                    return hasChild ? ul : ''
+                }
+
+                /**
+                 * 判断是否是相同节点
+                 */
+                function isEqual(node, node2) {
+                    return node && node2 && typeof node === 'object' && typeof node2 === 'object' && node.id === node2.id
+                }
+
+                /**
+                 *  设置选中的项
+                 */
+                function setActiveItem(id) {
+                    let catas = [...$catalog.querySelectorAll(`[${Opt.datasetName}]`)]
+
+                    catas.forEach(T => {
+                        if (T.getAttribute(Opt.datasetName) === id) {
+                            typeof Opt.activeHook === 'function' &&
+                            !T.classList.contains(Opt.linkActiveClass) &&
+                            Opt.activeHook.call(this, T)                    // 执行active钩子
+                            T.classList.add(Opt.linkActiveClass)
+                        } else {
+                            T.classList.remove(Opt.linkActiveClass)
+                        }
+                    })
+                }
+            }
+        })();
+        window.addEventListener('DOMContentLoaded', _ => new Catalog({
+            contentEl: 'markdown',
+            catalogEl: 'catalog'
+        }))
+    }();
+</script>
 			<hr class="sep" />
 		</main>
 		<footer class="container no-print">

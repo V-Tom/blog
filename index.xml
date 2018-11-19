@@ -7,10 +7,22 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ZH-CN</language>
     <copyright>Early 2016 ~ 2018 &amp;copy; TOM&#39;s Zone</copyright>
-    <lastBuildDate>Wed, 23 May 2018 12:33:21 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 23 Jul 2018 09:23:43 +0800</lastBuildDate>
     
 	<atom:link href="https://t-tom.me/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>working tips</title>
+      <link>https://t-tom.me/blog/working-tips/</link>
+      <pubDate>Mon, 23 Jul 2018 09:23:43 +0800</pubDate>
+      
+      <guid>https://t-tom.me/blog/working-tips/</guid>
+      <description>将 ssr 转换为 http 代理  前景概要：我用的魔改版本的 ssr ，不带 http proxy，但是我需要在 terminal 当中使用代理。而且公司原因完全没有 sudo 权限，brew 也废掉了。但是本地 git 是可以通过 sock5 代理的。
+我知道可以通过 proxychains4 或者 proxychains-ng 可以实现。也由于懒不想换 ss 或者 v2ray，而且由于 mac sip 的原因没法成功，主要还是没有 sudo 权限。
+ 找了好久，查到了解决办法，利用这个库 polipo 是可以实现所需要的功能，具体步骤如下。
+#!/usr/bin/env bash # 下载 polipo 源码本地编译 git clone https://github.com/jech/polipo.git cd polipo &amp;amp;&amp;amp; make # 设置 socks5 代理自动给 http proxy 的端口 ./polipo socksParentProxy=localhost:1086 &amp;amp; # 默认的 http proxy 端口为 8123，可以参照下面的 wiki 来配置 config file export http_proxy=&amp;quot;http://127.</description>
+    </item>
     
     <item>
       <title>learn Data Structure</title>
@@ -116,7 +128,7 @@ ART能干什么 俗话说，库如其名，背负着如此具有“艺术感”�
  Normally React 一些常见的关于React需要了解的内容，就简单列举如下。下面只会列到本人认为比较值得重视的部分进行详细陈述。
  语法层面——基础入门
   JSX语法、React基本内容等 Derocator 或者 async await 等常见ES6、ES7的内容 React Lists and Keys   常用层面——日常开发必备
-  smart component and dumb component container component and presentation component stateless component Events handler bind this：bind this 或者 Derocator 或者 proposal-class-public-fields-declarations Conditionals render in JSX 或者 IIFE render in JSX 或者 methods render in JSX Dynamic router 以及 dynamic component，甚至于 dynamic redux injection HOC   进阶层面——性能优化和业务解耦必备</description>
+  smart component and dumb component container component and presentation component stateless component Events handler bind this：bind this 或者 Derocator 或者 proposal-class-public-fields-declarations Conditionals render in JSX 或者 IIFE render in JSX 或者 methods render in JSX Dynamic router 以及 Dynamic component，甚至于 Dynamic redux injection HOC Render props 16.</description>
     </item>
     
     <item>

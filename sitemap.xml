@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://t-tom.me/blog/working-tips/</loc>
+    <lastmod>2018-07-23T09:23:43+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://t-tom.me/blog/datastructure/</loc>
     <lastmod>2018-05-23T12:33:21+08:00</lastmod>
   </url>
@@ -92,7 +97,7 @@
   
   <url>
     <loc>https://t-tom.me/blog/</loc>
-    <lastmod>2018-05-23T12:33:21+08:00</lastmod>
+    <lastmod>2018-07-23T09:23:43+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -188,13 +193,19 @@
   
   <url>
     <loc>https://t-tom.me/</loc>
-    <lastmod>2018-05-23T12:33:21+08:00</lastmod>
+    <lastmod>2018-07-23T09:23:43+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://t-tom.me/tags/</loc>
     <lastmod>2017-08-13T15:29:40+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://t-tom.me/tags/tips/</loc>
+    <lastmod>2018-07-23T09:23:43+08:00</lastmod>
     <priority>0</priority>
   </url>
   

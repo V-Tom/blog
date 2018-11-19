@@ -22,7 +22,7 @@
  Normally React 一些常见的关于React需要了解的内容，就简单列举如下。下面只会列到本人认为比较值得重视的部分进行详细陈述。
  语法层面——基础入门
   JSX语法、React基本内容等 Derocator 或者 async await 等常见ES6、ES7的内容 React Lists and Keys   常用层面——日常开发必备
-  smart component and dumb component container component and presentation component stateless component Events handler bind this：bind this 或者 Derocator 或者 proposal-class-public-fields-declarations Conditionals render in JSX 或者 IIFE render in JSX 或者 methods render in JSX Dynamic router 以及 dynamic component，甚至于 dynamic redux injection HOC   进阶层面——性能优化和业务解耦必备">
+  smart component and dumb component container component and presentation component stateless component Events handler bind this：bind this 或者 Derocator 或者 proposal-class-public-fields-declarations Conditionals render in JSX 或者 IIFE render in JSX 或者 methods render in JSX Dynamic router 以及 Dynamic component，甚至于 Dynamic redux injection HOC Render props 16.">
 
 
 
@@ -106,7 +106,7 @@
 <hr class="sep" />
 </header>
     <section id="markdown">
-    
+        
 
 <p>这篇文章整理了学习 <code>React</code> 过程中以及实际开发应用当中一些模式，技巧，技巧和窍门。</p>
 
@@ -135,13 +135,16 @@
 </blockquote>
 
 <ul>
-<li>smart component and dumb component</li>
-<li>container component and presentation component</li>
-<li>stateless component</li>
+<li><code>smart component and dumb component</code></li>
+<li><code>container component and presentation component</code></li>
+<li><code>stateless component</code></li>
 <li>Events handler bind this：bind this 或者 Derocator 或者 <a href="https://github.com/tc39/proposal-class-fields">proposal-class-public-fields-declarations</a></li>
-<li>Conditionals render in JSX 或者 IIFE render in JSX 或者 methods render in JSX</li>
-<li>Dynamic router 以及 dynamic component，甚至于 dynamic redux injection</li>
-<li>HOC</li>
+<li><code>Conditionals render in JSX</code> 或者 <code>IIFE render in JSX</code> 或者 <code>methods render in JSX</code></li>
+<li><code>Dynamic router</code> 以及 <code>Dynamic component</code>，甚至于 <code>Dynamic redux injection</code></li>
+<li><code>HOC</code></li>
+<li><a href="https://reactjs.org/docs/render-props.html">Render props</a></li>
+<li><a href="https://reactjs.org/docs/code-splitting.html">16.6版本中添加 Lazy, Suspense, memo</a></li>
+<li><a href="https://reactjs.org/docs/hooks-intro.html">17版本中添加 hooks</a></li>
 </ul>
 
 <blockquote>
@@ -149,10 +152,10 @@
 </blockquote>
 
 <ul>
-<li>PureRenderMixin以及Pure Component以及shouldComponentUpdate check。</li>
-<li>unstable_rendersubtreeintocontainer 以及 portal</li>
-<li>React fiber 更新机制</li>
-<li>react call return</li>
+<li><code>PureRenderMixin</code> 以及 <code>Pure Component</code> 以及 <code>shouldComponentUpdate check</code></li>
+<li><code>unstable_rendersubtreeintocontainer</code> 以及 portal</li>
+<li>React <code>fiber</code> 更新机制</li>
+<li><code>React call return</code></li>
 </ul>
 
 <blockquote>
@@ -162,6 +165,7 @@
 <ul>
 <li>styled components</li>
 <li>Redux saga</li>
+<li>Recompose</li>
 </ul>
 
 <h3 id="pure-render-checks">Pure Render Checks</h3>
@@ -234,11 +238,11 @@ class Table extends PureComponent {
 
 <h3 id="synthetic-events-in-react">Synthetic events in React</h3>
 
-<p>React在处理事件(event时), 事实上使用了SyntheticEvent对象包裹了原生的event对象.</p>
+<p>React 在处理事件(event时), 事实上使用了 <code>SyntheticEvent</code> 对象包裹了原生的 event 对象.</p>
 
-<p>这些React自己维护的对象是相互联系的, 意味着如果对于某一个事件, 我们给出了对应的响应函数(handler), 其他的SyntheticEvent对象也是可以重用的.这也是React提升性能的秘诀之一. 但是这也意味着, 如果想要通过异步的方式访问事件对象是不可能的, 因为出于reuse的原因, 事件对象里面的值都被重置了.</p>
+<p>这些React自己维护的对象是相互联系的, 意味着如果对于某一个事件, 我们给出了对应的响应函数(handler), 其他的 <code>SyntheticEvent</code> 对象也是可以重用的.这也是React提升性能的秘诀之一. 但是这也意味着, 如果想要通过异步的方式访问事件对象是不可能的, 因为出于reuse的原因, 事件对象里面的值都被重置了.</p>
 
-<p>下面这段代码会在控制台里面打出null, 因为事件在SyntheticEvent池中被重用了.</p>
+<p>下面这段代码会在控制台里面打出 null, 因为事件在 <code>SyntheticEvent</code> 池中被重用了.</p>
 
 <pre><code class="language-Jsx">function handleClick(event) {
   setTimeout(function () {
@@ -266,17 +270,15 @@ class Table extends PureComponent {
 
 <h3 id="async-nature-of-setstate">async-nature-of-setState</h3>
 
-<h5 id="简述">简述</h5>
-
-<p>在某些情况下，React框架出于性能优化考虑，可能会将多次state更新合并成一次更新。正因为如此，setState实际上是一个异步的函数。 但是，有一些行为也会阻止React框架本身对于多次state更新的合并，从而让state的更新变得同步化。 比如: eventListeners, Ajax, setTimeout 等等。</p>
+<p>在某些情况下，React框架出于性能优化考虑，可能会将多次 state 更新合并成一次更新。正因为如此，setState 实际上是一个异步的函数。 但是，有一些行为也会阻止React框架本身对于多次 state 更新的合并，从而让 state 的更新变得同步化。 比如: eventListeners, Ajax, setTimeout 等等。</p>
 
 <h5 id="详解">详解</h5>
 
-<p>当setState() 函数执行的时候，函数会创建一个暂态的state作为过渡state，而不是立即修改this.state。 如果在调用setState()函数之后尝试去访问this.state，你得到的可能还是setState()函数执行之前的结果。 在使用setState()的情况下，看起来同步执行的代码其实执行顺序是得不到保证的。原因上面也提到过，React可能会将多次state更新合并成一次更新来优化性能。</p>
+<p>当setState() 函数执行的时候，函数会创建一个暂态的 state 作为过渡 state，而不是立即修改 <code>this.state</code>。 如果在调用 setState() 函数之后尝试去访问 this.state，你得到的可能还是 setState() 函数执行之前的结果。 在使用 setState() 的情况下，看起来同步执行的代码其实执行顺序是得不到保证的。原因上面也提到过，React可能会将多次state更新合并成一次更新来优化性能。</p>
 
-<p>运行下面这段代码，你会发现当和addEventListener, setTimeout 函数或者发出AJAX call的时候，调用setState, state会发生改变。并且render函数会在setState()函数被触发之后马上被调用。那么到底发生了什么呢？事实上，类似setTimeout()函数或者发出ajax call的fetch函数属于调用浏览器层面的API，这些函数的执行并不存在与React的上下文中，所以React并不能够像控制其他存在与其上下文中的函数一样，将多次state更新合并成一次。</p>
+<p>运行下面这段代码，你会发现当和 <code>addEventListener</code> , <code>setTimeout</code> 函数或者发出 AJAX call 的时候，调用 setState , state 会发生改变。并且 render 函数会在 setState() 函数被触发之后马上被调用。那么到底发生了什么呢？事实上，类似  setTimeout() 函数或者发出 ajax call 的 fetch 函数属于调用浏览器层面的API，这些函数的执行并不存在与 React 的上下文中，所以 React 并不能够像控制其他存在与其上下文中的函数一样，将多次 state 更新合并成一次。</p>
 
-<p>在上面这些例子中，React框架之所以在选择在调用setState函数之后立即更新state而不是采用框架默认的方式，即合并多次state更新为一次更新，是因为这些函数调用(fetch,setTimeout等浏览器层面的API调用)并不处于React框架的上下文中，React没有办法对其进行控制。React在此时采用的策略就是及时更新，确保在这些函数执行之后的其他代码能拿到正确的数据（即更新过的state)。</p>
+<p>在上面这些例子中，React 框架之所以在选择在调用 setState 函数之后立即更新state而不是采用框架默认的方式，即合并多次 state 更新为一次更新，是因为这些函数调用(fetch,setTimeout等浏览器层面的API调用)并不处于 React 框架的上下文中，React 没有办法对其进行控制。React 在此时采用的策略就是及时更新，确保在这些函数执行之后的其他代码能拿到正确的数据（即更新过的state)。</p>
 
 <pre><code class="language-Jsx">class TestComponent extends React.Component {
 
@@ -376,7 +378,7 @@ ReactDOM.render(
 
 <h5 id="解决setstate函数异步的办法">解决setState函数异步的办法?</h5>
 
-<p>根据React官方文档，setState函数实际上接收两个参数，其中第二个参数类型是一个函数，作为setState函数执行后的回调。通过传入回调函数的方式，React可以保证传入的回调函数一定是在setState成功更新this.state之后再执行</p>
+<p>根据 React 官方文档，setState 函数实际上接收两个参数，其中第二个参数类型是一个函数，作为 setState 函数执行后的回调。通过传入回调函数的方式，React 可以保证传入的回调函数一定是在 setState 成功更新 this.state 之后再执行</p>
 
 <pre><code class="language-Jsx">_onClickHandler: function _onClickHandler() {
    console.log('State before (_onClickHandler): ' + JSON.stringify(this.state));
@@ -391,7 +393,7 @@ ReactDOM.render(
 
 <h5 id="更多关于setstate的小知识">更多关于setState的小知识</h5>
 
-<p>其实setState作为一个函数，本身是同步的。只是因为在setState的内部实现中，使用了React updater的enqueueState 或者 enqueueCallback方法，才造成了异步。</p>
+<p>其实 setState 作为一个函数，本身是同步的。只是因为在 setState 的内部实现中，使用了 React updater的enqueueState 或者 enqueueCallback 方法，才造成了异步。</p>
 
 <p>下面这段是React源码中setState的实现:</p>
 
@@ -410,7 +412,7 @@ ReactDOM.render(
 };
 </code></pre>
 
-<p>而updater的这两个方法，又和React底层的Virtual Dom(虚拟DOM树)的diff算法有紧密的关系，所以真正决定同步还是异步的其实是Virtual DOM的diff算法。</p>
+<p>而 updater 的这两个方法，又和 React 底层的 Virtual Dom (虚拟DOM树)的diff算法有紧密的关系，所以真正决定同步还是异步的其实是 Virtual DOM 的 diff 算法。</p>
 
 <p>Reference:</p>
 
@@ -421,7 +423,9 @@ ReactDOM.render(
 
 <h3 id="passing-a-function-to-setstate">Passing a function to setState</h3>
 
-<p>我们已经提到过, setState其实是异步的. 因为出于性能优化考虑, React会将多次setState做一次批处理. 于是setState并不会在被调用之后立即改变我们的state. 这就意味着你并不能依赖于在调用setState方法之后state, 因为此时你并不能确认该state更新与否. 当然针对这个问题我们也有解决办法&ndash;用前一个state(previous state)作为需要传入函数的参数,将一个函数作为第二个参数传递给setState. 这样做能保证你传入的函数需要取到的state一定会是被传入的setState执行之后的state.</p>
+<p>我们已经提到过,  setState 其实是异步的. 因为出于性能优化考虑, React 会将多次setState 做一次批处理. 于是 setState 并不会在被调用之后立即改变我们的state. 这就意味着你并不能依赖于在调用 setState 方法之后 state , 因为此时你并不能确认该state更新与否.</p>
+
+<p>当然针对这个问题我们也有解决办法:用前一个 state(previous state) 作为需要传入函数的参数,将一个函数作为第二个参数传递给 setState ，这样做能保证你传入的函数需要取到的 state 一定会是被传入的 setState 执行之后的 state 。</p>
 
 <h5 id="问题">问题：</h5>
 
@@ -487,16 +491,84 @@ this.setState(prevState =&gt; ({ expanded: !prevState.expanded }));
 <li><a href="https://github.com/krasimir/react-in-patterns/tree/master/patterns/dependency-injection">DI In React</a></li>
 </ul>
 
+<h3 id="react-lazy">React Lazy</h3>
+
+<p><code>React Lazy</code> 是 16.6 之后添加的功能。需要配合 <code>react.Suspense</code> 使用。</p>
+
+<p>类似社区实现的 <a href="https://github.com/jamiebuilds/react-loadable">react-loadable</a> ，在之前我们是通过 webpack 的 <code>require.ensure</code> 或者自己封装 <code>import()</code> 来实现，本质上都是 <code>code splitting</code>。</p>
+
+<h3 id="react-hooks">React hooks</h3>
+
+<p><code>Hooks</code> 是 16.7 之后新添加的功能。</p>
+
+<p>React Team 收了 <a href="https://github.com/acdlite/recompose">recompose</a> 演化成了 <code>Hooks</code></p>
+
+<p>简单理解<code>Hooks</code> 是一种函数，该函数允许你“勾住（hook into）”React 状态和来自函数组件的生命周期功能。</p>
+
+<p>Hook 在类内部不起作用，它们允许你无需类就使用 React。</p>
+
+<blockquote>
+<p>可以通过取巧的方式实现：hook 里面返回 class component，传入相应的 props</p>
+</blockquote>
+
+<h5 id="hooks-种类">hooks 种类</h5>
+
+<p>React 内置了一些 hook，如 <code>useState</code> 当然也可以创建自定义的 <code>Hooks</code> 以在不同的组件当中复用状态。</p>
+
+<p>根据 React 官方给出的文档，Hooks 主要分为以下几种：</p>
+
+<ul>
+<li>State Hooks（可以实现 local state 或者 global state</li>
+<li>Effect Hooks（可以实现 class 当中的一些 lifecycle</li>
+<li>自定义 Hooks（主要用来复用组件逻辑和状态</li>
+</ul>
+
+<h5 id="注意事项">注意事项</h5>
+
+<p>官方定义了一些 rules of hooks，也就是使用 hooks 时候需要注意的内容：</p>
+
+<ul>
+<li>只能在顶层调用 Hook，不要在循环、条件或嵌套函数中调用 Hook。</li>
+<li>仅从 React 功能组件调用 Hook。不要从常规 JavaScript 函数调用 Hook。（还有另一个有效的地方来调用 Hook，即你的自定义 Hook。）</li>
+</ul>
+
+<p>官方还提供了 <a href="https://www.npmjs.com/package/eslint-plugin-react-hooks">linter plugin</a> 来检查并自动执行这些规则</p>
+
+<h5 id="引入的背景">引入的背景</h5>
+
+<p>为什么要引入 <code>Hooks</code> ，大概有以下原因（摘自<a href="https://reactjs.org/docs/hooks-intro.html#motivation">官方文档</a></p>
+
+<ul>
+<li>难以在组件之间重用有状态逻辑（组件树🌲过于臃肿</li>
+<li>复杂的组件变得难以理解（状态逻辑和抽象过多</li>
+<li>类让人和机器感到困惑（万恶的 this 和数据流的理解</li>
+<li>逐步采用策略（感觉是提供新的 idea，并不是抛弃 class component 的写法</li>
+</ul>
+
+<blockquote>
+<p>截止本文更新时间（2018年10月29日15:21:47），社区已经出现了很多关于 hooks 的库和 idea，印象较深的是这个 <a href="https://github.com/streamich/react-use">react-use</a> ，看了一下源码对 hooks 的理解更多了一层</p>
+</blockquote>
+
+<h5 id="reference">Reference:</h5>
+
+<ul>
+<li><a href="https://reactjs.org/docs/hooks-intro.html">offical intro hooks</a></li>
+<li><a href="https://github.com/streamich/react-use">github react-use</a></li>
+<li><a href="https://github.com/rehooks">github rehooks</a></li>
+<li><a href="https://github.com/rehooks/awesome-react-hooks">github awesome react hoos list</a></li>
+<li><a href="https://github.com/f/react-hooks-todo-app">github react hooks todo app</a></li>
+</ul>
+
     </section>
     <nav class="no-print post-nav">
-    
+        
         <a class="prev-post" href="https://t-tom.me/blog/2017-09-12-rn%E6%80%A7%E8%83%BD%E6%A3%80%E6%B5%8B%E5%92%8C%E9%94%99%E8%AF%AF%E6%8D%95%E6%8D%89/">
             <img class="icon-text" src="/img/prev.svg"/>RN性能检测和错误捕捉</a>
-    
-    
+        
+        
         <a class="next-post" href="https://t-tom.me/blog/2017-12-13-react-native-art/">React Native ART 介绍与实践<img class="icon-text" src="/img/next.svg"/>
         </a>
-    
+        
     </nav>
 </article>
 
@@ -523,6 +595,298 @@ this.setState(prevState =&gt; ({ expanded: !prevState.expanded }));
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
 </noscript>
 
+
+<style rel="catalog">
+    #catalog {
+        position: fixed;
+        left: 3vw;
+        top: 8vh;
+    }
+
+    .cl-wrapper {
+        position: relative;
+    }
+
+    .cl-wrapper ul, .cl-wrapper li {
+        margin: 0;
+        -moz-padding-start: 12px;
+        -webkit-padding-start: 12px;
+        list-style: none;
+    }
+
+    .cl-wrapper li > .cl-link.cl-link-active {
+        color: #ff8181;
+        transition: .5s;
+    }
+
+    .cl-wrapper li > .cl-transform.cl-link-active {
+        transform: translate(3px);
+    }
+
+    .cl-wrapper .cl-link {
+        cursor: pointer;
+        color: rgba(52, 73, 94, 0.5);
+        font-size: 13px;
+        transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .cl-wrapper .cl-marker {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+
+    .cl-wrapper .cl-marker path {
+        transition: all 0.3s ease;
+    }
+</style>
+<main id="catalog"></main>
+<script rel="catalog">
+    void function () {
+        
+        
+        
+        const Catalog = (function () {
+            return function (opts) {
+                let defaultOpts = {
+                    linkClass: 'cl-link',                             
+                    linkActiveClass: 'cl-link-active',                
+                    datasetName: 'data-cata-target',                  
+                    selector: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],   
+                    scrollWrapper: null,                              
+                    activeHook: null,                                 
+                    topMargin: 0,
+                    bottomMargin: 0,
+                    cool: true                                        
+                }
+
+                const Opt = Object.assign({}, defaultOpts, opts)
+
+                const $content = document.getElementById(Opt.contentEl)                          
+                const $scroll_wrap = window   
+                const $catalog = document.getElementById(Opt.catalogEl)                          
+
+                let allCatalogs = $content.querySelectorAll(Opt.selector.join())
+                let tree = getCatalogsTree(allCatalogs)
+
+                try {
+                    $catalog.innerHTML = `<div class='cl-wrapper'>${generateHtmlTree(tree, {id: -1})}<svg class="cl-marker" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+            <path stroke="#ff8181" stroke-width="3" fill="transparent" stroke-dasharray="0, 0, 0, 1000" stroke-linecap="round" stroke-linejoin="round" transform="translate(-0.5, -0.5)" />
+            </svg></div>`
+                } catch (e) {
+                    console.error('error in progress-catalog', e)
+                }
+
+
+                const tocPath = $catalog.querySelector('.cl-marker path')
+                let tocItems, pathLength    
+
+                
+                window.addEventListener('resize', drawPath)
+                $catalog.addEventListener('click', clickHandler)
+                Opt.cool && $scroll_wrap.addEventListener('scroll', coolScrollHandler)
+                Opt.cool || $scroll_wrap.addEventListener('scroll', simpleScrollHandler)
+
+                setTimeout(drawPath)          
+
+                
+
+                function drawPath() {
+                    tocItems = [...$catalog.querySelectorAll('li')]
+                    tocItems = tocItems.map(function (liDom) {
+                        const anchor = liDom.querySelector(`.${Opt.linkClass}`)
+                        const target = document.getElementById(anchor.getAttribute('data-cata-target'))
+
+                        return {
+                            listItem: liDom,
+                            anchor: anchor,
+                            target: target
+                        }
+                    })
+                    tocItems = tocItems.filter(item => !!item.target)
+
+                    const path = []
+                    let pathIndent
+
+                    tocItems && tocItems.forEach(function (item, idx) {
+                        const {offsetLeft, offsetTop, offsetHeight} = item.anchor,
+                            x = Opt.cool ? offsetLeft - 5 : offsetLeft,
+                            y = offsetTop,
+                            height = offsetHeight
+
+                        if (idx === 0) {
+                            path.push('M', x, y, 'L', x, y + height)
+                            item.pathStart = 0
+                        }
+                        else {
+                            if (pathIndent !== x) path.push('L', pathIndent, y)     
+                            path.push('L', x, y)
+                            tocPath.setAttribute('d', path.join(' '))
+                            item.pathStart = tocPath.getTotalLength() || 0
+                            path.push('L', x, y + height)
+                        }
+                        pathIndent = x
+                        tocPath.setAttribute('d', path.join(' '))
+                        item.pathEnd = tocPath.getTotalLength()
+                    })
+                    pathLength = tocPath.getTotalLength()
+                    coolScrollHandler()
+                }
+
+                
+
+                function coolScrollHandler() {
+                    const wrapHeight = document.documentElement.offsetHeight
+                    let pathStart = pathLength,
+                        pathEnd = 0,
+                        visibleItems = 0
+                    tocItems.forEach(function (liItem) {
+                        const {bottom, top} = liItem.target.getBoundingClientRect(),
+                            firstChild = liItem.listItem.firstChild
+                        if (bottom > Opt.topMargin && top < wrapHeight - Opt.bottomMargin) {
+                            firstChild.classList.remove(Opt.linkActiveClass)
+                            Opt.cool && firstChild.classList.remove('cl-transform')
+                        } else {
+                            pathStart = Math.min(liItem.pathStart, pathStart)
+                            pathEnd = Math.max(liItem.pathEnd, pathEnd)
+                            visibleItems += 1
+                            firstChild.classList.add(Opt.linkActiveClass)
+                            Opt.cool && firstChild.classList.add('cl-transform')
+                        }
+                    })
+                    if (visibleItems > 0 && pathStart < pathEnd && Opt.cool) {
+                        tocPath.setAttribute('stroke-dashoffset', '1')
+                        tocPath.setAttribute('stroke-dasharray', `1, ${pathStart}, ${pathEnd - pathStart}, ${pathLength}`)
+                        tocPath.setAttribute('opacity', '1')
+                    }
+                    else {
+                        tocPath.setAttribute('opacity', '0')
+                    }
+                }
+
+                
+
+                function simpleScrollHandler(el) {
+                    let scrollToEl = null
+                    for (let i = allCatalogs.length - 1; i >= 0; i--) {
+                        if (allCatalogs[i].offsetTop <= $scroll_wrap.scrollTop) {
+                            scrollToEl = allCatalogs[i]
+                            break
+                        }
+                    }
+                    if (scrollToEl) setActiveItem(scrollToEl.id)
+                    else setActiveItem(null)            
+                }
+
+                
+
+                function clickHandler({target}) {
+                    const datasetId = target.getAttribute(Opt.datasetName)
+                    target.classList.contains(Opt.linkClass) &&
+                    document.getElementById(datasetId)
+                        .scrollIntoView({behavior: "smooth", block: "start"})
+                }
+
+                
+
+                function getCatalogsTree(catalogs) {
+                    let title, tagName, tree = [], treeItem = {}, parentItem = {id: -1}, lastTreeItem = null, id
+
+                    for (let i = 0; i < catalogs.length; i++) {
+                        title = catalogs[i].innerText || catalogs[i].textContent
+                        tagName = catalogs[i].tagName
+                        id = 'heading-' + i
+                        catalogs[i].id = id
+                        treeItem = {
+                            name: title,
+                            tagName: tagName,
+                            id: id,
+                            level: +getLevel(tagName),
+                            parent: parentItem
+                        }
+                        if (lastTreeItem) {
+                            if (getLevel(treeItem.tagName) > getLevel(lastTreeItem.tagName)) {
+                                treeItem.parent = lastTreeItem
+                            } else {
+                                treeItem.parent = findParent(treeItem, lastTreeItem)
+                            }
+                        }
+                        lastTreeItem = treeItem
+                        tree.push(treeItem)
+                    }
+                    return tree
+                }
+
+                
+
+                function findParent(currTreeItem, lastTreeItem) {
+                    let lastTreeParent = lastTreeItem.parent
+                    while (lastTreeParent && (getLevel(currTreeItem.tagName) <= getLevel(lastTreeParent.tagName))) {
+                        lastTreeParent = lastTreeParent.parent
+                    }
+                    return lastTreeParent || {id: -1}
+                }
+
+                
+
+                function getLevel(tagName) {
+                    return tagName ? tagName.slice(1) : 0
+                }
+
+                
+
+                function generateHtmlTree(tree, _parent) {
+                    let ul, hasChild = false
+                    if (tree) {
+                        ul = `<ul>`
+                        for (let i = 0; i < tree.length; i++) {
+                            if (isEqual(tree[i].parent, _parent)) {
+                                hasChild = true
+                                ul += `<li><div class='${ Opt.linkClass } cl-level-${ tree[i].level }' ${Opt.datasetName}='${ tree[i].id }'>${tree[i].name}</div>`
+                                ul += generateHtmlTree(tree, tree[i])
+                                ul += '</li>'
+                            }
+                        }
+                        ul += `</ul>`
+                    }
+                    return hasChild ? ul : ''
+                }
+
+                /**
+                 * 判断是否是相同节点
+                 */
+                function isEqual(node, node2) {
+                    return node && node2 && typeof node === 'object' && typeof node2 === 'object' && node.id === node2.id
+                }
+
+                /**
+                 *  设置选中的项
+                 */
+                function setActiveItem(id) {
+                    let catas = [...$catalog.querySelectorAll(`[${Opt.datasetName}]`)]
+
+                    catas.forEach(T => {
+                        if (T.getAttribute(Opt.datasetName) === id) {
+                            typeof Opt.activeHook === 'function' &&
+                            !T.classList.contains(Opt.linkActiveClass) &&
+                            Opt.activeHook.call(this, T)                    // 执行active钩子
+                            T.classList.add(Opt.linkActiveClass)
+                        } else {
+                            T.classList.remove(Opt.linkActiveClass)
+                        }
+                    })
+                }
+            }
+        })();
+        window.addEventListener('DOMContentLoaded', _ => new Catalog({
+            contentEl: 'markdown',
+            catalogEl: 'catalog'
+        }))
+    }();
+</script>
 			<hr class="sep" />
 		</main>
 		<footer class="container no-print">
