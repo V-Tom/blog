@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Life on TOM&#39;s zone</title>
-    <link>https://t-tom.me/life/</link>
+    <link>https://hasaki.xyz/life/</link>
     <description>Recent content in Life on TOM&#39;s zone</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ZH-CN</language>
     <copyright>Early 2016 ~ 2018 &amp;copy; TOM&#39;s Zone</copyright>
     <lastBuildDate>Mon, 23 Apr 2018 11:29:40 +0800</lastBuildDate>
     
-	<atom:link href="https://t-tom.me/life/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://hasaki.xyz/life/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>众筹计划</title>
-      <link>https://t-tom.me/life/%E4%BC%97%E7%AD%B9%E8%AE%A1%E5%88%92/</link>
+      <link>https://hasaki.xyz/life/%E4%BC%97%E7%AD%B9%E8%AE%A1%E5%88%92/</link>
       <pubDate>Mon, 23 Apr 2018 11:29:40 +0800</pubDate>
       
-      <guid>https://t-tom.me/life/%E4%BC%97%E7%AD%B9%E8%AE%A1%E5%88%92/</guid>
+      <guid>https://hasaki.xyz/life/%E4%BC%97%E7%AD%B9%E8%AE%A1%E5%88%92/</guid>
       <description>众筹计划  TBD 后续内容待补充当中
  Getstarted 本计划纯属自愿参加自愿承担责任，可以随时加入随时退出。
 为了科学上网，所以通过网上开源项目建立私人 socks5 proxy （ssr）以及 http proxy （v2ray），因为个人资金原因，现在希望能够众筹

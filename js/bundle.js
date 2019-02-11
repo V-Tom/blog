@@ -89,7 +89,7 @@ window.addEventListener('DOMContentLoaded', _ => {
     if (navigator.serviceWorker && !location.host.includes('localhost')) {
 
         navigator.serviceWorker.register(
-            location.host.includes('localhost') ? 'http://localhost:1313/sw.js' : 'https://t-tom.me/sw.js'
+            location.host.includes('localhost') ? 'http://localhost:1313/sw.js' : 'https://hasaki.xyz/sw.js'
         ).catch(error => {
             console.error(`ServiceWorker registration failed: ${error}`);
         });
