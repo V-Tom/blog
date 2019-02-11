@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Rn on TOM&#39;s zone</title>
-    <link>https://t-tom.me/tags/rn/</link>
+    <link>https://hasaki.xyz/tags/rn/</link>
     <description>Recent content in Rn on TOM&#39;s zone</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ZH-CN</language>
     <copyright>Early 2016 ~ 2018 &amp;copy; TOM&#39;s Zone</copyright>
     <lastBuildDate>Fri, 23 Mar 2018 14:28:25 +0800</lastBuildDate>
     
-	<atom:link href="https://t-tom.me/tags/rn/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://hasaki.xyz/tags/rn/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>使用Swift开发React Native组件</title>
-      <link>https://t-tom.me/blog/2018-03-23-%E4%BD%BF%E7%94%A8swift%E5%BC%80%E5%8F%91react-native%E7%BB%84%E4%BB%B6/</link>
+      <link>https://hasaki.xyz/blog/2018-03-23-%E4%BD%BF%E7%94%A8swift%E5%BC%80%E5%8F%91react-native%E7%BB%84%E4%BB%B6/</link>
       <pubDate>Fri, 23 Mar 2018 14:28:25 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2018-03-23-%E4%BD%BF%E7%94%A8swift%E5%BC%80%E5%8F%91react-native%E7%BB%84%E4%BB%B6/</guid>
+      <guid>https://hasaki.xyz/blog/2018-03-23-%E4%BD%BF%E7%94%A8swift%E5%BC%80%E5%8F%91react-native%E7%BB%84%E4%BB%B6/</guid>
       <description>本人只是一个前端，偶尔写一点其他语言来拓展开发技能。
 因业务当中使用到 RN，所以对如何实现 RN custom module 也比较感兴趣并简单学习实现了一些功能。本文可能有些地方可能比较浅显或者有错误，还望读者海涵并指正。
  环境准备 因为 swift 的断崖式升级以及 RN 不同版本，所以下面的例子可能会存在一些误差。本机环境为：
@@ -32,10 +32,10 @@ gem sources -l  结果应该是：</description>
     
     <item>
       <title>React Native ART 介绍与实践</title>
-      <link>https://t-tom.me/blog/2017-12-13-react-native-art/</link>
+      <link>https://hasaki.xyz/blog/2017-12-13-react-native-art/</link>
       <pubDate>Wed, 13 Dec 2017 15:29:40 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2017-12-13-react-native-art/</guid>
+      <guid>https://hasaki.xyz/blog/2017-12-13-react-native-art/</guid>
       <description>React Native ART 由来 React-Art  是 Reactjs 团队基于 Art（一个兼容各个浏览器SVG绘制的API封装）开发的模块，让 React 开发者能使用 jsx 语法绘制 svg。
 React Native 团队分别在0.10.0和0.18.0也添加了iOS和Android平台对 react-art 的支持，官网文档至今对其只字未提。本文旨在介绍安静躺在 react-native/Libraries/ 里的ART，并展示一些实践结果。
 在React Native中ART是个非常重要的库，它让非常酷炫的绘图及动画变成了可能。但是可能是知道的人真的不多导致文档及少中文更少。很多都是把英文的参数列表翻译过来，也没有案例。
@@ -50,10 +50,10 @@ ART能干什么 俗话说，库如其名，背负着如此具有“艺术感”�
     
     <item>
       <title>RN性能检测和错误捕捉</title>
-      <link>https://t-tom.me/blog/2017-09-12-rn%E6%80%A7%E8%83%BD%E6%A3%80%E6%B5%8B%E5%92%8C%E9%94%99%E8%AF%AF%E6%8D%95%E6%8D%89/</link>
+      <link>https://hasaki.xyz/blog/2017-09-12-rn%E6%80%A7%E8%83%BD%E6%A3%80%E6%B5%8B%E5%92%8C%E9%94%99%E8%AF%AF%E6%8D%95%E6%8D%89/</link>
       <pubDate>Tue, 12 Sep 2017 15:29:40 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2017-09-12-rn%E6%80%A7%E8%83%BD%E6%A3%80%E6%B5%8B%E5%92%8C%E9%94%99%E8%AF%AF%E6%8D%95%E6%8D%89/</guid>
+      <guid>https://hasaki.xyz/blog/2017-09-12-rn%E6%80%A7%E8%83%BD%E6%A3%80%E6%B5%8B%E5%92%8C%E9%94%99%E8%AF%AF%E6%8D%95%E6%8D%89/</guid>
       <description>在复杂的网络环境和浏览器环境下，自测、QA测试以及 Code Review 都是不够的，如果对页面稳定性和准确性要求较高，就必须有一套完善的代码异常监控体系好的产品，这样才能很好的得到用户的反馈从而不断的迭代改进我们的产品。
 而且复杂的用户终端设备，也需要通过性能监控发现部分前端性能瓶颈，以便进行优化；通过错误日志收集，及时获得前端的运行时错误
 收集错误异常  错误异常分为 web 错误异常和React-native 错误异常

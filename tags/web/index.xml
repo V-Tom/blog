@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Web on TOM&#39;s zone</title>
-    <link>https://t-tom.me/tags/web/</link>
+    <link>https://hasaki.xyz/tags/web/</link>
     <description>Recent content in Web on TOM&#39;s zone</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ZH-CN</language>
     <copyright>Early 2016 ~ 2018 &amp;copy; TOM&#39;s Zone</copyright>
     <lastBuildDate>Sat, 21 Apr 2018 17:43:01 +0800</lastBuildDate>
     
-	<atom:link href="https://t-tom.me/tags/web/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://hasaki.xyz/tags/web/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>sandbox of javascript</title>
-      <link>https://t-tom.me/blog/2018-04-21-javascript%E6%B2%99%E7%AE%B1/</link>
+      <link>https://hasaki.xyz/blog/2018-04-21-javascript%E6%B2%99%E7%AE%B1/</link>
       <pubDate>Sat, 21 Apr 2018 17:43:01 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2018-04-21-javascript%E6%B2%99%E7%AE%B1/</guid>
+      <guid>https://hasaki.xyz/blog/2018-04-21-javascript%E6%B2%99%E7%AE%B1/</guid>
       <description>在一些业务场景当中，我们提供给用户插入自定义逻辑的能力，类似于沙盒、沙箱，允许执行自定义代码，产生的变化可以随后随时删除。
 无论是客户端上的沙箱还是服务器端上的沙箱，我们都要确保安全性，用户自定义的脚本必须收到限制和隔离，不能影响到当前宿主程序。
 javascript 本身有很多种方式可以实现沙箱，各有千秋，各有使用的地方。

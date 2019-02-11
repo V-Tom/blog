@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Frontend on TOM&#39;s zone</title>
-    <link>https://t-tom.me/tags/frontend/</link>
+    <link>https://hasaki.xyz/tags/frontend/</link>
     <description>Recent content in Frontend on TOM&#39;s zone</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ZH-CN</language>
     <copyright>Early 2016 ~ 2018 &amp;copy; TOM&#39;s Zone</copyright>
     <lastBuildDate>Fri, 23 Mar 2018 14:28:25 +0800</lastBuildDate>
     
-	<atom:link href="https://t-tom.me/tags/frontend/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://hasaki.xyz/tags/frontend/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>使用Swift开发React Native组件</title>
-      <link>https://t-tom.me/blog/2018-03-23-%E4%BD%BF%E7%94%A8swift%E5%BC%80%E5%8F%91react-native%E7%BB%84%E4%BB%B6/</link>
+      <link>https://hasaki.xyz/blog/2018-03-23-%E4%BD%BF%E7%94%A8swift%E5%BC%80%E5%8F%91react-native%E7%BB%84%E4%BB%B6/</link>
       <pubDate>Fri, 23 Mar 2018 14:28:25 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2018-03-23-%E4%BD%BF%E7%94%A8swift%E5%BC%80%E5%8F%91react-native%E7%BB%84%E4%BB%B6/</guid>
+      <guid>https://hasaki.xyz/blog/2018-03-23-%E4%BD%BF%E7%94%A8swift%E5%BC%80%E5%8F%91react-native%E7%BB%84%E4%BB%B6/</guid>
       <description>本人只是一个前端，偶尔写一点其他语言来拓展开发技能。
 因业务当中使用到 RN，所以对如何实现 RN custom module 也比较感兴趣并简单学习实现了一些功能。本文可能有些地方可能比较浅显或者有错误，还望读者海涵并指正。
  环境准备 因为 swift 的断崖式升级以及 RN 不同版本，所以下面的例子可能会存在一些误差。本机环境为：
@@ -32,10 +32,10 @@ gem sources -l  结果应该是：</description>
     
     <item>
       <title>React Native ART 介绍与实践</title>
-      <link>https://t-tom.me/blog/2017-12-13-react-native-art/</link>
+      <link>https://hasaki.xyz/blog/2017-12-13-react-native-art/</link>
       <pubDate>Wed, 13 Dec 2017 15:29:40 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2017-12-13-react-native-art/</guid>
+      <guid>https://hasaki.xyz/blog/2017-12-13-react-native-art/</guid>
       <description>React Native ART 由来 React-Art  是 Reactjs 团队基于 Art（一个兼容各个浏览器SVG绘制的API封装）开发的模块，让 React 开发者能使用 jsx 语法绘制 svg。
 React Native 团队分别在0.10.0和0.18.0也添加了iOS和Android平台对 react-art 的支持，官网文档至今对其只字未提。本文旨在介绍安静躺在 react-native/Libraries/ 里的ART，并展示一些实践结果。
 在React Native中ART是个非常重要的库，它让非常酷炫的绘图及动画变成了可能。但是可能是知道的人真的不多导致文档及少中文更少。很多都是把英文的参数列表翻译过来，也没有案例。
@@ -50,10 +50,10 @@ ART能干什么 俗话说，库如其名，背负着如此具有“艺术感”�
     
     <item>
       <title>React 模式，技巧，技巧和窍门</title>
-      <link>https://t-tom.me/blog/2017-11-02-react-%E6%A8%A1%E5%BC%8F%E6%8A%80%E5%B7%A7%E6%8A%80%E5%B7%A7%E5%92%8C%E7%AA%8D%E9%97%A8/</link>
+      <link>https://hasaki.xyz/blog/2017-11-02-react-%E6%A8%A1%E5%BC%8F%E6%8A%80%E5%B7%A7%E6%8A%80%E5%B7%A7%E5%92%8C%E7%AA%8D%E9%97%A8/</link>
       <pubDate>Thu, 02 Nov 2017 15:29:40 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2017-11-02-react-%E6%A8%A1%E5%BC%8F%E6%8A%80%E5%B7%A7%E6%8A%80%E5%B7%A7%E5%92%8C%E7%AA%8D%E9%97%A8/</guid>
+      <guid>https://hasaki.xyz/blog/2017-11-02-react-%E6%A8%A1%E5%BC%8F%E6%8A%80%E5%B7%A7%E6%8A%80%E5%B7%A7%E5%92%8C%E7%AA%8D%E9%97%A8/</guid>
       <description>这篇文章整理了学习 React 过程中以及实际开发应用当中一些模式，技巧，技巧和窍门。
 大部门内容是基于 React 框架下面产生的一些内容，有很大的局限性，但是确实带来了新的理念和开发方式，仁者见仁智者见智，多学习一点内容总归对职业生涯有好处。
  本篇文章还在持续更新中，如果有错误烦请指正。
@@ -65,10 +65,10 @@ ART能干什么 俗话说，库如其名，背负着如此具有“艺术感”�
     
     <item>
       <title>RN性能检测和错误捕捉</title>
-      <link>https://t-tom.me/blog/2017-09-12-rn%E6%80%A7%E8%83%BD%E6%A3%80%E6%B5%8B%E5%92%8C%E9%94%99%E8%AF%AF%E6%8D%95%E6%8D%89/</link>
+      <link>https://hasaki.xyz/blog/2017-09-12-rn%E6%80%A7%E8%83%BD%E6%A3%80%E6%B5%8B%E5%92%8C%E9%94%99%E8%AF%AF%E6%8D%95%E6%8D%89/</link>
       <pubDate>Tue, 12 Sep 2017 15:29:40 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2017-09-12-rn%E6%80%A7%E8%83%BD%E6%A3%80%E6%B5%8B%E5%92%8C%E9%94%99%E8%AF%AF%E6%8D%95%E6%8D%89/</guid>
+      <guid>https://hasaki.xyz/blog/2017-09-12-rn%E6%80%A7%E8%83%BD%E6%A3%80%E6%B5%8B%E5%92%8C%E9%94%99%E8%AF%AF%E6%8D%95%E6%8D%89/</guid>
       <description>在复杂的网络环境和浏览器环境下，自测、QA测试以及 Code Review 都是不够的，如果对页面稳定性和准确性要求较高，就必须有一套完善的代码异常监控体系好的产品，这样才能很好的得到用户的反馈从而不断的迭代改进我们的产品。
 而且复杂的用户终端设备，也需要通过性能监控发现部分前端性能瓶颈，以便进行优化；通过错误日志收集，及时获得前端的运行时错误
 收集错误异常  错误异常分为 web 错误异常和React-native 错误异常
@@ -81,10 +81,10 @@ window.onerror = function() { // send format error var errInfo = format(argument
     
     <item>
       <title>译文:Understanding ASTs by Building Your Own Babel Plugin</title>
-      <link>https://t-tom.me/blog/2017-08-13-%E8%AF%91%E6%96%87understanding-asts-by-building-your-own-babel-plugin/</link>
+      <link>https://hasaki.xyz/blog/2017-08-13-%E8%AF%91%E6%96%87understanding-asts-by-building-your-own-babel-plugin/</link>
       <pubDate>Sun, 13 Aug 2017 15:29:40 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2017-08-13-%E8%AF%91%E6%96%87understanding-asts-by-building-your-own-babel-plugin/</guid>
+      <guid>https://hasaki.xyz/blog/2017-08-13-%E8%AF%91%E6%96%87understanding-asts-by-building-your-own-babel-plugin/</guid>
       <description>原文地址
 Language Overview  We want to design a plugin that will allow us to use regular object and array literals, which will be transformed into persistent data structures using Mori
  我们想要设计一个插件：它将允许我们通过使用常规对象和数值文本，可以使用Mori转化为持久性的数据结构。
@@ -95,10 +95,10 @@ var foo = { a: 1 }; var baz = foo.a = 2; foo.a === 1; baz.a === 2;   And transfo
     
     <item>
       <title>前端的10000个小时</title>
-      <link>https://t-tom.me/blog/2017-03-24-%E5%89%8D%E7%AB%AF%E7%9A%8410000%E4%B8%AA%E5%B0%8F%E6%97%B6/</link>
+      <link>https://hasaki.xyz/blog/2017-03-24-%E5%89%8D%E7%AB%AF%E7%9A%8410000%E4%B8%AA%E5%B0%8F%E6%97%B6/</link>
       <pubDate>Fri, 24 Mar 2017 15:29:40 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2017-03-24-%E5%89%8D%E7%AB%AF%E7%9A%8410000%E4%B8%AA%E5%B0%8F%E6%97%B6/</guid>
+      <guid>https://hasaki.xyz/blog/2017-03-24-%E5%89%8D%E7%AB%AF%E7%9A%8410000%E4%B8%AA%E5%B0%8F%E6%97%B6/</guid>
       <description>我又开始扯淡了
  本篇文章出自原文，深有感触，有删改。
  10000小时定律 著名的10000小时定律，我想大家都不陌生，『要成为某个领域的专家，需要10000小时』，这个定律来源于《异类》的作者，格拉德威尔。

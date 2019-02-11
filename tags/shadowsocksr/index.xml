@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Shadowsocksr on TOM&#39;s zone</title>
-    <link>https://t-tom.me/tags/shadowsocksr/</link>
+    <link>https://hasaki.xyz/tags/shadowsocksr/</link>
     <description>Recent content in Shadowsocksr on TOM&#39;s zone</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ZH-CN</language>
     <copyright>Early 2016 ~ 2018 &amp;copy; TOM&#39;s Zone</copyright>
     <lastBuildDate>Sun, 03 Apr 2016 15:29:40 +0800</lastBuildDate>
     
-	<atom:link href="https://t-tom.me/tags/shadowsocksr/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://hasaki.xyz/tags/shadowsocksr/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>利用 Shadowsocksr 和云主机翻墙</title>
-      <link>https://t-tom.me/blog/2016-04-03-%E5%88%A9%E7%94%A8-shadowsocksr-%E5%92%8C%E4%BA%91%E4%B8%BB%E6%9C%BA%E7%BF%BB%E5%A2%99/</link>
+      <link>https://hasaki.xyz/blog/2016-04-03-%E5%88%A9%E7%94%A8-shadowsocksr-%E5%92%8C%E4%BA%91%E4%B8%BB%E6%9C%BA%E7%BF%BB%E5%A2%99/</link>
       <pubDate>Sun, 03 Apr 2016 15:29:40 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2016-04-03-%E5%88%A9%E7%94%A8-shadowsocksr-%E5%92%8C%E4%BA%91%E4%B8%BB%E6%9C%BA%E7%BF%BB%E5%A2%99/</guid>
+      <guid>https://hasaki.xyz/blog/2016-04-03-%E5%88%A9%E7%94%A8-shadowsocksr-%E5%92%8C%E4%BA%91%E4%B8%BB%E6%9C%BA%E7%BF%BB%E5%A2%99/</guid>
       <description>世界那么大，我想去看看，但是被墙了… 以前用的VPN，叫做什么green vpn，总体来说，还不错，但是最近老断，于是就搞了个新的法子。申请一台云主机，在上面搭一个Shadowsocks，然后就可以在所有客户端看 YouTube 了，当然，这所有的一切都是免费的。
  Shadowsocks已经河蟹，这里不再说ss，只说ssr：一个基于ss的新分支
  搭建Shadowsocksr服务器 首先需要搭建一台云主机，首先阿里云或者青云都是挺好的，但是都需要国外的主机，要不然怎么去翻墙，你也可以选择linecode、vultr、aws、azure、GCE（google）。这些大部分都有一年的免费期限，也会有免费赠送不定的体验金的福利。中间会要求绑定信用卡。

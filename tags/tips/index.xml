@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tips on TOM&#39;s zone</title>
-    <link>https://t-tom.me/tags/tips/</link>
+    <link>https://hasaki.xyz/tags/tips/</link>
     <description>Recent content in Tips on TOM&#39;s zone</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ZH-CN</language>
     <copyright>Early 2016 ~ 2018 &amp;copy; TOM&#39;s Zone</copyright>
     <lastBuildDate>Mon, 23 Jul 2018 09:23:43 +0800</lastBuildDate>
     
-	<atom:link href="https://t-tom.me/tags/tips/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://hasaki.xyz/tags/tips/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>working tips</title>
-      <link>https://t-tom.me/blog/working-tips/</link>
+      <link>https://hasaki.xyz/blog/working-tips/</link>
       <pubDate>Mon, 23 Jul 2018 09:23:43 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/working-tips/</guid>
+      <guid>https://hasaki.xyz/blog/working-tips/</guid>
       <description>将 ssr 转换为 http 代理  前景概要：我用的魔改版本的 ssr ，不带 http proxy，但是我需要在 terminal 当中使用代理。而且公司原因完全没有 sudo 权限，brew 也废掉了。但是本地 git 是可以通过 sock5 代理的。
 我知道可以通过 proxychains4 或者 proxychains-ng 可以实现。也由于懒不想换 ss 或者 v2ray，而且由于 mac sip 的原因没法成功，主要还是没有 sudo 权限。
  找了好久，查到了解决办法，利用这个库 polipo 是可以实现所需要的功能，具体步骤如下。

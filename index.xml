@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>TOM&#39;s zone</title>
-    <link>https://t-tom.me/</link>
+    <link>https://hasaki.xyz/</link>
     <description>Recent content on TOM&#39;s zone</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ZH-CN</language>
     <copyright>Early 2016 ~ 2018 &amp;copy; TOM&#39;s Zone</copyright>
     <lastBuildDate>Mon, 23 Jul 2018 09:23:43 +0800</lastBuildDate>
     
-	<atom:link href="https://t-tom.me/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://hasaki.xyz/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>working tips</title>
-      <link>https://t-tom.me/blog/working-tips/</link>
+      <link>https://hasaki.xyz/blog/working-tips/</link>
       <pubDate>Mon, 23 Jul 2018 09:23:43 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/working-tips/</guid>
+      <guid>https://hasaki.xyz/blog/working-tips/</guid>
       <description>将 ssr 转换为 http 代理  前景概要：我用的魔改版本的 ssr ，不带 http proxy，但是我需要在 terminal 当中使用代理。而且公司原因完全没有 sudo 权限，brew 也废掉了。但是本地 git 是可以通过 sock5 代理的。
 我知道可以通过 proxychains4 或者 proxychains-ng 可以实现。也由于懒不想换 ss 或者 v2ray，而且由于 mac sip 的原因没法成功，主要还是没有 sudo 权限。
  找了好久，查到了解决办法，利用这个库 polipo 是可以实现所需要的功能，具体步骤如下。
@@ -26,19 +26,19 @@
     
     <item>
       <title>learn Data Structure</title>
-      <link>https://t-tom.me/blog/datastructure/</link>
+      <link>https://hasaki.xyz/blog/datastructure/</link>
       <pubDate>Wed, 23 May 2018 12:33:21 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/datastructure/</guid>
+      <guid>https://hasaki.xyz/blog/datastructure/</guid>
       <description>List list 定义  是n(n≥0)个相同类型的数据元素构成的有限序列。  list ADT ADT List { Data: Operation: InitList(&amp;amp;L) CreateList(&amp;amp;L) ListEmpty(L) ListLength(L) LocateElem(L,e) PriorElem(L,cur_e,&amp;amp;pre_e) NextElem(L,cur_e,&amp;amp;pre_e) ListInsert(&amp;amp;L,i,e) ListDelete(&amp;amp;L,i,&amp;amp;e) GetElem(L,i,&amp;amp;e) ListTraverse(L) DestroyList(&amp;amp;L) }//ADT List  list 简单实现 /** * List Structure */ class List { /** * 顺序表初始化操作，申请使用内存 * @constructor */ InitList() { this.list = [] } /** * 判断顺序表是否为空 * @returns {boolean} * @constructor */ ListEmpty() { return this.list.length === 0 } /** * 顺序表求表长操作 * @returns {number} * @constructor */ ListLength() { return this.</description>
     </item>
     
     <item>
       <title>sandbox of javascript</title>
-      <link>https://t-tom.me/blog/2018-04-21-javascript%E6%B2%99%E7%AE%B1/</link>
+      <link>https://hasaki.xyz/blog/2018-04-21-javascript%E6%B2%99%E7%AE%B1/</link>
       <pubDate>Sat, 21 Apr 2018 17:43:01 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2018-04-21-javascript%E6%B2%99%E7%AE%B1/</guid>
+      <guid>https://hasaki.xyz/blog/2018-04-21-javascript%E6%B2%99%E7%AE%B1/</guid>
       <description>在一些业务场景当中，我们提供给用户插入自定义逻辑的能力，类似于沙盒、沙箱，允许执行自定义代码，产生的变化可以随后随时删除。
 无论是客户端上的沙箱还是服务器端上的沙箱，我们都要确保安全性，用户自定义的脚本必须收到限制和隔离，不能影响到当前宿主程序。
 javascript 本身有很多种方式可以实现沙箱，各有千秋，各有使用的地方。
@@ -52,10 +52,10 @@ global.name = &#39;TOM&#39; eval(&#39;console.log(&amp;quot;i am &amp;quot; + na
     
     <item>
       <title>使用Swift开发React Native组件</title>
-      <link>https://t-tom.me/blog/2018-03-23-%E4%BD%BF%E7%94%A8swift%E5%BC%80%E5%8F%91react-native%E7%BB%84%E4%BB%B6/</link>
+      <link>https://hasaki.xyz/blog/2018-03-23-%E4%BD%BF%E7%94%A8swift%E5%BC%80%E5%8F%91react-native%E7%BB%84%E4%BB%B6/</link>
       <pubDate>Fri, 23 Mar 2018 14:28:25 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2018-03-23-%E4%BD%BF%E7%94%A8swift%E5%BC%80%E5%8F%91react-native%E7%BB%84%E4%BB%B6/</guid>
+      <guid>https://hasaki.xyz/blog/2018-03-23-%E4%BD%BF%E7%94%A8swift%E5%BC%80%E5%8F%91react-native%E7%BB%84%E4%BB%B6/</guid>
       <description>本人只是一个前端，偶尔写一点其他语言来拓展开发技能。
 因业务当中使用到 RN，所以对如何实现 RN custom module 也比较感兴趣并简单学习实现了一些功能。本文可能有些地方可能比较浅显或者有错误，还望读者海涵并指正。
  环境准备 因为 swift 的断崖式升级以及 RN 不同版本，所以下面的例子可能会存在一些误差。本机环境为：
@@ -70,10 +70,10 @@ gem sources -l  结果应该是：</description>
     
     <item>
       <title>谈谈 Node.js 的单线程</title>
-      <link>https://t-tom.me/blog/2018-02-08-%E8%B0%88%E8%B0%88node.js%E7%9A%84%E5%8D%95%E7%BA%BF%E7%A8%8B/</link>
+      <link>https://hasaki.xyz/blog/2018-02-08-%E8%B0%88%E8%B0%88node.js%E7%9A%84%E5%8D%95%E7%BA%BF%E7%A8%8B/</link>
       <pubDate>Thu, 08 Feb 2018 14:22:25 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2018-02-08-%E8%B0%88%E8%B0%88node.js%E7%9A%84%E5%8D%95%E7%BA%BF%E7%A8%8B/</guid>
+      <guid>https://hasaki.xyz/blog/2018-02-08-%E8%B0%88%E8%B0%88node.js%E7%9A%84%E5%8D%95%E7%BA%BF%E7%A8%8B/</guid>
       <description>前言 从Node.js进入人们的视野时，我们所知道的它就由这些关键字组成 事件驱动、非阻塞I/O、高效、轻量，它在官网中也是这么描述自己的。
  Node.js® is a JavaScript runtime built on Chrome’s V8 JavaScript engine. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient.
  Node.js 结构 我们可以看到，Node.js 的结构大致分为三个层次：
@@ -82,10 +82,10 @@ gem sources -l  结果应该是：</description>
     
     <item>
       <title>从jwt到OAuth</title>
-      <link>https://t-tom.me/blog/2018-01-02-%E4%BB%8Ejwt%E5%88%B0oauth/</link>
+      <link>https://hasaki.xyz/blog/2018-01-02-%E4%BB%8Ejwt%E5%88%B0oauth/</link>
       <pubDate>Tue, 02 Jan 2018 11:31:25 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2018-01-02-%E4%BB%8Ejwt%E5%88%B0oauth/</guid>
+      <guid>https://hasaki.xyz/blog/2018-01-02-%E4%BB%8Ejwt%E5%88%B0oauth/</guid>
       <description>JWT JWT 是 JSON Web Token 的缩写，可以简单理解为生产者颁发给消费者一个令牌。参照 JWT 规范 对其所做的描述是：
  JSON Web令牌（JWT）是一种紧凑的、URL安全的方式，用来表示要在双方之间传递的“声明”。JWT中的声明被编码为JSON对象，用作JSON Web签名（JWS）结构的有效内容或JSON Web加密（JWE）结构的明文，使得声明能够被：数字签名、或利用消息认证码（MAC）保护完整性、加密。
  这个规范允许我们使用JWT在用户和服务器之间传递安全可靠的信息。
@@ -100,10 +100,10 @@ package main import &amp;quot;bytes&amp;quot; import ( &amp;quot;encoding/json&a
     
     <item>
       <title>React Native ART 介绍与实践</title>
-      <link>https://t-tom.me/blog/2017-12-13-react-native-art/</link>
+      <link>https://hasaki.xyz/blog/2017-12-13-react-native-art/</link>
       <pubDate>Wed, 13 Dec 2017 15:29:40 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2017-12-13-react-native-art/</guid>
+      <guid>https://hasaki.xyz/blog/2017-12-13-react-native-art/</guid>
       <description>React Native ART 由来 React-Art  是 Reactjs 团队基于 Art（一个兼容各个浏览器SVG绘制的API封装）开发的模块，让 React 开发者能使用 jsx 语法绘制 svg。
 React Native 团队分别在0.10.0和0.18.0也添加了iOS和Android平台对 react-art 的支持，官网文档至今对其只字未提。本文旨在介绍安静躺在 react-native/Libraries/ 里的ART，并展示一些实践结果。
 在React Native中ART是个非常重要的库，它让非常酷炫的绘图及动画变成了可能。但是可能是知道的人真的不多导致文档及少中文更少。很多都是把英文的参数列表翻译过来，也没有案例。
@@ -118,10 +118,10 @@ ART能干什么 俗话说，库如其名，背负着如此具有“艺术感”�
     
     <item>
       <title>React 模式，技巧，技巧和窍门</title>
-      <link>https://t-tom.me/blog/2017-11-02-react-%E6%A8%A1%E5%BC%8F%E6%8A%80%E5%B7%A7%E6%8A%80%E5%B7%A7%E5%92%8C%E7%AA%8D%E9%97%A8/</link>
+      <link>https://hasaki.xyz/blog/2017-11-02-react-%E6%A8%A1%E5%BC%8F%E6%8A%80%E5%B7%A7%E6%8A%80%E5%B7%A7%E5%92%8C%E7%AA%8D%E9%97%A8/</link>
       <pubDate>Thu, 02 Nov 2017 15:29:40 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2017-11-02-react-%E6%A8%A1%E5%BC%8F%E6%8A%80%E5%B7%A7%E6%8A%80%E5%B7%A7%E5%92%8C%E7%AA%8D%E9%97%A8/</guid>
+      <guid>https://hasaki.xyz/blog/2017-11-02-react-%E6%A8%A1%E5%BC%8F%E6%8A%80%E5%B7%A7%E6%8A%80%E5%B7%A7%E5%92%8C%E7%AA%8D%E9%97%A8/</guid>
       <description>这篇文章整理了学习 React 过程中以及实际开发应用当中一些模式，技巧，技巧和窍门。
 大部门内容是基于 React 框架下面产生的一些内容，有很大的局限性，但是确实带来了新的理念和开发方式，仁者见仁智者见智，多学习一点内容总归对职业生涯有好处。
  本篇文章还在持续更新中，如果有错误烦请指正。
@@ -133,10 +133,10 @@ ART能干什么 俗话说，库如其名，背负着如此具有“艺术感”�
     
     <item>
       <title>RN性能检测和错误捕捉</title>
-      <link>https://t-tom.me/blog/2017-09-12-rn%E6%80%A7%E8%83%BD%E6%A3%80%E6%B5%8B%E5%92%8C%E9%94%99%E8%AF%AF%E6%8D%95%E6%8D%89/</link>
+      <link>https://hasaki.xyz/blog/2017-09-12-rn%E6%80%A7%E8%83%BD%E6%A3%80%E6%B5%8B%E5%92%8C%E9%94%99%E8%AF%AF%E6%8D%95%E6%8D%89/</link>
       <pubDate>Tue, 12 Sep 2017 15:29:40 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2017-09-12-rn%E6%80%A7%E8%83%BD%E6%A3%80%E6%B5%8B%E5%92%8C%E9%94%99%E8%AF%AF%E6%8D%95%E6%8D%89/</guid>
+      <guid>https://hasaki.xyz/blog/2017-09-12-rn%E6%80%A7%E8%83%BD%E6%A3%80%E6%B5%8B%E5%92%8C%E9%94%99%E8%AF%AF%E6%8D%95%E6%8D%89/</guid>
       <description>在复杂的网络环境和浏览器环境下，自测、QA测试以及 Code Review 都是不够的，如果对页面稳定性和准确性要求较高，就必须有一套完善的代码异常监控体系好的产品，这样才能很好的得到用户的反馈从而不断的迭代改进我们的产品。
 而且复杂的用户终端设备，也需要通过性能监控发现部分前端性能瓶颈，以便进行优化；通过错误日志收集，及时获得前端的运行时错误
 收集错误异常  错误异常分为 web 错误异常和React-native 错误异常
@@ -149,10 +149,10 @@ window.onerror = function() { // send format error var errInfo = format(argument
     
     <item>
       <title>译文:Understanding ASTs by Building Your Own Babel Plugin</title>
-      <link>https://t-tom.me/blog/2017-08-13-%E8%AF%91%E6%96%87understanding-asts-by-building-your-own-babel-plugin/</link>
+      <link>https://hasaki.xyz/blog/2017-08-13-%E8%AF%91%E6%96%87understanding-asts-by-building-your-own-babel-plugin/</link>
       <pubDate>Sun, 13 Aug 2017 15:29:40 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2017-08-13-%E8%AF%91%E6%96%87understanding-asts-by-building-your-own-babel-plugin/</guid>
+      <guid>https://hasaki.xyz/blog/2017-08-13-%E8%AF%91%E6%96%87understanding-asts-by-building-your-own-babel-plugin/</guid>
       <description>原文地址
 Language Overview  We want to design a plugin that will allow us to use regular object and array literals, which will be transformed into persistent data structures using Mori
  我们想要设计一个插件：它将允许我们通过使用常规对象和数值文本，可以使用Mori转化为持久性的数据结构。
@@ -163,10 +163,10 @@ var foo = { a: 1 }; var baz = foo.a = 2; foo.a === 1; baz.a === 2;   And transfo
     
     <item>
       <title>Mavic Pro 初见</title>
-      <link>https://t-tom.me/blog/2017-07-04-mavic-pro-%E8%AF%84%E6%B5%8B/</link>
+      <link>https://hasaki.xyz/blog/2017-07-04-mavic-pro-%E8%AF%84%E6%B5%8B/</link>
       <pubDate>Tue, 04 Jul 2017 15:29:40 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2017-07-04-mavic-pro-%E8%AF%84%E6%B5%8B/</guid>
+      <guid>https://hasaki.xyz/blog/2017-07-04-mavic-pro-%E8%AF%84%E6%B5%8B/</guid>
       <description>  早在今年2、3月份的时候，我就已经知道御姐Mavic Pro的存在了，当然是通过（万恶）的微信朋友圈，被安利、洗脑了一波，当时就很感兴趣，想买一个自己玩玩:haha:。
  下定决心要买 为什么会买呢，我也不知道，感觉是脑子一热吧
 最近刚换了一份新的工作，压力有点大，中午的时候无聊看了一下官网，晚上就直接叫着女朋友去了新天地的专卖店看了下，然后就直接剁手了。。。
@@ -194,10 +194,10 @@ Mavic pro 装上防撞翼：
     
     <item>
       <title>前端的10000个小时</title>
-      <link>https://t-tom.me/blog/2017-03-24-%E5%89%8D%E7%AB%AF%E7%9A%8410000%E4%B8%AA%E5%B0%8F%E6%97%B6/</link>
+      <link>https://hasaki.xyz/blog/2017-03-24-%E5%89%8D%E7%AB%AF%E7%9A%8410000%E4%B8%AA%E5%B0%8F%E6%97%B6/</link>
       <pubDate>Fri, 24 Mar 2017 15:29:40 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2017-03-24-%E5%89%8D%E7%AB%AF%E7%9A%8410000%E4%B8%AA%E5%B0%8F%E6%97%B6/</guid>
+      <guid>https://hasaki.xyz/blog/2017-03-24-%E5%89%8D%E7%AB%AF%E7%9A%8410000%E4%B8%AA%E5%B0%8F%E6%97%B6/</guid>
       <description>我又开始扯淡了
  本篇文章出自原文，深有感触，有删改。
  10000小时定律 著名的10000小时定律，我想大家都不陌生，『要成为某个领域的专家，需要10000小时』，这个定律来源于《异类》的作者，格拉德威尔。
@@ -220,10 +220,10 @@ Mavic pro 装上防撞翼：
     
     <item>
       <title>koa 源码简单解读</title>
-      <link>https://t-tom.me/blog/2016-09-03-koa%E6%BA%90%E7%A0%81%E7%AE%80%E5%8D%95%E8%A7%A3%E8%AF%BB/</link>
+      <link>https://hasaki.xyz/blog/2016-09-03-koa%E6%BA%90%E7%A0%81%E7%AE%80%E5%8D%95%E8%A7%A3%E8%AF%BB/</link>
       <pubDate>Sat, 03 Sep 2016 15:29:40 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2016-09-03-koa%E6%BA%90%E7%A0%81%E7%AE%80%E5%8D%95%E8%A7%A3%E8%AF%BB/</guid>
+      <guid>https://hasaki.xyz/blog/2016-09-03-koa%E6%BA%90%E7%A0%81%E7%AE%80%E5%8D%95%E8%A7%A3%E8%AF%BB/</guid>
       <description>Koa 是一个类似于 Express 的 Web开发框架，创始人也都是 TJ
 Koa 的主要特点是，使用了ES6 的 Generator 函数，进行了架构的重新设计。Koa 的原理和内部结构很像Express，但是语法和内部结构进行了升级，最近已经发布了2.x版本，我们来直接看一下2.x版本的koa
 创建 Koa 应用 我们可以按照官方的说明很简单的创建一个koa应用
@@ -239,10 +239,10 @@ listen() { debug(&#39;listen&#39;); const server = http.createServer(this.callba
     
     <item>
       <title>如何创建一个Node.js 的 Docker 开发环境</title>
-      <link>https://t-tom.me/blog/2016-06-22-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AAnode.js-%E7%9A%84-docker-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</link>
+      <link>https://hasaki.xyz/blog/2016-06-22-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AAnode.js-%E7%9A%84-docker-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</link>
       <pubDate>Wed, 22 Jun 2016 15:29:40 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2016-06-22-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AAnode.js-%E7%9A%84-docker-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</guid>
+      <guid>https://hasaki.xyz/blog/2016-06-22-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AAnode.js-%E7%9A%84-docker-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</guid>
       <description>本文以构建一个 Node.js Docker应用 为目标写的一个教程。当前操作系统环境 Mac OSX Sierra 10.12.4
  Docker介绍  Docker 是个划时代的开源项目，它彻底释放了计算虚拟化的威力，极大提高了应用的运行效率，降低了云计算资源供应的成本！ 使用 Docker，可以让应用的部署、测试和分发都变得前所未有的高效和轻松！
  Docker引擎的基础是Linuxring器(Linux Containers，LXC)技术。这个并不是一个新生的概念，很早前已经出现，比如操作系统上的chroot工具、以及Solaris Containers和FreeBSD jail等等，虽然这个技术非常成熟，然而这些工具使用起来非常不方便。Docker的出现解决了这些问题。
@@ -257,10 +257,10 @@ Docker的主要目标是Build ship and run any app,any where.</description>
     
     <item>
       <title>利用 Shadowsocksr 和云主机翻墙</title>
-      <link>https://t-tom.me/blog/2016-04-03-%E5%88%A9%E7%94%A8-shadowsocksr-%E5%92%8C%E4%BA%91%E4%B8%BB%E6%9C%BA%E7%BF%BB%E5%A2%99/</link>
+      <link>https://hasaki.xyz/blog/2016-04-03-%E5%88%A9%E7%94%A8-shadowsocksr-%E5%92%8C%E4%BA%91%E4%B8%BB%E6%9C%BA%E7%BF%BB%E5%A2%99/</link>
       <pubDate>Sun, 03 Apr 2016 15:29:40 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2016-04-03-%E5%88%A9%E7%94%A8-shadowsocksr-%E5%92%8C%E4%BA%91%E4%B8%BB%E6%9C%BA%E7%BF%BB%E5%A2%99/</guid>
+      <guid>https://hasaki.xyz/blog/2016-04-03-%E5%88%A9%E7%94%A8-shadowsocksr-%E5%92%8C%E4%BA%91%E4%B8%BB%E6%9C%BA%E7%BF%BB%E5%A2%99/</guid>
       <description>世界那么大，我想去看看，但是被墙了… 以前用的VPN，叫做什么green vpn，总体来说，还不错，但是最近老断，于是就搞了个新的法子。申请一台云主机，在上面搭一个Shadowsocks，然后就可以在所有客户端看 YouTube 了，当然，这所有的一切都是免费的。
  Shadowsocks已经河蟹，这里不再说ss，只说ssr：一个基于ss的新分支
  搭建Shadowsocksr服务器 首先需要搭建一台云主机，首先阿里云或者青云都是挺好的，但是都需要国外的主机，要不然怎么去翻墙，你也可以选择linecode、vultr、aws、azure、GCE（google）。这些大部分都有一年的免费期限，也会有免费赠送不定的体验金的福利。中间会要求绑定信用卡。

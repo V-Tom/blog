@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>React on TOM&#39;s zone</title>
-    <link>https://t-tom.me/tags/react/</link>
+    <link>https://hasaki.xyz/tags/react/</link>
     <description>Recent content in React on TOM&#39;s zone</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ZH-CN</language>
     <copyright>Early 2016 ~ 2018 &amp;copy; TOM&#39;s Zone</copyright>
     <lastBuildDate>Wed, 13 Dec 2017 15:29:40 +0800</lastBuildDate>
     
-	<atom:link href="https://t-tom.me/tags/react/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://hasaki.xyz/tags/react/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>React Native ART 介绍与实践</title>
-      <link>https://t-tom.me/blog/2017-12-13-react-native-art/</link>
+      <link>https://hasaki.xyz/blog/2017-12-13-react-native-art/</link>
       <pubDate>Wed, 13 Dec 2017 15:29:40 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2017-12-13-react-native-art/</guid>
+      <guid>https://hasaki.xyz/blog/2017-12-13-react-native-art/</guid>
       <description>React Native ART 由来 React-Art  是 Reactjs 团队基于 Art（一个兼容各个浏览器SVG绘制的API封装）开发的模块，让 React 开发者能使用 jsx 语法绘制 svg。
 React Native 团队分别在0.10.0和0.18.0也添加了iOS和Android平台对 react-art 的支持，官网文档至今对其只字未提。本文旨在介绍安静躺在 react-native/Libraries/ 里的ART，并展示一些实践结果。
 在React Native中ART是个非常重要的库，它让非常酷炫的绘图及动画变成了可能。但是可能是知道的人真的不多导致文档及少中文更少。很多都是把英文的参数列表翻译过来，也没有案例。
@@ -32,10 +32,10 @@ ART能干什么 俗话说，库如其名，背负着如此具有“艺术感”�
     
     <item>
       <title>React 模式，技巧，技巧和窍门</title>
-      <link>https://t-tom.me/blog/2017-11-02-react-%E6%A8%A1%E5%BC%8F%E6%8A%80%E5%B7%A7%E6%8A%80%E5%B7%A7%E5%92%8C%E7%AA%8D%E9%97%A8/</link>
+      <link>https://hasaki.xyz/blog/2017-11-02-react-%E6%A8%A1%E5%BC%8F%E6%8A%80%E5%B7%A7%E6%8A%80%E5%B7%A7%E5%92%8C%E7%AA%8D%E9%97%A8/</link>
       <pubDate>Thu, 02 Nov 2017 15:29:40 +0800</pubDate>
       
-      <guid>https://t-tom.me/blog/2017-11-02-react-%E6%A8%A1%E5%BC%8F%E6%8A%80%E5%B7%A7%E6%8A%80%E5%B7%A7%E5%92%8C%E7%AA%8D%E9%97%A8/</guid>
+      <guid>https://hasaki.xyz/blog/2017-11-02-react-%E6%A8%A1%E5%BC%8F%E6%8A%80%E5%B7%A7%E6%8A%80%E5%B7%A7%E5%92%8C%E7%AA%8D%E9%97%A8/</guid>
       <description>这篇文章整理了学习 React 过程中以及实际开发应用当中一些模式，技巧，技巧和窍门。
 大部门内容是基于 React 框架下面产生的一些内容，有很大的局限性，但是确实带来了新的理念和开发方式，仁者见仁智者见智，多学习一点内容总归对职业生涯有好处。
  本篇文章还在持续更新中，如果有错误烦请指正。
