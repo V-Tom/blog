@@ -139,6 +139,8 @@ curl cip.cc
 
 <p>目前我看过的一些版本都是 go 语言的实现，由于 ssr 并没有写全如何调用，所有手动解码 socket 转发到 ssr 上了</p>
 
+<p>相关 go 代码如下：</p>
+
 <pre><code class="language-go">
 package main
 
@@ -362,6 +364,13 @@ func (bi *BackendInfo) Pipe(src, dst net.Conn) error {
 	return nil
 }
 
+</code></pre>
+
+<p>接下来添加 bash alias 就可以了：</p>
+
+<pre><code class="language-bash">alias ssr=&quot;go run ${你的 go main 文件地址} &amp;&quot;
+alias ssr-on=&quot;networksetup -setsocksfirewallproxy &quot;Wi-Fi&quot; localhost 8082&quot;
+alias ssr-off=&quot;networksetup -setsocksfirewallproxy &quot;Wi-Fi&quot; '' &quot;
 </code></pre>
 
 <h4 id="reference-1">reference</h4>
