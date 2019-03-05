@@ -44,6 +44,8 @@ ssr 和 ss 本质上是一些加密算法协议，所以除了官方提供的源
 
 目前我看过的一些版本都是 go 语言的实现，由于 ssr 并没有写全如何调用，所有手动解码 socket 转发到 ssr 上了
 
+相关 go 代码如下：
+
 ``` go
 
 package main
@@ -270,6 +272,14 @@ func (bi *BackendInfo) Pipe(src, dst net.Conn) error {
 
 ```
 
+接下来添加 bash alias 就可以了：
+
+``` bash
+alias ssr="go run ${你的 go main 文件地址} &"
+alias ssr-on="networksetup -setsocksfirewallproxy "Wi-Fi" localhost 8082"
+alias ssr-off="networksetup -setsocksfirewallproxy "Wi-Fi" '' "
+```
+
 #### reference
 
 - [ss](https://github.com/shadowsocks/shadowsocks-go)
@@ -290,4 +300,4 @@ no-store 才是真正的不进行缓存，正常情况下只会返回 200
 
 #### reference
 
-- [图解Http缓存控制之max-age=0、no-cache、no-store区别](https://zhuanlan.zhihu.com/p/55623075)
+- [缓存（二）——浏览器缓存机制：强缓存、协商缓存](https://github.com/amandakelake/blog/issues/41)
