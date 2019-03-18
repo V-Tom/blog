@@ -4,6 +4,7 @@ subTitle: "RN性能检测和错误捕捉"
 banner: "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=="
 tags: ["RN","FrontEnd","Monitor"]
 date: 2017-09-12T15:29:40+08:00
+host: "https://github.com/V-Tom/blog/blob/hugo/content/blog/2017-09-12-RN%E6%80%A7%E8%83%BD%E6%A3%80%E6%B5%8B%E5%92%8C%E9%94%99%E8%AF%AF%E6%8D%95%E6%8D%89/index.md"
 ---
 
 在复杂的网络环境和浏览器环境下，自测、QA测试以及 Code Review 都是不够的，如果对页面稳定性和准确性要求较高，就必须有一套完善的代码异常监控体系好的产品，这样才能很好的得到用户的反馈从而不断的迭代改进我们的产品。

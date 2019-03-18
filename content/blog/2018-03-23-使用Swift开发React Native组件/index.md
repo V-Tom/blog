@@ -3,6 +3,7 @@ title: "使用Swift开发React Native组件"
 tags: ["Native","FrontEnd","RN"]
 description: "使用Swift开发React Native组件"
 date: 2018-03-23T14:28:25+08:00
+host: "https://github.com/V-Tom/blog/blob/hugo/content/blog/2018-03-23-%E4%BD%BF%E7%94%A8Swift%E5%BC%80%E5%8F%91React%20Native%E7%BB%84%E4%BB%B6/index.md"
 ---
 
 > 本人只是一个前端，偶尔写一点其他语言来拓展开发技能。

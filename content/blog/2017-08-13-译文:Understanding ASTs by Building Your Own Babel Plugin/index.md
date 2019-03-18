@@ -5,6 +5,7 @@ summary: "译文:Understanding ASTs by Building Your Own Babel Plugin"
 banner: "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=="
 tags: ["FrontEnd","AST","Babel"]
 date: 2017-08-13T15:29:40+08:00
+host: "https://github.com/V-Tom/blog/blob/hugo/content/blog/2017-08-13-%E8%AF%91%E6%96%87%3AUnderstanding%20ASTs%20by%20Building%20Your%20Own%20Babel%20Plugin/index.md"
 ---
 
 [原文地址](https://www.sitepoint.com/understanding-asts-building-babel-plugin/)

@@ -5,6 +5,7 @@ summary: "前端的10000个小时"
 banner: "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=="
 tags: ["FrontEnd","扯淡"]
 date: 2017-03-24T15:29:40+08:00
+host: "https://github.com/V-Tom/blog/blob/hugo/content/blog/2017-03-24-%E5%89%8D%E7%AB%AF%E7%9A%8410000%E4%B8%AA%E5%B0%8F%E6%97%B6/index.md"
 ---
 
 我又开始扯淡了

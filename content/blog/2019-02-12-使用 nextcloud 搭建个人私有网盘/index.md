@@ -3,6 +3,7 @@ title: "使用 nextcloud 搭建个人私有网盘"
 subTitle: "使用 nextcloud 搭建个人私有网盘"
 tags: ["Docker","折腾"]
 date: 2019-02-12T10:58:40+08:00
+host: "https://github.com/V-Tom/blog/blob/hugo/content/blog/2019-02-12-%E4%BD%BF%E7%94%A8%20nextcloud%20%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%A7%81%E6%9C%89%E7%BD%91%E7%9B%98/index.md"
 ---
 
 国内各大云网盘要么限速要么需要充值 vip 、超级 vip、超超级 vip。

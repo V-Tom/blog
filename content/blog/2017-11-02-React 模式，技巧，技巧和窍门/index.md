@@ -4,6 +4,7 @@ subTitle: "React 模式，技巧，技巧和窍门"
 banner: "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=="
 tags: ["React","FrontEnd"]
 date: 2017-11-02T15:29:40+08:00
+host: "https://github.com/V-Tom/blog/blob/hugo/content/blog/2017-11-02-React%20%E6%A8%A1%E5%BC%8F%EF%BC%8C%E6%8A%80%E5%B7%A7%EF%BC%8C%E6%8A%80%E5%B7%A7%E5%92%8C%E7%AA%8D%E9%97%A8/index.md"
 ---
 
 这篇文章整理了学习 `React` 过程中以及实际开发应用当中一些模式，技巧，技巧和窍门。

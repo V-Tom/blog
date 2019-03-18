@@ -2,6 +2,7 @@
 title: "learn Data Structure"
 tags: ["DataStructure"]
 description: "Data Structure"
+host: "https://github.com/V-Tom/blog/blob/hugo/content/blog/DataStructure/index.md"
 date: 2018-05-23T12:33:21+08:00
 ---
 
@@ -983,3 +984,159 @@ class CricleQueue {
 ### Tree
 
 树是一种非线性结构，树与线性表的逻辑关系不同。
+
+树的遍历是树的一种重要的运算。所谓遍历是指对树中所有结点的信息的访问，即依次对树中每个结点访问一次且仅访问一次，我们把这种对所有节点的访问称为遍历（traversal）
+
+树的两种重要的遍历模式是：
+
+- 深度优先遍历
+- 广度优先遍历
+
+#### 深度优先遍历
+
+对于一颗二叉树，深度优先搜索(Depth First Search)是沿着树的深度遍历树的节点，尽可能深的搜索树的分支。
+
+简单的深度优先遍历可以采用数据结构 `Stack` 来辅助进行实现：
+
+```js
+
+/**
+ * DeepFirstTraversal
+ * @param node
+ * @constructor
+ */
+function DeepFirstTraversal(node) {
+
+  if (!node) {
+    return
+  }
+
+  const stack = new Stack()
+
+  stack.push(node)
+
+  while (!stack.isEmpty()) {
+
+    const node = stack.pop()
+
+    console.log(`traversal node value is ${node.value}`)
+
+    if (node.left) stack.push(node.left)
+
+    if (stack.right) stack.push(node.right)
+  }
+
+}
+
+```
+
+深度遍历有重要的三种方法。这三种方式常被用于访问树的节点，它们之间的不同在于访问每个节点的次序不同。这三种遍历分别叫做：
+
+- 先序遍历（preorder
+- 中序遍历（inorder）
+- 后序遍历（postorder）
+
+上诉通过 `Stack` 数据结构进行的简单实现就是 **先序遍历**
+
+可以通过改变 `console.log(`traversal node value is ${node.value}`)` 的顺序来实现三种遍历方式。
+
+下面继续介绍递归方式实现。
+
+#### 递归先序遍历
+
+根节点->左子树->右子树
+
+```js
+
+/**
+ * 递归先序遍历
+ * @param node
+ * @constructor
+ */
+function PreorderTravelBinarynode(node) {
+
+    console.log(node.value)
+
+    PreorderTravelBinarynode(node.left)
+
+    PreorderTravelBinarynode(node.right)
+
+}
+
+```
+
+##### 递归中序遍历
+
+左子树->根节点->右子树
+
+```js
+
+/**
+ * 递归中序遍历
+ * @param node
+ * @constructor
+ */
+function MiddleorderTraversal(node) {
+    MiddleorderTraversal(node.left)
+    console.log(node.value)
+    MiddleorderTraversal(node.right)
+}
+
+```
+
+##### 递归后序遍历
+
+左子树->右子树->根节点
+
+```js
+
+/**
+ * 递归后序遍历
+ * @param node
+ * @constructor
+ */
+function PostorderTraversal(node) {
+    PostorderTraversal(node.left)
+    PostorderTraversal(node.right)
+    console.log(node.value)
+}
+
+```
+
+##### 广度优先遍历
+
+从树的root开始，从上到下从从左到右遍历整个树的节点
+
+广度优先遍历可以通过数据结构 `Queue` 来辅助进行实现：
+
+```js
+
+/**
+ * breadthFirstSearch
+ * queue
+ * @param Node
+ */
+function breadthFirstSearch(Node) {
+
+    console.log(Node.value)
+
+    const queue = []
+    queue.push(Node)
+
+    while (queue.length > 0) {
+
+        const currentNode = queue.shift()
+
+        if (currentNode.left) {
+            console.log(currentNode.left.value)
+            queue.push(currentNode.left)
+        }
+
+        if (currentNode.right) {
+            console.log(currentNode.right.value)
+            queue.push(currentNode.right)
+        }
+    }
+}
+
+```

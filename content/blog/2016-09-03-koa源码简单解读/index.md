@@ -4,6 +4,7 @@ subTitle: "koa 源码简单解读"
 banner: "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=="
 tags: ["Node.js","BackEnd"]
 date: 2016-09-03T15:29:40+08:00
+host: "https://github.com/V-Tom/blog/blob/hugo/content/blog/2016-09-03-koa%E6%BA%90%E7%A0%81%E7%AE%80%E5%8D%95%E8%A7%A3%E8%AF%BB/index.md"
 ---
 
 [Koa](https://github.com/koajs/koa) 是一个类似于 [Express](https://expressjs.com/) 的 `Web`开发框架，创始人也都是 TJ

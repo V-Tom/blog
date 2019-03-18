@@ -4,6 +4,7 @@ subTitle: "React Native ART 介绍与实践"
 summary: "React Native ART 介绍与实践"
 tags: ["React","FrontEnd","RN","D3"]
 date: 2017-12-13T15:29:40+08:00
+host: "https://github.com/V-Tom/blog/blob/hugo/content/blog/2017-12-13-React%20Native%20ART/index.md"
 ---
 
 ### React Native ART 由来

@@ -3,6 +3,7 @@ title: "sandbox of javascript"
 tags: ["javascript","web","Node.js"]
 description: "javascript 沙箱"
 date: 2018-04-21T17:43:01+08:00
+host: "https://github.com/V-Tom/blog/blob/hugo/content/blog/2018-04-21-javascript%E6%B2%99%E7%AE%B1/index.md"
 ---
 
 在一些业务场景当中，我们提供给用户插入自定义逻辑的能力，类似于沙盒、沙箱，允许执行自定义代码，产生的变化可以随后随时删除。

@@ -5,6 +5,7 @@ summary: "大疆无人机 Mavic Pro"
 banner: "./TWF2aWMgcHJvIOWuo+S8oOWbvueJhw==.png"
 tags: ["Mavic Pro","Player"]
 date: 2017-07-04T15:29:40+08:00
+host: "https://github.com/V-Tom/blog/blob/hugo/content/blog/2017-07-04-Mavic%20Pro%20%E8%AF%84%E6%B5%8B/index.md"
 ---
 
 > 早在今年2、3月份的时候，我就已经知道御姐Mavic Pro的存在了，当然是通过（万恶）的微信朋友圈，被安利、洗脑了一波，当时就很感兴趣，想买一个自己玩玩:haha:。

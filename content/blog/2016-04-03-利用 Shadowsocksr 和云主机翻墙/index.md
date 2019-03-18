@@ -4,6 +4,7 @@ subTitle: "利用 Shadowsocksr 和云主机翻墙"
 banner: "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=="
 tags: ["Shadowsocksr","vps"]
 date: 2016-04-03T15:29:40+08:00
+host: "https://github.com/V-Tom/blog/blob/hugo/content/blog/2016-04-03-%E5%88%A9%E7%94%A8%20Shadowsocksr%20%E5%92%8C%E4%BA%91%E4%B8%BB%E6%9C%BA%E7%BF%BB%E5%A2%99/index.md"
 ---
 
 世界那么大，我想去看看，但是被墙了…

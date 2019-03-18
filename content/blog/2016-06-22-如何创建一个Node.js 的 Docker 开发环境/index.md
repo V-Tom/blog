@@ -4,6 +4,7 @@ subTitle: "如何创建一个Node.js 的 Docker 开发环境"
 banner: "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=="
 tags: ["Node.js","Docker","Cluster"]
 date: 2016-06-22T15:29:40+08:00
+host: "https://github.com/V-Tom/blog/blob/hugo/content/blog/2016-06-22-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AANode.js%20%E7%9A%84%20Docker%20%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/index.md"
 ---
 
 > 本文以构建一个 Node.js Docker应用 为目标写的一个教程。当前操作系统环境 Mac OSX Sierra 10.12.4

@@ -15,16 +15,21 @@
 		<span class="no-print">
 			{{ with .Params.tags -}}
 			-
-				{{ range . }}
-				<a href="/tags/{{. | urlize | lower }}">{{.}}</a>
-				{{ end }}
+			{{ range . }}
+			<a href="/tags/{{. | urlize | lower }}">{{.}}</a>
+			{{ end }}
 			{{- end -}}
 			{{- with .Params.workURL -}}
 			-
 			<a href="{{.}}">{{ T "workHomepage" }}</a>
 			{{- end -}}
-		<span>
+		</span>
 	</h5>
+
+	{{ if .Params.host }}
+	<a style="margin-top: 1.2rem;display: inline-block;" href="{{ .Params.host | default "null" }}">✨✨✨You can Edit this Article on Github</a>
+	{{ end }}
+	
 	<!-- Taxonomy Page -->
 	{{- else if eq .Kind "taxonomy" -}}
 	<h5>{{ .Data.Singular | title }}:</h5>
