@@ -311,8 +311,10 @@ python server.py -p 443 -k password -m aes-256-cfb -O auth_sha1_v4 -o http è¯´æ˜
 <script rel="catalog">
     void function () {
         
-        
-        
+        if (window.innerWidth < 1024 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+            return
+        }
+
         const Catalog = (function () {
             return function (opts) {
                 let defaultOpts = {

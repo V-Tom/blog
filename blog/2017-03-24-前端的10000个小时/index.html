@@ -292,8 +292,10 @@
 <script rel="catalog">
     void function () {
         
-        
-        
+        if (window.innerWidth < 1024 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+            return
+        }
+
         const Catalog = (function () {
             return function (opts) {
                 let defaultOpts = {
