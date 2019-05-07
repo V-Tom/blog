@@ -49,6 +49,8 @@ host: "https://github.com/V-Tom/blog/blob/hugo/content/blog/2017-11-02-React%20%
 - Redux saga
 - Recompose
 
+> 最后强烈建议推荐这个：[List of top 301 ReactJS Interview Questions & Answers](https://github.com/semlinker/reactjs-interview-questions)
+
 ### Pure Render Checks
 
 ```Jsx
@@ -423,3 +425,4 @@ React 内置了一些 hook，如 `useState` 当然也可以创建自定义的 `H
 - [github rehooks](https://github.com/rehooks)
 - [github awesome react hoos list](https://github.com/rehooks/awesome-react-hooks)
 - [github react hooks todo app](https://github.com/f/react-hooks-todo-app)
+- [List of top 301 ReactJS Interview Questions & Answers](https://github.com/semlinker/reactjs-interview-questions)
