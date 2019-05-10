@@ -33,7 +33,7 @@
     <item>
       <title>Backend</title>
       <link>https://hasaki.xyz/tags/backend/</link>
-      <pubDate>Thu, 08 Feb 2018 14:22:25 +0800</pubDate>
+      <pubDate>Mon, 04 Mar 2019 11:32:40 +0800</pubDate>
       
       <guid>https://hasaki.xyz/tags/backend/</guid>
       <description></description>
@@ -69,7 +69,7 @@
     <item>
       <title>Docker</title>
       <link>https://hasaki.xyz/tags/docker/</link>
-      <pubDate>Tue, 12 Feb 2019 10:58:40 +0800</pubDate>
+      <pubDate>Mon, 04 Mar 2019 11:32:40 +0800</pubDate>
       
       <guid>https://hasaki.xyz/tags/docker/</guid>
       <description></description>
@@ -81,6 +81,15 @@
       <pubDate>Fri, 23 Mar 2018 14:28:25 +0800</pubDate>
       
       <guid>https://hasaki.xyz/tags/frontend/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Golang</title>
+      <link>https://hasaki.xyz/tags/golang/</link>
+      <pubDate>Mon, 04 Mar 2019 11:32:40 +0800</pubDate>
+      
+      <guid>https://hasaki.xyz/tags/golang/</guid>
       <description></description>
     </item>
     

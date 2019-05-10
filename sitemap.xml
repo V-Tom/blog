@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://hasaki.xyz/blog/2019-03-04-grpc-%E6%B5%85%E8%B0%88%E4%B8%8E%E5%AE%9E%E8%B7%B5/</loc>
+    <lastmod>2019-03-04T11:32:40+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://hasaki.xyz/blog/2019-02-12-%E4%BD%BF%E7%94%A8-nextcloud-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%A7%81%E6%9C%89%E7%BD%91%E7%9B%98/</loc>
     <lastmod>2019-02-12T10:58:40+08:00</lastmod>
   </url>
@@ -96,13 +101,13 @@
   
   <url>
     <loc>https://hasaki.xyz/tags/backend/</loc>
-    <lastmod>2018-02-08T14:22:25+08:00</lastmod>
+    <lastmod>2019-03-04T11:32:40+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://hasaki.xyz/blog/</loc>
-    <lastmod>2019-02-12T10:58:40+08:00</lastmod>
+    <lastmod>2019-03-04T11:32:40+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -126,13 +131,19 @@
   
   <url>
     <loc>https://hasaki.xyz/tags/docker/</loc>
-    <lastmod>2019-02-12T10:58:40+08:00</lastmod>
+    <lastmod>2019-03-04T11:32:40+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://hasaki.xyz/tags/frontend/</loc>
     <lastmod>2018-03-23T14:28:25+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://hasaki.xyz/tags/golang/</loc>
+    <lastmod>2019-03-04T11:32:40+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -198,7 +209,7 @@
   
   <url>
     <loc>https://hasaki.xyz/</loc>
-    <lastmod>2019-02-12T10:58:40+08:00</lastmod>
+    <lastmod>2019-03-04T11:32:40+08:00</lastmod>
     <priority>0</priority>
   </url>
   

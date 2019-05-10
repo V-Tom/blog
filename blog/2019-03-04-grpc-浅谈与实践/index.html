@@ -14,22 +14,17 @@
     <link rel="dns-prefetch" href="https://hasaki.xyz">
     <link rel="preconnect" href="https://hasaki.xyz">
     <link rel="manifest" href="/sw/manifest.json"/>
-<title>使用 nextcloud 搭建个人私有网盘 - TOM&#39;s zone</title>
+<title>gRPC 浅谈与实践 - TOM&#39;s zone</title>
 
-<meta name="description" content="国内各大云网盘要么限速要么需要充值 vip 、超级 vip、超超级 vip。
-国外的一些优质云网盘如 google drive 和 one drive 等由于和谐因素又无法顺利的访问。
-本来想买个 nas ，看到价格和组 raid 的成本放弃了。
-刚好我有一台新组装的主机电脑，平时也是偶尔开着，所以特意买了个 2t 的希捷数据盘，准备搭建一套私有云的环境给家庭用。
-开源云盘选择  其实在搭建之前，考虑过自己写一个简单的文件系统上传预览，后来发现需要考虑的问题太多卒🤣
- 搭建前我仔细看了一下各个开源私有云盘的实现，有以下几种：
- owncloud sealife nextcloud  对这几家比较了以下，考虑了以下因素：
- 开源且免费，可以自定义插件开发 全客户端的支持，免费更好，ui 视觉还能过得去 支持外挂磁盘，可以随时更改，不需要分块、加密和过多的文件控制、权限控制等等，简单就好 部署难度，vm 还行，最好可以 Docker  最终我选择了 nextcloud，至于更多的详细差异，大家可以根据需求选择。
-内网穿透 由于家里的电信没有外网 ip ，打电话给运营商也无济于事，只能选择内网穿透。
-内网穿透选择了很多办法：
- 根据开源实现自己部署到一台公共可访问的服务器上，比如：frp、ngrok等等 使用现有的内网穿透服务商，比如：花生壳、natapp 等等  最终我选择了 natapp 免费使用版
-开始搭建 我个人的网盘需求只是偶尔让我爸妈把照片上传到我的主机上。
-对性能、速度、可持续性都没有太高的要求，所以很多条件都可以简化，只要保证数据完整性就可以了。
-首先在 Windows 上安装所需要的环境： Docker 、Python 等。并且在 E 盘下创建了特定的 nas 文件夹来作为 nextcloud 的目录。">
+<meta name="description" content="由于不同的环境下面的例子可能会存在一些误差，下面列出本机环境：
+ Docker -v ：Docker version 18.09.1, build 4c52b90 docker-compose -v ：docker-compose version 1.23.2, build 1110ad01 go version : go version go1.12.4 darwin/amd64 system_profiler SPSoftwareDataType : macOS 10.14.3 (18D42) Darwin 18.2.0 IDE golang latest  RPC what&rsquo;s RPC RPC 全名为 Remote procedure call ,直译过来就是 远程过程调用 ，也就是说两台服务器A，B，一个应用部署在A服务器上，想要调用B服务器上应用提供的函数/方法，由于不在一个内存空间，不能直接调用，需要通过网络来表达调用的语义和传达调用的数据。
+调用的基本流程可以看下图：
+RPC 的协议可以简单分成两大类。
+一类是通讯层协议，通讯层协议一般是和业务无关的，它的职责是将业务数据打包后，安全、完整的传输给接受方，HSF、Dubbo、gRPC 这些都是属于通讯层协议。
+另一类是应用层协议。约定业务数据和二进制串的转换规则，常见的应用层协议有 Hessian，Protobuf，JSON。
+why RPC 为什么RPC呢？就是无法在一个进程内，甚至一个计算机内通过本地调用的方式完成的需求，比如比如不同的系统间的通讯，甚至不同的组织间的通讯。由于计算能力需要横向扩展，需要在多台机器组成的集群上部署应用，
+http vs RPC HTTP 调用其实也是一种特殊的 RPC 。RPC 可以基于 HTTP 协议实现，也可以直接在 TCP 协议上实现。
+ HTTP 与 RPC 的关系就好比普通话与方言的关系，普通话效率不高，废话较多，但是胜在通用。方言用的人少，短小精炼，理解起来也较为困难（保密性好），效率高。">
 
 
 
@@ -96,21 +91,21 @@
 
 <article>
     <header><hgroup id="brand">
-	<h1>使用 nextcloud 搭建个人私有网盘</h1>
+	<h1>gRPC 浅谈与实践</h1>
 	<h5>
 		
-		<time datetime="2019-02-12 10:58:40 &#43;0800 CST">Feb 12, 2019</time>
+		<time datetime="2019-03-04 11:32:40 &#43;0800 CST">Mar 04, 2019</time>
 		<span class="no-print">
 			-
 			
 			<a href="/tags/docker">Docker</a>
 			
-			<a href="/tags/%e6%8a%98%e8%85%be">折腾</a>
+			<a href="/tags/golang">Golang</a>
+			
+			<a href="/tags/backend">BackEnd</a>
 			</span>
 	</h5>
 
-	
-	<a style="margin-top: 1.2rem;display: inline-block;" href="https://github.com/V-Tom/blog/blob/hugo/content/blog/2019-02-12-%E4%BD%BF%E7%94%A8%20nextcloud%20%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%A7%81%E6%9C%89%E7%BD%91%E7%9B%98/index.md">✨✨✨You can Edit this Article on Github</a>
 	
 	
 	
@@ -119,99 +114,238 @@
     <section id="markdown">
         
 
-<p>国内各大云网盘要么限速要么需要充值 vip 、超级 vip、超超级 vip。</p>
+<p>由于不同的环境下面的例子可能会存在一些误差，下面列出本机环境：</p>
 
-<p>国外的一些优质云网盘如 <code>google drive</code> 和 <code>one drive</code> 等由于和谐因素又无法顺利的访问。</p>
+<ul>
+<li><code>Docker -v</code> ：Docker version 18.09.1, build 4c52b90</li>
+<li><code>docker-compose -v</code> ：docker-compose version 1.23.2, build 1110ad01</li>
+<li><code>go version</code> : go version go1.12.4 darwin/amd64</li>
+<li><code>system_profiler SPSoftwareDataType</code> : macOS 10.14.3 (18D42) Darwin 18.2.0</li>
+<li>IDE golang latest</li>
+</ul>
 
-<p>本来想买个 <code>nas</code> ，看到价格和组 <code>raid</code> 的成本放弃了。</p>
+<h2 id="rpc">RPC</h2>
 
-<p>刚好我有一台新组装的主机电脑，平时也是偶尔开着，所以特意买了个 <code>2t</code> 的希捷数据盘，准备搭建一套私有云的环境给家庭用。</p>
+<h3 id="what-s-rpc">what&rsquo;s RPC</h3>
 
-<h3 id="开源云盘选择">开源云盘选择</h3>
+<p>RPC 全名为 <code>Remote procedure call</code> ,直译过来就是 <strong>远程过程调用</strong> ，也就是说两台服务器A，B，一个应用部署在A服务器上，想要调用B服务器上应用提供的函数/方法，由于不在一个内存空间，不能直接调用，需要通过网络来表达调用的语义和传达调用的数据。</p>
+
+<p>调用的基本流程可以看下图：</p>
+
+<p><img src="./rpc-process.png" alt="rpc-process.png" /></p>
+
+<p>RPC 的协议可以简单分成两大类。</p>
+
+<p>一类是通讯层协议，通讯层协议一般是和业务无关的，它的职责是将业务数据打包后，安全、完整的传输给接受方，HSF、Dubbo、gRPC 这些都是属于通讯层协议。</p>
+
+<p>另一类是应用层协议。约定业务数据和二进制串的转换规则，常见的应用层协议有 Hessian，Protobuf，JSON。</p>
+
+<h3 id="why-rpc">why RPC</h3>
+
+<p>为什么RPC呢？就是无法在一个进程内，甚至一个计算机内通过本地调用的方式完成的需求，比如比如不同的系统间的通讯，甚至不同的组织间的通讯。由于计算能力需要横向扩展，需要在多台机器组成的集群上部署应用，</p>
+
+<h3 id="http-vs-rpc">http vs RPC</h3>
+
+<p>HTTP 调用其实也是一种特殊的 RPC 。RPC 可以基于 HTTP 协议实现，也可以直接在 TCP 协议上实现。</p>
 
 <blockquote>
-<p>其实在搭建之前，考虑过自己写一个简单的文件系统上传预览，后来发现需要考虑的问题太多卒🤣</p>
+<p>HTTP 与 RPC 的关系就好比普通话与方言的关系，普通话效率不高，废话较多，但是胜在通用。方言用的人少，短小精炼，理解起来也较为困难（保密性好），效率高。</p>
 </blockquote>
 
-<p>搭建前我仔细看了一下各个开源私有云盘的实现，有以下几种：</p>
+<p>HTTP1.0 协议时，HTTP 调用还只能是短链接调用，一个请求来回之后连接就会关闭。HTTP1.1 在 HTTP1.0 协议的基础上进行了改进，引入了 <code>KeepAlive</code> 特性可以保持 HTTP 连接长时间不断开，以便在同一个连接之上进行多次连续的请求，进一步拉近了 HTTP 和 RPC 之间的距离。</p>
+
+<p>但是 HTTP 还是存在很多硬伤，比如通用定义的 http1.1协议的 TCP 报文包含太多废信息、序列化效率不高，以及三次握手四次挥手带来的 RTT 延迟，以及 <code>Head of line blocking</code> 、服务端推送 等等。注定了在高性能要求的下，不适合用做线上分布式服务之间互相使用的通信协议。</p>
+
+<p>当 HTTP 协议进化到 2.0 之后，Google 开源了一个建立在 HTTP2.0 协议之上的通信框架直接取名为 gRPC，也就是 Google RPC，这个 gRPC 也就是本文将要详细介绍的通信框架。</p>
+
+<blockquote>
+<p>需要注意的是，gRPC 由于协议还是基于 HTTP 2，HTTP 2 实际上也没有全部解决 HTTP 1 版本的问题，要不然就不会有 QUIC（HTTP3），只是在取舍之间选择了 HTTP 2 作为底层协议再封装 服务发现、 负载均衡 等高级 RPC 特征，这个具体会在下文详细分析</p>
+</blockquote>
+
+<h3 id="advantage-and-disadvantage">advantage and disadvantage</h3>
+
+<p>个人简单的理解，RPC 的好处是：</p>
 
 <ul>
-<li>owncloud</li>
-<li>sealife</li>
-<li>nextcloud</li>
+<li>精炼、效率高</li>
+<li>保密性强</li>
 </ul>
 
-<p>对这几家比较了以下，考虑了以下因素：</p>
+<p>RPC 的坏处是：</p>
 
 <ul>
-<li>开源且免费，可以自定义插件开发</li>
-<li>全客户端的支持，免费更好，ui 视觉还能过得去</li>
-<li>支持外挂磁盘，可以随时更改，不需要分块、加密和过多的文件控制、权限控制等等，简单就好</li>
-<li>部署难度，vm 还行，最好可以 Docker</li>
+<li>通用型通用较差</li>
+<li>可移植性差</li>
 </ul>
 
-<p>最终我选择了 <code>nextcloud</code>，至于更多的详细差异，大家可以根据需求选择。</p>
+<h2 id="node-rpc">Node-RPC</h2>
 
-<h3 id="内网穿透">内网穿透</h3>
+<h3 id="simple-implements-by-node">simple implements by Node</h3>
 
-<p>由于家里的电信没有外网 ip ，打电话给运营商也无济于事，只能选择内网穿透。</p>
+<h3 id="further">further</h3>
 
-<p>内网穿透选择了很多办法：</p>
+<h2 id="grpc">gRPC</h2>
+
+<p>gRPC 采用 HTTP 2 作为通信层协议。</p>
+
+<h3 id="what-s-grpc-and-why">what&rsquo;s gRPC and why</h3>
+
+<p>gRPC 是 google 开源的高性能跨语言的 RPC 方案。gRPC 的设计目标是在任何环境下运行，默认使用 protobuf 作为 接口描述语言 (IDL interface description language) 及底层消息通信格式。</p>
+
+<p>支持可插拔的负载均衡，跟踪，运行状况检查和身份验证。</p>
+
+<p>它不仅支持数据中心内部和跨数据中心的服务调用，它也适用于分布式计算的最后一公里，将设备，移动应用程序和浏览器连接到后端服务。</p>
+
+<p>可以看这篇文章<a href="https://grpc.io/blog/principles/">gRPC动机和设计原则</a></p>
+
+<p>很多主流库以及设施已经在使用 gRPC，比如 k8s</p>
+
+<p>在人工智能领域，RPC 也很重要，著名的 TensorFlow 框架如果需要处理上亿的数据，就需要依靠分布式计算力，需要集群化，当多个分布式节点需要集体智慧时，就必须引入 RPC 技术进行通讯。Tensorflow Cluster 的 RPC 通讯框架使用了 Google 内部自研的 gRPC 框架。</p>
+
+<h3 id="protobuf">protobuf</h3>
+
+<p>protobuf 是谷歌推出的一种轻便高效的结构化数据存储格式，把结构化的数据序列化。常用以存储数据、作为网络通信的数据载体。具有提供多种编程语言的 API、跨平台和可扩展的特性。比 JSON 和 XML 更小、解析速度更快、更易于程序员上手。</p>
+
+<p>gRPC 采用 Protobuf 作为应用层协议。</p>
+
+<p><a href="https://developers.google.com/protocol-buffers/">Protobuf</a> 是谷歌提出来的数据交换协议，使用方式可以查看对应文档各个语言的 tutorial 。</p>
+
+<p>你需要在这里下载 <code>protoc binary file</code> 并确保可执行文件在 <code>PATH</code> 当中 : <a href="https://github.com/protocolbuffers/protobuf/releases">protobuf</a></p>
+
+<p>或者也可以通过下面方式安装，默认装在了 <code>$GOPATH/bin</code> 之下，所以也要确保这个目录在 <code>PATH</code> 下：</p>
+
+<pre><code class="language-sh">go get -u github.com/golang/protobuf/protoc-gen-go
+</code></pre>
+
+<h3 id="grpc-web">gRPC web</h3>
+
+<p>准确来说 gRPC 设计上是分层的，底层支持不同的协议，目前gRPC支持：</p>
 
 <ul>
-<li>根据开源实现自己部署到一台公共可访问的服务器上，比如：frp、ngrok等等</li>
-<li>使用现有的内网穿透服务商，比如：花生壳、natapp 等等</li>
+<li><p><a href="https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-HTTP2.md">gRPC over HTTP2</a></p></li>
+
+<li><p><a href="https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-WEB.md">gRPC Web</a></p></li>
 </ul>
 
-<p>最终我选择了 natapp 免费使用版</p>
+<p>由于我们是在 web 环境当中测试，所以需要额外下载对应的插件：<a href="https://github.com/grpc/grpc-web/releases">protoc-gen-grpc-web</a></p>
 
-<h3 id="开始搭建">开始搭建</h3>
+<h3 id="protoc">protoc</h3>
 
-<p>我个人的网盘需求只是偶尔让我爸妈把照片上传到我的主机上。</p>
+<h3 id="advantage-and-disadvantage-1">advantage and disadvantage</h3>
 
-<p>对性能、速度、可持续性都没有太高的要求，所以很多条件都可以简化，只要保证数据完整性就可以了。</p>
+<h3 id="who-use-it">who use it</h3>
 
-<p>首先在 Windows 上安装所需要的环境： <code>Docker</code> 、<code>Python</code> 等。并且在 <code>E</code> 盘下创建了特定的 <code>nas</code> 文件夹来作为 <code>nextcloud</code> 的目录。</p>
+<h2 id="envoy-proxy">envoy proxy</h2>
 
-<h3 id="配置-docker">配置 Docker</h3>
+<h3 id="what-s-envoy">what&rsquo;s envoy</h3>
 
-<p>创建 <code>docker-compose.yml</code> 文件来配置 <code>Docker</code> ：</p>
+<h3 id="how-and-why">how and why</h3>
 
-<pre><code class="language-yaml">
-version: '2'
+<h2 id="grpc-golang">gRPC golang</h2>
 
-volumes:
-  data:
-  config:
-  apps:
+<h3 id="why-golang">why golang</h3>
 
-services:
+<h3 id="how-implements-use-golang">how implements use golang</h3>
 
-  app:
-    image: nextcloud
-    ports:
-      - 8080:80
-    volumes:
-      - ./data:/var/www/html/data
-      - ./config:/var/www/html/config
-      - ./apps:/var/www/html/apps
+<h3 id="advantage-and-disadvantage-2">advantage and disadvantage</h3>
 
-      # 外挂磁盘 /e/nas/extend-disk/ 作为初始数据源
-      - /e/nas/extend-disk/:/home
+<p>我们现在知道 gRPC 是基于 HTTP 2 的，那它有什么优点呢？</p>
 
-    restart: always
+<ul>
+<li>HTTP/2 是一个公开的标准，并且是一个经过实践检验的标准</li>
+<li>HTTP/2 天然支持物联网、手机、浏览器</li>
+<li>基于HTTP/2 多语言的实现容易，每个流行的编程语言都会有成熟的HTTP/2 Client</li>
+<li>HTTP/2支持 Stream 和 流控</li>
+<li>HTTP/2 天然支持 ssl</li>
+<li>鉴权成熟，从HTTP/1发展起来的鉴权系统已经很成熟了，可以无缝用在HTTP/2上</li>
+</ul>
+
+<p>缺点呢？</p>
+
+<ul>
+<li>rpc 的元数据的传输不够高效</li>
+<li>HTTP/2 标准本身是只有一个 TCP 连接，但是实际在 gRPC 里是会有多个 TCP  连接</li>
+<li>gRPC 选择基于 HTTP/2，那么它的性能肯定不会是最顶尖的。但是对于 rpc 来说中庸的 qps 可以接受，通用和兼容性才是最重要的事情。</li>
+</ul>
+
+<h2 id="grpc-gateway">gRPC gateway</h2>
+
+<h2 id="hello-world">hello world</h2>
+
+<h3 id="tree">tree</h3>
+
+<p>我们先看一下当前目录结构：<code>tree -I node_modules</code></p>
+
+<pre><code class="language-txt">
+.
+├── Docker-compose.yml
+├── Dockerfile-envoy
+├── Dockerfile-envoy-standalone
+├── Dockerfile-server
+├── README.md
+├── envoy-standalone.yaml
+├── envoy.yaml
+├── protobuf-spec
+│   └── helloworld.proto
+├── script
+│   ├── bootstrap.sh
+│   ├── build-client.sh
+│   ├── build-server.sh
+│   ├── codegen-clinet.sh
+│   ├── codegen-server.sh
+│   ├── docker-envoy-standalone.sh
+│   └── docker-compose.sh
+├── server
+│   ├── main.go
+│   └── protobuf-spec
+│       └── helloworld.pb.go
+└── web
+    ├── bundle.js
+    ├── index.html
+    ├── index.js
+    ├── package.json
+    ├── protobuf
+    │   ├── user_grpc_web_pb.js
+    │   └── user_pb.js
+    └── webpack.config.js
+
+6 directories, 24 files
 
 </code></pre>
+
+<h3 id="environment">environment</h3>
+
+<p>首先我们需要准备本文开头列出的系统环境。</p>
+
+<p>其次下载并以及对应的 <code>protobuf</code> 和 <code>protoc-gen-grpc-web</code> 插件，确保它们都是可执行文件：必须加入 <code>PATH</code> 当中。</p>
+
+<h3 id="develop-it">develop it</h3>
+
+<h3 id="run-it">run it</h3>
+
+<h3 id="deploy-it">deploy it</h3>
+
+<h3 id="and-more">and more</h3>
+
+<h2 id="think-in-further">think in further</h2>
+
+<h2 id="reference">reference</h2>
+
+<ul>
+<li><a href="https://www.zhihu.com/question/41609070/answer/191965937">既然有了 http 请求为什么还要有 RPC</a></li>
+<li><a href="https://www.yuque.com/egg/nodejs/dklip5">聊聊 Node RPC</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzI4NzEyMjUxMA==&amp;mid=2649068604&amp;idx=1&amp;sn=9d34b782a5d7c147e108f1af1c0fbc23&amp;chksm=f3c3411dc4b4c80b7e8a72013a7b884e21814f6bcbc6f0ea8752ff6c434b93005efc854520ef&amp;xtrack=1&amp;scene=0&amp;subscene=131&amp;clicktime=1552095539&amp;ascene=7&amp;devic">QUIC 简介</a></li>
+<li><a href="https://blog.csdn.net/hengyunabc/article/details/81120904">思考gRPC ：为什么是HTTP/2</a></li>
+<li><a href="https://github.com/grpc/grpc-web/blob/master/net/grpc/gateway/examples/helloworld/README.md">grpc-web github hellowolrd example</a></li>
+<li>[]()</li>
+</ul>
 
     </section>
     <nav class="no-print post-nav">
         
-        <a class="prev-post" href="https://hasaki.xyz/blog/working-tips/">
-            <img class="icon-text" src="/img/prev.svg"/>working tips</a>
+        <a class="prev-post" href="https://hasaki.xyz/blog/2019-02-12-%E4%BD%BF%E7%94%A8-nextcloud-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%A7%81%E6%9C%89%E7%BD%91%E7%9B%98/">
+            <img class="icon-text" src="/img/prev.svg"/>使用 nextcloud 搭建个人私有网盘</a>
         
-        
-        <a class="next-post" href="https://hasaki.xyz/blog/2019-03-04-grpc-%E6%B5%85%E8%B0%88%E4%B8%8E%E5%AE%9E%E8%B7%B5/">gRPC 浅谈与实践<img class="icon-text" src="/img/next.svg"/>
-        </a>
         
     </nav>
 </article>
