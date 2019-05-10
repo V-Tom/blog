@@ -12,7 +12,7 @@ host: "https://github.com/V-Tom/blog/blob/hugo/content/blog/2018-03-23-%E4%BD%BF
 
 ### 环境准备
 
-因为 swift 的断崖式升级以及 RN 不同版本，所以下面的例子可能会存在一些误差。本机环境为：
+由于 swift 的断崖式升级以及 RN 不同版本，所以下面的例子可能会存在一些误差。本机环境为：
 
 - RN：0.45.1
 - swift：4.1
