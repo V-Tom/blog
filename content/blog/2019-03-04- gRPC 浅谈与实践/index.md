@@ -16,8 +16,6 @@ host: ""
 
 ## RPC
 
-### what's RPC
-
 RPC 全名为 `Remote procedure call` ,直译过来就是 **远程过程调用** ，也就是说两台服务器A，B，一个应用部署在A服务器上，想要调用B服务器上应用提供的函数/方法，由于不在一个内存空间，不能直接调用，需要通过网络来表达调用的语义和传达调用的数据。
 
 调用的基本流程可以看下图：
@@ -62,17 +60,11 @@ RPC 的坏处是：
 
 ## Node-RPC
 
-### simple implements by Node
-
-### further
+> todo
 
 ## gRPC
 
-gRPC 采用 HTTP 2 作为通信层协议。
-
-### what's gRPC and why
-
-gRPC 是 google 开源的高性能跨语言的 RPC 方案。gRPC 的设计目标是在任何环境下运行，默认使用 protobuf 作为 接口描述语言 (IDL interface description language) 及底层消息通信格式。
+gRPC 是 google 开源的高性能跨语言的 RPC 方案，并且采用 HTTP 2 作为通信层协议。gRPC 的设计目标是在任何环境下运行，默认使用 protobuf 作为 接口描述语言 (IDL interface description language) 及底层消息通信格式。
 
 支持可插拔的负载均衡，跟踪，运行状况检查和身份验证。
 
@@ -80,7 +72,7 @@ gRPC 是 google 开源的高性能跨语言的 RPC 方案。gRPC 的设计目标
 
 可以看这篇文章 [gRPC动机和设计原则](https://grpc.io/blog/principles/)
 
-很多主流库以及设施已经在使用 gRPC，比如 k8s 
+很多主流库以及设施已经在使用 gRPC，比如 k8s 、TensorFlow
 
 在人工智能领域，RPC 也很重要，著名的 TensorFlow 框架如果需要处理上亿的数据，就需要依靠分布式计算力，需要集群化，当多个分布式节点需要集体智慧时，就必须引入 RPC 技术进行通讯。Tensorflow Cluster 的 RPC 通讯框架使用了 Google 内部自研的 gRPC 框架。
 
@@ -102,47 +94,12 @@ go get -u github.com/golang/protobuf/protoc-gen-go
 
 ### gRPC web
 
-准确来说 gRPC 设计上是分层的，底层支持不同的协议，目前gRPC支持：
+准确来说 gRPC 设计上是分层的，底层支持不同的协议，下面是 gRPC 支持协议，我们要采用 gRPC web ：
 
 - [gRPC over HTTP2](https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-HTTP2.md)
 - [gRPC Web](https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-WEB.md)
 
 由于我们是在 web 环境当中测试，所以需要额外下载对应的插件：[protoc-gen-grpc-web](https://github.com/grpc/grpc-web/releases)
-
-### protoc
-
-### advantage and disadvantage
-
-### who use it
-
-## envoy proxy
-
-引用官网的一段描述：
-
-``` txt
-
-Envoy is an L7 proxy and communication bus designed for large modern service oriented architectures. The project was born out of the belief that:
-"The network should be transparent to applications. When network and application problems do occur it should be easy to determine the source of the problem."
-
-```
-
-![envoy.png](./envoy.png)
-
-具体详情请看本文尾部的 reference 
-
-### how and why
-
-Envoy 是作为一个主打 Service Mesh(微服务) 方案的 proxy。
-
-为什么不选 nginx 呢？首先 Nginx 的反向代理早期不支持 http2/grpc ，其次 Nginx 的很多微服务功能都是要买 Nginx Plus 才有。
-
-对我个人来说还是因为官方推荐。
-
-## gRPC golang
-
-### why golang
-
-### how implements it with golang
 
 ### advantage and disadvantage
 
@@ -161,7 +118,38 @@ Envoy 是作为一个主打 Service Mesh(微服务) 方案的 proxy。
 - HTTP/2 标准本身是只有一个 TCP 连接，但是实际在 gRPC 里是会有多个 TCP 连接
 - gRPC 选择基于 HTTP/2，那么它的性能肯定不会是最顶尖的。但是对于 gRPC 来说中庸的 QPS 可以接受，通用和兼容性才是最重要的事情。
 
-## hello world
+## envoy proxy
+
+引用官网的一段描述：
+
+``` txt
+
+Envoy is an L7 proxy and communication bus designed for large modern service oriented architectures. The project was born out of the belief that:
+"The network should be transparent to applications. When network and application problems do occur it should be easy to determine the source of the problem."
+
+```
+
+![envoy.png](./envoy.png)
+
+具体详情请看本文尾部的 reference 
+
+### how and why
+
+[Envoy](https://www.envoyproxy.io/) 是作为一个主打 Service Mesh(微服务) 方案的 proxy，也是 [cloud native](https://www.cncf.io/) 成员之一
+
+为什么不选 nginx 呢？首先 Nginx 的反向代理早期不支持 http2/grpc ，其次 Nginx 的很多微服务功能都是要买 Nginx Plus 才有。
+
+哈哈，对我个人来说还是因为官方推荐，以及深入理解 cloud native
+
+## why golang
+
+我们通过上面的介绍已经知道 gRPC 其实是支持多种语言进行开发，比如 `Node`，`Python`，`Java` 等等。
+
+我还是采用了 golang 作为后端语言，主要原因是 golang 语法简单以及部署方便，相对来说易于上手开发
+
+## hello gRPC world
+
+接下来我们会一步步的实现一个简单的 gRPC web 实例
 
 ### tree
 
@@ -536,13 +524,13 @@ docker run -d -p 9090:9090 -p 9091:9091 --name $containerName grpc_envoy_standal
 
 最后 `go run ./server/main.go` 来启动 server
 
-我们可以在浏览器端访问 `localhost:8081`，可以在控制台上看到打印出来的 `hello gRPC world`
+我们可以在浏览器端访问 `localhost:8081`，可以在 console 控制台上看到打印出来的 `hello gRPC world`
 
-具体流程可以大致解释为：8081 为 webpack-dev-server 服务，然后客户端请求 envoy 容器抛出的 9090 端口提供的 restful 服务，envoy 转发到 8080 端口 server 服务上，然后 server 处理后交给 envoy 返回数据。
+> 具体流程可以大致解释为：8081 为 webpack-dev-server 服务，然后客户端请求 envoy 容器抛出的 9090 端口提供的 restful 服务，envoy 转发到 8080 端口 server 服务上，然后 server 处理后交给 envoy 返回数据。
 
 ### deploy it
 
-部署的时候这里采用了 `docker-compose` 作为容器编排，我们先建立 `docker-compose.yml` ：
+上面的例子只是用来本地开发和 debug，真正部署的时候这里由于复杂度没有采用 k8s 而是简单采用了 `docker-compose` 作为容器编排，我们先建立 `docker-compose.yml` ：
 
 ```dockerfile
 
@@ -616,6 +604,7 @@ export CGO_ENABLED=0
 go build -o ./server/server ./server
 
 ```
+
 最后直接运行：
 
 ``` sh
@@ -634,7 +623,11 @@ docker-compose up --build
 
 ### and more
 
+> todo
+
 ## think in further
+
+> todo
 
 ## reference
 - [既然有了 http 请求为什么还要有 RPC](https://www.zhihu.com/question/41609070/answer/191965937)

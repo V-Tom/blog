@@ -301,3 +301,8 @@ no-store 才是真正的不进行缓存，正常情况下只会返回 200
 #### reference
 
 - [缓存（二）——浏览器缓存机制：强缓存、协商缓存](https://github.com/amandakelake/blog/issues/41)
+
+
+### git 对文件名大小写敏感
+
+git 默认对文件名大小写不敏感，需要配置：`git config core.ignorecase false`
