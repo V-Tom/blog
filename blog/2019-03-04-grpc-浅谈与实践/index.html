@@ -17,7 +17,7 @@
 <title>gRPC 浅谈与实践 - TOM&#39;s zone</title>
 
 <meta name="description" content="由于不同的环境下面的例子可能会存在一些误差，下面列出本机环境：
- Docker -v ：Docker version 18.09.1, build 4c52b90 docker-compose -v ：docker-compose version 1.23.2, build 1110ad01 go version : go version go1.12.4 darwin/amd64 system_profiler SPSoftwareDataType : macOS 10.14.3 (18D42) Darwin 18.2.0 IDE golang latest  RPC what&rsquo;s RPC RPC 全名为 Remote procedure call ,直译过来就是 远程过程调用 ，也就是说两台服务器A，B，一个应用部署在A服务器上，想要调用B服务器上应用提供的函数/方法，由于不在一个内存空间，不能直接调用，需要通过网络来表达调用的语义和传达调用的数据。
+ Docker -v ：Docker version 18.09.1, build 4c52b90 docker-compose -v ：docker-compose version 1.23.2, build 1110ad01 go version : go version go1.12.4 darwin/amd64 system_profiler SPSoftwareDataType : macOS 10.14.3 (18D42) Darwin 18.2.0 IDE golang latest  RPC RPC 全名为 Remote procedure call ,直译过来就是 远程过程调用 ，也就是说两台服务器A，B，一个应用部署在A服务器上，想要调用B服务器上应用提供的函数/方法，由于不在一个内存空间，不能直接调用，需要通过网络来表达调用的语义和传达调用的数据。
 调用的基本流程可以看下图：
 RPC 的协议可以简单分成两大类。
 一类是通讯层协议，通讯层协议一般是和业务无关的，它的职责是将业务数据打包后，安全、完整的传输给接受方，HSF、Dubbo、gRPC 这些都是属于通讯层协议。
@@ -126,8 +126,6 @@ http vs RPC HTTP 调用其实也是一种特殊的 RPC 。RPC 可以基于 HTTP 
 
 <h2 id="rpc">RPC</h2>
 
-<h3 id="what-s-rpc">what&rsquo;s RPC</h3>
-
 <p>RPC 全名为 <code>Remote procedure call</code> ,直译过来就是 <strong>远程过程调用</strong> ，也就是说两台服务器A，B，一个应用部署在A服务器上，想要调用B服务器上应用提供的函数/方法，由于不在一个内存空间，不能直接调用，需要通过网络来表达调用的语义和传达调用的数据。</p>
 
 <p>调用的基本流程可以看下图：</p>
@@ -180,17 +178,13 @@ http vs RPC HTTP 调用其实也是一种特殊的 RPC 。RPC 可以基于 HTTP 
 
 <h2 id="node-rpc">Node-RPC</h2>
 
-<h3 id="simple-implements-by-node">simple implements by Node</h3>
-
-<h3 id="further">further</h3>
+<blockquote>
+<p>todo</p>
+</blockquote>
 
 <h2 id="grpc">gRPC</h2>
 
-<p>gRPC 采用 HTTP 2 作为通信层协议。</p>
-
-<h3 id="what-s-grpc-and-why">what&rsquo;s gRPC and why</h3>
-
-<p>gRPC 是 google 开源的高性能跨语言的 RPC 方案。gRPC 的设计目标是在任何环境下运行，默认使用 protobuf 作为 接口描述语言 (IDL interface description language) 及底层消息通信格式。</p>
+<p>gRPC 是 google 开源的高性能跨语言的 RPC 方案，并且采用 HTTP 2 作为通信层协议。gRPC 的设计目标是在任何环境下运行，默认使用 protobuf 作为 接口描述语言 (IDL interface description language) 及底层消息通信格式。</p>
 
 <p>支持可插拔的负载均衡，跟踪，运行状况检查和身份验证。</p>
 
@@ -198,7 +192,7 @@ http vs RPC HTTP 调用其实也是一种特殊的 RPC 。RPC 可以基于 HTTP 
 
 <p>可以看这篇文章 <a href="https://grpc.io/blog/principles/">gRPC动机和设计原则</a></p>
 
-<p>很多主流库以及设施已经在使用 gRPC，比如 k8s</p>
+<p>很多主流库以及设施已经在使用 gRPC，比如 k8s 、TensorFlow</p>
 
 <p>在人工智能领域，RPC 也很重要，著名的 TensorFlow 框架如果需要处理上亿的数据，就需要依靠分布式计算力，需要集群化，当多个分布式节点需要集体智慧时，就必须引入 RPC 技术进行通讯。Tensorflow Cluster 的 RPC 通讯框架使用了 Google 内部自研的 gRPC 框架。</p>
 
@@ -219,7 +213,7 @@ http vs RPC HTTP 调用其实也是一种特殊的 RPC 。RPC 可以基于 HTTP 
 
 <h3 id="grpc-web">gRPC web</h3>
 
-<p>准确来说 gRPC 设计上是分层的，底层支持不同的协议，目前gRPC支持：</p>
+<p>准确来说 gRPC 设计上是分层的，底层支持不同的协议，下面是 gRPC 支持协议，我们要采用 gRPC web ：</p>
 
 <ul>
 <li><a href="https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-HTTP2.md">gRPC over HTTP2</a></li>
@@ -228,41 +222,7 @@ http vs RPC HTTP 调用其实也是一种特殊的 RPC 。RPC 可以基于 HTTP 
 
 <p>由于我们是在 web 环境当中测试，所以需要额外下载对应的插件：<a href="https://github.com/grpc/grpc-web/releases">protoc-gen-grpc-web</a></p>
 
-<h3 id="protoc">protoc</h3>
-
 <h3 id="advantage-and-disadvantage-1">advantage and disadvantage</h3>
-
-<h3 id="who-use-it">who use it</h3>
-
-<h2 id="envoy-proxy">envoy proxy</h2>
-
-<p>引用官网的一段描述：</p>
-
-<pre><code class="language-txt">
-Envoy is an L7 proxy and communication bus designed for large modern service oriented architectures. The project was born out of the belief that:
-&quot;The network should be transparent to applications. When network and application problems do occur it should be easy to determine the source of the problem.&quot;
-
-</code></pre>
-
-<p><img src="./envoy.png" alt="envoy.png" /></p>
-
-<p>具体详情请看本文尾部的 reference</p>
-
-<h3 id="how-and-why">how and why</h3>
-
-<p>Envoy 是作为一个主打 Service Mesh(微服务) 方案的 proxy。</p>
-
-<p>为什么不选 nginx 呢？首先 Nginx 的反向代理早期不支持 http2/grpc ，其次 Nginx 的很多微服务功能都是要买 Nginx Plus 才有。</p>
-
-<p>对我个人来说还是因为官方推荐。</p>
-
-<h2 id="grpc-golang">gRPC golang</h2>
-
-<h3 id="why-golang">why golang</h3>
-
-<h3 id="how-implements-it-with-golang">how implements it with golang</h3>
-
-<h3 id="advantage-and-disadvantage-2">advantage and disadvantage</h3>
 
 <p>我们现在知道 gRPC 是基于 HTTP 2 的，那它有什么优点呢？</p>
 
@@ -283,7 +243,37 @@ Envoy is an L7 proxy and communication bus designed for large modern service ori
 <li>gRPC 选择基于 HTTP/2，那么它的性能肯定不会是最顶尖的。但是对于 gRPC 来说中庸的 QPS 可以接受，通用和兼容性才是最重要的事情。</li>
 </ul>
 
-<h2 id="hello-world">hello world</h2>
+<h2 id="envoy-proxy">envoy proxy</h2>
+
+<p>引用官网的一段描述：</p>
+
+<pre><code class="language-txt">
+Envoy is an L7 proxy and communication bus designed for large modern service oriented architectures. The project was born out of the belief that:
+&quot;The network should be transparent to applications. When network and application problems do occur it should be easy to determine the source of the problem.&quot;
+
+</code></pre>
+
+<p><img src="./envoy.png" alt="envoy.png" /></p>
+
+<p>具体详情请看本文尾部的 reference</p>
+
+<h3 id="how-and-why">how and why</h3>
+
+<p><a href="https://www.envoyproxy.io/">Envoy</a> 是作为一个主打 Service Mesh(微服务) 方案的 proxy，也是 <a href="https://www.cncf.io/">cloud native</a> 成员之一</p>
+
+<p>为什么不选 nginx 呢？首先 Nginx 的反向代理早期不支持 http2/grpc ，其次 Nginx 的很多微服务功能都是要买 Nginx Plus 才有。</p>
+
+<p>哈哈，对我个人来说还是因为官方推荐，以及深入理解 cloud native</p>
+
+<h2 id="why-golang">why golang</h2>
+
+<p>我们通过上面的介绍已经知道 gRPC 其实是支持多种语言进行开发，比如 <code>Node</code>，<code>Python</code>，<code>Java</code> 等等。</p>
+
+<p>我还是采用了 golang 作为后端语言，主要原因是 golang 语法简单以及部署方便，相对来说易于上手开发</p>
+
+<h2 id="hello-grpc-world">hello gRPC world</h2>
+
+<p>接下来我们会一步步的实现一个简单的 gRPC web 实例</p>
 
 <h3 id="tree">tree</h3>
 
@@ -649,13 +639,15 @@ docker run -d -p 9090:9090 -p 9091:9091 --name $containerName grpc_envoy_standal
 
 <p>最后 <code>go run ./server/main.go</code> 来启动 server</p>
 
-<p>我们可以在浏览器端访问 <code>localhost:8081</code>，可以在控制台上看到打印出来的 <code>hello gRPC world</code></p>
+<p>我们可以在浏览器端访问 <code>localhost:8081</code>，可以在 console 控制台上看到打印出来的 <code>hello gRPC world</code></p>
 
+<blockquote>
 <p>具体流程可以大致解释为：8081 为 webpack-dev-server 服务，然后客户端请求 envoy 容器抛出的 9090 端口提供的 restful 服务，envoy 转发到 8080 端口 server 服务上，然后 server 处理后交给 envoy 返回数据。</p>
+</blockquote>
 
 <h3 id="deploy-it">deploy it</h3>
 
-<p>部署的时候这里采用了 <code>docker-compose</code> 作为容器编排，我们先建立 <code>docker-compose.yml</code> ：</p>
+<p>上面的例子只是用来本地开发和 debug，真正部署的时候这里由于复杂度没有采用 k8s 而是简单采用了 <code>docker-compose</code> 作为容器编排，我们先建立 <code>docker-compose.yml</code> ：</p>
 
 <pre><code class="language-dockerfile">
 version: '3'
@@ -743,7 +735,15 @@ docker-compose up --build
 
 <h3 id="and-more">and more</h3>
 
+<blockquote>
+<p>todo</p>
+</blockquote>
+
 <h2 id="think-in-further">think in further</h2>
+
+<blockquote>
+<p>todo</p>
+</blockquote>
 
 <h2 id="reference">reference</h2>
 
