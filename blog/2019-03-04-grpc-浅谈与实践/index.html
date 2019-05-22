@@ -158,28 +158,8 @@ http vs RPC HTTP 调用其实也是一种特殊的 RPC 。RPC 可以基于 HTTP 
 
 <blockquote>
 <p>需要注意的是，gRPC 由于协议还是基于 HTTP 2，HTTP 2 实际上也没有全部解决 HTTP 1 版本的问题，要不然就不会有 QUIC（HTTP3），只是在取舍之间选择了 HTTP 2 作为底层协议再封装 服务发现、 负载均衡 等高级 RPC 特征，这个具体会在下文详细分析</p>
-</blockquote>
 
-<h3 id="advantage-and-disadvantage">advantage and disadvantage</h3>
-
-<p>个人简单的理解，RPC 的好处是：</p>
-
-<ul>
-<li>精炼、效率高</li>
-<li>保密性强</li>
-</ul>
-
-<p>RPC 的坏处是：</p>
-
-<ul>
-<li>通用型通用较差</li>
-<li>可移植性差</li>
-</ul>
-
-<h2 id="node-rpc">Node-RPC</h2>
-
-<blockquote>
-<p>todo</p>
+<p>并且由于 gRPC 基于 HTTP 2 ，所以也是不支持 UDP 协议的，只能等待 HTTP 3</p>
 </blockquote>
 
 <h2 id="grpc">gRPC</h2>
@@ -222,7 +202,7 @@ http vs RPC HTTP 调用其实也是一种特殊的 RPC 。RPC 可以基于 HTTP 
 
 <p>由于我们是在 web 环境当中测试，所以需要额外下载对应的插件：<a href="https://github.com/grpc/grpc-web/releases">protoc-gen-grpc-web</a></p>
 
-<h3 id="advantage-and-disadvantage-1">advantage and disadvantage</h3>
+<h3 id="advantage-and-disadvantage">advantage and disadvantage</h3>
 
 <p>我们现在知道 gRPC 是基于 HTTP 2 的，那它有什么优点呢？</p>
 
@@ -277,7 +257,7 @@ Envoy is an L7 proxy and communication bus designed for large modern service ori
 
 <h3 id="tree">tree</h3>
 
-<p>你可以在这里 clone 本文项目源代码。</p>
+<p>你可以在这里<a href="./grpc-demo.zip">下载</a>本文项目源代码。</p>
 
 <p>然后我们先看一下当前目录结构：<code>tree -I node_modules</code></p>
 
@@ -731,19 +711,11 @@ docker-compose up --build
 
 </code></pre>
 
-<p>就 deploy 成功了</p>
-
-<h3 id="and-more">and more</h3>
-
-<blockquote>
-<p>todo</p>
-</blockquote>
+<p>这样我们就简单成功部署成功了 gRPC 服务</p>
 
 <h2 id="think-in-further">think in further</h2>
 
-<blockquote>
-<p>todo</p>
-</blockquote>
+<p>RPC 框架目前据我所知除了 gRPC 有很多实现，阿里的 java double ，百度的 c++ incubator-brpc，twitchTV 的 go twirp，以及 windows c++ thrift 等等，各有各的优点、缺点，以及擅长处理的痛点。在我看来，没有银弹，性能，接口，易用性都要进行权衡，也要结合实际项目环境去选择。</p>
 
 <h2 id="reference">reference</h2>
 
@@ -780,7 +752,7 @@ docker-compose up --build
                     if (0 < d.intersectionRatio && !a.classList.contains('active')) {
                         var e = document.createElement('script');
                         e.type = 'text/javascript', e.async = !0;
-                        e.src = '//' + 'toms-blog-1' + '.disqus.com/embed.js', (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(e), a.classList.add('active')
+                        e.src = '//' + 'hasaki-xyz' + '.disqus.com/embed.js', (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(e), a.classList.add('active')
                     }
                 })
             }, {rootMargin: '0px', threshold: 1}).observe(a)
