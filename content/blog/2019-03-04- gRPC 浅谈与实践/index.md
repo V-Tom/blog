@@ -46,21 +46,7 @@ HTTP1.0 协议时，HTTP 调用还只能是短链接调用，一个请求来回�
 
 > 需要注意的是，gRPC 由于协议还是基于 HTTP 2，HTTP 2 实际上也没有全部解决 HTTP 1 版本的问题，要不然就不会有 QUIC（HTTP3），只是在取舍之间选择了 HTTP 2 作为底层协议再封装 服务发现、 负载均衡 等高级 RPC 特征，这个具体会在下文详细分析
 
-### advantage and disadvantage
-
-个人简单的理解，RPC 的好处是：
-
-- 精炼、效率高
-- 保密性强
-
-RPC 的坏处是：
-
-- 通用型通用较差
-- 可移植性差
-
-## Node-RPC
-
-> todo
+> 并且由于 gRPC 基于 HTTP 2 ，所以也是不支持 UDP 协议的，只能等待 HTTP 3
 
 ## gRPC
 
@@ -153,7 +139,7 @@ Envoy is an L7 proxy and communication bus designed for large modern service ori
 
 ### tree
 
-你可以在这里 clone 本文项目源代码。
+你可以在这里[下载](./grpc-demo.zip)本文项目源代码。
 
 然后我们先看一下当前目录结构：`tree -I node_modules`
 
@@ -619,15 +605,11 @@ docker-compose up --build
 
 ```
 
-就 deploy 成功了
-
-### and more
-
-> todo
+这样我们就简单成功部署成功了 gRPC 服务
 
 ## think in further
 
-> todo
+RPC 框架目前据我所知除了 gRPC 有很多实现，阿里的 java double ，百度的 c++ incubator-brpc，twitchTV 的 go twirp，以及 windows c++ thrift 等等，各有各的优点、缺点，以及擅长处理的痛点。在我看来，没有银弹，性能，接口，易用性都要进行权衡，也要结合实际项目环境去选择。
 
 ## reference
 - [既然有了 http 请求为什么还要有 RPC](https://www.zhihu.com/question/41609070/answer/191965937)
