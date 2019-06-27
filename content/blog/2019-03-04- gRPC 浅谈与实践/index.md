@@ -1,9 +1,9 @@
 ---
-title: "gRPC 浅谈与实践"
-subTitle: "gRPC 浅谈与实践"
-tags: ["Docker","Golang","BackEnd"]
+title: 'gRPC 浅谈与实践'
+subTitle: 'gRPC 浅谈与实践'
+tags: ['Docker', 'Golang', 'BackEnd']
 date: 2019-03-04T11:32:40+08:00
-host: ""
+host: 'https://github.com/V-Tom/blog/blob/hugo/content/blog/2019-03-04-%20gRPC%20%E6%B5%85%E8%B0%88%E4%B8%8E%E5%AE%9E%E8%B7%B5/index.md'
 ---
 
 由于不同的环境下面的例子可能会存在一些误差，下面列出本机环境：
@@ -12,11 +12,11 @@ host: ""
 - `docker-compose -v` ：docker-compose version 1.23.2, build 1110ad01
 - `go version` : go version go1.12.4 darwin/amd64
 - `system_profiler SPSoftwareDataType` : macOS 10.14.3 (18D42) Darwin 18.2.0
--  IDE golang latest
+- IDE golang latest
 
 ## RPC
 
-RPC 全名为 `Remote procedure call` ,直译过来就是 **远程过程调用** ，也就是说两台服务器A，B，一个应用部署在A服务器上，想要调用B服务器上应用提供的函数/方法，由于不在一个内存空间，不能直接调用，需要通过网络来表达调用的语义和传达调用的数据。
+RPC 全名为 `Remote procedure call` ,直译过来就是 **远程过程调用** ，也就是说两台服务器 A，B，一个应用部署在 A 服务器上，想要调用 B 服务器上应用提供的函数/方法，由于不在一个内存空间，不能直接调用，需要通过网络来表达调用的语义和传达调用的数据。
 
 调用的基本流程可以看下图：
 
@@ -30,7 +30,7 @@ RPC 的协议可以简单分成两大类。
 
 ### why RPC
 
-为什么RPC呢？就是无法在一个进程内，甚至一个计算机内通过本地调用的方式完成的需求，比如比如不同的系统间的通讯，甚至不同的组织间的通讯。由于计算能力需要横向扩展，需要在多台机器组成的集群上部署应用，
+为什么 RPC 呢？就是无法在一个进程内，甚至一个计算机内通过本地调用的方式完成的需求，比如比如不同的系统间的通讯，甚至不同的组织间的通讯。由于计算能力需要横向扩展，需要在多台机器组成的集群上部署应用，
 
 ### http vs RPC
 
@@ -40,7 +40,7 @@ HTTP 调用其实也是一种特殊的 RPC 。RPC 可以基于 HTTP 协议实现
 
 HTTP1.0 协议时，HTTP 调用还只能是短链接调用，一个请求来回之后连接就会关闭。HTTP1.1 在 HTTP1.0 协议的基础上进行了改进，引入了 `KeepAlive` 特性可以保持 HTTP 连接长时间不断开，以便在同一个连接之上进行多次连续的请求，进一步拉近了 HTTP 和 RPC 之间的距离。
 
-但是 HTTP 还是存在很多硬伤，比如通用定义的 http1.1协议的 TCP 报文包含太多废信息、序列化效率不高，以及三次握手四次挥手带来的 RTT 延迟，以及 `Head of line blocking` 、服务端推送 等等。注定了在高性能要求的下，不适合用做线上分布式服务之间互相使用的通信协议。
+但是 HTTP 还是存在很多硬伤，比如通用定义的 http1.1 协议的 TCP 报文包含太多废信息、序列化效率不高，以及三次握手四次挥手带来的 RTT 延迟，以及 `Head of line blocking` 、服务端推送 等等。注定了在高性能要求的下，不适合用做线上分布式服务之间互相使用的通信协议。
 
 当 HTTP 协议进化到 2.0 之后，Google 开源了一个建立在 HTTP2.0 协议之上的通信框架直接取名为 gRPC，也就是 Google RPC，这个 gRPC 也就是本文将要详细介绍的通信框架。
 
@@ -56,7 +56,7 @@ gRPC 是 google 开源的高性能跨语言的 RPC 方案，并且采用 HTTP 2 
 
 它不仅支持数据中心内部和跨数据中心的服务调用，它也适用于分布式计算的最后一公里，将设备，移动应用程序和浏览器连接到后端服务。
 
-可以看这篇文章 [gRPC动机和设计原则](https://grpc.io/blog/principles/)
+可以看这篇文章 [gRPC 动机和设计原则](https://grpc.io/blog/principles/)
 
 很多主流库以及设施已经在使用 gRPC，比如 k8s 、TensorFlow
 
@@ -74,7 +74,7 @@ gRPC 采用 Protobuf 作为应用层协议。
 
 或者也可以通过下面方式安装，默认装在了 `$GOPATH/bin` 之下，所以也要确保这个目录在 `PATH` 下：
 
-``` sh
+```sh
 go get -u github.com/golang/protobuf/protoc-gen-go
 ```
 
@@ -93,10 +93,10 @@ go get -u github.com/golang/protobuf/protoc-gen-go
 
 - HTTP/2 是一个公开的标准，并且是一个经过实践检验的标准
 - HTTP/2 天然支持物联网、手机、浏览器
-- 基于HTTP/2 多语言的实现容易，每个流行的编程语言都会有成熟的HTTP/2 Client
-- HTTP/2支持 Stream 和 流控
-- HTTP/2 天然支持 ssl 
-- 鉴权成熟，从HTTP/1发展起来的鉴权系统已经很成熟了，可以无缝用在HTTP/2上
+- 基于 HTTP/2 多语言的实现容易，每个流行的编程语言都会有成熟的 HTTP/2 Client
+- HTTP/2 支持 Stream 和 流控
+- HTTP/2 天然支持 ssl
+- 鉴权成熟，从 HTTP/1 发展起来的鉴权系统已经很成熟了，可以无缝用在 HTTP/2 上
 
 缺点呢？
 
@@ -108,7 +108,7 @@ go get -u github.com/golang/protobuf/protoc-gen-go
 
 引用官网的一段描述：
 
-``` txt
+```txt
 
 Envoy is an L7 proxy and communication bus designed for large modern service oriented architectures. The project was born out of the belief that:
 "The network should be transparent to applications. When network and application problems do occur it should be easy to determine the source of the problem."
@@ -117,7 +117,7 @@ Envoy is an L7 proxy and communication bus designed for large modern service ori
 
 ![envoy.png](./envoy.png)
 
-具体详情请看本文尾部的 reference 
+具体详情请看本文尾部的 reference
 
 ### how and why
 
@@ -143,7 +143,7 @@ Envoy is an L7 proxy and communication bus designed for large modern service ori
 
 然后我们先看一下当前目录结构：`tree -I node_modules`
 
-``` txt
+```txt
 
 .
 ├── Docker-compose.yml
@@ -197,7 +197,7 @@ Envoy is an L7 proxy and communication bus designed for large modern service ori
 
 具体语法请查看 [protocol-buffers](https://developers.google.com/protocol-buffers/)，在这文件当中我们定义了 **请求信息** 和 **响应信息**，以及提供了一个 RPC 服务：`SayHello`：
 
-``` protoc
+```protoc
 
 syntax = "proto3";
 
@@ -225,8 +225,7 @@ message HelloReply {
 
 建立 `package.json`：
 
-``` json
-
+```json
 {
   "name": "web",
   "version": "1.0.0",
@@ -247,36 +246,33 @@ message HelloReply {
     "webpack-cli": "^3.3.1"
   }
 }
-
 ```
 
 `index.html` 文件
 
-``` html
+```html
 <script src="./bundle.js"></script>
 ```
 
 以及 `webpack.confg.js` 文件：
 
-``` js
-
+```js
 const path = require('path');
 
 module.exports = {
-    entry: path.join(__dirname, './index.js'),
-    output: {
-        filename: 'bundle.js',
-        path: path.resolve(__dirname)
-    }
+  entry: path.join(__dirname, './index.js'),
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname)
+  }
 };
-
 ```
 
 以及最后一个空白的 `index.js` 来作为代码入口和 webpack 打包入口，最后我们安装 web 依赖：`npm i -d` 或者 `npm i -d --registry=https://registry.npm.taobao.org`
 
 生成代码我们可以建立 `script/codegen-client.sh`，不要忘记 `chmod +x -R ./script`：
 
-``` sh
+```sh
 
 #!/usr/bin/env bash
 
@@ -308,10 +304,9 @@ echo "generate client success in directory : $OUT_DIR"
 
 接下来来完善我们的 `index.js`：
 
-``` js
-
-const {HelloRequest} = require('./protobuf/helloworld_pb');
-const {GreeterClient} = require('./protobuf/helloworld_grpc_web_pb');
+```js
+const { HelloRequest } = require('./protobuf/helloworld_pb');
+const { GreeterClient } = require('./protobuf/helloworld_grpc_web_pb');
 
 const client = new GreeterClient('http://localhost:9090');
 
@@ -319,17 +314,16 @@ const request = new HelloRequest();
 request.setName('gRPC World');
 
 client.sayHello(request, {}, (err, response) => {
-    if (err) throw err;
-    console.log(response.getMessage());
+  if (err) throw err;
+  console.log(response.getMessage());
 });
-
 ```
 
 #### golang code
 
 golang 上的准备比较简单，首先准备好 `GOPATH` 在你当前的工作目录下，然后建立 `server` 目录：
 
-``` sh
+```sh
 
 go get -u google.golang.org/grpc
 
@@ -365,7 +359,7 @@ echo "generate server code success with ./server/protobuf-spec/$proto.pb.go"
 
 接下来完善我们的 server 也就是 `main.go` 文件来实现 gPRC :
 
-``` go
+```go
 
 package main
 
@@ -410,8 +404,7 @@ func main() {
 
 在启动我们的 gRPC web 之前我们需要配置好 `envoy` 代理，先建立 `envoy-standalone.yaml` 文件：
 
-``` yaml
-
+```yaml
 static_resources:
   listeners:
     - name: listener_0
@@ -421,12 +414,11 @@ static_resources:
         - filters:
             - name: envoy.http_connection_manager
               config:
-
                 # print access log to stdout
                 access_log:
                   - name: envoy.file_access_log
                     config:
-                      path: "/dev/stdout"
+                      path: '/dev/stdout'
 
                 codec_type: auto
                 stat_prefix: ingress_http
@@ -434,18 +426,18 @@ static_resources:
                   name: local_route
                   virtual_hosts:
                     - name: local_service
-                      domains: ["*"]
+                      domains: ['*']
                       routes:
-                        - match: { prefix: "/" }
+                        - match: { prefix: '/' }
                           route:
                             cluster: echo_service
                             max_grpc_timeout: 0s
                       cors:
                         allow_origin:
-                          - "*"
+                          - '*'
                         allow_methods: GET, PUT, DELETE, POST, OPTIONS
                         allow_headers: keep-alive,user-agent,cache-control,content-type,content-transfer-encoding,custom-header-1,x-accept-content-transfer-encoding,x-accept-response-streaming,x-user-agent,x-grpc-web,grpc-timeout
-                        max_age: "1728000"
+                        max_age: '1728000'
                         expose_headers: custom-header-1,grpc-status,grpc-message
                         enabled: true
                 http_filters:
@@ -462,20 +454,24 @@ static_resources:
       # container access host
       # https://stackoverflow.com/questions/31324981/how-to-access-host-port-from-docker-container/31328031
 
-      hosts: [{ socket_address: { address: host.docker.internal, port_value: 8080 }}]
+      hosts:
+        [
+          {
+            socket_address: { address: host.docker.internal, port_value: 8080 },
+          },
+        ]
 
 admin:
   access_log_path: /tmp/admin_access.log
   address:
     socket_address: { address: 0.0.0.0, port_value: 9091 }
-
 ```
 
 > 如果你之前仔细看过文件目录结构，你会发现有后缀为 `standalone` envoy 的配置文件。因为本地开发的时候我们的 server 在 docker 容器之外开发比较方便，所以需要把 envoy 单独处理。
 
 建立 `./script/build-client.sh` 来启动我们的 web 服务：
 
-``` sh
+```sh
 
 #!/usr/bin/env bash
 
@@ -489,7 +485,7 @@ npx webpack-dev-server --config ./webpack.config.js --watch --port 8081
 
 和 `./script/docker-envoy-standalone.sh` 来方便我们启动 envoy docker 服务
 
-``` sh
+```sh
 
 #!/usr/bin/env bash
 
@@ -550,7 +546,7 @@ networks:
 
 在该文件当中我们指定了 `Dockerfile-envoy`
 
-``` dockerfile
+```dockerfile
 
 FROM envoyproxy/envoy:latest
 
@@ -562,7 +558,7 @@ CMD /usr/local/bin/envoy -c /etc/envoy.yaml
 
 和 `Dockerfile-server` 来作为 build entry
 
-``` dockerfile
+```dockerfile
 
 FROM alpine
 
@@ -576,7 +572,7 @@ ENTRYPOINT [ "/app/server" ]
 
 建立 `./script/build-server.sh` 来生成编译我们的服务器：
 
-``` sh
+```sh
 #!/usr/bin/env bash
 
 set -e
@@ -593,7 +589,7 @@ go build -o ./server/server ./server
 
 最后直接运行：
 
-``` sh
+```sh
 
 ./script/build-server.sh
 
@@ -612,10 +608,11 @@ docker-compose up --build
 RPC 框架目前据我所知除了 gRPC 有很多实现，阿里的 java double ，百度的 c++ incubator-brpc，twitchTV 的 go twirp，以及 windows c++ thrift 等等，各有各的优点、缺点，以及擅长处理的痛点。在我看来，没有银弹，性能，接口，易用性都要进行权衡，也要结合实际项目环境去选择。
 
 ## reference
+
 - [既然有了 http 请求为什么还要有 RPC](https://www.zhihu.com/question/41609070/answer/191965937)
 - [聊聊 Node RPC](https://www.yuque.com/egg/nodejs/dklip5)
 - [QUIC 简介](https://mp.weixin.qq.com/s?__biz=MzI4NzEyMjUxMA==&mid=2649068604&idx=1&sn=9d34b782a5d7c147e108f1af1c0fbc23&chksm=f3c3411dc4b4c80b7e8a72013a7b884e21814f6bcbc6f0ea8752ff6c434b93005efc854520ef&xtrack=1&scene=0&subscene=131&clicktime=1552095539&ascene=7&devic)
-- [思考gRPC ：为什么是HTTP/2](https://blog.csdn.net/hengyunabc/article/details/81120904)
+- [思考 gRPC ：为什么是 HTTP/2](https://blog.csdn.net/hengyunabc/article/details/81120904)
 - [grpc-web github hellowolrd example](https://github.com/grpc/grpc-web/blob/master/net/grpc/gateway/examples/helloworld/README.md)
 - [envoy 快速入门](https://juejin.im/post/5ad6fb06518825364001f619)
-- [浅谈Service Mesh体系中的Envoy](http://jm.taobao.org/2018/07/05/Mesh%E4%BD%93%E7%B3%BB%E4%B8%AD%E7%9A%84Envoy/)
+- [浅谈 Service Mesh 体系中的 Envoy](http://jm.taobao.org/2018/07/05/Mesh%E4%BD%93%E7%B3%BB%E4%B8%AD%E7%9A%84Envoy/)
