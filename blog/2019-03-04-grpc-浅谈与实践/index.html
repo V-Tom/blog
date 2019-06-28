@@ -17,14 +17,13 @@
 <title>gRPC 浅谈与实践 - TOM&#39;s zone</title>
 
 <meta name="description" content="由于不同的环境下面的例子可能会存在一些误差，下面列出本机环境：
- Docker -v ：Docker version 18.09.1, build 4c52b90 docker-compose -v ：docker-compose version 1.23.2, build 1110ad01 go version : go version go1.12.4 darwin/amd64 system_profiler SPSoftwareDataType : macOS 10.14.3 (18D42) Darwin 18.2.0 IDE golang latest  RPC RPC 全名为 Remote procedure call ,直译过来就是 远程过程调用 ，也就是说两台服务器A，B，一个应用部署在A服务器上，想要调用B服务器上应用提供的函数/方法，由于不在一个内存空间，不能直接调用，需要通过网络来表达调用的语义和传达调用的数据。
+ Docker -v ：Docker version 18.09.1, build 4c52b90 docker-compose -v ：docker-compose version 1.23.2, build 1110ad01 go version : go version go1.12.4 darwin/amd64 system_profiler SPSoftwareDataType : macOS 10.14.3 (18D42) Darwin 18.2.0 IDE golang latest  RPC RPC 全名为 Remote procedure call ,直译过来就是 远程过程调用 ，也就是说两台服务器 A，B，一个应用部署在 A 服务器上，想要调用 B 服务器上应用提供的函数/方法，由于不在一个内存空间，不能直接调用，需要通过网络来表达调用的语义和传达调用的数据。
 调用的基本流程可以看下图：
 RPC 的协议可以简单分成两大类。
 一类是通讯层协议，通讯层协议一般是和业务无关的，它的职责是将业务数据打包后，安全、完整的传输给接受方，HSF、Dubbo、gRPC 这些都是属于通讯层协议。
 另一类是应用层协议。约定业务数据和二进制串的转换规则，常见的应用层协议有 Hessian，Protobuf，JSON。
-why RPC 为什么RPC呢？就是无法在一个进程内，甚至一个计算机内通过本地调用的方式完成的需求，比如比如不同的系统间的通讯，甚至不同的组织间的通讯。由于计算能力需要横向扩展，需要在多台机器组成的集群上部署应用，
-http vs RPC HTTP 调用其实也是一种特殊的 RPC 。RPC 可以基于 HTTP 协议实现，也可以直接在 TCP 协议上实现。
- HTTP 与 RPC 的关系就好比普通话与方言的关系，普通话效率不高，废话较多，但是胜在通用。方言用的人少，短小精炼，理解起来也较为困难（保密性好），效率高。">
+why RPC 为什么 RPC 呢？就是无法在一个进程内，甚至一个计算机内通过本地调用的方式完成的需求，比如比如不同的系统间的通讯，甚至不同的组织间的通讯。由于计算能力需要横向扩展，需要在多台机器组成的集群上部署应用，
+http vs RPC HTTP 调用其实也是一种特殊的 RPC 。RPC 可以基于 HTTP 协议实现，也可以直接在 TCP 协议上实现。">
 
 
 
@@ -107,6 +106,8 @@ http vs RPC HTTP 调用其实也是一种特殊的 RPC 。RPC 可以基于 HTTP 
 	</h5>
 
 	
+	<a style="margin-top: 1.2rem;display: inline-block;" href="https://github.com/V-Tom/blog/blob/hugo/content/blog/2019-03-04-%20gRPC%20%E6%B5%85%E8%B0%88%E4%B8%8E%E5%AE%9E%E8%B7%B5/index.md">✨✨✨You can Edit this Article on Github</a>
+	
 	
 	
 </hgroup>
@@ -126,7 +127,7 @@ http vs RPC HTTP 调用其实也是一种特殊的 RPC 。RPC 可以基于 HTTP 
 
 <h2 id="rpc">RPC</h2>
 
-<p>RPC 全名为 <code>Remote procedure call</code> ,直译过来就是 <strong>远程过程调用</strong> ，也就是说两台服务器A，B，一个应用部署在A服务器上，想要调用B服务器上应用提供的函数/方法，由于不在一个内存空间，不能直接调用，需要通过网络来表达调用的语义和传达调用的数据。</p>
+<p>RPC 全名为 <code>Remote procedure call</code> ,直译过来就是 <strong>远程过程调用</strong> ，也就是说两台服务器 A，B，一个应用部署在 A 服务器上，想要调用 B 服务器上应用提供的函数/方法，由于不在一个内存空间，不能直接调用，需要通过网络来表达调用的语义和传达调用的数据。</p>
 
 <p>调用的基本流程可以看下图：</p>
 
@@ -140,7 +141,7 @@ http vs RPC HTTP 调用其实也是一种特殊的 RPC 。RPC 可以基于 HTTP 
 
 <h3 id="why-rpc">why RPC</h3>
 
-<p>为什么RPC呢？就是无法在一个进程内，甚至一个计算机内通过本地调用的方式完成的需求，比如比如不同的系统间的通讯，甚至不同的组织间的通讯。由于计算能力需要横向扩展，需要在多台机器组成的集群上部署应用，</p>
+<p>为什么 RPC 呢？就是无法在一个进程内，甚至一个计算机内通过本地调用的方式完成的需求，比如比如不同的系统间的通讯，甚至不同的组织间的通讯。由于计算能力需要横向扩展，需要在多台机器组成的集群上部署应用，</p>
 
 <h3 id="http-vs-rpc">http vs RPC</h3>
 
@@ -152,7 +153,7 @@ http vs RPC HTTP 调用其实也是一种特殊的 RPC 。RPC 可以基于 HTTP 
 
 <p>HTTP1.0 协议时，HTTP 调用还只能是短链接调用，一个请求来回之后连接就会关闭。HTTP1.1 在 HTTP1.0 协议的基础上进行了改进，引入了 <code>KeepAlive</code> 特性可以保持 HTTP 连接长时间不断开，以便在同一个连接之上进行多次连续的请求，进一步拉近了 HTTP 和 RPC 之间的距离。</p>
 
-<p>但是 HTTP 还是存在很多硬伤，比如通用定义的 http1.1协议的 TCP 报文包含太多废信息、序列化效率不高，以及三次握手四次挥手带来的 RTT 延迟，以及 <code>Head of line blocking</code> 、服务端推送 等等。注定了在高性能要求的下，不适合用做线上分布式服务之间互相使用的通信协议。</p>
+<p>但是 HTTP 还是存在很多硬伤，比如通用定义的 http1.1 协议的 TCP 报文包含太多废信息、序列化效率不高，以及三次握手四次挥手带来的 RTT 延迟，以及 <code>Head of line blocking</code> 、服务端推送 等等。注定了在高性能要求的下，不适合用做线上分布式服务之间互相使用的通信协议。</p>
 
 <p>当 HTTP 协议进化到 2.0 之后，Google 开源了一个建立在 HTTP2.0 协议之上的通信框架直接取名为 gRPC，也就是 Google RPC，这个 gRPC 也就是本文将要详细介绍的通信框架。</p>
 
@@ -170,7 +171,7 @@ http vs RPC HTTP 调用其实也是一种特殊的 RPC 。RPC 可以基于 HTTP 
 
 <p>它不仅支持数据中心内部和跨数据中心的服务调用，它也适用于分布式计算的最后一公里，将设备，移动应用程序和浏览器连接到后端服务。</p>
 
-<p>可以看这篇文章 <a href="https://grpc.io/blog/principles/">gRPC动机和设计原则</a></p>
+<p>可以看这篇文章 <a href="https://grpc.io/blog/principles/">gRPC 动机和设计原则</a></p>
 
 <p>很多主流库以及设施已经在使用 gRPC，比如 k8s 、TensorFlow</p>
 
@@ -209,10 +210,10 @@ http vs RPC HTTP 调用其实也是一种特殊的 RPC 。RPC 可以基于 HTTP 
 <ul>
 <li>HTTP/2 是一个公开的标准，并且是一个经过实践检验的标准</li>
 <li>HTTP/2 天然支持物联网、手机、浏览器</li>
-<li>基于HTTP/2 多语言的实现容易，每个流行的编程语言都会有成熟的HTTP/2 Client</li>
-<li>HTTP/2支持 Stream 和 流控</li>
+<li>基于 HTTP/2 多语言的实现容易，每个流行的编程语言都会有成熟的 HTTP/2 Client</li>
+<li>HTTP/2 支持 Stream 和 流控</li>
 <li>HTTP/2 天然支持 ssl</li>
-<li>鉴权成熟，从HTTP/1发展起来的鉴权系统已经很成熟了，可以无缝用在HTTP/2上</li>
+<li>鉴权成熟，从 HTTP/1 发展起来的鉴权系统已经很成熟了，可以无缝用在 HTTP/2 上</li>
 </ul>
 
 <p>缺点呢？</p>
@@ -341,8 +342,7 @@ message HelloReply {
 
 <p>建立 <code>package.json</code>：</p>
 
-<pre><code class="language-json">
-{
+<pre><code class="language-json">{
   &quot;name&quot;: &quot;web&quot;,
   &quot;version&quot;: &quot;1.0.0&quot;,
   &quot;description&quot;: &quot;&quot;,
@@ -362,7 +362,6 @@ message HelloReply {
     &quot;webpack-cli&quot;: &quot;^3.3.1&quot;
   }
 }
-
 </code></pre>
 
 <p><code>index.html</code> 文件</p>
@@ -372,17 +371,15 @@ message HelloReply {
 
 <p>以及 <code>webpack.confg.js</code> 文件：</p>
 
-<pre><code class="language-js">
-const path = require('path');
+<pre><code class="language-js">const path = require('path');
 
 module.exports = {
-    entry: path.join(__dirname, './index.js'),
-    output: {
-        filename: 'bundle.js',
-        path: path.resolve(__dirname)
-    }
+  entry: path.join(__dirname, './index.js'),
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname)
+  }
 };
-
 </code></pre>
 
 <p>以及最后一个空白的 <code>index.js</code> 来作为代码入口和 webpack 打包入口，最后我们安装 web 依赖：<code>npm i -d</code> 或者 <code>npm i -d --registry=https://registry.npm.taobao.org</code></p>
@@ -422,9 +419,8 @@ echo &quot;generate client success in directory : $OUT_DIR&quot;
 
 <p>接下来来完善我们的 <code>index.js</code>：</p>
 
-<pre><code class="language-js">
-const {HelloRequest} = require('./protobuf/helloworld_pb');
-const {GreeterClient} = require('./protobuf/helloworld_grpc_web_pb');
+<pre><code class="language-js">const { HelloRequest } = require('./protobuf/helloworld_pb');
+const { GreeterClient } = require('./protobuf/helloworld_grpc_web_pb');
 
 const client = new GreeterClient('http://localhost:9090');
 
@@ -432,10 +428,9 @@ const request = new HelloRequest();
 request.setName('gRPC World');
 
 client.sayHello(request, {}, (err, response) =&gt; {
-    if (err) throw err;
-    console.log(response.getMessage());
+  if (err) throw err;
+  console.log(response.getMessage());
 });
-
 </code></pre>
 
 <h4 id="golang-code">golang code</h4>
@@ -520,8 +515,7 @@ func main() {
 
 <p>在启动我们的 gRPC web 之前我们需要配置好 <code>envoy</code> 代理，先建立 <code>envoy-standalone.yaml</code> 文件：</p>
 
-<pre><code class="language-yaml">
-static_resources:
+<pre><code class="language-yaml">static_resources:
   listeners:
     - name: listener_0
       address:
@@ -530,12 +524,11 @@ static_resources:
         - filters:
             - name: envoy.http_connection_manager
               config:
-
                 # print access log to stdout
                 access_log:
                   - name: envoy.file_access_log
                     config:
-                      path: &quot;/dev/stdout&quot;
+                      path: '/dev/stdout'
 
                 codec_type: auto
                 stat_prefix: ingress_http
@@ -543,18 +536,18 @@ static_resources:
                   name: local_route
                   virtual_hosts:
                     - name: local_service
-                      domains: [&quot;*&quot;]
+                      domains: ['*']
                       routes:
-                        - match: { prefix: &quot;/&quot; }
+                        - match: { prefix: '/' }
                           route:
                             cluster: echo_service
                             max_grpc_timeout: 0s
                       cors:
                         allow_origin:
-                          - &quot;*&quot;
+                          - '*'
                         allow_methods: GET, PUT, DELETE, POST, OPTIONS
                         allow_headers: keep-alive,user-agent,cache-control,content-type,content-transfer-encoding,custom-header-1,x-accept-content-transfer-encoding,x-accept-response-streaming,x-user-agent,x-grpc-web,grpc-timeout
-                        max_age: &quot;1728000&quot;
+                        max_age: '1728000'
                         expose_headers: custom-header-1,grpc-status,grpc-message
                         enabled: true
                 http_filters:
@@ -571,13 +564,17 @@ static_resources:
       # container access host
       # https://stackoverflow.com/questions/31324981/how-to-access-host-port-from-docker-container/31328031
 
-      hosts: [{ socket_address: { address: host.docker.internal, port_value: 8080 }}]
+      hosts:
+        [
+          {
+            socket_address: { address: host.docker.internal, port_value: 8080 },
+          },
+        ]
 
 admin:
   access_log_path: /tmp/admin_access.log
   address:
     socket_address: { address: 0.0.0.0, port_value: 9091 }
-
 </code></pre>
 
 <blockquote>
@@ -723,10 +720,10 @@ docker-compose up --build
 <li><a href="https://www.zhihu.com/question/41609070/answer/191965937">既然有了 http 请求为什么还要有 RPC</a></li>
 <li><a href="https://www.yuque.com/egg/nodejs/dklip5">聊聊 Node RPC</a></li>
 <li><a href="https://mp.weixin.qq.com/s?__biz=MzI4NzEyMjUxMA==&amp;mid=2649068604&amp;idx=1&amp;sn=9d34b782a5d7c147e108f1af1c0fbc23&amp;chksm=f3c3411dc4b4c80b7e8a72013a7b884e21814f6bcbc6f0ea8752ff6c434b93005efc854520ef&amp;xtrack=1&amp;scene=0&amp;subscene=131&amp;clicktime=1552095539&amp;ascene=7&amp;devic">QUIC 简介</a></li>
-<li><a href="https://blog.csdn.net/hengyunabc/article/details/81120904">思考gRPC ：为什么是HTTP/2</a></li>
+<li><a href="https://blog.csdn.net/hengyunabc/article/details/81120904">思考 gRPC ：为什么是 HTTP/2</a></li>
 <li><a href="https://github.com/grpc/grpc-web/blob/master/net/grpc/gateway/examples/helloworld/README.md">grpc-web github hellowolrd example</a></li>
 <li><a href="https://juejin.im/post/5ad6fb06518825364001f619">envoy 快速入门</a></li>
-<li><a href="http://jm.taobao.org/2018/07/05/Mesh%E4%BD%93%E7%B3%BB%E4%B8%AD%E7%9A%84Envoy/">浅谈Service Mesh体系中的Envoy</a></li>
+<li><a href="http://jm.taobao.org/2018/07/05/Mesh%E4%BD%93%E7%B3%BB%E4%B8%AD%E7%9A%84Envoy/">浅谈 Service Mesh 体系中的 Envoy</a></li>
 </ul>
 
     </section>
@@ -735,6 +732,9 @@ docker-compose up --build
         <a class="prev-post" href="https://hasaki.xyz/blog/2019-02-12-%E4%BD%BF%E7%94%A8-nextcloud-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%A7%81%E6%9C%89%E7%BD%91%E7%9B%98/">
             <img class="icon-text" src="/img/prev.svg"/>使用 nextcloud 搭建个人私有网盘</a>
         
+        
+        <a class="next-post" href="https://hasaki.xyz/blog/2019-04-12-serverless-%E5%85%A5%E9%97%A8/">Serverless 入门<img class="icon-text" src="/img/next.svg"/>
+        </a>
         
     </nav>
 </article>
