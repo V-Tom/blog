@@ -2,8 +2,8 @@
 title: '七牛云许式伟：我所理解的架构是什么'
 subTitle: '七牛云许式伟：我所理解的架构是什么'
 tags: ['CodeLife', 'Excerpt']
-date: 2019-04-12T12:52:40+08:00
-host: ''
+date: 2019-06-17T17:52:40+08:00
+host: 'https://github.com/V-Tom/blog/blob/hugo/content/blog/2019-06-17-%E4%B8%83%E7%89%9B%E4%BA%91%E8%AE%B8%E5%BC%8F%E4%BC%9F%EF%BC%9A%E6%88%91%E6%89%80%E7%90%86%E8%A7%A3%E7%9A%84%E6%9E%B6%E6%9E%84%E6%98%AF%E4%BB%80%E4%B9%88/index.md'
 ---
 
 ### 从软件工程说起
