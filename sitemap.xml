@@ -8,6 +8,11 @@
   </url>
   
   <url>
+    <loc>https://hasaki.xyz/blog/2019-06-17-%E4%B8%83%E7%89%9B%E4%BA%91%E8%AE%B8%E5%BC%8F%E4%BC%9F%E6%88%91%E6%89%80%E7%90%86%E8%A7%A3%E7%9A%84%E6%9E%B6%E6%9E%84%E6%98%AF%E4%BB%80%E4%B9%88/</loc>
+    <lastmod>2019-04-12T12:52:40+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://hasaki.xyz/blog/2019-03-04-grpc-%E6%B5%85%E8%B0%88%E4%B8%8E%E5%AE%9E%E8%B7%B5/</loc>
     <lastmod>2019-03-04T11:32:40+08:00</lastmod>
   </url>
@@ -123,6 +128,12 @@
   </url>
   
   <url>
+    <loc>https://hasaki.xyz/tags/codelife/</loc>
+    <lastmod>2019-04-12T12:52:40+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://hasaki.xyz/tags/d3/</loc>
     <lastmod>2017-12-13T15:29:40+08:00</lastmod>
     <priority>0</priority>
@@ -137,6 +148,12 @@
   <url>
     <loc>https://hasaki.xyz/tags/docker/</loc>
     <lastmod>2019-03-04T11:32:40+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://hasaki.xyz/tags/excerpt/</loc>
+    <lastmod>2019-04-12T12:52:40+08:00</lastmod>
     <priority>0</priority>
   </url>
   
