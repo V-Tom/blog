@@ -1,0 +1,47 @@
+<main
+  id="iframe-{{ index .Params 0 }}"
+  width="100%"
+  height="1"
+  style="visibility: hidden;margin:5px 0;"
+>
+  <a
+    href="javascript:void(0)"
+    style="margin-left: 4px;display: inline-block;padding:2px 5px;margin-bottom:5px;border-radius:5px;border:1px solid {{.Site.Params.colorTheme}};"
+  >
+    You can click here to run the following code in new tab ↓↓↓
+  </a>
+  <code> </code>
+</main>
+
+<script type="module">
+  window.DOMObserver(
+    document.getElementById('iframe-{{ index .Params 0 }}'),
+    async function($target) {
+      // set target
+      $target.style.visibility = 'visible';
+      $target.setAttribute('height', 300);
+
+      const $code = $target.querySelector('code');
+      const $button = $target.querySelector('a');
+
+      let iframeContent = await fetch(
+        location.origin + location.pathname + '{{ index .Params 1}}'
+      );
+      iframeContent = await iframeContent.text();
+      $button.onclick = function() {
+        var win = window.open('', '_blank', '');
+        win.document.write(
+          `<script>
+
+            window.BASE_URL ="${location.origin + location.pathname}";
+
+            <\/script>` + iframeContent
+        );
+      };
+      $code.innerText = iframeContent;
+      hljs && hljs.highlightBlock($code);
+
+      $target.parentNode.removeChild($target.nextElementSibling);
+    }
+  );
+</script>

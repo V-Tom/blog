@@ -1,20 +1,22 @@
 <iframe
-        id="gist-{{ index .Params 0 }}"
-        width="100%"
-        height="1"
-        style="visibility: hidden;"
-        src=""
-        allowfullscreen="allowfullscreen"
-        allowpaymentrequest
-        frameborder="0"
+  id="gist-{{ index .Params 0 }}"
+  width="100%"
+  height="1"
+  style="visibility: hidden;"
+  src=""
+  allowfullscreen="allowfullscreen"
+  allowpaymentrequest
+  frameborder="0"
 ></iframe>
 
 <script>
-    window.DOMObserver(document.getElementById('gist-{{ index .Params 0 }}'), function ($target) {
-
-        $target.src = 'https://gist.github.com/V-Tom/{{ index .Params 0 }}.pibb';
-        $target.setAttribute('height', 500);
-        $target.style.visibility = 'visible';
-        $target.parentNode.removeChild($target.nextElementSibling);
-    })
+  window.DOMObserver(
+    document.getElementById('gist-{{ index .Params 0 }}'),
+    function($target) {
+      $target.src = 'https://gist.github.com/V-Tom/{{ index .Params 0 }}.pibb';
+      $target.setAttribute('height', 500);
+      $target.style.visibility = 'visible';
+      $target.parentNode.removeChild($target.nextElementSibling);
+    }
+  );
 </script>

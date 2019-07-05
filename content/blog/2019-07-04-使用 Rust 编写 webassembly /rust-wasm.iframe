@@ -1,0 +1,10 @@
+<script>
+  window.rust = async function rust() {
+    const wasm = await import(BASE_URL + '/rust-wasm/pkg/rust_wasm.js');
+    await wasm.default(BASE_URL + '/rust-wasm/pkg/rust_wasm_bg.wasm');
+    console.log(wasm);
+  };
+</script>
+<button onclick="rust()">
+  run rust wasm
+</button>
