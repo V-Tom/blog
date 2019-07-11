@@ -63,7 +63,9 @@ Serverless 是一种架构模式。
 
 其实通过图简单对比可以看到，Serverless 架构的出现让开发者更进一步不用过多地考虑传统的服务器采购、硬件运维、网络拓扑、资源扩容等问题，可以将更多的精力放在业务的拓展和创新上。
 
-另外，CNCF 也于 2016 年创立了 [Serverless Working Group](https://github.com/cncf/wg-serverless)，它致力于 [cloud native](https://www.cncf.io/) 和 Serverless 技术的结合，Google 推出了 [knative](https://cloud.google.com/knative/) 基于 k8s 的框架，可在任何公有私有云上实现无服务器架构，这样用户使用无服务器编程可以不限于特定的云平台。
+另外，CNCF 也于 2016 年创立了 [Serverless Working Group](https://github.com/cncf/wg-serverless)，它致力于 [cloud native 云原生](https://www.cncf.io/) 和 Serverless 技术的结合，Google 推出了 [knative](https://cloud.google.com/knative/) 基于 k8s 的框架，可在任何公有私有云上实现无服务器架构，这样用户使用无服务器编程可以不限于特定的云平台。
+
+> 用户对云的期望是应用的运行环境，并且最好是只让用户关心业务逻辑，而不需要关心，或者尽量少关心技术逻辑（比如监控，性能，弹性，高可用，日志追踪等）。这也是云原生应用（Cloud Native Application）这个概念提出的背景：云原生应用就是让渡一部分功能给云，以实现弹性，高可用，故障恢复，降低研发运维成本的应用
 
 下图是 CNCF Serverless 全景图，它将这些产品分成了工具型、安全型、框架型和平台型等类别。
 
@@ -122,6 +124,10 @@ Serverless 的运行才计算，便意味着他是一种 “严格” 的事件�
 - Lambda 在计算完后，将数据存储到 DynamoDB 上，DynamoDB 计费器 + 1
 - 最后，我们会生成静态的博客到 S3 上，而 S3 只在使用的时候按存储收费。
 - 在这个过程中，我们使用了一系列稳定存在的云服务，并且只在使用时才计费。由于这些服务可以自然、方便地进行调用，我们实际上只需要关注在我们的 Lambda 函数上，以及如何使用这些服务完成整个开发流程。
+
+另外 AWS 的 lambda 文档页面有一个演示，非常形象的介绍了 FaaS 的工作机制。
+
+![lambda.gif](./lambda.gif)
 
 根据 [aws 文档](https://aws.amazon.com/cn/lambda/pricing/)，Lambda 免费套餐包含每月 100 万个免费请求以及每月 400000GB-秒的计算时间。
 
@@ -212,13 +218,14 @@ Serverless 在请求到来时才运行。这意味着，当应用不运行的时
 
 尽管 Serverless 在编写传统的 Web 应用上，有一定的缺点。然而，它的事件驱动及运行时计算，使得它在某些场景上相当的合适，比如：
 
-- spa
-- push notification
-- web hook
-- log trace
-- iot
-- cron job
-- robot
+- `spa`
+- `push notification`
+- `web hook`
+- `log trace`
+- `iot`
+- `cron job`
+- `robot`
+- `stream`
 - 等等
 
 ## 基于 Serverless 的前端开发模式
