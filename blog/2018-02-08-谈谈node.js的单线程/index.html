@@ -16,10 +16,11 @@
     <link rel="manifest" href="/sw/manifest.json"/>
 <title>谈谈 Node.js 的单线程 - TOM&#39;s zone</title>
 
-<meta name="description" content="前言 从Node.js进入人们的视野时，我们所知道的它就由这些关键字组成 事件驱动、非阻塞I/O、高效、轻量，它在官网中也是这么描述自己的。
+<meta name="description" content="本文较长，内容较广，涉及内容也比较多，可能存在一些纰漏，希望读者读到本篇时遇到错误请指出，感激不尽。
+ 前言 从 Node.js 进入人们的视野时，我们所知道的它就由这些关键字组成 事件驱动、非阻塞 I/O、高效、轻量，它在官网中也是这么描述自己的。
  Node.js® is a JavaScript runtime built on Chrome’s V8 JavaScript engine. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient.
  Node.js 结构 我们可以看到，Node.js 的结构大致分为三个层次：
- Node.js 标准库，这部分是由 Javascript 编写的，即我们使用过程中直接能调用的 API。在源码中的 lib 目录下可以看到。 Node bindings，这一层是 Javascript 与底层 C/C&#43;&#43; 能够沟通的关键，前者通过 bindings 调用后者，相互交换数据。实现在 node.cc 这一层是支撑 Node.js 运行的关键，由 C/C&#43;&#43; 实现。  V8：Google 推出的 Javascript VM，也是 Node.js 为什么使用的是 Javascript 的关键，它为 Javascript 提供了在非浏览器端运行的环境，它的高效是 Node.js 之所以高效的原因之一。 Libuv：它为 Node.">
+ Node.js 标准库，这部分是由 Javascript 编写的，即我们使用过程中直接能调用的 API。在源码中的 lib 目录下可以看到。 Node bindings，这一层是 Javascript 与底层 C/C&#43;&#43; 能够沟通的关键，前者通过 bindings 调用后者，相互交换数据。实现在 node.cc 这一层是支撑 Node.js 运行的关键，由 C/C&#43;&#43; 实现。  V8：Google 推出的 Javascript VM，也是 Node.js 为什么使用的是 Javascript 的关键，它为 Javascript 提供了在非浏览器端运行的环境，它的高效是 Node.">
 
 
 
@@ -43,9 +44,12 @@
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/objectivec.min.js"></script>
 
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/rust.min.js"></script>
+
 
     <link rel="stylesheet" href="/css/bundle.min.css"/>
-<script src="/js/bundle.min.js"></script>
+<script src="/js/bundle.js"></script>
+
 <style>
 	a { color: #ff8181; }
 	blockquote {
@@ -111,9 +115,13 @@
     <section id="markdown">
         
 
+<blockquote>
+<p>本文较长，内容较广，涉及内容也比较多，可能存在一些纰漏，希望读者读到本篇时遇到错误请指出，感激不尽。</p>
+</blockquote>
+
 <h3 id="前言">前言</h3>
 
-<p>从Node.js进入人们的视野时，我们所知道的它就由这些关键字组成 <strong>事件驱动、非阻塞I/O、高效、轻量</strong>，它在官网中也是这么描述自己的。</p>
+<p>从 Node.js 进入人们的视野时，我们所知道的它就由这些关键字组成 <strong>事件驱动、非阻塞 I/O、高效、轻量</strong>，它在官网中也是这么描述自己的。</p>
 
 <blockquote>
 <p>Node.js® is a JavaScript runtime built on Chrome’s V8 JavaScript engine. Node.js uses an <strong>event-driven</strong>, <strong>non-blocking I/O model</strong> that makes it <strong>lightweight</strong> and <strong>efficient</strong>.</p>
@@ -140,21 +148,75 @@
 
 <p>所以，由此可以看出 <code>Node.js</code> 并不是一门语言，只是一个平台。</p>
 
-<h3 id="什么是线程">什么是线程</h3>
+<h3 id="用户态和内核态">用户态和内核态</h3>
 
-<p>我们来先说说什么是进程、线程。</p>
+<p>对 32 位操作系统而言，它的寻址空间（虚拟地址空间，或叫线性地址空间）为 4G（2 的 32 次方）。也就是说一个进程的最大地址空间为 4G。</p>
+
+<p>内核从本质上看是一种软件——控制计算机的硬件资源，并提供上层应用程序运行的环境，它独立于普通的应用程序，可以访问受保护的内存空间，也有访问底层硬件设备的所有权限。</p>
+
+<p>用户态即上层应用程序的活动空间，应用程序的执行必须依托于内核提供的资源，包括 CPU 资源、存储资源、I/O 资源等。为了使上层应用能够访问到这些资源，内核必须为上层应用提供访问的接口。</p>
+
+<p>针对 Linux 操作系统而言，最高的 1G 字节(从虚拟地址 0xC0000000 到 0xFFFFFFFF)由内核使用，称为内核空间。而较低的 3G 字节(从虚拟地址 0x00000000 到 0xBFFFFFFF)由各个进程使用，称为用户空间。</p>
+
+<p><img src="./linux-overview.png" alt="linux-overview.png" /></p>
+
+<p>上图可以看到，系统调用是操作系统的最小功能单位，用户态的应用程序可以通过三种方式来访问内核态的资源，分别是：</p>
+
+<ul>
+<li>系统调用</li>
+<li>库函数</li>
+<li>shell</li>
+</ul>
+
+<p>下图是对上图的一个细分结构，从这个图上可以更进一步对内核所做的事有一个“全景式”的印象。</p>
+
+<p><img src="./system-overview.jpg" alt="system-overview.jpg" /></p>
+
+<p>为了保证内核的安全，现在的操作系统一般都强制用户进程不能直接操作内核，具体的实现方式基本都是由操作系统将虚拟地址空间划分为两部分，一部分为内核空间，另一部分为用户空间。</p>
+
+<p>CPU 将指令分为特权指令和非特权指令，对于那些危险的指令，只允许操作系统及其相关模块使用，普通应用程序只能使用那些不会造成灾难的指令。比如 Intel 的 CPU 将特权等级分为 4 个级别：Ring0~Ring3。</p>
+
+<blockquote>
+<p>其实 Linux 系统只使用了 Ring0 和 Ring3 两个运行级别(Windows 系统也是一样的)。当进程运行在 Ring3 级别时被称为运行在用户态，而运行在 Ring0 级别时被称为运行在内核态。</p>
+</blockquote>
+
+<p>到了这里我们可以总结：</p>
+
+<p><strong>当进程运行在内核空间时就处于内核态，而进程运行在用户空间时则处于用户态。</strong></p>
+
+<p>运行于用户态的进程可以执行的操作和访问的资源都会受到极大的限制，而运行在内核态的进程则可以执行任何操作并且在资源的使用上没有限制。</p>
+
+<p>很多程序开始时运行于用户态，但在执行的过程中，一些操作需要在内核权限下才能执行，这就涉及到一个从用户态切换到内核态的过程。</p>
+
+<blockquote>
+<p>比如应用程序要读取磁盘上的一个文件，它可以向内核发送一个系统调用（system call），告诉内核我要读取文件，其实就是通过一个特殊的指令让进程从用户态进入到内核态(到了内核空间)，在内核空间中，CPU 可以执行任何的指令，当然也包括从磁盘上读取数据。具体过程是先把数据读取到内核空间中，然后再把数据拷贝到用户空间并从内核态切换到用户态。此时应用程序已经从系统调用中返回并且拿到了想要的数据，就可以往下执行了。</p>
+</blockquote>
+
+<p>从用户态进入到内核态，概括来讲有三种方式：系统调用、软中断和硬件中断</p>
 
 <h4 id="上下文切换技术">上下文切换技术</h4>
 
 <p>当我们说“上下文”的时候，指的是程序在执行中的一个状态。通常我们会用调用栈来表示这个状态——栈记载了每个调用层级执行到哪里，还有执行时的环境情况等所有有关的信息。</p>
 
 <blockquote>
-<p>由于单核 CPU 无法被平行使用(多个程序同时运行在一个CPU上)。为了创造*共享CPU*的假象，设计人员就搞出了一个叫做时间片的概念，将时间分割成为连续的时间片段，让多个程序在这些连续的时间片中交叉获得CPU使用权限，这样看起来就好像多个程序在同时运行一样。后来，给任务分配时间片并进行调度的调度器成为了操作系统的核心组件;</p>
+<p>由于单核 CPU 无法被平行使用(多个程序同时运行在一个 CPU 上)。为了创造*共享 CPU*的假象，设计人员就搞出了一个叫做时间片的概念，将时间分割成为连续的时间片段，让多个程序在这些连续的时间片中交叉获得 CPU 使用权限，这样看起来就好像多个程序在同时运行一样。后来，给任务分配时间片并进行调度的调度器成为了操作系统的核心组件;</p>
 
 <p><strong>摘自《深入理解计算机操作系统》</strong></p>
 </blockquote>
 
 <p>当我们说“上下文切换”的时候，表达的是一种从一个上下文切换到另一个上下文执行的技术。</p>
+
+<p>深入可以查看这篇文章<a href="http://guojing.me/linux-kernel-architecture/posts/process-switch/">进程切换</a></p>
+
+<h4 id="fd">FD</h4>
+
+<p>文件描述符（File descriptor）是计算机科学中的一个术语，是一个用于表述指向文件的引用的抽象化概念。</p>
+
+<p>文件描述符在形式上是一个非负整数。实际上，它是一个索引值，指向内核为每一个进程所维护的该进程打开文件的记录表。当程序打开一个现有文件或者创建一个新文件时，内核向进程返回一个文件描述符。在程序设计中，一些涉及底层的程序编写往往会围绕着文件描述符展开。但是文件描述符这一概念往往只适用于 UNIX、Linux 这样的操作系统。</p>
+
+<h3 id="什么是线程">什么是线程</h3>
+
+<p>我们来先说说什么是进程、线程。</p>
 
 <h4 id="进程">进程</h4>
 
@@ -162,16 +224,16 @@
 
 <p>每个进程在内核中会有一个数据结构进行描述，我们称其为进程描述符。这些描述符包含了系统管理进程所需的信息，并且放在一个叫做任务队列的队列里面。</p>
 
-<p>很显然，当新建进程时，我们需要分配新的进程描述符，并且分配新的地址空间(和父地址空间的映射保持一致，但是两者同时进入COW状态)。这些过程需要一定的开销。</p>
+<p>很显然，当新建进程时，我们需要分配新的进程描述符，并且分配新的地址空间(和父地址空间的映射保持一致，但是两者同时进入 COW 状态)。这些过程需要一定的开销。</p>
 
 <p>进程是计算机中的程序关于某数据集合上的一次运行活动，是系统进行资源分配和调度的基本单位，是操作系统结构的基础。</p>
 
-<p><strong>进程的出现是为了更好的利用CPU资源使到并发成为可能</strong></p>
+<p><strong>进程的出现是为了更好的利用 CPU 资源使到并发成为可能</strong></p>
 
 <h4 id="线程">线程</h4>
 
 <blockquote>
-<p>线程是一种轻量进程，实际上在linux内核中，两者几乎没有差别，除了一点——线程并不产生新的地址空间和资源描述符表，而是复用父进程的。</p>
+<p>线程是一种轻量进程，实际上在 linux 内核中，两者几乎没有差别，除了一点——线程并不产生新的地址空间和资源描述符表，而是复用父进程的。</p>
 </blockquote>
 
 <p><strong>线程的出现是为了降低上下文切换的消耗，提高系统的并发性，并突破一个进程只能干一样事的缺陷，使到进程内并发成为可能</strong></p>
@@ -196,8 +258,8 @@
 <li>进程模型（多进程</li>
 <li>线程模型（多线程</li>
 <li>协程模型（超线程</li>
-<li>CPS模型（个人能力有限，针对该模型没有找到具体的描述和内容，所以就不详细介绍</li>
-<li>非阻塞式I/O</li>
+<li>CPS 模型（个人能力有限，针对该模型没有找到具体的描述和内容，所以就不详细介绍</li>
+<li>非阻塞式 I/O</li>
 </ul>
 
 <h4 id="同步模型">同步模型</h4>
@@ -243,7 +305,7 @@ if __name__ == &quot;__main__&quot;:
 
 <h4 id="线程模型">线程模型</h4>
 
-<p><strong>线程，是cpu调度的基本单位，是最小的执行单元</strong></p>
+<p><strong>线程，是 cpu 调度的基本单位，是最小的执行单元</strong></p>
 
 <p>线程模型的优点是更轻量，建立和释放速度更快，而且多个上下文间的通讯速度非常快，当然服务器的线程数量也是有上限的。</p>
 
@@ -286,7 +348,7 @@ for i in range(10):
 <p>历史上先有协程再有的线程。</p>
 
 <blockquote>
-<p>实际上线程确实比协程性能更好，协程比较适合 I/O密集型任务。</p>
+<p>实际上线程确实比协程性能更好，协程比较适合 I/O 密集型任务。线程和进程的操作是由程序触发系统接口，最后的执行者是系统；协程的操作则是程序员。</p>
 </blockquote>
 
 <p>协程属于非抢占式任务，也可以叫做<strong>用户态线程</strong></p>
@@ -295,7 +357,7 @@ for i in range(10):
 <p>用户态线程就是程序自己控制状态切换，进程不用陷入内核态，开发者可以按照程序的特性来选择更适合的调度算法，</p>
 </blockquote>
 
-<p>协程属于语言级别的调度算法实现，通过在线程中实现调度，避免了陷入内核级别的上下文切换造成的性能损失，协程所能调度的，只有在同一进程中的不同上下文而已。可以看做用户控件下的进程，进而突破了线程在IO上的性能瓶颈。</p>
+<p>协程属于语言级别的调度算法实现，通过在线程中实现调度，避免了陷入内核级别的上下文切换造成的性能损失，协程所能调度的，只有在同一进程中的不同上下文而已。可以看做用户控件下的进程，进而突破了线程在 IO 上的性能瓶颈。</p>
 
 <p>协程也可以说是一种编程组件，减少 callback 的使用，以看是同步的方式来编程，把这些异步伪装成同步，让写代码的人爽一些。</p>
 
@@ -330,18 +392,7 @@ loop.close()
 
 <p>ES6 当中已经加入 <code>yield/Generator/GeneratorFunction</code> 来支持协程，不过是半协程（semi-coroutine），而且我觉得 async 应该不单单只是 <code>generator</code> 的升级语法糖。</p>
 
-<h4 id="非阻塞式i-o">非阻塞式I/O</h4>
-
-<p>I/O 的处理方式分为：</p>
-
-<ul>
-<li>阻塞式</li>
-<li>非阻塞式。</li>
-</ul>
-
-<p>对于阻塞 I/O 来说，从发起读请求，到缓冲区就绪，再到用户进程获取数据，这两个步骤都是阻塞的。</p>
-
-<p>非阻塞 I/O 实际上是向内核轮询，缓冲区是否就绪，如果没有则继续执行其他操作。当缓冲区就绪时，讲缓冲区内容拷贝到用户进程，这一步实际上还是阻塞的。</p>
+<h3 id="i-o">I/O</h3>
 
 <blockquote>
 <p>什么是 I/O ?</p>
@@ -356,11 +407,111 @@ loop.close()
 <li>&hellip;</li>
 </ul>
 
-<p>实际上两者高度类似。 I/O 可以分为两个步骤，首先把文件(网络)中的内容拷贝到缓冲区，这个缓冲区位于操作系统独占的内存区域中。随后再把缓冲区中的内容拷贝到用户程序的内存区域中。</p>
+<p>实际上两者高度类似。 I/O 可以分为两个步骤，<strong>首先把文件(网络)中的内容拷贝到缓冲区，这个缓冲区位于操作系统独占的内存区域中。随后再把缓冲区中的内容拷贝到用户程序的内存区域中</strong>。</p>
 
-<p>为了让 CPU 的处理能力得到充分利用，减少 I/O 浪费时间，避免陷入内核态，提高性能，内核提供了非阻塞式 I/O，后来演变成异步编程。</p>
+<p>I/O 的处理方式分为：</p>
 
-<p>Linux 提出了<a href="http://www.cnblogs.com/lizheng19822003/p/5337792.html">3种解决方案</a> 来实现非阻塞式 IO ：</p>
+<ul>
+<li>阻塞式</li>
+<li>非阻塞式。</li>
+</ul>
+
+<p>对于阻塞 I/O 来说，从发起读请求，到缓冲区就绪，再到用户进程获取数据，这两个步骤都是阻塞的。</p>
+
+<p>非阻塞 I/O 实际上是向内核轮询，缓冲区是否就绪，如果没有则继续执行其他操作。当缓冲区就绪时，讲缓冲区内容拷贝到用户进程，这一步实际上还是阻塞的。</p>
+
+<p>为了让 CPU 的处理能力得到充分利用，减少 I/O 浪费时间，避免陷入内核态，提高性能，内核提供了非阻塞式 I/O、I/O 多路复用，后来演变成异步编程。</p>
+
+<h3 id="同步-异步-阻塞-非阻塞-异步">同步、异步、阻塞、非阻塞、异步</h3>
+
+<p>到底什么是同步、异步、阻塞、非阻塞、异步？根据 《UNIX 网络编程：卷一》，书中向我们提及了 5 种类 UNIX 下可用的 I/O 模型：</p>
+
+<ul>
+<li><p>阻塞式 I/O</p></li>
+
+<li><p>非阻塞式 I/O</p></li>
+
+<li><p>I/O 复用（select，poll，epoll&hellip;）这里下面会说到</p></li>
+
+<li><p>信号驱动式 I/O（SIGIO）这里不做介绍</p></li>
+
+<li><p>异步 I/O（POSIX 的 aio_系列函数）</p></li>
+</ul>
+
+<p>下面我们调出一些常见的来做些简单介绍</p>
+
+<h4 id="阻塞式-i-o-模型">阻塞式 I/O 模型</h4>
+
+<p>默认情况下，所有套接字都是阻塞的。怎么理解？先理解这么个流程，一个输入操作通常包括两个不同阶段：</p>
+
+<p>（1）等待数据准备好；
+（2）从内核向进程复制数据。</p>
+
+<p>对于一个套接字上的输入操作，第一步通常涉及等待数据从网络中到达。当所有等待分组到达时，它被复制到内核中的某个缓冲区。第二步就是把数据从内核缓冲区复制到应用程序缓冲区。 好，下面我们以阻塞套接字的 recvfrom 的的调用图来说明阻塞</p>
+
+<p><img src="./block_io.jpg" alt="block_io.jpg" /></p>
+
+<p>标红的这部分过程就是阻塞，直到阻塞结束 recvfrom 才能返回。blocking IO 的特点就是在 IO 执行的两个阶段都被 block 了。</p>
+
+<h4 id="非阻塞式-i-o">非阻塞式 I/O</h4>
+
+<p>以下这句话很重要：进程把一个套接字设置成非阻塞是在通知内核，当所请求的 I/O 操作非得把本进程投入睡眠才能完成时，不要把进程投入睡眠，而是返回一个错误。看看非阻塞的套接字的 recvfrom 操作如何进行：</p>
+
+<p><img src="./non_block_io.jpg" alt="non_block_io.jpg" /></p>
+
+<p>可以看出 recvfrom 总是立即返回，设置描述符为非阻塞，但是要进程自己一直询问 kernal 是否可读，<strong>下面会详细介绍这个 非阻塞式 I/O</strong></p>
+
+<h4 id="异步-i-o">异步 I/O</h4>
+
+<p>这类函数的工作机制是告知内核启动某个操作，并让内核在整个操作（包括将数据从内核拷贝到用户空间）完成后通知我们。如图：</p>
+
+<p><img src="./async_block_io.jpg" alt="async_block_io.jpg" /></p>
+
+<p>注意红线标记处说明在调用时就可以立马返回，等函数操作完成会通知我们。</p>
+
+<h4 id="i-o-模型比较">I/O 模型比较</h4>
+
+<p>现在做一个大致的比较：</p>
+
+<p><img src="./compare-io.png" alt="compare-io.png" /></p>
+
+<p>可以看到前四种模型都是阻塞式模型，真正的 I/O 操作（recvfrom），也就是最后一个阶段 <strong>将数据从内核复制到用户空间</strong>将阻塞进程，只有异步 I/O 模型和 POSIX 定义的异步 I/O 相匹配。</p>
+
+<p>下面可以简单总结一下：</p>
+
+<ul>
+<li>阻塞，非阻塞</li>
+</ul>
+
+<blockquote>
+<p>简单来说是：请求的进程/线程要访问的数据是否就绪、进程/线程是否需要等待</p>
+</blockquote>
+
+<p>根据上图，阻塞（blocking IO）和非阻塞（non-blocking IO）的区别就在于第一个阶段，如果数据没有就绪，在查看数据是否就绪的过程中是一直等待，还是直接返回一个标志信息。</p>
+
+<ul>
+<li>同步，异步</li>
+</ul>
+
+<blockquote>
+<p>主要通过消息通信机制（(synchronous communication/ asynchronous communication)来完成。</p>
+</blockquote>
+
+<p>同步 I/O 和异步 I/O 的关键区别反映在数据拷贝阶段是由用户线程完成还是内核完成。同步需要主动读写数据，在读写数据的过程中还是会阻塞；异步只需要 I/O 操作完成的通知，并不主动读写数据，由操作系统内核完成数据的读写。</p>
+
+<p>所以说异步 I/O 必须要有操作系统的底层支持。</p>
+
+<blockquote>
+<p>似乎 异步 I/O 模型当中，按理说不存在阻塞与非阻塞的说法了，不知道为什么还有异步阻塞，异步非阻塞</p>
+</blockquote>
+
+<h3 id="非阻塞式-i-o-详细介绍">非阻塞式 I/O 详细介绍</h3>
+
+<blockquote>
+<p>前面简单说了以下 非阻塞式 I/O ，这里详细解释一下：</p>
+</blockquote>
+
+<p>Linux 提出了<a href="http://www.cs.huji.ac.il/course/2004/com1/Exercises/Ex4/I.O.models.pdf">3 种解决方案</a> 来实现 I/O 多路复用：</p>
 
 <ul>
 <li><code>select</code></li>
@@ -375,9 +526,13 @@ loop.close()
 <li><code>Event ports</code> Solaris</li>
 </ul>
 
-<p>这些方案有好有坏，其实这些从根本上讲还是算是一种同步，应用程序仍然需要等待 I/O 完全返回。比如 <code>Apache</code> 采用了前者，而 <code>Nginx</code> 和 <code>Node.js</code> 使用了后者，区别在于后者<a href="http://stackoverflow.com/questions/17355593/why-is-epoll-faster-than-select">效率更高</a></p>
+<p>这些方案有好有坏，其实这些从根本上讲还是算是一种同步，应用程序仍然需要等待 I/O 完全返回。他们都需要在读写事件就绪后自己负责进行读写，也就是说这个读写过程是阻塞的。</p>
 
-<p>当然异步 I/O 是最理想的 I/O 模型，然而可惜的是真正的异步 I/O 并不存在。 Linux 上的 AIO 通过信号和回调来传递数据，但是存在缺陷。现有的 libeio 以及 Windows 上的 IOCP，本质上都是利用线程池与阻塞 I/O 来模拟异步 I/O。</p>
+<p>比如 <code>Apache</code> 采用了前者，而 <code>Nginx</code> 和 <code>Node.js</code> 使用了后者，区别在于后者<a href="http://stackoverflow.com/questions/17355593/why-is-epoll-faster-than-select">效率更高</a></p>
+
+<p>当然异步 I/O 是最理想的 I/O 模型，异步 I/O 的实现会负责把数据从内核拷贝到用户空间。</p>
+
+<p>然而可惜的是真正的异步 I/O 并不存在。 Linux 上的 AIO 通过信号和回调来传递数据，但是存在缺陷。现有的 libeio 以及 Windows 上的 IOCP，本质上都是利用线程池与阻塞 I/O 来模拟异步 I/O。</p>
 
 <p>Node 本身有自己的事件模型—— <code>event loop</code>：</p>
 
@@ -402,13 +557,13 @@ loop.close()
 
 </code></pre>
 
-<p>这里不仔细介绍，读者可以线下自行学习。</p>
+<p><code>event loop</code> 作为一个 Node 开发者是必须了解并熟悉的内容，读者可以线下自行学习。</p>
 
 <h3 id="单线程的-node">单线程的 Node</h3>
 
 <p>从严格意义上来讲， <code>Node.js</code> 本身并不是单线程的。</p>
 
-<p>因为Node自身还有I/O线程存在（网络I/O、磁盘I/O），这些I/O线程是由更底层的 <code>libuv</code> 处理，这些实际上还是多线程，当然这些对于 <code>JavaScript</code> 开发者来说是透明的。</p>
+<p>因为 Node 自身还有 I/O 线程存在（网络 I/O、磁盘 I/O），这些 I/O 线程是由更底层的 <code>libuv</code> 处理，这些实际上还是多线程，当然这些对于 <code>JavaScript</code> 开发者来说是透明的。</p>
 
 <p>Node 的异步 I/O 并非首创，但是是第一个成功的平台。</p>
 
@@ -425,14 +580,14 @@ loop.close()
 
 <p><img src="./libuv.png" alt="libuv" /></p>
 
-<p>Node 正是通过它来和<strong>底层操作系统打交道</strong>，来实现：事件驱动、非阻塞I/O、高效。</p>
+<p>Node 正是通过它来和<strong>底层操作系统打交道</strong>，来实现：事件驱动、非阻塞 I/O、高效。</p>
 
-<p>下面是一张简化的调用流程图(以fs为例)：</p>
+<p>下面是一张简化的调用流程图(以 fs 为例)：</p>
 
 <p><img src="./libuv-fs.jpg" alt="libuv fs" /></p>
 
 <blockquote>
-<p>在 Linux 当中是通过 AIO(epoll) 实现异步io，Windows 当中则是 IOCP，libuv 作为抽象封装层，使得所有平台差异有这一层完成，并且在 Node 编译期间会判断平台条件选择性编译。</p>
+<p>在 Linux 当中是通过 AIO(epoll) 实现异步 io，Windows 当中则是 IOCP，libuv 作为抽象封装层，使得所有平台差异有这一层完成，并且在 Node 编译期间会判断平台条件选择性编译。</p>
 </blockquote>
 
 <p>Node 当中 javascript 的执行线程是单线程，把需要做的 <code>I/O</code> 交给 <code>libuv</code>，并设定好回调。</p>
@@ -443,14 +598,14 @@ loop.close()
 
 <h4 id="存在的优势">存在的优势</h4>
 
-<p>Node.js的单线程具有它的优势：</p>
+<p>Node.js 的单线程具有它的优势：</p>
 
 <ul>
 <li>状态单一</li>
 <li>不存在竞态，没有锁</li>
 <li>不需要线程间同步</li>
 <li>减少系统上下文的切换</li>
-<li>有效提高单核CPU的使用率</li>
+<li>有效提高单核 CPU 的使用率</li>
 </ul>
 
 <p>但也并非十全十美：</p>
@@ -462,9 +617,9 @@ loop.close()
 <li>单线程的脆弱性，如果单线程出现未捕获的异常，就会造成这个进程 crash</li>
 </ul>
 
-<h4 id="非i-o的异步api">非I/O的异步API</h4>
+<h4 id="非-i-o-的异步-api">非 I/O 的异步 API</h4>
 
-<p>介绍 Node 的时候，多数情况下都会提到异步 I/O，Node 当中也存在一些与 I/O 无关的异步API：</p>
+<p>介绍 Node 的时候，多数情况下都会提到异步 I/O，Node 当中也存在一些与 I/O 无关的异步 API：</p>
 
 <ul>
 <li><code>setTimeout</code></li>
@@ -477,9 +632,9 @@ loop.close()
 <p>从上面这些 API 当中也引发出一个常见的问题 macrotask 和 microtask 的区别，其实还是 event loop</p>
 </blockquote>
 
-<h4 id="settimeout和setinterval">setTimeout和setInterval</h4>
+<h4 id="settimeout-和-setinterval">setTimeout 和 setInterval</h4>
 
-<p>这两个API和浏览器当中的行为是一致的。它们的实现原理和异步 I/O 比较相似，只是不需要进程池的参与。</p>
+<p>这两个 API 和浏览器当中的行为是一致的。它们的实现原理和异步 I/O 比较相似，只是不需要进程池的参与。</p>
 
 <p>调用的时候创建的定时器会被插入到观察者内部的一个红黑树当中。每次一个 Tick 执行的时候，会从红黑树当中迭代取出定时器对象，检查是否超过定时时间，如果超过，就形成一个事件，立即执行回调函数。</p>
 
@@ -489,28 +644,28 @@ loop.close()
 
 <p>由于事件循环自身的特点，定时器的精确度不够，好多人采用过这样的方法来实现异步执行一个任务（延迟执行：</p>
 
-<pre><code class="language-javascript">setTimeout(()=&gt;{
-    // do something
-},0)
+<pre><code class="language-javascript">setTimeout(() =&gt; {
+  // do something
+}, 0);
 </code></pre>
 
 <p>实际上这样写不但浪费性能，而且根据 event loop 顺序，setTimeout 的优先级也不高。实际上 <code>process.nextTick</code> 方法操作较为轻量、高效，功能实现上也较为符合需求。</p>
 
-<p>根据 event loop，<strong>process.nextTick()不在event loop的任何阶段执行，而是在各个阶段切换的中间执行</strong>,即从一个阶段切换到下个阶段前执行。</p>
+<p>根据 event loop，<strong>process.nextTick()不在 event loop 的任何阶段执行，而是在各个阶段切换的中间执行</strong>,即从一个阶段切换到下个阶段前执行。</p>
 
 <h4 id="setimmediate">setImmediate</h4>
 
 <p>这个 <code>setImmediate</code> 方法和 <code>process.nextTick</code> 十分相似，都是回调函数延迟执行，两者的差别是：</p>
 
-<pre><code class="language-javascript">process.nextTick(function () {
-  console.log('nextTick')
-})
+<pre><code class="language-javascript">process.nextTick(function() {
+  console.log('nextTick');
+});
 
-setImmediate(function () {
-  console.log('setImmediate')
-})
+setImmediate(function() {
+  console.log('setImmediate');
+});
 
-console.log('runtime')
+console.log('runtime');
 </code></pre>
 
 <p>执行结果是：</p>
@@ -524,23 +679,23 @@ setImmediate
 
 <h3 id="多进程的-node">多进程的 Node</h3>
 
-<p>如果你运行 Node.js 的机器是像i5，i7这样多核cpu，那么将无法充分利用多核cpu的性能来为Node.js服务。</p>
+<p>如果你运行 Node.js 的机器是像 i5，i7 这样多核 cpu，那么将无法充分利用多核 cpu 的性能来为 Node.js 服务。</p>
 
-<p>在C++、C#、python等其他语言都有与之对应的多线程编程，能够充分的利用多核 CPU。</p>
+<p>在 C++、C#、python 等其他语言都有与之对应的多线程编程，能够充分的利用多核 CPU。</p>
 
 <p>我们可以通过以下方式实现多进程：</p>
 
 <ul>
 <li>fork</li>
 <li>cluster</li>
-<li>第三方库 <code>tagg</code>、<code>tagg2</code>（对v8，libuv进行拓展</li>
+<li>第三方库 <code>tagg</code>、<code>tagg2</code>（对 v8，libuv 进行拓展</li>
 </ul>
 
 <h4 id="fork">fork</h4>
 
 <p>说到多进程当然少不了 <a href="http://man7.org/linux/man-pages/man2/fork.2.html">fork</a> ,在 un*x 系统中，fork 函数为用户提供最底层的多进程实现。</p>
 
-<p>多个子进程便是通过在master进程中不断的调用 cluster.fork 方法构造出来:</p>
+<p>多个子进程便是通过在 master 进程中不断的调用 cluster.fork 方法构造出来:</p>
 
 <p><img src="./fork.png" alt="fork" /></p>
 
@@ -548,7 +703,7 @@ setImmediate
 
 <ul>
 <li><code>spawn</code> 创建一个子进程来执行命令，结果以 stream 的形式返回</li>
-<li><code>exec</code> 创建一个子进程来执行命令，和spawn()不同的是方法参数不同，它可以传入回调函数来获取子进程的状态，结果立即返回</li>
+<li><code>exec</code> 创建一个子进程来执行命令，和 spawn()不同的是方法参数不同，它可以传入回调函数来获取子进程的状态，结果立即返回</li>
 <li><code>execFile</code> 启动一个子进程来执行指定文件。注意，该文件的顶部必须声明 <a href="https://en.wikipedia.org/wiki/Shebang_(Unix)">SHEBANG</a>符号(#!)用来指定进程类型。</li>
 <li><code>fork</code> 这个和 <code>spawn</code> 类似，不同点在于它创建 Node 的子进程只需要执定要执行的 JavaScript 文件模块即可。</li>
 </ul>
@@ -597,28 +752,35 @@ setImmediate
 
 <p>下面是采用 <code>cluster</code> 来创建一个简单的集群：</p>
 
-<pre><code class="language-javascript">const cluster = require('cluster');            // | | 
-const http = require('http');                  // | | 
-const numCPUs = require('os').cpus().length;   // | |    都执行了
-                                               // | | 
-if (cluster.isMaster) {                        // |-|-----------------
-  // Fork workers.                             //   | 
-  for (var i = 0; i &lt; numCPUs; i++) {          //   | 
-    cluster.fork();                            //   | 
-  }                                            //   | 仅父进程执行 (a.js)
-  cluster.on('exit', (worker) =&gt; {             //   | 
-    console.log(`${worker.process.pid} died`); //   | 
-  });                                          //   |
-} else {                                       // |-------------------
-  // Workers can share any TCP connection      // | 
-  // In this case it is an HTTP server         // | 
-  http.createServer((req, res) =&gt; {            // | 
-    res.writeHead(200);                        // |   仅子进程执行 (b.js)
-    res.end('hello world\n');                  // | 
-  }).listen(8000);                             // | 
-}                                              // |-------------------
-                                               // | |
-console.log('hello');                          // | |    都执行了
+<pre><code class="language-javascript">const cluster = require('cluster'); // | |
+const http = require('http'); // | |
+const numCPUs = require('os').cpus().length; // | |    都执行了
+// | |
+if (cluster.isMaster) {
+  // |-|-----------------
+  // Fork workers.                             //   |
+  for (var i = 0; i &lt; numCPUs; i++) {
+    //   |
+    cluster.fork(); //   |
+  } //   | 仅父进程执行 (a.js)
+  cluster.on('exit', worker =&gt; {
+    //   |
+    console.log(`${worker.process.pid} died`); //   |
+  }); //   |
+} else {
+  // |-------------------
+  // Workers can share any TCP connection      // |
+  // In this case it is an HTTP server         // |
+  http
+    .createServer((req, res) =&gt; {
+      // |
+      res.writeHead(200); // |   仅子进程执行 (b.js)
+      res.end('hello world\n'); // |
+    })
+    .listen(8000); // |
+} // |-------------------
+// | |
+console.log('hello'); // | |    都执行了
 </code></pre>
 
 <p>真实的工作进程是通过使用 <code>child_process.fork</code> 方法实现并派送的,他们可以通过 IPC （Inter-Process Communication）进行进程间的通信。</p>
@@ -627,15 +789,15 @@ console.log('hello');                          // | |    都执行了
 <p>Node.js 中的 IPC 通信是由 <code>libuv</code> 通过管道技术实现的, 在 windows 下由命名管道（named pipe）实现也就是上表中的最后第二个, *nix 系统则采用 UDS (Unix Domain Socket) 实现。</p>
 </blockquote>
 
-<p>IPC的创建和实现示意图：</p>
+<p>IPC 的创建和实现示意图：</p>
 
 <p><img src="./ipc.jpeg" alt="ipc" /></p>
 
-<p>父进程在实际创建子进程之前，会先创建IPC通道并监听它，然后才真正创建出子进程。子进程在启动的过程中会去链接这个已存在的IPC通道，从而完成了父子进程之间的连接。</p>
+<p>父进程在实际创建子进程之前，会先创建 IPC 通道并监听它，然后才真正创建出子进程。子进程在启动的过程中会去链接这个已存在的 IPC 通道，从而完成了父子进程之间的连接。</p>
 
 <p><img src="./ipc-parent-to-child.jpeg" alt="ipc-parent-to-child" /></p>
 
-<p>通过 <code>fork()</code> 复制的进程都是一个<code>独立</code>的进程，这个进程中有着独立而全新的V8实例。</p>
+<p>通过 <code>fork()</code> 复制的进程都是一个<code>独立</code>的进程，这个进程中有着独立而全新的 V8 实例。</p>
 
 <h3 id="负载均衡">负载均衡</h3>
 
@@ -688,19 +850,19 @@ export NODE_CLUSTER_SCHED_POLICY=none
 
 <p>当然负载均衡策略也可以通过代理服务器 <code>nginx</code> 配置 <code>upstream</code> 实现：</p>
 
-<pre><code class="language-nginx">http { 
-  upstream cluster { 
-      server 127.0.0.1:3000; 
-      server 127.0.0.1:3001; 
-      server 127.0.0.1:3002; 
-      server 127.0.0.1:3003; 
-  } 
-  server { 
-       listen 80; 
-       server_name www.domain.com; 
-       location / { 
+<pre><code class="language-nginx">http {
+  upstream cluster {
+      server 127.0.0.1:3000;
+      server 127.0.0.1:3001;
+      server 127.0.0.1:3002;
+      server 127.0.0.1:3003;
+  }
+  server {
+       listen 80;
+       server_name www.domain.com;
+       location / {
             proxy_pass http://cluster;
-       } 
+       }
   }
 }
 </code></pre>
@@ -716,34 +878,32 @@ export NODE_CLUSTER_SCHED_POLICY=none
 <p>我们可以给 <code>process</code> 对象 添加 <code>uncaughtException</code> 事件绑定来避免异常发生时直接退出，可以在回调当中停止任务，告诉 <code>master</code> 进程该进程已经 <code>died</code>：</p>
 
 <pre><code class="language-javascript">process.on('uncaughtException', err =&gt; {
-
   // 记录日志
-  logger.error(err)
+  logger.error(err);
 
   // 发送自杀信号
-  process.send({ act: 'suicide' })
+  process.send({ act: 'suicide' });
 
   // 停止接收新的连接
-  worker.close(function () {
-    process.exit(1)
-  })
+  worker.close(function() {
+    process.exit(1);
+  });
 
   // 5秒后自动退出
-  setTimeout(function () {
-    process.exit(1)
-  }, 5e3)
-
-})
+  setTimeout(function() {
+    process.exit(1);
+  }, 5e3);
+});
 </code></pre>
 
 <p>在 <code>cluster</code> 模块当中我们可以这样进行处理：</p>
 
-<pre><code class="language-javascript">cluster.on('exit', function(){
-    clsuter.fork();
+<pre><code class="language-javascript">cluster.on('exit', function() {
+  clsuter.fork();
 });
 
-cluster.on('disconnect', function(){
-    clsuter.fork();
+cluster.on('disconnect', function() {
+  clsuter.fork();
 });
 </code></pre>
 
@@ -765,19 +925,21 @@ cluster.on('disconnect', function(){
 <li><a href="https://en.wikipedia.org/wiki/C10k_problem">c10k</a></li>
 <li><a href="https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/"><code>event loop</code> 官方解释</a></li>
 <li><a href="http://www.cnblogs.com/aylin/p/5601969.html">Python 当中的多线程，多进程，协程</a></li>
-<li><a href="https://blog.csdn.net/shenlei19911210/article/details/61194617">协程(Coroutine)-ES中关于Generator/async/await的学习思考</a></li>
+<li><a href="https://blog.csdn.net/shenlei19911210/article/details/61194617">协程(Coroutine)-ES 中关于 Generator/async/await 的学习思考</a></li>
 <li><a href="https://www.zhihu.com/question/32218874/answer/56255707">为什么协程是趋势</a></li>
 <li><a href="http://shiningray.cn/node-js-coroutine.html">Node 的协程</a></li>
 <li><a href="https://zhuanlan.zhihu.com/p/27069865">Node.js cluster 踩坑小结</a></li>
-<li><a href="http://www.cnblogs.com/lizheng19822003/p/5337792.html">理解事件驱动select,poll,epoll三种模型</a></li>
+<li><a href="http://www.cnblogs.com/lizheng19822003/p/5337792.html">理解事件驱动 select,poll,epoll 三种模型</a></li>
 <li><a href="http://jolestar.com/parallel-programming-model-thread-goroutine-actor/">并发之痛 Thread，Goroutine，Actor</a></li>
 <li><a href="https://github.com/DavidCai1993/my-blog/issues/31">通过源码解析 Node.js 中进程间通信中的 socket 句柄传递</a></li>
-<li><a href="https://blog.csdn.net/gatieme/article/details/51058797">linux下进程的进程最大数、最大线程数、进程打开的文件数和ulimit命令修改硬件资源限制</a></li>
+<li><a href="https://blog.csdn.net/gatieme/article/details/51058797">linux 下进程的进程最大数、最大线程数、进程打开的文件数和 ulimit 命令修改硬件资源限制</a></li>
 <li><a href="https://blog.csdn.net/great3779/article/details/5930190">一个进程(Process)最多可以生成多少个线程(Thread)</a></li>
-<li><a href="https://segmentfault.com/q/1010000000190024">既然nodejs是单线程的，那么它怎么处理并发，难道要排队么</a></li>
+<li><a href="https://segmentfault.com/q/1010000000190024">既然 nodejs 是单线程的，那么它怎么处理并发，难道要排队么</a></li>
 <li><a href="https://github.com/hustxiaoc/node.js/issues/11">当我们谈论 cluster 时我们在谈论什么</a></li>
 <li><a href="http://taobaofed.org/blog/2015/11/03/nodejs-cluster/">taobao fed 当我们谈论 cluster 时我们在谈论什么(上)</a></li>
 <li><a href="http://taobaofed.org/blog/2015/11/10/nodejs-cluster-2/">tabao fed 当我们谈论 cluster 时我们在谈论什么（下）</a></li>
+<li><a href="https://www.zhihu.com/question/19732473">怎样理解阻塞非阻塞与同步异步的区别？</a></li>
+<li><a href="https://www.cnblogs.com/sparkdev/p/8410350.html">Linux 内核空间与用户空间</a></li>
 </ul>
 
     </section>

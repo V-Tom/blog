@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ZH-CN</language>
     <copyright>Early 2016 ~ 2019 &amp;copy; TOM&#39;s Zone</copyright>
-    <lastBuildDate>Fri, 23 Mar 2018 14:28:25 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 04 Jul 2019 15:42:40 +0800</lastBuildDate>
     
 	<atom:link href="https://hasaki.xyz/tags/frontend/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>使用 Rust 编写 Webassembly </title>
+      <link>https://hasaki.xyz/blog/2019-07-04-%E4%BD%BF%E7%94%A8-rust-%E7%BC%96%E5%86%99-webassembly-/</link>
+      <pubDate>Thu, 04 Jul 2019 15:42:40 +0800</pubDate>
+      
+      <guid>https://hasaki.xyz/blog/2019-07-04-%E4%BD%BF%E7%94%A8-rust-%E7%BC%96%E5%86%99-webassembly-/</guid>
+      <description>  TODO
+ Webassembly Rust hello world Reference </description>
+    </item>
     
     <item>
       <title>使用Swift开发React Native组件</title>

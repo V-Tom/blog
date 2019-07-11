@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://hasaki.xyz/blog/2019-07-04-%E4%BD%BF%E7%94%A8-rust-%E7%BC%96%E5%86%99-webassembly-/</loc>
+    <lastmod>2019-07-04T15:42:40+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://hasaki.xyz/blog/2019-06-17-%E4%B8%83%E7%89%9B%E4%BA%91%E8%AE%B8%E5%BC%8F%E4%BC%9F%E6%88%91%E6%89%80%E7%90%86%E8%A7%A3%E7%9A%84%E6%9E%B6%E6%9E%84%E6%98%AF%E4%BB%80%E4%B9%88/</loc>
     <lastmod>2019-06-17T17:52:40+08:00</lastmod>
   </url>
@@ -33,7 +38,7 @@
   </url>
   
   <url>
-    <loc>https://hasaki.xyz/blog/2018-04-21-javascript%E6%B2%99%E7%AE%B1/</loc>
+    <loc>https://hasaki.xyz/blog/2018-04-21-javascript-sandbox/</loc>
     <lastmod>2018-04-21T17:43:01+08:00</lastmod>
   </url>
   
@@ -117,7 +122,7 @@
   
   <url>
     <loc>https://hasaki.xyz/blog/</loc>
-    <lastmod>2019-06-17T17:52:40+08:00</lastmod>
+    <lastmod>2019-07-04T15:42:40+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -159,7 +164,7 @@
   
   <url>
     <loc>https://hasaki.xyz/tags/frontend/</loc>
-    <lastmod>2018-03-23T14:28:25+08:00</lastmod>
+    <lastmod>2019-07-04T15:42:40+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -224,6 +229,12 @@
   </url>
   
   <url>
+    <loc>https://hasaki.xyz/tags/rust/</loc>
+    <lastmod>2019-07-04T15:42:40+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://hasaki.xyz/tags/shadowsocksr/</loc>
     <lastmod>2016-04-03T15:29:40+08:00</lastmod>
     <priority>0</priority>
@@ -231,7 +242,7 @@
   
   <url>
     <loc>https://hasaki.xyz/</loc>
-    <lastmod>2019-06-17T17:52:40+08:00</lastmod>
+    <lastmod>2019-07-04T15:42:40+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -256,6 +267,12 @@
   <url>
     <loc>https://hasaki.xyz/tags/web/</loc>
     <lastmod>2018-04-21T17:43:01+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://hasaki.xyz/tags/webassembly/</loc>
+    <lastmod>2019-07-04T15:42:40+08:00</lastmod>
     <priority>0</priority>
   </url>
   

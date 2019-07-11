@@ -96,7 +96,7 @@
     <item>
       <title>Frontend</title>
       <link>https://hasaki.xyz/tags/frontend/</link>
-      <pubDate>Fri, 23 Mar 2018 14:28:25 +0800</pubDate>
+      <pubDate>Thu, 04 Jul 2019 15:42:40 +0800</pubDate>
       
       <guid>https://hasaki.xyz/tags/frontend/</guid>
       <description></description>
@@ -193,6 +193,15 @@
     </item>
     
     <item>
+      <title>Rust</title>
+      <link>https://hasaki.xyz/tags/rust/</link>
+      <pubDate>Thu, 04 Jul 2019 15:42:40 +0800</pubDate>
+      
+      <guid>https://hasaki.xyz/tags/rust/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Shadowsocksr</title>
       <link>https://hasaki.xyz/tags/shadowsocksr/</link>
       <pubDate>Sun, 03 Apr 2016 15:29:40 +0800</pubDate>
@@ -225,6 +234,15 @@
       <pubDate>Sat, 21 Apr 2018 17:43:01 +0800</pubDate>
       
       <guid>https://hasaki.xyz/tags/web/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Webassembly</title>
+      <link>https://hasaki.xyz/tags/webassembly/</link>
+      <pubDate>Thu, 04 Jul 2019 15:42:40 +0800</pubDate>
+      
+      <guid>https://hasaki.xyz/tags/webassembly/</guid>
       <description></description>
     </item>
     
