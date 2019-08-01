@@ -3,7 +3,7 @@ title: '奥德赛和2k HDR 显示器'
 subTitle: '奥德赛和2k HDR 显示器'
 tags: ['life', '电子产品']
 date: 2019-07-27T13:12:30+08:00
-host: ''
+host: 'https://github.com/V-Tom/blog/blob/hugo/content/life/%E5%A5%A5%E5%BE%B7%E8%B5%9B%E5%92%8C2k%20HDR%20%E6%98%BE%E7%A4%BA%E5%99%A8/index.md'
 ---
 
 最近沉迷[刺客信条-奥德赛](https://store.ubi.com/cn/%E5%88%BA%E5%AE%A2%E4%BF%A1%E6%9D%A1--%E5%A5%A5%E5%BE%B7%E8%B5%9B/5afda5f788a7e34d25b5012f.html)
@@ -20,7 +20,7 @@ host: ''
 
 但是我还是强烈推荐奥德赛：
 
-- 美术 这次的美术是真棒，古希腊、斯巴达欢原度很好，尤其是 亚特兰蒂斯
+- 美术 这次的美术是真棒，古希腊、斯巴达还原度很好，尤其是 亚特兰蒂斯
 - BGM 推荐[原声带](https://www.xiami.com/album/bC7oe72717a5)
 - 育碧模式
 
