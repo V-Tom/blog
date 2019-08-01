@@ -1,13 +1,28 @@
-window.addEventListener('DOMContentLoaded', _ => {
-  /**
-   * set all target blank for href link
-   */
-  (function() {
-    [].slice
-      .call(document.querySelectorAll('a'))
-      .forEach($node => $node.setAttribute('target', '_blank'));
-  })();
+/**
+ * serviceWorker
+ */
+(function() {
+  if (navigator.serviceWorker && !location.host.includes('localhost')) {
+    navigator.serviceWorker
+      .register(
+        location.host.includes('localhost')
+          ? 'http://localhost:1313/sw.js'
+          : 'https://hasaki.xyz/sw.js'
+      )
+      .catch(error => {
+        console.error(`ServiceWorker registration failed: ${error}`);
+      });
 
+    navigator.serviceWorker.ready.then(registration => {
+      console.info(
+        '👏👏👏 %c Service Worker registered success. ',
+        'color:#1534fa'
+      );
+    });
+  }
+})();
+
+window.addEventListener('DOMContentLoaded', _ => {
   /**
    * Rewrite head anchor links
    */
@@ -47,7 +62,7 @@ window.addEventListener('DOMContentLoaded', _ => {
       if (text && window.getSelection().toString()) {
         ev.preventDefault();
         const e = [
-          '作者：Nomad or Nomand',
+          '作者：Nomad',
           "来自：Tom's Blog",
           '链接：' + window.location.href,
           '转载请注明出处~~',
@@ -87,28 +102,4 @@ window.addEventListener('DOMContentLoaded', _ => {
       }
     ).observe($target);
   };
-})();
-
-/**
- * serviceWorker
- */
-(function() {
-  if (navigator.serviceWorker && !location.host.includes('localhost')) {
-    navigator.serviceWorker
-      .register(
-        location.host.includes('localhost')
-          ? 'http://localhost:1313/sw.js'
-          : 'https://hasaki.xyz/sw.js'
-      )
-      .catch(error => {
-        console.error(`ServiceWorker registration failed: ${error}`);
-      });
-
-    navigator.serviceWorker.ready.then(registration => {
-      console.info(
-        '👏👏👏 %c Service Worker registered success. ',
-        'color:#1534fa'
-      );
-    });
-  }
 })();
