@@ -7,19 +7,37 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ZH-CN</language>
     <copyright>Early 2016 ~ 2019 &amp;copy; TOM&#39;s Zone</copyright>
-    <lastBuildDate>Thu, 04 Jul 2019 15:42:40 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 27 Jul 2019 13:12:30 +0800</lastBuildDate>
     
 	<atom:link href="https://hasaki.xyz/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>使用 Rust 编写 Webassembly </title>
+      <title>奥德赛和2k HDR 显示器</title>
+      <link>https://hasaki.xyz/life/%E5%A5%A5%E5%BE%B7%E8%B5%9B%E5%92%8C2k-hdr-%E6%98%BE%E7%A4%BA%E5%99%A8/</link>
+      <pubDate>Sat, 27 Jul 2019 13:12:30 +0800</pubDate>
+      
+      <guid>https://hasaki.xyz/life/%E5%A5%A5%E5%BE%B7%E8%B5%9B%E5%92%8C2k-hdr-%E6%98%BE%E7%A4%BA%E5%99%A8/</guid>
+      <description>最近沉迷刺客信条-奥德赛
+why Odyssey 奥德赛这个名字，它是古希腊最重要的两部长篇史诗之一。承接《特洛伊》的剧情。
+讲述了奥德修斯归乡 10 年间惊心动魄的传奇旅程。设定在 2400 多年前的伯罗奔尼撒战争时期——雅典和斯巴达为争夺希腊世界的主导权打了 10 多年的仗。
+虽然育碧的游戏是典型的套公式类游戏，核心受众明显是轻度历史爱好者+喜欢刷任务的强迫症爱好者。比较明显的是 幽灵行动：荒野，大型玻利维亚观光游戏，虽然任务重复但是质量很高。
+但是我还是强烈推荐奥德赛：
+ 美术 这次的美术是真棒，古希腊、斯巴达欢原度很好，尤其是 亚特兰蒂斯 BGM 推荐原声带 育碧模式  本来是 cpy 版本的，后来第一个大型 DLC 亚特兰蒂斯 促使我入正了，官方是这样推荐的：
+ 探索源自希腊神话的三个新世界——极乐世界，冥界以及亚特兰提斯！
+ 朋友赞助 40 大洋，然后淘宝 5 大洋买了个育碧八折券，最后 326 大洋买了黄金版的奥德赛（带有一年季票，一年内的 DLC 可以任意畅玩）
+更换显示器 我之前的显示器是很便宜的 AOC 12490PXH5 1080p 的显示器，只要 998 就买得到了，之前一直感觉大颗粒比较明显，前天剁手买了一个 DELL U2518DR 2k HDR 显示器，花了 1999 大洋，简直是最大的提升了。
+没有选择 144HZ 第一个是我不常玩 FPS 游戏，显卡 1070TI 也带不动，4K 更不用说了
+而且 1080P 到 2k 的提升比较明显，还有 HDR 10 ，所以选择了这款稍微便宜的显示器</description>
+    </item>
+    
+    <item>
+      <title>使用 Rust 编写 WebAssembly </title>
       <link>https://hasaki.xyz/blog/2019-07-04-%E4%BD%BF%E7%94%A8-rust-%E7%BC%96%E5%86%99-webassembly-/</link>
       <pubDate>Thu, 04 Jul 2019 15:42:40 +0800</pubDate>
       
       <guid>https://hasaki.xyz/blog/2019-07-04-%E4%BD%BF%E7%94%A8-rust-%E7%BC%96%E5%86%99-webassembly-/</guid>
-      <description>  TODO
- Webassembly Rust hello world Reference </description>
+      <description>WebAssembly Rust You can click here to run the following code in new tab ↓↓↓     window.DOMObserver( document.getElementById(&#39;iframe-cnVzdC13YXNtLmlmcmFtZQ==&#39;), async function($target) { // set target $target.style.visibility = &#39;visible&#39;; $target.setAttribute(&#39;height&#39;, 300); const $code = $target.querySelector(&#39;code&#39;); const $button = $target.querySelector(&#39;a&#39;); let iframeContent = await fetch( location.origin + location.pathname + &#39;/rust-wasm.iframe&#39; ); iframeContent = await iframeContent.text(); $button.onclick = function() { var win = window.open(&#39;&#39;, &#39;_blank&#39;, &#39;&#39;); win.document.write( ` window.BASE_URL =&#34;${location.origin + location.</description>
     </item>
     
     <item>

@@ -13,13 +13,12 @@
     
     
     <item>
-      <title>使用 Rust 编写 Webassembly </title>
+      <title>使用 Rust 编写 WebAssembly </title>
       <link>https://hasaki.xyz/blog/2019-07-04-%E4%BD%BF%E7%94%A8-rust-%E7%BC%96%E5%86%99-webassembly-/</link>
       <pubDate>Thu, 04 Jul 2019 15:42:40 +0800</pubDate>
       
       <guid>https://hasaki.xyz/blog/2019-07-04-%E4%BD%BF%E7%94%A8-rust-%E7%BC%96%E5%86%99-webassembly-/</guid>
-      <description>  TODO
- Webassembly Rust hello world Reference </description>
+      <description>WebAssembly Rust You can click here to run the following code in new tab ↓↓↓     window.DOMObserver( document.getElementById(&#39;iframe-cnVzdC13YXNtLmlmcmFtZQ==&#39;), async function($target) { // set target $target.style.visibility = &#39;visible&#39;; $target.setAttribute(&#39;height&#39;, 300); const $code = $target.querySelector(&#39;code&#39;); const $button = $target.querySelector(&#39;a&#39;); let iframeContent = await fetch( location.origin + location.pathname + &#39;/rust-wasm.iframe&#39; ); iframeContent = await iframeContent.text(); $button.onclick = function() { var win = window.open(&#39;&#39;, &#39;_blank&#39;, &#39;&#39;); win.document.write( ` window.BASE_URL =&#34;${location.origin + location.</description>
     </item>
     
   </channel>

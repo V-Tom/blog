@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://hasaki.xyz/life/%E5%A5%A5%E5%BE%B7%E8%B5%9B%E5%92%8C2k-hdr-%E6%98%BE%E7%A4%BA%E5%99%A8/</loc>
+    <lastmod>2019-07-27T13:12:30+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://hasaki.xyz/blog/2019-07-04-%E4%BD%BF%E7%94%A8-rust-%E7%BC%96%E5%86%99-webassembly-/</loc>
     <lastmod>2019-07-04T15:42:40+08:00</lastmod>
   </url>
@@ -181,6 +186,18 @@
   </url>
   
   <url>
+    <loc>https://hasaki.xyz/life/</loc>
+    <lastmod>2019-07-27T13:12:30+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://hasaki.xyz/tags/life/</loc>
+    <lastmod>2019-07-27T13:12:30+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://hasaki.xyz/tags/mavic-pro/</loc>
     <lastmod>2017-07-04T15:29:40+08:00</lastmod>
     <priority>0</priority>
@@ -242,7 +259,7 @@
   
   <url>
     <loc>https://hasaki.xyz/</loc>
-    <lastmod>2019-07-04T15:42:40+08:00</lastmod>
+    <lastmod>2019-07-27T13:12:30+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -285,6 +302,12 @@
   <url>
     <loc>https://hasaki.xyz/tags/%E6%8A%98%E8%85%BE/</loc>
     <lastmod>2019-02-12T10:58:40+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://hasaki.xyz/tags/%E7%94%B5%E5%AD%90%E4%BA%A7%E5%93%81/</loc>
+    <lastmod>2019-07-27T13:12:30+08:00</lastmod>
     <priority>0</priority>
   </url>
   

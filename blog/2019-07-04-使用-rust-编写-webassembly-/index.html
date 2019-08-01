@@ -14,10 +14,9 @@
     <link rel="dns-prefetch" href="https://hasaki.xyz">
     <link rel="preconnect" href="https://hasaki.xyz">
     <link rel="manifest" href="/sw/manifest.json"/>
-<title>使用 Rust 编写 Webassembly  - TOM&#39;s zone</title>
+<title>使用 Rust 编写 WebAssembly  - TOM&#39;s zone</title>
 
-<meta name="description" content="  TODO
- Webassembly Rust hello world Reference ">
+<meta name="description" content="WebAssembly Rust You can click here to run the following code in new tab ↓↓↓     window.DOMObserver( document.getElementById(&#39;iframe-cnVzdC13YXNtLmlmcmFtZQ==&#39;), async function($target) { // set target $target.style.visibility = &#39;visible&#39;; $target.setAttribute(&#39;height&#39;, 300); const $code = $target.querySelector(&#39;code&#39;); const $button = $target.querySelector(&#39;a&#39;); let iframeContent = await fetch( location.origin &#43; location.pathname &#43; &#39;/rust-wasm.iframe&#39; ); iframeContent = await iframeContent.text(); $button.onclick = function() { var win = window.open(&#39;&#39;, &#39;_blank&#39;, &#39;&#39;); win.document.write( ` window.BASE_URL =&#34;${location.origin &#43; location.">
 
 
 
@@ -78,7 +77,8 @@
 			</a>
 		</li>
 		
-		<li class="active"><a href="/blog/">Blog</a></li></ul>
+		<li class="active"><a href="/blog/">Blog</a></li>
+		<li class=""><a href="/life/">Life</a></li></ul>
 </nav>
 
 	</div>
@@ -87,7 +87,7 @@
 
 <article>
     <header><hgroup id="brand">
-	<h1>使用 Rust 编写 Webassembly </h1>
+	<h1>使用 Rust 编写 WebAssembly </h1>
 	<h5>
 		
 		<time datetime="2019-07-04 15:42:40 &#43;0800 CST">Jul 04, 2019</time>
@@ -96,7 +96,7 @@
 			
 			<a href="/tags/rust">Rust</a>
 			
-			<a href="/tags/webassembly">Webassembly</a>
+			<a href="/tags/webassembly">WebAssembly</a>
 			
 			<a href="/tags/frontend">FrontEnd</a>
 			</span>
@@ -110,13 +110,58 @@
     <section id="markdown">
         
 
-<blockquote>
-<p>TODO</p>
-</blockquote>
-
-<h2 id="webassembly">Webassembly</h2>
+<h2 id="webassembly">WebAssembly</h2>
 
 <h2 id="rust">Rust</h2>
+
+<main
+  id="iframe-cnVzdC13YXNtLmlmcmFtZQ=="
+  width="100%"
+  height="1"
+  style="visibility: hidden;margin:5px 0;"
+>
+  <a
+    href="javascript:void(0)"
+    style="margin-left: 4px;display: inline-block;padding:2px 5px;margin-bottom:5px;border-radius:5px;border:1px solid #ff8181;"
+  >
+    You can click here to run the following code in new tab ↓↓↓
+  </a>
+  <code> </code>
+</main>
+
+<script type="module">
+  window.DOMObserver(
+    document.getElementById('iframe-cnVzdC13YXNtLmlmcmFtZQ=='),
+    async function($target) {
+      // set target
+      $target.style.visibility = 'visible';
+      $target.setAttribute('height', 300);
+
+      const $code = $target.querySelector('code');
+      const $button = $target.querySelector('a');
+
+      let iframeContent = await fetch(
+        location.origin + location.pathname + '/rust-wasm.iframe'
+      );
+      iframeContent = await iframeContent.text();
+      $button.onclick = function() {
+        var win = window.open('', '_blank', '');
+        win.document.write(
+          `<script>
+
+            window.BASE_URL ="${location.origin + location.pathname}";
+
+            <\/script>` + iframeContent
+        );
+      };
+      $code.innerText = iframeContent;
+      hljs && hljs.highlightBlock($code);
+
+      $target.parentNode.removeChild($target.nextElementSibling);
+    }
+  );
+</script>
+
 
 <h2 id="hello-world">hello world</h2>
 
