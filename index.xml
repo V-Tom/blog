@@ -14,16 +14,16 @@
     
     <item>
       <title>奥德赛和2k HDR 显示器</title>
-      <link>https://hasaki.xyz/life/%E5%A5%A5%E5%BE%B7%E8%B5%9B%E5%92%8C2k-hdr-%E6%98%BE%E7%A4%BA%E5%99%A8/</link>
+      <link>https://hasaki.xyz/life/2019-07-27-%E5%A5%A5%E5%BE%B7%E8%B5%9B%E5%92%8C2k-hdr-%E6%98%BE%E7%A4%BA%E5%99%A8/</link>
       <pubDate>Sat, 27 Jul 2019 13:12:30 +0800</pubDate>
       
-      <guid>https://hasaki.xyz/life/%E5%A5%A5%E5%BE%B7%E8%B5%9B%E5%92%8C2k-hdr-%E6%98%BE%E7%A4%BA%E5%99%A8/</guid>
+      <guid>https://hasaki.xyz/life/2019-07-27-%E5%A5%A5%E5%BE%B7%E8%B5%9B%E5%92%8C2k-hdr-%E6%98%BE%E7%A4%BA%E5%99%A8/</guid>
       <description>最近沉迷刺客信条-奥德赛
 why Odyssey 奥德赛这个名字，它是古希腊最重要的两部长篇史诗之一。承接《特洛伊》的剧情。
 讲述了奥德修斯归乡 10 年间惊心动魄的传奇旅程。设定在 2400 多年前的伯罗奔尼撒战争时期——雅典和斯巴达为争夺希腊世界的主导权打了 10 多年的仗。
 虽然育碧的游戏是典型的套公式类游戏，核心受众明显是轻度历史爱好者+喜欢刷任务的强迫症爱好者。比较明显的是 幽灵行动：荒野，大型玻利维亚观光游戏，虽然任务重复但是质量很高。
 但是我还是强烈推荐奥德赛：
- 美术 这次的美术是真棒，古希腊、斯巴达欢原度很好，尤其是 亚特兰蒂斯 BGM 推荐原声带 育碧模式  本来是 cpy 版本的，后来第一个大型 DLC 亚特兰蒂斯 促使我入正了，官方是这样推荐的：
+ 美术 这次的美术是真棒，古希腊、斯巴达还原度很好，尤其是 亚特兰蒂斯 BGM 推荐原声带 育碧模式  本来是 cpy 版本的，后来第一个大型 DLC 亚特兰蒂斯 促使我入正了，官方是这样推荐的：
  探索源自希腊神话的三个新世界——极乐世界，冥界以及亚特兰提斯！
  朋友赞助 40 大洋，然后淘宝 5 大洋买了个育碧八折券，最后 326 大洋买了黄金版的奥德赛（带有一年季票，一年内的 DLC 可以任意畅玩）
 更换显示器 我之前的显示器是很便宜的 AOC 12490PXH5 1080p 的显示器，只要 998 就买得到了，之前一直感觉大颗粒比较明显，前天剁手买了一个 DELL U2518DR 2k HDR 显示器，花了 1999 大洋，简直是最大的提升了。
@@ -33,11 +33,18 @@ why Odyssey 奥德赛这个名字，它是古希腊最重要的两部长篇史�
     
     <item>
       <title>使用 Rust 编写 WebAssembly </title>
-      <link>https://hasaki.xyz/blog/2019-07-04-%E4%BD%BF%E7%94%A8-rust-%E7%BC%96%E5%86%99-webassembly-/</link>
-      <pubDate>Thu, 04 Jul 2019 15:42:40 +0800</pubDate>
+      <link>https://hasaki.xyz/blog/2019-07-20-%E4%BD%BF%E7%94%A8-rust-%E7%BC%96%E5%86%99-webassembly-/</link>
+      <pubDate>Sat, 20 Jul 2019 15:42:40 +0800</pubDate>
       
-      <guid>https://hasaki.xyz/blog/2019-07-04-%E4%BD%BF%E7%94%A8-rust-%E7%BC%96%E5%86%99-webassembly-/</guid>
-      <description>WebAssembly Rust You can click here to run the following code in new tab ↓↓↓     window.DOMObserver( document.getElementById(&#39;iframe-cnVzdC13YXNtLmlmcmFtZQ==&#39;), async function($target) { // set target $target.style.visibility = &#39;visible&#39;; $target.setAttribute(&#39;height&#39;, 300); const $code = $target.querySelector(&#39;code&#39;); const $button = $target.querySelector(&#39;a&#39;); let iframeContent = await fetch( location.origin + location.pathname + &#39;/rust-wasm.iframe&#39; ); iframeContent = await iframeContent.text(); $button.onclick = function() { var win = window.open(&#39;&#39;, &#39;_blank&#39;, &#39;&#39;); win.document.write( ` window.BASE_URL =&#34;${location.origin + location.</description>
+      <guid>https://hasaki.xyz/blog/2019-07-20-%E4%BD%BF%E7%94%A8-rust-%E7%BC%96%E5%86%99-webassembly-/</guid>
+      <description>老规矩，列出本机器环境
+ system_profiler SPSoftwareDataType : macOS 10.14.3 (18D42) Darwin 18.2.0 cargo --version cargo 1.38.0-nightly (e3563dbdc 2019-07-16) rustc --version rustc 1.38.0-nightly (311376d30 2019-07-18) wasm-pack -V wasm-pack 0.8.1 clang --version x86_64-apple-darwin18.2.0 posix LVVM Apple LLVM version 10.0.0 (clang-1000.10.44.4)  JavaScript 历史 JavaScript 于 1995 年问世，它的设计初衷并不是为了执行起来快，在前 10 个年头，它的执行速度也确实不快。被人们广为传播的“性能大战”在 2008 年打响。许多浏览器引入了 Just-in-time 编译器，也叫 JIT。JavaScript 代码的运行渐渐变快
+随着性能的提升，JavaScript 可以应用于后端开发的 Node.js。性能的提升使得 JavaScript 的应用范围得到很大的扩展。
+现在通过 WebAssembly，JavaScript 的性能可以再次提速。
+JIT 计算机使用的是机器语言，也就是 010101 二进制，而我们编写的 JavaScript 代码是基于人类的认知而设计出来的高级编程语言，所以需要引擎把把人类的语言转换成机器能看懂的语言。
+这就像电影《降临》中，人类和外星人的互相交流一样
+在代码的世界中，通常有两种方式来翻译机器语言：解释器和编译器。
+ 如果是通过解释器，翻译是一行行地边解释边执行 编译器是把源代码整个编译成目标代码，执行时不再需要编译器，直接在支持目标代码的平台上运行。  这两种翻译的方式都各有利弊。</description>
     </item>
     
     <item>
@@ -149,7 +156,7 @@ http vs RPC HTTP 调用其实也是一种特殊的 RPC 。RPC 可以基于 HTTP 
       <pubDate>Wed, 23 May 2018 12:33:21 +0800</pubDate>
       
       <guid>https://hasaki.xyz/blog/datastructure/</guid>
-      <description>List list 定义  是n(n≥0)个相同类型的数据元素构成的有限序列。  list ADT ADT List { Data: Operation: InitList(&amp;amp;L) CreateList(&amp;amp;L) ListEmpty(L) ListLength(L) LocateElem(L,e) PriorElem(L,cur_e,&amp;amp;pre_e) NextElem(L,cur_e,&amp;amp;pre_e) ListInsert(&amp;amp;L,i,e) ListDelete(&amp;amp;L,i,&amp;amp;e) GetElem(L,i,&amp;amp;e) ListTraverse(L) DestroyList(&amp;amp;L) }//ADT List  list 简单实现 /** * List Structure */ class List { /** * 顺序表初始化操作，申请使用内存 * @constructor */ InitList() { this.list = [] } /** * 判断顺序表是否为空 * @returns {boolean} * @constructor */ ListEmpty() { return this.list.length === 0 } /** * 顺序表求表长操作 * @returns {number} * @constructor */ ListLength() { return this.</description>
+      <description>List list 定义  是n(n≥0)个相同类型的数据元素构成的有限序列。  list ADT ADT List { Data: Operation: InitList(&amp;amp;L) CreateList(&amp;amp;L) ListEmpty(L) ListLength(L) LocateElem(L,e) PriorElem(L,cur_e,&amp;amp;pre_e) NextElem(L,cur_e,&amp;amp;pre_e) ListInsert(&amp;amp;L,i,e) ListDelete(&amp;amp;L,i,&amp;amp;e) GetElem(L,i,&amp;amp;e) ListTraverse(L) DestroyList(&amp;amp;L) }//ADT List  list 简单实现 /** * List Structure */ class List { /** * 顺序表初始化操作，申请使用内存 * @constructor */ InitList() { this.list = []; } /** * 判断顺序表是否为空 * @returns {boolean} * @constructor */ ListEmpty() { return this.list.length === 0; } /** * 顺序表求表长操作 * @returns {number} * @constructor */ ListLength() { return this.</description>
     </item>
     
     <item>
