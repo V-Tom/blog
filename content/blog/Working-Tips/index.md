@@ -1,11 +1,9 @@
 ---
-title: "working tips"
-tags: ["Tips"]
-description: "There are my working tips list"
+title: 'working tips'
+tags: ['Tips']
+description: 'There are my working tips list'
 date: 2018-07-23T09:23:43+08:00
 ---
-
-
 
 ### 将 ssr 转换为 http 代理
 
@@ -30,13 +28,12 @@ export http_proxy="http://127.0.0.1:8123"; export HTTP_PROXY="http://127.0.0.1:8
 
 # 将会得到代理服务器的地址
 curl cip.cc
- 
+
 ```
 
 #### reference
 
 - [polipo wiki](https://wiki.archlinux.org/index.php/polipo)
-
 
 ### 本地跑 ssr 服务 或者 ss 服务
 
@@ -46,7 +43,7 @@ ssr 和 ss 本质上是一些加密算法协议，所以除了官方提供的源
 
 相关 go 代码如下：
 
-``` go
+```go
 
 package main
 
@@ -274,7 +271,7 @@ func (bi *BackendInfo) Pipe(src, dst net.Conn) error {
 
 接下来添加 bash alias 就可以了：
 
-``` bash
+```bash
 alias ssr="go run ${你的 go main 文件地址} &"
 alias ssr-on="networksetup -setsocksfirewallproxy "Wi-Fi" localhost 8082"
 alias ssr-off="networksetup -setsocksfirewallproxy "Wi-Fi" '' "
@@ -288,7 +285,7 @@ alias ssr-off="networksetup -setsocksfirewallproxy "Wi-Fi" '' "
 
 ### no-cache 和 no-store 和 max-age=0
 
-结合《图解HTTP》这本书上讲到的两者的区别：
+结合《图解 HTTP》这本书上讲到的两者的区别：
 
 > no-cache 从字面意义上很容易误解为不缓存，但是 no-cache 代表不缓存过期的资源，缓存会向服务器进行有效处理确认之后处理资源，更确切的说，no-cache 应该是 `do-not-serve-from-cache-without-revalidation`
 
@@ -301,7 +298,6 @@ no-store 才是真正的不进行缓存，正常情况下只会返回 200
 #### reference
 
 - [缓存（二）——浏览器缓存机制：强缓存、协商缓存](https://github.com/amandakelake/blog/issues/41)
-
 
 ### git 对文件名大小写敏感
 

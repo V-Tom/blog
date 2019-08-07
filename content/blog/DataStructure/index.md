@@ -1,8 +1,8 @@
 ---
-title: "learn Data Structure"
-tags: ["DataStructure"]
-description: "Data Structure"
-host: "https://github.com/V-Tom/blog/blob/hugo/content/blog/DataStructure/index.md"
+title: 'learn Data Structure'
+tags: ['DataStructure']
+description: 'Data Structure'
+host: 'https://github.com/V-Tom/blog/blob/hugo/content/blog/DataStructure/index.md'
 date: 2018-05-23T12:33:21+08:00
 ---
 
@@ -25,7 +25,7 @@ ADT List
         ListLength(L)
         LocateElem(L,e)
         PriorElem(L,cur_e,&pre_e)
-        NextElem(L,cur_e,&pre_e) 
+        NextElem(L,cur_e,&pre_e)
         ListInsert(&L,i,e)
         ListDelete(&L,i,&e)
         GetElem(L,i,&e)
@@ -42,13 +42,12 @@ ADT List
  */
 
 class List {
-
   /**
    * 顺序表初始化操作，申请使用内存
    * @constructor
    */
   InitList() {
-    this.list = []
+    this.list = [];
   }
 
   /**
@@ -57,8 +56,7 @@ class List {
    * @constructor
    */
   ListEmpty() {
-
-    return this.list.length === 0
+    return this.list.length === 0;
   }
 
   /**
@@ -67,8 +65,7 @@ class List {
    * @constructor
    */
   ListLength() {
-
-    return this.list.length
+    return this.list.length;
   }
 
   /**
@@ -78,7 +75,7 @@ class List {
    * @constructor
    */
   LocateElem(item) {
-    return this.list.indexOf(item)
+    return this.list.indexOf(item);
   }
 
   /**
@@ -88,15 +85,13 @@ class List {
    * @constructor
    */
   PriorElem(item) {
-
-    const indexOf = this.list.indexOf(item)
+    const indexOf = this.list.indexOf(item);
 
     if (indexOf <= 0) {
-      return null
+      return null;
     } else {
-      return this.list[indexOf - 1]
+      return this.list[indexOf - 1];
     }
-
   }
 
   /**
@@ -106,15 +101,13 @@ class List {
    * @constructor
    */
   NextElem(item) {
-
-    const indexOf = this.list.indexOf(item)
+    const indexOf = this.list.indexOf(item);
 
     if (indexOf >= this.list.length - 1) {
-      return null
+      return null;
     } else {
-      return this.list[indexOf + 1]
+      return this.list[indexOf + 1];
     }
-
   }
 
   /**
@@ -125,15 +118,13 @@ class List {
    * @constructor
    */
   ListInsertBefore(i, elem) {
-
     if (i <= 0) {
-      return false
+      return false;
     }
 
-    this.list.splice(i - 1, 0, elem)
+    this.list.splice(i - 1, 0, elem);
 
-    return true
-
+    return true;
   }
 
   /**
@@ -145,12 +136,12 @@ class List {
    */
   ListInsertAfter(i, elem) {
     if (i <= 0) {
-      return false
+      return false;
     }
 
-    this.list.splice(i, 0, elem)
+    this.list.splice(i, 0, elem);
 
-    return true
+    return true;
   }
 
   /**
@@ -160,9 +151,9 @@ class List {
    * @constructor
    */
   ListInsertBottom(elem) {
-    this.list.push(elem)
+    this.list.push(elem);
 
-    return true
+    return true;
   }
 
   /**
@@ -173,18 +164,18 @@ class List {
    * @constructor
    */
   ListInsertByOrder(elem) {
-    if (typeof elem !== "number") {
-      return false
+    if (typeof elem !== 'number') {
+      return false;
     }
 
     for (let i = 0; i < this.list.length; i++) {
       if (this.list[i] <= elem && this.list[i + 1] >= elem) {
-        this.ListInsertBefore(i, elem)
-        return true
+        this.ListInsertBefore(i, elem);
+        return true;
       }
     }
 
-    return false
+    return false;
   }
 
   /**
@@ -194,13 +185,11 @@ class List {
    * @constructor
    */
   ListDelete(i) {
+    if (i <= 0) return false;
 
-    if (i <= 0) return false
+    if (!this.list[i]) return false;
 
-    if (!this.list[i]) return false
-
-    return this.list.splice(i - 1, 1)[0]
-
+    return this.list.splice(i - 1, 1)[0];
   }
 
   /**
@@ -210,8 +199,7 @@ class List {
    * @constructor
    */
   GetElem(i) {
-
-    return this.list[i]
+    return this.list[i];
   }
 
   /**
@@ -219,7 +207,7 @@ class List {
    * @constructor
    */
   ListTraverse() {
-    this.list.forEach(item => console.log(item))
+    this.list.forEach(item => console.log(item));
   }
 
   /**
@@ -227,7 +215,7 @@ class List {
    * @constructor
    */
   DestroyList() {
-    this.list = null
+    this.list = null;
   }
 }
 ```
@@ -262,8 +250,8 @@ class List {
 
 ![List Single](./ListSingle.jpg)
 
-- **表头指针**：存放单链表中第一个结点的地址的指针。【指向a0(带头结点时)或指向a1(不带头结点时)的指针，上图中的L】
-- **头结点**：带头结点的单链表中L【上图中的a1之前的结点a0】
+- **表头指针**：存放单链表中第一个结点的地址的指针。【指向 a0(带头结点时)或指向 a1(不带头结点时)的指针，上图中的 L】
+- **头结点**：带头结点的单链表中 L【上图中的 a1 之前的结点 a0】
 - **开始结点**：，又称首节点，存放单链表的第一个存放元素的结点。【a1】
 - **表尾结点**：单链表中最后一个结点，表尾结点的指针域指针为空。【an】
 
@@ -271,13 +259,12 @@ class List {
 
 ```javascript
 class LinkSingle {
-
   constructor() {
-    this.size = 0
+    this.size = 0;
     // 虚拟头部
     this.dummyNode = new Node({
       type: 'dummyNode'
-    })
+    });
   }
 
   /**
@@ -287,8 +274,8 @@ class LinkSingle {
    * @constructor
    */
   GetNode(index) {
-    this.CheckIndex(index + 1)
-    return this.FindNode(this.dummyNode, index, 0).next
+    this.CheckIndex(index + 1);
+    return this.FindNode(this.dummyNode, index, 0).next;
   }
 
   /**
@@ -299,10 +286,9 @@ class LinkSingle {
    * @constructor
    */
   AddNode(value, index) {
+    this.CheckIndex(index);
 
-    this.CheckIndex(index)
-
-    const findPrevNode = this.FindNode(this.dummyNode, index, 0)
+    const findPrevNode = this.FindNode(this.dummyNode, index, 0);
 
     /**
      * 这里需要把 上一个 node 的 next 放入 新 node 的 value 当中
@@ -310,11 +296,11 @@ class LinkSingle {
     findPrevNode.next = new Node({
       value,
       next: findPrevNode.next
-    })
+    });
 
-    this.size++
+    this.size++;
 
-    return true
+    return true;
   }
 
   /**
@@ -324,7 +310,7 @@ class LinkSingle {
    * @constructor
    */
   AddToHeader(v) {
-    return this.AddNode(v, 0)
+    return this.AddNode(v, 0);
   }
 
   /**
@@ -334,7 +320,7 @@ class LinkSingle {
    * @constructor
    */
   AddToLast(v) {
-    return this.AddNode(v, this.size)
+    return this.AddNode(v, this.size);
   }
 
   /**
@@ -344,24 +330,23 @@ class LinkSingle {
    * @constructor
    */
   RemoveNode(index) {
-
-    this.CheckIndex(index)
+    this.CheckIndex(index);
 
     if (index >= this.GetSize()) {
-      return false
+      return false;
     }
 
-    const findedNode = this.FindNode(this.dummyNode, index, 0)
+    const findedNode = this.FindNode(this.dummyNode, index, 0);
 
-    let node = findedNode.next
+    let node = findedNode.next;
 
-    findedNode.next = node.next
+    findedNode.next = node.next;
 
-    node = null
+    node = null;
 
-    this.size--
+    this.size--;
 
-    return true
+    return true;
   }
 
   /**
@@ -370,8 +355,8 @@ class LinkSingle {
    * @constructor
    */
   RemoveHeader() {
-    if (this.IsEmpty()) return true
-    return this.RemoveNode(0)
+    if (this.IsEmpty()) return true;
+    return this.RemoveNode(0);
   }
 
   /**
@@ -380,8 +365,8 @@ class LinkSingle {
    * @constructor
    */
   RemoveLast() {
-    if (this.IsEmpty()) return true
-    return this.RemoveNode(this.size - 1)
+    if (this.IsEmpty()) return true;
+    return this.RemoveNode(this.size - 1);
   }
 
   /**
@@ -393,8 +378,8 @@ class LinkSingle {
    * @constructor
    */
   FindNode(node, index, currentIndex) {
-    if (index === currentIndex) return node
-    return this.FindNode(node.next, index, currentIndex + 1)
+    if (index === currentIndex) return node;
+    return this.FindNode(node.next, index, currentIndex + 1);
   }
 
   /**
@@ -403,7 +388,7 @@ class LinkSingle {
    * @constructor
    */
   IsEmpty() {
-    return this.size === 0
+    return this.size === 0;
   }
 
   /**
@@ -412,7 +397,7 @@ class LinkSingle {
    * @constructor
    */
   GetSize() {
-    return this.size
+    return this.size;
   }
 
   /**
@@ -422,19 +407,18 @@ class LinkSingle {
    */
   CheckIndex(index) {
     if (index < 0 || index > this.size) {
-      throw new Error('Index error')
+      throw new Error('Index error');
     }
   }
 }
 
 class Node {
   constructor({ value = null, prev = null, type = null } = {}) {
-    this.value = value
-    this.prev = prev
-    if (type) this.type = type
+    this.value = value;
+    this.prev = prev;
+    if (type) this.type = type;
   }
 }
-
 ```
 
 #### 双向链表
@@ -445,22 +429,22 @@ class Node {
 
 ![ListDouble.jpg](./ListDouble.jpg)
 
-- **头结点**：双链表中第一个结点(上图中的a1之前的结点a0)
-- **表头指针**：存放双链表中第一个结点的地址的指针。(指向a0的指针)
+- **头结点**：双链表中第一个结点(上图中的 a1 之前的结点 a0)
+- **表头指针**：存放双链表中第一个结点的地址的指针。(指向 a0 的指针)
 - **开始结点**：存放双链表的第一个元素的结点。(a1)
 - **表尾结点**：双链表中最后一个结点，表尾结点的指针域指针为空。(an)
 
-#####  双向链表实现方式
+##### 双向链表实现方式
 
 简单看起来，双向链表只是在每一个 Node 当中多了一个 prev 的指针指向，所以双向链表的实现就简单写一下
 
 ```javascript
 class LinkDouble {
   constructor() {
-    this.size = 0
+    this.size = 0;
     this.dummyNode = new Node({
       type: 'dummyNode'
-    })
+    });
   }
 
   /**
@@ -470,21 +454,19 @@ class LinkDouble {
    * @constructor
    */
   AddNode(value, index) {
+    this.CheckIndex(index);
 
-    this.CheckIndex(index)
-
-    const findPrevNode = this.FindNode(this.dummyNode, index, 0)
+    const findPrevNode = this.FindNode(this.dummyNode, index, 0);
 
     const node = new Node({
       value,
       prev: findPrevNode,
       next: findPrevNode.next
-    })
+    });
 
-    findPrevNode.next = node
+    findPrevNode.next = node;
 
-    this.size++
-
+    this.size++;
   }
 
   /**
@@ -494,20 +476,19 @@ class LinkDouble {
    * @constructor
    */
   RemoveNode(index) {
-    this.CheckIndex(index)
-    const findPrevNode = this.FindNode(this.dummyNode, index, 0)
+    this.CheckIndex(index);
+    const findPrevNode = this.FindNode(this.dummyNode, index, 0);
 
-    let node = findPrevNode.next
+    let node = findPrevNode.next;
 
-    findPrevNode.next = node.next
-    node.prev = findPrevNode
+    findPrevNode.next = node.next;
+    node.prev = findPrevNode;
 
-    node = null
+    node = null;
 
-    this.size--
+    this.size--;
 
-    return true
-
+    return true;
   }
 
   /**
@@ -517,8 +498,8 @@ class LinkDouble {
    * @constructor
    */
   GetNode(index) {
-    this.CheckIndex(index + 1)
-    return this.FindNode(this.dummyNode, index + 1, 0)
+    this.CheckIndex(index + 1);
+    return this.FindNode(this.dummyNode, index + 1, 0);
   }
 
   /**
@@ -527,7 +508,7 @@ class LinkDouble {
    * @constructor
    */
   GetSize() {
-    return this.size
+    return this.size;
   }
 
   /**
@@ -539,8 +520,8 @@ class LinkDouble {
    * @constructor
    */
   FindNode(node, index, currentIndex) {
-    if (index === currentIndex) return node
-    return this.FindNode(node.next, index, currentIndex + 1)
+    if (index === currentIndex) return node;
+    return this.FindNode(node.next, index, currentIndex + 1);
   }
 
   /**
@@ -550,17 +531,17 @@ class LinkDouble {
    */
   CheckIndex(index) {
     if (index < 0 || index > this.GetSize()) {
-      throw new Error('Index error')
+      throw new Error('Index error');
     }
   }
 }
 
 class Node {
   constructor({ value = null, prev = null, next = null, type = null } = {}) {
-    this.value = value
-    this.prev = prev
-    this.next = next
-    if (type) this.type = type
+    this.value = value;
+    this.prev = prev;
+    this.next = next;
+    if (type) this.type = type;
   }
 }
 ```
@@ -719,46 +700,42 @@ func Conversion(input int, radix int) string {
 本题参考自 [leet code](https://leetcode.com/problems/valid-parentheses)，可以通过 栈 的特性完成
 
 ```javascript
-const isValid = function (s) {
+const isValid = function(s) {
+  const stack = [];
 
-    const stack = []
+  const map = {
+    '(': -1,
+    ')': 1,
+    '[': -2,
+    ']': 2,
+    '{': -3,
+    '}': 3
+  };
 
-    const map = {
-        "(": -1,
-        ")": 1,
-        "[": -2,
-        "]": 2,
-        "{": -3,
-        "}": 3
+  for (let i = 0; i < s.length; i++) {
+    const current = map[s[i]];
+    if (current <= 0) {
+      stack.push(current);
+    } else {
+      const last = stack.pop();
+      if (last + current !== 0) return false;
     }
+  }
 
-    for (let i = 0; i < s.length; i++) {
-        const current = map[s[i]]
-        if (current <= 0) {
-            stack.push(current)
-        } else {
-            const last = stack.pop()
-            if (last + current !== 0) return false
-        }
-    }
-
-    return !stack.length > 0
+  return !stack.length > 0;
 };
 ```
+
 ##### 表达式求值 TODO
 
 ```javascript
-class EvaluateExpression{
-    
-}
+class EvaluateExpression {}
 ```
 
 ##### 汉诺塔 TODO
 
 ```javascript
-class Hanoi{
-    
-}
+class Hanoi {}
 ```
 
 ### Queue
@@ -808,7 +785,7 @@ ADT Queue{
         DestroyQueue(&Q)
            初始条件：队列Q已存在。
             操作结果：队列Ｑ被撤销，不再存在。
-}ADT Queue	
+}ADT Queue
 ```
 
 #### 单链队列
@@ -823,17 +800,16 @@ ADT Queue{
 
 ```javascript
 class SingleQueue {
-
   InitQueue() {
-    this.queue = []
+    this.queue = [];
   }
 
   ClearQueue() {
-    this.queue = []
+    this.queue = [];
   }
 
   QueueLength() {
-    return this.queue.length
+    return this.queue.length;
   }
 
   /**
@@ -842,8 +818,8 @@ class SingleQueue {
    * @constructor
    */
   EnQueue(elem) {
-    this.queue.push(elem)
-    return true
+    this.queue.push(elem);
+    return true;
   }
 
   /**
@@ -853,7 +829,7 @@ class SingleQueue {
    * @constructor
    */
   DeQueue(elem) {
-    return this.queue.shift()
+    return this.queue.shift();
   }
 
   /**
@@ -862,7 +838,7 @@ class SingleQueue {
    * @constructor
    */
   GetHead() {
-    return this.queue[0]
+    return this.queue[0];
   }
 
   /**
@@ -871,11 +847,11 @@ class SingleQueue {
    * @constructor
    */
   QueueEmpty() {
-    return this.queue.length === 0
+    return this.queue.length === 0;
   }
 
   DestroyQueue() {
-    this.queue = []
+    this.queue = [];
   }
 }
 ```
@@ -890,12 +866,11 @@ class SingleQueue {
 
 ```javascript
 class CricleQueue {
-
   constructor() {
-    this.incrementSize = 5
+    this.incrementSize = 5;
 
-    this.front = this.rear = 0
-    this.queue = new Array(this.incrementSize)
+    this.front = this.rear = 0;
+    this.queue = new Array(this.incrementSize);
   }
 
   /**
@@ -905,7 +880,6 @@ class CricleQueue {
    * @constructor
    */
   EnQueue(elem) {
-
     /**
      * 判断是否存储满（少一个存储单元
      * 插入操作时，首先判断rear所指示的下一个位置是否是front，如果是，则停止插入。（队尾留一个单元）
@@ -915,18 +889,17 @@ class CricleQueue {
       /**
        * 如果满则根据 incrementSize 扩容数组
        */
-      const newQueue = new Array(this.queue.length + this.incrementSize + 1)
+      const newQueue = new Array(this.queue.length + this.incrementSize + 1);
       for (let i = 0; i < this.queue.length; i++) {
-        newQueue[i] = this.queue[(i + this.front) % this.queue.length]
+        newQueue[i] = this.queue[(i + this.front) % this.queue.length];
       }
-      this.queue = newQueue
+      this.queue = newQueue;
     }
 
-    this.queue[this.rear] = elem
-    this.rear = (this.rear + 1) % this.queue.length
+    this.queue[this.rear] = elem;
+    this.rear = (this.rear + 1) % this.queue.length;
 
-    return true
-
+    return true;
   }
 
   /**
@@ -935,20 +908,19 @@ class CricleQueue {
    * @constructor
    */
   DeQueue() {
-
     /**
      * 判断是否为空
      * 判空条件：rear == front
      */
     if (this.rear === this.front) {
-      return false
+      return false;
     }
 
-    const r = this.queue[this.front]
-    this.queue[this.front] = null
-    this.front = (this.front + 1) % this.queue.length
+    const r = this.queue[this.front];
+    this.queue[this.front] = null;
+    this.front = (this.front + 1) % this.queue.length;
 
-    return r
+    return r;
   }
 
   GetHead() {
@@ -957,24 +929,24 @@ class CricleQueue {
      * 判空条件：rear == front
      */
     if (this.rear === this.front) {
-      return false
+      return false;
     }
 
     /**
      * TODO
      * 这里是否需要添加自动判断队列长度缩减队列的逻辑
      */
-    return this.queue[this.front]
+    return this.queue[this.front];
   }
 
   QueueEmpty() {
-    return this.rear === this.front
+    return this.rear === this.front;
   }
 
   DestroyQueue() {
-    this.queue = []
-    this.front = null
-    this.rear = null
+    this.queue = [];
+    this.front = null;
+    this.rear = null;
   }
 }
 ```
@@ -999,35 +971,30 @@ class CricleQueue {
 简单的深度优先遍历可以采用数据结构 `Stack` 来辅助进行实现：
 
 ```js
-
 /**
  * DeepFirstTraversal
  * @param node
  * @constructor
  */
 function DeepFirstTraversal(node) {
-
   if (!node) {
-    return
+    return;
   }
 
-  const stack = new Stack()
+  const stack = new Stack();
 
-  stack.push(node)
+  stack.push(node);
 
   while (!stack.isEmpty()) {
+    const node = stack.pop();
 
-    const node = stack.pop()
+    console.log(`traversal node value is ${node.value}`);
 
-    console.log(`traversal node value is ${node.value}`)
+    if (node.left) stack.push(node.left);
 
-    if (node.left) stack.push(node.left)
-
-    if (stack.right) stack.push(node.right)
+    if (stack.right) stack.push(node.right);
   }
-
 }
-
 ```
 
 深度遍历有重要的三种方法。这三种方式常被用于访问树的节点，它们之间的不同在于访问每个节点的次序不同。这三种遍历分别叫做：
@@ -1038,7 +1005,7 @@ function DeepFirstTraversal(node) {
 
 上诉通过 `Stack` 数据结构进行的简单实现就是 **先序遍历**
 
-可以通过改变 `console.log(`traversal node value is ${node.value}`)` 的顺序来实现三种遍历方式。
+可以通过改变 `console.log(`traversal node value is \${node.value}`)` 的顺序来实现三种遍历方式。
 
 下面继续介绍递归方式实现。
 
@@ -1047,22 +1014,18 @@ function DeepFirstTraversal(node) {
 根节点->左子树->右子树
 
 ```js
-
 /**
  * 递归先序遍历
  * @param node
  * @constructor
  */
 function PreorderTravelBinarynode(node) {
+  console.log(node.value);
 
-    console.log(node.value)
+  PreorderTravelBinarynode(node.left);
 
-    PreorderTravelBinarynode(node.left)
-
-    PreorderTravelBinarynode(node.right)
-
+  PreorderTravelBinarynode(node.right);
 }
-
 ```
 
 ##### 递归中序遍历
@@ -1070,18 +1033,16 @@ function PreorderTravelBinarynode(node) {
 左子树->根节点->右子树
 
 ```js
-
 /**
  * 递归中序遍历
  * @param node
  * @constructor
  */
 function MiddleorderTraversal(node) {
-    MiddleorderTraversal(node.left)
-    console.log(node.value)
-    MiddleorderTraversal(node.right)
+  MiddleorderTraversal(node.left);
+  console.log(node.value);
+  MiddleorderTraversal(node.right);
 }
-
 ```
 
 ##### 递归后序遍历
@@ -1089,54 +1050,48 @@ function MiddleorderTraversal(node) {
 左子树->右子树->根节点
 
 ```js
-
 /**
  * 递归后序遍历
  * @param node
  * @constructor
  */
 function PostorderTraversal(node) {
-    PostorderTraversal(node.left)
-    PostorderTraversal(node.right)
-    console.log(node.value)
+  PostorderTraversal(node.left);
+  PostorderTraversal(node.right);
+  console.log(node.value);
 }
-
 ```
 
 ##### 广度优先遍历
 
-从树的root开始，从上到下从从左到右遍历整个树的节点
+从树的 root 开始，从上到下从从左到右遍历整个树的节点
 
 广度优先遍历可以通过数据结构 `Queue` 来辅助进行实现：
 
 ```js
-
 /**
  * breadthFirstSearch
  * queue
  * @param Node
  */
 function breadthFirstSearch(Node) {
+  console.log(Node.value);
 
-    console.log(Node.value)
+  const queue = [];
+  queue.push(Node);
 
-    const queue = []
-    queue.push(Node)
+  while (queue.length > 0) {
+    const currentNode = queue.shift();
 
-    while (queue.length > 0) {
-
-        const currentNode = queue.shift()
-
-        if (currentNode.left) {
-            console.log(currentNode.left.value)
-            queue.push(currentNode.left)
-        }
-
-        if (currentNode.right) {
-            console.log(currentNode.right.value)
-            queue.push(currentNode.right)
-        }
+    if (currentNode.left) {
+      console.log(currentNode.left.value);
+      queue.push(currentNode.left);
     }
-}
 
+    if (currentNode.right) {
+      console.log(currentNode.right.value);
+      queue.push(currentNode.right);
+    }
+  }
+}
 ```
