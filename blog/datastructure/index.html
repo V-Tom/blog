@@ -110,13 +110,7 @@
 
 <h3 id="list">List</h3>
 
-<h5 id="list-定义">list 定义</h5>
-
-<ul>
-<li>是<strong>n(n≥0)个相同类型</strong>的<strong>数据元素</strong>构成的<strong>有限</strong>序列。</li>
-</ul>
-
-<h5 id="list-adt">list ADT</h5>
+<p>list 是<strong>n(n≥0)个相同类型</strong>的<strong>数据元素</strong>构成的<strong>有限</strong>序列。</p>
 
 <pre><code class="language-adt">ADT List
 {
@@ -684,8 +678,6 @@ class Node {
 <li>栈的修改是按照<strong>后进先出</strong>的原则进行（简称 LIFO）</li>
 </ul>
 
-<h5 id="stack-adt">stack ADT</h5>
-
 <pre><code class="language-adt">ADT List
 {
     Data:
@@ -1207,6 +1199,124 @@ function breadthFirstSearch(Node) {
   }
 }
 </code></pre>
+
+<h3 id="排序">排序</h3>
+
+<h4 id="快速排序">快速排序</h4>
+
+<p>分而治之 （divide and conquer，D&amp;C）——一种著名的递归式问题解决方法</p>
+
+<p>D&amp;C 的工作原理：</p>
+
+<ul>
+<li>(1) 找出简单的基线条件；</li>
+<li>(2) 确定如何缩小问题的规模，使其符合基线条件。 D&amp;C 并非可用于解决问题的算法，而是一种解决问题的思路。</li>
+</ul>
+
+<pre><code class="language-python">def quicksort(array):
+
+  if len(array) &lt; 2:
+
+    return array # 基线条件：为空或只包含一个元素的数组是“有序”的
+
+  else:
+
+    pivot = array[0] # 递归条件
+
+    less = [i for i in array[1:]if i &lt;= pivot] # 由所有小于基准值的 元素组成的子数组
+    greater = [i for i in array[1:] if i &gt; pivot] # 由所有大于基准值的 元素组成的子数组
+
+    return quicksort(less) + [pivot] + quicksort(greater)
+</code></pre>
+
+<pre><code class="language-javascript">function quickSort(list) {
+  const len = list.length;
+
+  if (len &lt;= 1) {
+    return list;
+  }
+
+  /**
+   * 二分 list
+   * @type {number}
+   */
+  const index = Math.floor(len / 2);
+
+  /**
+   * 取出中间值作为基准值
+   * @type {T[]}
+   */
+  const pivot = list.splice(index, 1);
+
+  const left = [];
+  const right = [];
+
+  for (let i = 0; i &lt; len - 1; i++) {
+    if (list[i] &lt; pivot) {
+      left.push(list[i]);
+    } else {
+      right.push(list[i]);
+    }
+  }
+
+  return quickSort(left).concat(pivot, quickSort(right));
+}
+</code></pre>
+
+<h4 id="选择排序">选择排序</h4>
+
+<pre><code class="language-python">
+def find_smallest(array):
+    smallest = array[0]
+    smallest_index = 0
+
+    for i in range(1, len(array)):
+        if array[i] &lt; smallest:
+            smallest = array[i]
+            smallest_index = i
+    return smallest, smallest_index
+
+
+'''
+    selection_sort
+'''
+
+
+def selection_sort(array):
+    result = []
+    for i in range(len(array)):
+        smallest, smallest_index = find_smallest(array)
+        result.append(array.pop(smallest))
+    return result
+
+
+</code></pre>
+
+<pre><code class="language-javascript">function selectionSort(list) {
+  const len = list.length;
+  let minIndex = -1;
+
+  for (let m = 0; m &lt; len; m++) {
+    minIndex = m;
+
+    for (let n = m; n &lt; len; n++) {
+      if (list[n] &lt; list[minIndex]) {
+        minIndex = n;
+      }
+    }
+
+    [list[m], list[minIndex]] = [list[minIndex], list[m]];
+  }
+
+  return list;
+}
+</code></pre>
+
+<h3 id="贪婪算法">贪婪算法</h3>
+
+<p>贪婪算法很简单：每步都采取最优的做法。</p>
+
+<p>用专业术语说，就是你每步都选择局部最优解，最终得到的就是全局最优解。</p>
 
     </section>
     <nav class="no-print post-nav">

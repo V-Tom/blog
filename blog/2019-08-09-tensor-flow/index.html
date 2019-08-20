@@ -14,19 +14,25 @@
     <link rel="dns-prefetch" href="https://hasaki.xyz">
     <link rel="preconnect" href="https://hasaki.xyz">
     <link rel="manifest" href="/sw/manifest.json"/>
-<title>奥德赛和2k HDR 显示器 - TOM&#39;s zone</title>
+<title>Tensor &amp;&amp; flow - TOM&#39;s zone</title>
 
-<meta name="description" content="最近沉迷刺客信条-奥德赛
-why Odyssey 奥德赛这个名字，它是古希腊最重要的两部长篇史诗之一。承接《特洛伊》的剧情。
-讲述了奥德修斯归乡 10 年间惊心动魄的传奇旅程。设定在 2400 多年前的伯罗奔尼撒战争时期——雅典和斯巴达为争夺希腊世界的主导权打了 10 多年的仗。
-虽然育碧的游戏是典型的套公式类游戏，核心受众明显是轻度历史爱好者&#43;喜欢刷任务的强迫症爱好者。比较明显的是 幽灵行动：荒野，大型玻利维亚观光游戏，虽然任务重复但是质量很高。
-但是我还是强烈推荐奥德赛：
- 美术 这次的美术是真棒，古希腊、斯巴达还原度很好，尤其是 亚特兰蒂斯 BGM 推荐原声带 育碧模式  本来是 cpy 版本的，后来第一个大型 DLC 亚特兰蒂斯 促使我入正了，官方是这样推荐的：
- 探索源自希腊神话的三个新世界——极乐世界，冥界以及亚特兰提斯！
- 朋友赞助 40 大洋，然后淘宝 5 大洋买了个育碧八折券，最后 326 大洋买了黄金版的奥德赛（带有一年季票，一年内的 DLC 可以任意畅玩）
-更换显示器 我之前的显示器是很便宜的 AOC 12490PXH5 1080p 的显示器，只要 998 就买得到了，之前一直感觉大颗粒比较明显，前天剁手买了一个 DELL U2518DR 2k HDR 显示器，花了 1999 大洋，简直是最大的提升了。
-没有选择 144HZ 第一个是我不常玩 FPS 游戏，显卡 1070TI 也带不动，4K 更不用说了
-而且 1080P 到 2k 的提升比较明显，还有 HDR 10 ，所以选择了这款稍微便宜的显示器">
+<meta name="description" content="本文只是简单 TensorFlow 的一些理解和介绍，并不包含详细的安装、API、以及更多深层内容。
+ 首先简单说一下 标量（Scalar）、向量（Vector）、张量（Tensor）。
+下面会以 physical student 和 cs student 两个角度来解释。
+Scalar 在物理学角度，标量是遵循简单代数规则的一些量，与坐标系的选取无关。例如，加法，减法等。标量也可以被定义为仅需要识别幅度的量。例如温度，电流等
+CS 里面可以简单认为是一个常量（constant）
+Vector 物理学角度向量是空间中的箭头，决定一个向量的是它的长度（length）和它所指的方向（direction），而且只要以上特征相同，你一个任意移动一个向量而保持它不变。也可以是矢量，比如速度和力。
+平面中（平面直角坐标系）的向量是二维的，处于我们生活当中的向量是三维的。
+举个例子，一个二维向量 [-2,3] 以平面直角坐标系来表示为：
+ 第一个数代表沿 X 轴走多远，第二个数代表沿 Y 轴走多远。
+ 图中的黄色箭头就是向量，可以看到一个向量都有一个唯一一对对数
+而一个三维向量 [2,1,3] 以平面直角坐标系来表示为：
+ 第一个数代表沿 X 轴走多远，第二个数代表沿 Y 轴走多远，第三个数代表沿 Z 轴走了多远
+ CS 角度向量是一个二维数组（二维）、三维数组（三维）或者说是矩阵。代表有序的数字集合。
+线性代数 向量在线性代数当中可以叫做矩阵（matrix），对应的加法和乘法规则是：
+ 两个矩阵行列数必须要相同才能进行求和运算。   两个矩阵要相乘，前一个矩阵的列数必须要等于后一个矩阵的行数，也可以看成是列的加权求和   至于更多的矩阵求逆、求导超出本文的范畴，请自行学习线性代数。
+ 我们也可以换一种方式来看向量的坐标，把一个 [1,1] 的向量定义为 基向量。
+上文的二维向量 [-2,3]，对应的每个坐标可以看作一个为 Scalar（标量）。这个向量可以看作把基向量按照标量的大小进行缩放所产生。-2 代表往右 2 倍，3 代表向上 3 倍">
 
 
 
@@ -87,8 +93,8 @@ why Odyssey 奥德赛这个名字，它是古希腊最重要的两部长篇史�
 			</a>
 		</li>
 		
-		<li class=""><a href="/blog/">Blog</a></li>
-		<li class="active"><a href="/life/">Life</a></li></ul>
+		<li class="active"><a href="/blog/">Blog</a></li>
+		<li class=""><a href="/life/">Life</a></li></ul>
 </nav>
 
 	</div>
@@ -97,21 +103,17 @@ why Odyssey 奥德赛这个名字，它是古希腊最重要的两部长篇史�
 
 <article>
     <header><hgroup id="brand">
-	<h1>奥德赛和2k HDR 显示器</h1>
+	<h1>Tensor &amp;&amp; flow</h1>
 	<h5>
 		
-		<time datetime="2019-07-27 13:12:30 &#43;0800 CST">Jul 27, 2019</time>
+		<time datetime="2019-08-09 13:22:30 &#43;0800 CST">Aug 09, 2019</time>
 		<span class="no-print">
 			-
 			
-			<a href="/tags/life">life</a>
-			
-			<a href="/tags/%e7%94%b5%e5%ad%90%e4%ba%a7%e5%93%81">电子产品</a>
+			<a href="/tags/tensor">Tensor</a>
 			</span>
 	</h5>
 
-	
-	<a style="margin-top: 1.2rem;display: inline-block;" href="https://github.com/V-Tom/blog/blob/hugo/content/life/%E5%A5%A5%E5%BE%B7%E8%B5%9B%E5%92%8C2k%20HDR%20%E6%98%BE%E7%A4%BA%E5%99%A8/index.md">✨✨✨You can Edit this Article on Github</a>
 	
 	
 	
@@ -120,98 +122,195 @@ why Odyssey 奥德赛这个名字，它是古希腊最重要的两部长篇史�
     <section id="markdown">
         
 
-<p>最近沉迷<a href="https://store.ubi.com/cn/%E5%88%BA%E5%AE%A2%E4%BF%A1%E6%9D%A1--%E5%A5%A5%E5%BE%B7%E8%B5%9B/5afda5f788a7e34d25b5012f.html">刺客信条-奥德赛</a></p>
+<blockquote>
+<p>本文只是简单 TensorFlow 的一些理解和介绍，并不包含详细的安装、API、以及更多深层内容。</p>
+</blockquote>
 
-<p><img src="./odyssey.jpg" alt="odyssey.jpg" /></p>
+<p>首先简单说一下 标量（<code>Scalar</code>）、向量（<code>Vector</code>）、张量（<code>Tensor</code>）。</p>
 
-<h2 id="why-odyssey">why Odyssey</h2>
+<p>下面会以 <code>physical student</code> 和 <code>cs student</code> 两个角度来解释。</p>
 
-<p>奥德赛这个名字，它是古希腊最重要的两部长篇史诗之一。承接《特洛伊》的剧情。</p>
+<h2 id="scalar">Scalar</h2>
 
-<p>讲述了奥德修斯归乡 10 年间惊心动魄的传奇旅程。设定在 2400 多年前的伯罗奔尼撒战争时期——雅典和斯巴达为争夺希腊世界的主导权打了 10 多年的仗。</p>
+<p>在物理学角度，标量是遵循简单代数规则的一些量，与坐标系的选取无关。例如，加法，减法等。标量也可以被定义为仅需要识别幅度的量。例如温度，电流等</p>
 
-<p>虽然育碧的游戏是典型的套公式类游戏，核心受众明显是轻度历史爱好者+喜欢刷任务的强迫症爱好者。比较明显的是 幽灵行动：荒野，大型玻利维亚观光游戏，虽然任务重复但是质量很高。</p>
+<p>CS 里面可以简单认为是一个常量（<code>constant</code>）</p>
 
-<p>但是我还是强烈推荐奥德赛：</p>
+<h2 id="vector">Vector</h2>
+
+<p>物理学角度向量是空间中的箭头，决定一个向量的是它的长度（<code>length</code>）和它所指的方向（<code>direction</code>），而且只要以上特征相同，你一个任意移动一个向量而保持它不变。也可以是矢量，比如速度和力。</p>
+
+<p>平面中（平面直角坐标系）的向量是二维的，处于我们生活当中的向量是三维的。</p>
+
+<p>举个例子，一个二维向量 <code>[-2,3]</code> 以平面直角坐标系来表示为：</p>
+
+<p><img src="./vector.2d.jpg" alt="vector.2d.jpg" /></p>
+
+<blockquote>
+<p>第一个数代表沿 X 轴走多远，第二个数代表沿 Y 轴走多远。</p>
+</blockquote>
+
+<p>图中的黄色箭头就是向量，可以看到一个向量都有一个唯一一对对数</p>
+
+<p>而一个三维向量 <code>[2,1,3]</code> 以平面直角坐标系来表示为：</p>
+
+<p><img src="./vector.3d.jpg" alt="vector.3d.jpg" /></p>
+
+<blockquote>
+<p>第一个数代表沿 X 轴走多远，第二个数代表沿 Y 轴走多远，第三个数代表沿 Z 轴走了多远</p>
+</blockquote>
+
+<p>CS 角度向量是一个二维数组（二维）、三维数组（三维）或者说是矩阵。代表有序的数字集合。</p>
+
+<h3 id="线性代数">线性代数</h3>
+
+<p>向量在线性代数当中可以叫做<strong>矩阵（matrix）</strong>，对应的加法和乘法规则是：</p>
 
 <ul>
-<li>美术 这次的美术是真棒，古希腊、斯巴达还原度很好，尤其是 亚特兰蒂斯</li>
-<li>BGM 推荐<a href="https://www.xiami.com/album/bC7oe72717a5">原声带</a></li>
-<li>育碧模式</li>
+<li>两个矩阵行列数必须要相同才能进行求和运算。</li>
 </ul>
 
-<p>本来是 cpy 版本的，后来第一个大型 DLC 亚特兰蒂斯 促使我入正了，官方是这样推荐的：</p>
-
-<blockquote>
-<p>探索源自希腊神话的三个新世界——极乐世界，冥界以及亚特兰提斯！</p>
-</blockquote>
-
-<p><img src="./atlanta.jpg" alt="atlanta" /></p>
-
-<p>朋友赞助 40 大洋，然后淘宝 5 大洋买了个育碧八折券，最后 326 大洋买了黄金版的奥德赛（带有一年季票，一年内的 DLC 可以任意畅玩）</p>
-
-<p><img src="./bill.png" alt="bill.png" /></p>
-
-<h2 id="更换显示器">更换显示器</h2>
-
-<p>我之前的显示器是很便宜的 <strong>AOC 12490PXH5 1080p</strong> 的显示器，只要 998 就买得到了，之前一直感觉大颗粒比较明显，前天剁手买了一个 <strong>DELL U2518DR 2k HDR</strong> 显示器，花了 1999 大洋，简直是最大的提升了。</p>
-
-<p>没有选择 144HZ 第一个是我不常玩 FPS 游戏，显卡 1070TI 也带不动，4K 更不用说了</p>
-
-<p>而且 1080P 到 2k 的提升比较明显，还有 HDR 10 ，所以选择了这款稍微便宜的显示器</p>
-
-<p>这款显示器令人欣喜的是考虑到主机位置偏远，背置的 USB3.0 插拔不便，Dell U2518DR 在左侧还预留了两个 USB3.0</p>
-
-<p>显示器可以上下、左右、旋转。</p>
-
-<h2 id="hdr">HDR</h2>
-
-<p><a href="https://en.wikipedia.org/wiki/High-dynamic-range_video">HDR</a> 技术最大的特点就是拥有很高的亮度动态范围。</p>
-
-<p>一般来说，人眼所能观察的亮度范围是 10^5 cd/㎡，若显示设备的峰值亮度越接近这一标准，效果也会越明显。HDR 也定义了显示设备所需的“亮度能力”——至少要有 1000nit 的峰值能力，才能真正显示 HDR 的内容细节。</p>
-
-<p>HDR 是显示器硬件实现的，目前，常见有六个不同的 HDR 标准：<code>hdr10</code>，<code>Dolby Vision</code>，<code>hdr10 +</code>，<code>HLG</code>，<code>Advanced HDR by Technicolor</code>, <code>DisplayHDR</code> 。我买的这款显示器是基础的 HDR 10。</p>
-
-<blockquote>
-<p>首先注意需要 HDMI 2.0 或者 DP 1.4 以上的线，其次操作系统为最新，而且主动打开显示器上的 HDR 功能，就可以在 windows 屏幕设置里面打开</p>
-</blockquote>
-
-<p>在摄像里，HDR 要先后拍摄三种曝光版本的多张照片，再将这些照片合为一张输出。利用每个曝光时间相对应最佳细节的 LDR 图像来合成最终 HDR 图像，能够更好的反映出真实环境中的视觉效果。</p>
-
-<h2 id="hdr-的好处">HDR 的好处</h2>
-
-<p>HDR 技术能够有效地展现不同曝光下的画面细节，令画面更真实。</p>
-
-<p>打开后整体屏幕发白，在游戏当中是正常</p>
-
-<p>比如阳光从窗户透过的时候，HDR 效果下颜色将更丰富、更逼真，画面会有更微妙的层次和色调的转变。素材较好地保存了对比度细节，所以通常会产生非常锐利的图像</p>
-
-<p><img src="./sdr-vs-hdr.png" alt="sdr-vs-hdr.png" /></p>
-
-<p>尤其是奥德赛里面的月光、沿海、日出特别明显，简直是两个游戏了。下面是一个玩家拍摄的 奥德赛 里面的区别:</p>
-
-<p><img src="./hdr-odyssey.jpg" alt="hdr-odyssey.jpg" /></p>
-
-<p><img src="./sdr-odyssey.jpg" alt="sdr-odyssey.jpg" /></p>
-
-<p>可以明显的看到 HDR 看起来更加真实</p>
-
-<blockquote>
-<p>支持 HDR 的游戏列表可以在这里查到<a href="https://pcgamingwiki.com/wiki/List_of_games_that_support_high_dynamic_range_display_(HDR)">List of games that support high dynamic range display (HDR)</a></p>
-</blockquote>
-
-<h2 id="reference">reference</h2>
+<p><img src="./vector.opreation.add.png" alt="vector.opreation.add.png" /></p>
 
 <ul>
-<li><a href="https://en.wikipedia.org/wiki/High-dynamic-range_video">HDR wikipedia</a></li>
+<li>两个矩阵要相乘，前一个矩阵的列数必须要等于后一个矩阵的行数，也可以看成是列的加权求和</li>
+</ul>
+
+<p><img src="./vector.opreation.multiply.png" alt="vector.opreation.multiply.png" /></p>
+
+<blockquote>
+<p>至于更多的矩阵求逆、求导超出本文的范畴，请自行学习线性代数。</p>
+</blockquote>
+
+<p>我们也可以换一种方式来看向量的坐标，把一个 <code>[1,1]</code> 的向量定义为 <code>基向量</code>。</p>
+
+<p><img src="./vector.basis.jpg" alt="vector.basis.jpg" /></p>
+
+<p>上文的二维向量 <code>[-2,3]</code>，对应的每个坐标可以看作一个为 <code>Scalar</code>（标量）。这个向量可以看作把<code>基向量</code>按照标量的大小进行缩放所产生。<code>-2</code> 代表往右 2 倍，<code>3</code> 代表向上 3 倍</p>
+
+<h2 id="tensor">Tensor</h2>
+
+<p><a href="https://en.wikipedia.org/wiki/Tensor">Tensor</a> 到底是什么？</p>
+
+<p>在物理学当中，张量是个很复杂的概念，简单来说：张量是在空间的不同方向上测量时具有不同值的量，例如<a href="https://zh.wikipedia.org/zh-tw/%E6%83%AF%E6%80%A7%E7%9F%A9">惯性矩</a>。</p>
+
+<p>张量在 CS 眼里其实就是一个多维数组。</p>
+
+<p>简单理解张量是向量和标量的一般形式，我们用一个属性来表示张量：<code>rank</code>，代表张量的<strong>阶</strong>，也可以叫做<strong>维度</strong>，或者叫做<strong>这是个几维数组</strong>：</p>
+
+<ul>
+<li>如果张量仅具有幅度而没有方向（即，等级 0 张量），则称为标量或者 rank 0</li>
+<li>如果张量具有幅度和一个方向（即，等级 1 张量），则称为向量、矢量或者 rank 1</li>
+<li>如果张量具有幅度和两个方向（即，等级 2 张量），则称为二元或者 rank 2</li>
+<li>&hellip;</li>
+</ul>
+
+<p>我们可以想象出这样的各种类型的张量：</p>
+
+<p><img src="./tensor-rank.jpeg" alt="tensor-rank.jpeg" /></p>
+
+<p>具体更多关于张量的解释请看这个视频：<a href="https://www.youtube.com/watch?v=f5liqUk0ZTw">What&rsquo;s a Tensor?</a>，或者<a href="https://www.youtube.com/watch?v=aL10dphqNuw">关于张量的描述及理解</a></p>
+
+<h2 id="dataflow-graphs">DataFlow Graphs</h2>
+
+<p>根据官方对 <a href="https://www.tensorflow.org/guide/graphs#why_dataflow_graphs">Graphs</a> 的解释：</p>
+
+<blockquote>
+<p>TensorFlow uses a dataflow graph to represent your computation in terms of the dependencies between individual operations. This leads to a low-level programming model in which you first define the dataflow graph, then create a TensorFlow session to run parts of the graph across a set of local and remote devices.</p>
+</blockquote>
+
+<p>简单来说 TensorFlow 使用数据流图表根据各个操作之间的依赖关系来表示您的计算。关于 Tensorflow 的最大想法是所有数值计算都表示为计算图。 换句话说，任何 Tensorflow 程序的主干都是 <code>Graph</code>。 模型中发生的任何事情都由计算图表示。 这使得它可以用于与您的模型相关的任何事情。</p>
+
+<p><code>Dataflow</code> 官方认为有很多好处，比如分布式执行、并行、可移植性等等，你也可以在 <a href="https://www.tensorflow.org/guide/summaries_and_tensorboard">TensorBoard</a> 上在线可视化编辑 Graph。</p>
+
+<blockquote>
+<p>流程通俗来讲：我们需要首先在其中定义数据流图（使用 TensorFlow 提供的 <code>operation</code> 来实现）并创建 <code>session</code> 来运行。</p>
+</blockquote>
+
+<p><img src="./dataflow-graph.gif" alt="dataflow-graph.gif" /></p>
+
+<p>比如我们如果实现一个简单的函数：<code>f(x,y)=x+y</code>，TensorFlow 中的 Graph 类似于：</p>
+
+<p><img src="./graph-sum.png" alt="graph-sum.png" /></p>
+
+<p>该图由一系列通过边连接的节点组成：图中的每个节点的操作都称为 <code>operation</code>，所以看起来我们是在操作每一个节点。</p>
+
+<p>通俗来讲 <code>Tensor</code> 通过 <code>operation</code>（如数学运算）或生成新的<code>Tensor</code>（如变量和常量）。 每个 <code>operation</code>节点将零个或多个 <code>Tensor</code> 作为输入，并产生新的 <code>Tensor</code> 作为输出。</p>
+
+<p>接下来实现一个稍微复杂的函数：<code>f(x,y)=x^2y+y+2</code>，Graph 将类似于：</p>
+
+<p><img src="./graph-quadratic-equation.png" alt="graph-quadratic-equation.png" /></p>
+
+<h2 id="tensor-flow">Tensor &amp;&amp; Flow</h2>
+
+<p>可是 Tensor 在实际当中有什么用处呢？</p>
+
+<p>我们知道 Tensor 简单可以理解为是多维数组，严格来讲：如果用数据来表示实物，高纬度（rank）的 Tensor 可以表示更多纬度的实物信息，什么意思呢？</p>
+
+<p>举个例子，我们有这样一组图片需要做 OCR，判断出来那张图片是 cat：</p>
+
+<p>图片拥有什么可用的信息来进行区分呢？简单列一下：</p>
+
+<ul>
+<li>宽度</li>
+<li>高度</li>
+<li>RGBA</li>
+</ul>
+
+<p>而且我们是一组图片，不是单个图片，有可能有一万张（毕竟样本数量越多训练精度越高），怎么处理这些数据呢？</p>
+
+<p>我们可以用 <code>[[rank 3 Tensor],[rank 3 Tensor],[rank 3 Tensor]...]</code>来表示这组数据，也就是一万个 <code>rank 3</code> 的 Tensor，根据这些数据再来进行科学计算、训练精度。</p>
+
+<p>至于为什么叫做 <code>TensorFlow</code> 呢？通过上面的解释应该很清楚了，尤其是 <code>f(x,y)=x+y</code> 的例子，个人理解通俗来讲就是 <code>Tensor</code> 之间的 <code>Flow</code>。</p>
+
+<h2 id="f-x-y-x-y"><code>f(x,y)=x+y</code></h2>
+
+<p>下面我们简单的用代码实现一下上面的：<code>f(x,y)=x+y</code>。</p>
+
+<blockquote>
+<p>因篇幅有限，<code>Tensor type</code>、<code>Placeholder</code>等概念本文不介绍，只简单说一下 <code>operation</code> 和 <code>session</code></p>
+</blockquote>
+
+<p><code>operation</code> 是实现 Tensor 科学运算的基本方式，在 <code>math_ops.py</code> 当中定义了很多运算规则，常见的<code>add</code>、<code>multiply</code>、<code>pow</code>、<code>multiply</code>等等。</p>
+
+<p><code>session</code> 是计算 graph 的必要条件。要计算任何内容，必须在 <code>session</code> 中启动图表。 从技术上讲，<code>session</code> 将图形操作放在诸如 CPU 或 GPU 之类的硬件上，并提供执行它们的方法，得到上下文才能运行。</p>
+
+<p>最终代码可以为：</p>
+
+<pre><code class="language-py">import tensorflow as tf
+
+x = 2
+y = 3
+
+with tf.Session() as sess:
+
+    # 加法运算
+    add_op = tf.add(x, y, name='Add')
+    print('sess.run(add_op) return value', sess.run(add_op))
+
+</code></pre>
+
+<p>最终输出<code>sess.run(add_op) return value 5</code>，并且对应的 <code>Tensorboard</code> 生成的图为：</p>
+
+<p><img src="./tensorboard-sum.png" alt="tensorboard-sum.png" /></p>
+
+<h2 id="reference">Reference</h2>
+
+<ul>
+<li><a href="http://zeus.plmsc.psu.edu/~manias/MatSE447/03_Tensors.pdf">Scalars, Vectors and Tensors</a></li>
+<li><a href="https://www.quora.com/Whats-the-difference-between-vector-and-tensor">What&rsquo;s the difference between vector and tensor?</a></li>
+<li><a href="https://www.youtube.com/watch?v=f5liqUk0ZTw">What&rsquo;s a Tensor?</a></li>
+<li><a href="https://www.youtube.com/watch?v=aL10dphqNuw">关于张量的描述及理解</a></li>
+<li><a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab">线性代数 Essence of linear algebra</a></li>
+<li><a href="https://hackernoon.com/learning-ai-if-you-suck-at-math-p4-tensors-illustrated-with-cats-27f0002c9b32#.2jpelkuhd">Learning AI if You Suck at Math — P4 — Tensors Illustrated (with Cats!)</a></li>
 </ul>
 
     </section>
     <nav class="no-print post-nav">
         
+        <a class="prev-post" href="https://hasaki.xyz/blog/2019-07-20-%E4%BD%BF%E7%94%A8-rust-%E7%BC%96%E5%86%99-webassembly-/">
+            <img class="icon-text" src="/img/prev.svg"/>使用 Rust 编写 WebAssembly </a>
         
-        <a class="next-post" href="https://hasaki.xyz/life/my-recent-notes-mostly-entertainment/">My Recent Notes (mostly entertainment)<img class="icon-text" src="/img/next.svg"/>
-        </a>
         
     </nav>
 </article>
