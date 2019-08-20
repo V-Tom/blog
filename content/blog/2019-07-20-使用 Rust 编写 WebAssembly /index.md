@@ -3,7 +3,7 @@ title: '使用 Rust 编写 WebAssembly '
 subTitle: '使用 Rust 编写 WebAssembly '
 tags: ['Rust', 'WebAssembly', 'FrontEnd']
 date: 2019-07-20T15:42:40+08:00
-host: ''
+host: 'https://github.com/V-Tom/blog/blob/hugo/content/blog/2019-07-20-%E4%BD%BF%E7%94%A8%20Rust%20%E7%BC%96%E5%86%99%20WebAssembly%20/index.md'
 ---
 
 老规矩，列出本机器环境

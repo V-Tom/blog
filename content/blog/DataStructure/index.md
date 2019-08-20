@@ -8,11 +8,7 @@ date: 2018-05-23T12:33:21+08:00
 
 ### List
 
-##### list 定义
-
-- 是**n(n≥0)个相同类型**的**数据元素**构成的**有限**序列。
-
-##### list ADT
+list 是**n(n≥0)个相同类型**的**数据元素**构成的**有限**序列。
 
 ```adt
 ADT List
@@ -568,8 +564,6 @@ class Node {
 - 固定插入的一端叫**栈顶(top)**，而另一端称为**栈底(bottom)**。位于栈顶和栈底的元素分别称为**顶元**和**底元**。当表中无元素时，称为空栈
 - 栈的修改是按照**后进先出**的原则进行（简称 LIFO）
 
-##### stack ADT
-
 ```adt
 ADT List
 {
@@ -1095,3 +1089,123 @@ function breadthFirstSearch(Node) {
   }
 }
 ```
+
+### 排序
+
+#### 快速排序
+
+分而治之 （divide and conquer，D&C）——一种著名的递归式问题解决方法
+
+D&C 的工作原理：
+
+- (1) 找出简单的基线条件；
+- (2) 确定如何缩小问题的规模，使其符合基线条件。 D&C 并非可用于解决问题的算法，而是一种解决问题的思路。
+
+```python
+def quicksort(array):
+
+  if len(array) < 2:
+
+    return array # 基线条件：为空或只包含一个元素的数组是“有序”的
+
+  else:
+
+    pivot = array[0] # 递归条件
+
+    less = [i for i in array[1:]if i <= pivot] # 由所有小于基准值的 元素组成的子数组
+    greater = [i for i in array[1:] if i > pivot] # 由所有大于基准值的 元素组成的子数组
+
+    return quicksort(less) + [pivot] + quicksort(greater)
+```
+
+```javascript
+function quickSort(list) {
+  const len = list.length;
+
+  if (len <= 1) {
+    return list;
+  }
+
+  /**
+   * 二分 list
+   * @type {number}
+   */
+  const index = Math.floor(len / 2);
+
+  /**
+   * 取出中间值作为基准值
+   * @type {T[]}
+   */
+  const pivot = list.splice(index, 1);
+
+  const left = [];
+  const right = [];
+
+  for (let i = 0; i < len - 1; i++) {
+    if (list[i] < pivot) {
+      left.push(list[i]);
+    } else {
+      right.push(list[i]);
+    }
+  }
+
+  return quickSort(left).concat(pivot, quickSort(right));
+}
+```
+
+#### 选择排序
+
+```python
+
+def find_smallest(array):
+    smallest = array[0]
+    smallest_index = 0
+
+    for i in range(1, len(array)):
+        if array[i] < smallest:
+            smallest = array[i]
+            smallest_index = i
+    return smallest, smallest_index
+
+
+'''
+    selection_sort
+'''
+
+
+def selection_sort(array):
+    result = []
+    for i in range(len(array)):
+        smallest, smallest_index = find_smallest(array)
+        result.append(array.pop(smallest))
+    return result
+
+
+```
+
+```javascript
+function selectionSort(list) {
+  const len = list.length;
+  let minIndex = -1;
+
+  for (let m = 0; m < len; m++) {
+    minIndex = m;
+
+    for (let n = m; n < len; n++) {
+      if (list[n] < list[minIndex]) {
+        minIndex = n;
+      }
+    }
+
+    [list[m], list[minIndex]] = [list[minIndex], list[m]];
+  }
+
+  return list;
+}
+```
+
+### 贪婪算法
+
+贪婪算法很简单：每步都采取最优的做法。
+
+用专业术语说，就是你每步都选择局部最优解，最终得到的就是全局最优解。
