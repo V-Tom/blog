@@ -16,8 +16,11 @@
     <link rel="manifest" href="/sw/manifest.json"/>
 <title>My Recent Notes (mostly entertainment) - TOM&#39;s zone</title>
 
-<meta name="description" content="  此文稿列出了我最近的一些安排，主要是娱乐安排，比如电影、电视剧、游戏、旅游之类的，每个种类已经手动按照时间进行排序
- Code Movies  硅谷 第六季 Silicon Valley Season 6 (2019) 首播: 2019-10(美国) 苍穹浩瀚 第四季 The Expanse Season 4 (2019) 首播: 2019-12-13(美国) 星际迷航：发现号 第三季 Star Trek: Discovery Season 3 (2020) 首播: 2020-01(美国) 新世纪福音战士新剧场版：终 首播: 2020  Games  Cyberpunk 2077 Initial release date: April 16, 2020  ">
+<meta name="description" content="此文稿列出了我最近的一些安排，主要是娱乐安排，比如电影、电视剧、游戏、旅游之类的，每个种类已经手动按照时间进行排序
+ Code  很不幸 Nothing
+ Movies  硅谷 第六季 Silicon Valley Season 6 (2019) 首播: 2019-10(美国)  已经开播，1080p 下载地址 和 字幕地址
+ 苍穹浩瀚 第四季 The Expanse Season 4 (2019) 首播: 2019-12-13(美国) 星际迷航：发现号 第三季 Star Trek: Discovery Season 3 (2020) 首播: 2020-01(美国) 新世纪福音战士新剧场版：终 首播: 2020  Games  Cyberpunk 2077 Initial release date: April 16, 2020  NAS 自建 NAS 的所需硬件以及需要满足条件简单如下表：
+ ECC 自带自动纠错，对于 7*24h 运行的机器很有用，适合大数据量以及比较重要的数据，个人的 NAS 看需求是否需要 ECC Memory Supported（会省下很多银子）">
 
 
 
@@ -79,6 +82,7 @@
 		</li>
 		
 		<li class=""><a href="/blog/">Blog</a></li>
+		<li class=""><a href="/gallery/">Gallery</a></li>
 		<li class="active"><a href="/life/">Life</a></li></ul>
 </nav>
 
@@ -88,22 +92,48 @@
 
 <article>
     <header><hgroup id="brand">
-	<h1>My Recent Notes (mostly entertainment)</h1>
-	<h5>
-		
-		<time datetime="2019-07-27 13:12:30 &#43;0800 CST">Jul 27, 2019</time>
-		<span class="no-print">
-			-
-			
-			<a href="/tags/life">life</a>
-			</span>
-	</h5>
+  <h1>My Recent Notes (mostly entertainment)</h1>
+  <h5>
+    
+    <time datetime="2019-07-27 13:12:30 &#43;0800 CST">Jul 27, 2019</time>
+    <span class="no-print">
+      -
+      
+      <a href="/tags/life">life</a>
+      </span>
+  </h5>
 
-	
-	
-	
+  <a
+    style="margin-top: 1.2rem;display: inline-block;"
+    href="https://github.com/V-Tom/blog/blob/hugo/content/life/My%20Recent%20Notes%20%28mostly%20entertainment%29/index.md"
+    >✨✨✨You can Edit this Article on Github site</a
+  >
+
+  <script>
+  (async () => {
+    const commits = await fetch(
+      'https://api.github.com/repos/V-Tom/blog/commits?sha=hugo&path=content/life\/My Recent Notes (mostly entertainment)\/index.md'
+    ).then(res => res.json());
+    const b = document.querySelector('#git-active-time').querySelector('b');
+    try {
+      const time = new Date(commits[0].commit.committer.date);
+      b.innerHTML = `${time.getFullYear()}-${time.getMonth() +
+        1}-${time.getDate()}`;
+    } catch (e) {
+      b.innerHTML = 'unknown';
+    }
+  })();
+</script>
+<div id="git-active-time">
+  ✏️✏️✏️ This article .MD file was last updated at:
+  <b>Loading ...</b>
+</div>
+
+
+  
 </hgroup>
-<hr class="sep" /></header>
+<hr class="sep" />
+</header>
     <section id="markdown">
         
 
@@ -113,10 +143,19 @@
 
 <h2 id="code">Code</h2>
 
+<blockquote>
+<p>很不幸 Nothing</p>
+</blockquote>
+
 <h2 id="movies">Movies</h2>
 
 <ul>
 <li><a href="https://movie.douban.com/subject/30194648/">硅谷 第六季 Silicon Valley Season 6 (2019) 首播: 2019-10(美国)</a></li>
+</ul>
+
+<p>已经开播，<a href="http://www.btyun.tv/tvshows/silicon-valley/">1080p 下载地址</a> 和 <a href="https://subhdtw.com/d/30194648">字幕地址</a></p>
+
+<ul>
 <li><a href="https://movie.douban.com/subject/30234319/">苍穹浩瀚 第四季 The Expanse Season 4 (2019) 首播: 2019-12-13(美国)</a></li>
 <li><a href="https://movie.douban.com/subject/30473976/">星际迷航：发现号 第三季 Star Trek: Discovery Season 3 (2020) 首播: 2020-01(美国)</a></li>
 <li><a href="https://zh.wikipedia.org/wiki/%E6%96%B0%E4%B8%96%E7%BA%AA%E7%A6%8F%E9%9F%B3%E6%88%98%E5%A3%AB%E6%96%B0%E5%89%A7%E5%9C%BA%E7%89%88%EF%BC%9A%E7%BB%88">新世纪福音战士新剧场版：终 首播: 2020</a></li>
@@ -127,6 +166,41 @@
 <ul>
 <li><a href="https://www.cyberpunk.net/">Cyberpunk 2077 Initial release date: April 16, 2020</a></li>
 </ul>
+
+<h2 id="nas">NAS</h2>
+
+<p>自建 NAS 的所需硬件以及需要满足条件简单如下表：</p>
+
+<blockquote>
+<p>ECC 自带自动纠错，对于 7*24h 运行的机器很有用，适合大数据量以及比较重要的数据，个人的 NAS 看需求是否需要 ECC Memory Supported（会省下很多银子）</p>
+</blockquote>
+
+<ul>
+<li>Motherboard（ECC Memory Supported）需要至多的 SATA 口</li>
+<li>CPU（ECC Memory Supported）RAID</li>
+<li>RAM（ECC Memory Supported）</li>
+<li>支持 7*24h 运行的数据盘</li>
+<li>整体的 TDP 也要考虑，可以装好后跑一下 <a href="https://www.aida64.com/">adida 64</a> 来确认是否需要散热器</li>
+<li>NAS 系统，这里推荐 <a href="https://www.freenas.org/">Free NAS</a></li>
+</ul>
+
+<p>主板这里推荐 ASRock（华擎）的主板，主要是它家自古出妖板，至于主板的尺寸 ATX 还是 ITX 看你的机箱大小和电源了。</p>
+
+<p>ASRock 主板可以在它家<a href="https://www.asrockrack.com/general/products.tw.asp#Server">官网查询所需要的型号</a>，主要过滤条件是 SATA 接口数量和 ECC Memory Supported 和 RAID 支持程度，另外可以根据个人需求是否需要支持万兆网络</p>
+
+<p><a href="https://ark.intel.com/content/www/us/en/ark/search/featurefilter.html?productType=873&amp;0_ECCMemory=True">CPU 支持 ECC</a> 可以在 intel 官网上过滤条件查询，可以根据你选择的主板接口类型（sockets）以及型号（intel family），可以添加更多的筛选条件。</p>
+
+<blockquote>
+<p>比如：主板接口类型（sockets）需要 <code>LGA1151</code> ，型号（intel family）需要 <code>XENO</code>，所以更新下<a href="https://ark.intel.com/content/www/us/en/ark/search/featurefilter.html?productType=873&amp;0_ECCMemory=True&amp;1_Filter-SocketsSupported=3582&amp;1_Filter-Family=595">查询条件</a>就可以查询了</p>
+</blockquote>
+
+<p><strong>CPU 不用需要太高的性能，查询出来的表格直接拉到最下面去淘宝查询价格就行了</strong></p>
+
+<p>至于 RAM 和 数据盘选择主流就行</p>
+
+<p>然后去 <a href="https://www.freenas.org/">Free NAS</a> 官网下载镜像安装就可以了</p>
+
+<p>组装 RAID 方案可以根据需求来定，建议组 RAID 5，其中的区别和其他 RAID 的区别可以看这个<a href="https://www.youtube.com/watch?v=U-OCdTeZLac">RAID 入门视频</a></p>
 
     </section>
     <nav class="no-print post-nav">
@@ -163,298 +237,379 @@
 
 
 <style rel="catalog">
-    #catalog {
-        position: fixed;
-        left: 3vw;
-        top: 8vh;
-    }
+  #catalog {
+    position: fixed;
+    left: 3vw;
+    top: 8vh;
+    overflow: auto;
+    height: calc(100% - 16vh);
+    background:
+      linear-gradient(
+        white 30%,
+        rgba(255, 255, 255, 0)
+      ),
+      linear-gradient(rgba(255, 255, 255, 0), white 70%) 0 100%,
+       
+        radial-gradient(
+          50% 0,
+          farthest-side,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        ),
+      radial-gradient(
+          50% 100%,
+          farthest-side,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        )
+        0 100%;
+    background:
+      linear-gradient(
+        white 30%,
+        rgba(255, 255, 255, 0)
+      ),
+      linear-gradient(rgba(255, 255, 255, 0), white 70%) 0 100%,
+       
+        radial-gradient(
+          farthest-side at 50% 0,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        ),
+      radial-gradient(
+          farthest-side at 50% 100%,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        )
+        0 100%;
+    background-repeat: no-repeat;
+    background-color: white;
+    background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
 
-    .cl-wrapper {
-        position: relative;
-    }
+     
+    background-attachment: local, local, scroll, scroll;
+  }
+  #catalog::-webkit-scrollbar {
+    display: none;
+  }
 
-    .cl-wrapper ul, .cl-wrapper li {
-        margin: 0;
-        -moz-padding-start: 12px;
-        -webkit-padding-start: 12px;
-        list-style: none;
-    }
+  .cl-wrapper {
+    position: relative;
+  }
 
-    .cl-wrapper li > .cl-link.cl-link-active {
-        color: #ff8181;
-        transition: .5s;
-    }
+  .cl-wrapper ul,
+  .cl-wrapper li {
+    margin: 0;
+    -moz-padding-start: 12px;
+    -webkit-padding-start: 12px;
+    list-style: none;
+  }
 
-    .cl-wrapper li > .cl-transform.cl-link-active {
-        transform: translate(3px);
-    }
+  .cl-wrapper li > .cl-link.cl-link-active {
+    color: #ff8181;
+    transition: 0.5s;
+  }
 
-    .cl-wrapper .cl-link {
-        cursor: pointer;
-        color: rgba(52, 73, 94, 0.5);
-        font-size: 13px;
-        transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-    }
+  .cl-wrapper li > .cl-transform.cl-link-active {
+    transform: translate(3px);
+  }
 
-    .cl-wrapper .cl-marker {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-    }
+  .cl-wrapper .cl-link {
+    cursor: pointer;
+    color: rgba(52, 73, 94, 0.5);
+    font-size: 13px;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  }
 
-    .cl-wrapper .cl-marker path {
-        transition: all 0.3s ease;
-    }
+  .cl-wrapper .cl-marker {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+
+  .cl-wrapper .cl-marker path {
+    transition: all 0.3s ease;
+  }
 </style>
 <main id="catalog"></main>
 <script rel="catalog">
-    void function () {
-        
-        if (window.innerWidth < 1024 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-            return
+  void (function() {
+    if (
+      window.innerWidth < 1024 ||
+      /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+    ) {
+      return;
+    }
+
+    const Catalog = (function() {
+      return function(opts) {
+        let defaultOpts = {
+          linkClass: 'cl-link', 
+          linkActiveClass: 'cl-link-active', 
+          datasetName: 'data-cata-target', 
+          selector: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'], 
+          scrollWrapper: null, 
+          activeHook: null, 
+          topMargin: 0,
+          bottomMargin: 0,
+          cool: true 
+        };
+
+        const Opt = Object.assign({}, defaultOpts, opts);
+
+        const $content = document.getElementById(Opt.contentEl); 
+        const $scroll_wrap = window; 
+        const $catalog = document.getElementById(Opt.catalogEl); 
+
+        let allCatalogs = $content.querySelectorAll(Opt.selector.join());
+        let tree = getCatalogsTree(allCatalogs);
+
+        try {
+          $catalog.innerHTML = `<div class='cl-wrapper'>${generateHtmlTree(
+            tree,
+            { id: -1 }
+          )}<svg class="cl-marker" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+            <path stroke="#ff8181" stroke-width="3" fill="transparent" stroke-dasharray="0, 0, 0, 1000" stroke-linecap="round" stroke-linejoin="round" transform="translate(-0.5, -0.5)" />
+            </svg></div>`;
+        } catch (e) {
+          console.error('error in progress-catalog', e);
         }
 
-        const Catalog = (function () {
-            return function (opts) {
-                let defaultOpts = {
-                    linkClass: 'cl-link',                             
-                    linkActiveClass: 'cl-link-active',                
-                    datasetName: 'data-cata-target',                  
-                    selector: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],   
-                    scrollWrapper: null,                              
-                    activeHook: null,                                 
-                    topMargin: 0,
-                    bottomMargin: 0,
-                    cool: true                                        
-                }
+        const tocPath = $catalog.querySelector('.cl-marker path');
+        let tocItems, pathLength; 
 
-                const Opt = Object.assign({}, defaultOpts, opts)
+        
+        window.addEventListener('resize', drawPath);
+        $catalog.addEventListener('click', clickHandler);
+        Opt.cool && $scroll_wrap.addEventListener('scroll', coolScrollHandler);
+        Opt.cool ||
+          $scroll_wrap.addEventListener('scroll', simpleScrollHandler);
 
-                const $content = document.getElementById(Opt.contentEl)                          
-                const $scroll_wrap = window   
-                const $catalog = document.getElementById(Opt.catalogEl)                          
+        setTimeout(drawPath); 
 
-                let allCatalogs = $content.querySelectorAll(Opt.selector.join())
-                let tree = getCatalogsTree(allCatalogs)
+        
 
-                try {
-                    $catalog.innerHTML = `<div class='cl-wrapper'>${generateHtmlTree(tree, {id: -1})}<svg class="cl-marker" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
-            <path stroke="#ff8181" stroke-width="3" fill="transparent" stroke-dasharray="0, 0, 0, 1000" stroke-linecap="round" stroke-linejoin="round" transform="translate(-0.5, -0.5)" />
-            </svg></div>`
-                } catch (e) {
-                    console.error('error in progress-catalog', e)
-                }
+        function drawPath() {
+          tocItems = [...$catalog.querySelectorAll('li')];
+          tocItems = tocItems.map(function(liDom) {
+            const anchor = liDom.querySelector(`.${Opt.linkClass}`);
+            const target = document.getElementById(
+              anchor.getAttribute('data-cata-target')
+            );
 
+            return {
+              listItem: liDom,
+              anchor: anchor,
+              target: target
+            };
+          });
+          tocItems = tocItems.filter(item => !!item.target);
 
-                const tocPath = $catalog.querySelector('.cl-marker path')
-                let tocItems, pathLength    
+          const path = [];
+          let pathIndent;
 
-                
-                window.addEventListener('resize', drawPath)
-                $catalog.addEventListener('click', clickHandler)
-                Opt.cool && $scroll_wrap.addEventListener('scroll', coolScrollHandler)
-                Opt.cool || $scroll_wrap.addEventListener('scroll', simpleScrollHandler)
+          tocItems &&
+            tocItems.forEach(function(item, idx) {
+              const { offsetLeft, offsetTop, offsetHeight } = item.anchor,
+                x = Opt.cool ? offsetLeft - 5 : offsetLeft,
+                y = offsetTop,
+                height = offsetHeight;
 
-                setTimeout(drawPath)          
+              if (idx === 0) {
+                path.push('M', x, y, 'L', x, y + height);
+                item.pathStart = 0;
+              } else {
+                if (pathIndent !== x) path.push('L', pathIndent, y); 
+                path.push('L', x, y);
+                tocPath.setAttribute('d', path.join(' '));
+                item.pathStart = tocPath.getTotalLength() || 0;
+                path.push('L', x, y + height);
+              }
+              pathIndent = x;
+              tocPath.setAttribute('d', path.join(' '));
+              item.pathEnd = tocPath.getTotalLength();
+            });
+          pathLength = tocPath.getTotalLength();
+          coolScrollHandler();
+        }
 
-                
+        
 
-                function drawPath() {
-                    tocItems = [...$catalog.querySelectorAll('li')]
-                    tocItems = tocItems.map(function (liDom) {
-                        const anchor = liDom.querySelector(`.${Opt.linkClass}`)
-                        const target = document.getElementById(anchor.getAttribute('data-cata-target'))
-
-                        return {
-                            listItem: liDom,
-                            anchor: anchor,
-                            target: target
-                        }
-                    })
-                    tocItems = tocItems.filter(item => !!item.target)
-
-                    const path = []
-                    let pathIndent
-
-                    tocItems && tocItems.forEach(function (item, idx) {
-                        const {offsetLeft, offsetTop, offsetHeight} = item.anchor,
-                            x = Opt.cool ? offsetLeft - 5 : offsetLeft,
-                            y = offsetTop,
-                            height = offsetHeight
-
-                        if (idx === 0) {
-                            path.push('M', x, y, 'L', x, y + height)
-                            item.pathStart = 0
-                        }
-                        else {
-                            if (pathIndent !== x) path.push('L', pathIndent, y)     
-                            path.push('L', x, y)
-                            tocPath.setAttribute('d', path.join(' '))
-                            item.pathStart = tocPath.getTotalLength() || 0
-                            path.push('L', x, y + height)
-                        }
-                        pathIndent = x
-                        tocPath.setAttribute('d', path.join(' '))
-                        item.pathEnd = tocPath.getTotalLength()
-                    })
-                    pathLength = tocPath.getTotalLength()
-                    coolScrollHandler()
-                }
-
-                
-
-                function coolScrollHandler() {
-                    const wrapHeight = document.documentElement.offsetHeight
-                    let pathStart = pathLength,
-                        pathEnd = 0,
-                        visibleItems = 0
-                    tocItems.forEach(function (liItem) {
-                        const {bottom, top} = liItem.target.getBoundingClientRect(),
-                            firstChild = liItem.listItem.firstChild
-                        if (bottom > Opt.topMargin && top < wrapHeight - Opt.bottomMargin) {
-                            firstChild.classList.remove(Opt.linkActiveClass)
-                            Opt.cool && firstChild.classList.remove('cl-transform')
-                        } else {
-                            pathStart = Math.min(liItem.pathStart, pathStart)
-                            pathEnd = Math.max(liItem.pathEnd, pathEnd)
-                            visibleItems += 1
-                            firstChild.classList.add(Opt.linkActiveClass)
-                            Opt.cool && firstChild.classList.add('cl-transform')
-                        }
-                    })
-                    if (visibleItems > 0 && pathStart < pathEnd && Opt.cool) {
-                        tocPath.setAttribute('stroke-dashoffset', '1')
-                        tocPath.setAttribute('stroke-dasharray', `1, ${pathStart}, ${pathEnd - pathStart}, ${pathLength}`)
-                        tocPath.setAttribute('opacity', '1')
-                    }
-                    else {
-                        tocPath.setAttribute('opacity', '0')
-                    }
-                }
-
-                
-
-                function simpleScrollHandler(el) {
-                    let scrollToEl = null
-                    for (let i = allCatalogs.length - 1; i >= 0; i--) {
-                        if (allCatalogs[i].offsetTop <= $scroll_wrap.scrollTop) {
-                            scrollToEl = allCatalogs[i]
-                            break
-                        }
-                    }
-                    if (scrollToEl) setActiveItem(scrollToEl.id)
-                    else setActiveItem(null)            
-                }
-
-                
-
-                function clickHandler({target}) {
-                    const datasetId = target.getAttribute(Opt.datasetName)
-                    target.classList.contains(Opt.linkClass) &&
-                    document.getElementById(datasetId)
-                        .scrollIntoView({behavior: "smooth", block: "start"})
-                }
-
-                
-
-                function getCatalogsTree(catalogs) {
-                    let title, tagName, tree = [], treeItem = {}, parentItem = {id: -1}, lastTreeItem = null, id
-
-                    for (let i = 0; i < catalogs.length; i++) {
-                        title = catalogs[i].innerText || catalogs[i].textContent
-                        tagName = catalogs[i].tagName
-                        id = 'heading-' + i
-                        catalogs[i].id = id
-                        treeItem = {
-                            name: title,
-                            tagName: tagName,
-                            id: id,
-                            level: +getLevel(tagName),
-                            parent: parentItem
-                        }
-                        if (lastTreeItem) {
-                            if (getLevel(treeItem.tagName) > getLevel(lastTreeItem.tagName)) {
-                                treeItem.parent = lastTreeItem
-                            } else {
-                                treeItem.parent = findParent(treeItem, lastTreeItem)
-                            }
-                        }
-                        lastTreeItem = treeItem
-                        tree.push(treeItem)
-                    }
-                    return tree
-                }
-
-                
-
-                function findParent(currTreeItem, lastTreeItem) {
-                    let lastTreeParent = lastTreeItem.parent
-                    while (lastTreeParent && (getLevel(currTreeItem.tagName) <= getLevel(lastTreeParent.tagName))) {
-                        lastTreeParent = lastTreeParent.parent
-                    }
-                    return lastTreeParent || {id: -1}
-                }
-
-                
-
-                function getLevel(tagName) {
-                    return tagName ? tagName.slice(1) : 0
-                }
-
-                
-
-                function generateHtmlTree(tree, _parent) {
-                    let ul, hasChild = false
-                    if (tree) {
-                        ul = `<ul>`
-                        for (let i = 0; i < tree.length; i++) {
-                            if (isEqual(tree[i].parent, _parent)) {
-                                hasChild = true
-                                ul += `<li><div class='${ Opt.linkClass } cl-level-${ tree[i].level }' ${Opt.datasetName}='${ tree[i].id }'>${tree[i].name}</div>`
-                                ul += generateHtmlTree(tree, tree[i])
-                                ul += '</li>'
-                            }
-                        }
-                        ul += `</ul>`
-                    }
-                    return hasChild ? ul : ''
-                }
-
-                /**
-                 * 判断是否是相同节点
-                 */
-                function isEqual(node, node2) {
-                    return node && node2 && typeof node === 'object' && typeof node2 === 'object' && node.id === node2.id
-                }
-
-                /**
-                 *  设置选中的项
-                 */
-                function setActiveItem(id) {
-                    let catas = [...$catalog.querySelectorAll(`[${Opt.datasetName}]`)]
-
-                    catas.forEach(T => {
-                        if (T.getAttribute(Opt.datasetName) === id) {
-                            typeof Opt.activeHook === 'function' &&
-                            !T.classList.contains(Opt.linkActiveClass) &&
-                            Opt.activeHook.call(this, T)                    // 执行active钩子
-                            T.classList.add(Opt.linkActiveClass)
-                        } else {
-                            T.classList.remove(Opt.linkActiveClass)
-                        }
-                    })
-                }
+        function coolScrollHandler() {
+          const wrapHeight = document.documentElement.offsetHeight;
+          let pathStart = pathLength,
+            pathEnd = 0,
+            visibleItems = 0;
+          tocItems.forEach(function(liItem) {
+            const { bottom, top } = liItem.target.getBoundingClientRect(),
+              firstChild = liItem.listItem.firstChild;
+            if (bottom > Opt.topMargin && top < wrapHeight - Opt.bottomMargin) {
+              firstChild.classList.remove(Opt.linkActiveClass);
+              Opt.cool && firstChild.classList.remove('cl-transform');
+            } else {
+              pathStart = Math.min(liItem.pathStart, pathStart);
+              pathEnd = Math.max(liItem.pathEnd, pathEnd);
+              visibleItems += 1;
+              firstChild.classList.add(Opt.linkActiveClass);
+              Opt.cool && firstChild.classList.add('cl-transform');
             }
-        })();
-        window.addEventListener('DOMContentLoaded', _ => new Catalog({
-            contentEl: 'markdown',
-            catalogEl: 'catalog'
-        }))
-    }();
+          });
+          if (visibleItems > 0 && pathStart < pathEnd && Opt.cool) {
+            tocPath.setAttribute('stroke-dashoffset', '1');
+            tocPath.setAttribute(
+              'stroke-dasharray',
+              `1, ${pathStart}, ${pathEnd - pathStart}, ${pathLength}`
+            );
+            tocPath.setAttribute('opacity', '1');
+          } else {
+            tocPath.setAttribute('opacity', '0');
+          }
+        }
+
+        
+
+        function simpleScrollHandler(el) {
+          let scrollToEl = null;
+          for (let i = allCatalogs.length - 1; i >= 0; i--) {
+            if (allCatalogs[i].offsetTop <= $scroll_wrap.scrollTop) {
+              scrollToEl = allCatalogs[i];
+              break;
+            }
+          }
+          if (scrollToEl) setActiveItem(scrollToEl.id);
+          else setActiveItem(null); 
+        }
+
+        
+
+        function clickHandler({ target }) {
+          const datasetId = target.getAttribute(Opt.datasetName);
+          target.classList.contains(Opt.linkClass) &&
+            document
+              .getElementById(datasetId)
+              .scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        
+
+        function getCatalogsTree(catalogs) {
+          let title,
+            tagName,
+            tree = [],
+            treeItem = {},
+            parentItem = { id: -1 },
+            lastTreeItem = null,
+            id;
+
+          for (let i = 0; i < catalogs.length; i++) {
+            title = catalogs[i].innerText || catalogs[i].textContent;
+            tagName = catalogs[i].tagName;
+            id = 'heading-' + i;
+            catalogs[i].id = id;
+            treeItem = {
+              name: title,
+              tagName: tagName,
+              id: id,
+              level: +getLevel(tagName),
+              parent: parentItem
+            };
+            if (lastTreeItem) {
+              if (getLevel(treeItem.tagName) > getLevel(lastTreeItem.tagName)) {
+                treeItem.parent = lastTreeItem;
+              } else {
+                treeItem.parent = findParent(treeItem, lastTreeItem);
+              }
+            }
+            lastTreeItem = treeItem;
+            tree.push(treeItem);
+          }
+          return tree;
+        }
+
+        
+
+        function findParent(currTreeItem, lastTreeItem) {
+          let lastTreeParent = lastTreeItem.parent;
+          while (
+            lastTreeParent &&
+            getLevel(currTreeItem.tagName) <= getLevel(lastTreeParent.tagName)
+          ) {
+            lastTreeParent = lastTreeParent.parent;
+          }
+          return lastTreeParent || { id: -1 };
+        }
+
+        
+
+        function getLevel(tagName) {
+          return tagName ? tagName.slice(1) : 0;
+        }
+
+        
+
+        function generateHtmlTree(tree, _parent) {
+          let ul,
+            hasChild = false;
+          if (tree) {
+            ul = `<ul>`;
+            for (let i = 0; i < tree.length; i++) {
+              if (isEqual(tree[i].parent, _parent)) {
+                hasChild = true;
+                ul += `<li><div class='${Opt.linkClass} cl-level-${tree[i].level}' ${Opt.datasetName}='${tree[i].id}'>${tree[i].name}</div>`;
+                ul += generateHtmlTree(tree, tree[i]);
+                ul += '</li>';
+              }
+            }
+            ul += `</ul>`;
+          }
+          return hasChild ? ul : '';
+        }
+
+        /**
+         * 判断是否是相同节点
+         */
+        function isEqual(node, node2) {
+          return (
+            node &&
+            node2 &&
+            typeof node === 'object' &&
+            typeof node2 === 'object' &&
+            node.id === node2.id
+          );
+        }
+
+        /**
+         *  设置选中的项
+         */
+        function setActiveItem(id) {
+          let catas = [...$catalog.querySelectorAll(`[${Opt.datasetName}]`)];
+
+          catas.forEach(T => {
+            if (T.getAttribute(Opt.datasetName) === id) {
+              typeof Opt.activeHook === 'function' &&
+                !T.classList.contains(Opt.linkActiveClass) &&
+                Opt.activeHook.call(this, T); // 执行active钩子
+              T.classList.add(Opt.linkActiveClass);
+            } else {
+              T.classList.remove(Opt.linkActiveClass);
+            }
+          });
+        }
+      };
+    })();
+    window.addEventListener(
+      'DOMContentLoaded',
+      _ =>
+        new Catalog({
+          contentEl: 'markdown',
+          catalogEl: 'catalog'
+        })
+    );
+  })();
 </script>
+
 			<hr class="sep" />
 		</main>
 		<footer class="container no-print">

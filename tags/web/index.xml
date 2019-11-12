@@ -23,9 +23,9 @@
 javascript 本身有很多种方式可以实现沙箱，各有千秋，各有使用的地方。
  eval new Function with proxy Node VM Deno  eval 最简单的方式就是直接使用 eval 执行：
 eval(&#39;console.log(&amp;quot;a simple script&amp;quot;);&#39;); // a simple script  eval 只是一个普通的函数，只不过他有一个快速通道通向编译器，可以将 string 变成可执行的代码。
- eval 的特性是如果当前域里面没有，则会向上遍历，一直到最顶层的 global scope：比如 window global ，他还可以访问closure内的变量。
+ eval 的特性是如果当前域里面没有，则会向上遍历，一直到最顶层的 global scope：比如 window global ，他还可以访问 closure 内的变量。
  使用 eval 也带来了安全隐患，首先它可以访问和修改它外部作用域中的变量，其次被执行的代码（例如从网络来）可能已被篡改。
-global.name = &#39;TOM&#39; eval(&#39;console.log(&amp;quot;i am &amp;quot; + name + &amp;quot; from eval&amp;quot;);&#39;); // i am TOM from eval  并且 eval 可读性较差，调试难度较高，也会轻微增加性能消耗。
+global.name = &#39;TOM&#39;; eval(&#39;console.log(&amp;quot;i am &amp;quot; + name + &amp;quot; from eval&amp;quot;);&#39;); // i am TOM from eval  并且 eval 可读性较差，调试难度较高，也会轻微增加性能消耗。
 对于 eval 开发者是贬褒不一，eval 是魔鬼 以及 eval 不是魔鬼</description>
     </item>
     

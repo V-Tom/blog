@@ -14,10 +14,10 @@
     
     <item>
       <title>gRPC 浅谈与实践</title>
-      <link>https://hasaki.xyz/blog/2019-03-04-grpc-%E6%B5%85%E8%B0%88%E4%B8%8E%E5%AE%9E%E8%B7%B5/</link>
+      <link>https://hasaki.xyz/blog/2019-03-04--grpc-%E6%B5%85%E8%B0%88%E4%B8%8E%E5%AE%9E%E8%B7%B5/</link>
       <pubDate>Mon, 04 Mar 2019 11:32:40 +0800</pubDate>
       
-      <guid>https://hasaki.xyz/blog/2019-03-04-grpc-%E6%B5%85%E8%B0%88%E4%B8%8E%E5%AE%9E%E8%B7%B5/</guid>
+      <guid>https://hasaki.xyz/blog/2019-03-04--grpc-%E6%B5%85%E8%B0%88%E4%B8%8E%E5%AE%9E%E8%B7%B5/</guid>
       <description>由于不同的环境下面的例子可能会存在一些误差，下面列出本机环境：
  Docker -v ：Docker version 18.09.1, build 4c52b90 docker-compose -v ：docker-compose version 1.23.2, build 1110ad01 go version : go version go1.12.4 darwin/amd64 system_profiler SPSoftwareDataType : macOS 10.14.3 (18D42) Darwin 18.2.0 IDE golang latest  RPC RPC 全名为 Remote procedure call ,直译过来就是 远程过程调用 ，也就是说两台服务器 A，B，一个应用部署在 A 服务器上，想要调用 B 服务器上应用提供的函数/方法，由于不在一个内存空间，不能直接调用，需要通过网络来表达调用的语义和传达调用的数据。
 调用的基本流程可以看下图：
@@ -38,13 +38,13 @@ http vs RPC HTTP 调用其实也是一种特殊的 RPC 。RPC 可以基于 HTTP 
 国外的一些优质云网盘如 google drive 和 one drive 等由于和谐因素又无法顺利的访问。
 本来想买个 nas ，看到价格和组 raid 的成本放弃了。
 刚好我有一台新组装的主机电脑，平时也是偶尔开着，所以特意买了个 2t 的希捷数据盘，准备搭建一套私有云的环境给家庭用。
-开源云盘选择  其实在搭建之前，考虑过自己写一个简单的文件系统上传预览，后来发现需要考虑的问题太多卒🤣
+开源云盘选择  其实在搭建之前，考虑过自己写一个简单的文件系统上传预览，后来发现需要考虑的问题太多卒 🤣
  搭建前我仔细看了一下各个开源私有云盘的实现，有以下几种：
  owncloud sealife nextcloud  对这几家比较了以下，考虑了以下因素：
  开源且免费，可以自定义插件开发 全客户端的支持，免费更好，ui 视觉还能过得去 支持外挂磁盘，可以随时更改，不需要分块、加密和过多的文件控制、权限控制等等，简单就好 部署难度，vm 还行，最好可以 Docker  最终我选择了 nextcloud，至于更多的详细差异，大家可以根据需求选择。
 内网穿透 由于家里的电信没有外网 ip ，打电话给运营商也无济于事，只能选择内网穿透。
 内网穿透选择了很多办法：
- 根据开源实现自己部署到一台公共可访问的服务器上，比如：frp、ngrok等等 使用现有的内网穿透服务商，比如：花生壳、natapp 等等  最终我选择了 natapp 免费使用版
+ 根据开源实现自己部署到一台公共可访问的服务器上，比如：frp、ngrok 等等 使用现有的内网穿透服务商，比如：花生壳、natapp 等等  最终我选择了 natapp 免费使用版
 开始搭建 我个人的网盘需求只是偶尔让我爸妈把照片上传到我的主机上。
 对性能、速度、可持续性都没有太高的要求，所以很多条件都可以简化，只要保证数据完整性就可以了。
 首先在 Windows 上安装所需要的环境： Docker 、Python 等。并且在 E 盘下创建了特定的 nas 文件夹来作为 nextcloud 的目录。</description>

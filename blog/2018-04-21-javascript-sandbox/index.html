@@ -78,6 +78,7 @@
 		</li>
 		
 		<li class="active"><a href="/blog/">Blog</a></li>
+		<li class=""><a href="/gallery/">Gallery</a></li>
 		<li class=""><a href="/life/">Life</a></li></ul>
 </nav>
 
@@ -87,28 +88,52 @@
 
 <article>
     <header><hgroup id="brand">
-	<h1>sandbox of javascript</h1>
-	<h5>
-		
-		<time datetime="2018-04-21 17:43:01 &#43;0800 CST">Apr 21, 2018</time>
-		<span class="no-print">
-			-
-			
-			<a href="/tags/javascript">javascript</a>
-			
-			<a href="/tags/web">web</a>
-			
-			<a href="/tags/node.js">Node.js</a>
-			</span>
-	</h5>
+  <h1>sandbox of javascript</h1>
+  <h5>
+    
+    <time datetime="2018-04-21 17:43:01 &#43;0800 CST">Apr 21, 2018</time>
+    <span class="no-print">
+      -
+      
+      <a href="/tags/javascript">javascript</a>
+      
+      <a href="/tags/web">web</a>
+      
+      <a href="/tags/node.js">Node.js</a>
+      </span>
+  </h5>
 
-	
-	<a style="margin-top: 1.2rem;display: inline-block;" href="https://github.com/V-Tom/blog/blob/hugo/content/blog/2018-04-21-javascript%E6%B2%99%E7%AE%B1/index.md">✨✨✨You can Edit this Article on Github</a>
-	
-	
-	
+  <a
+    style="margin-top: 1.2rem;display: inline-block;"
+    href="https://github.com/V-Tom/blog/blob/hugo/content/blog/2018-04-21-javascript%20sandbox/index.md"
+    >✨✨✨You can Edit this Article on Github site</a
+  >
+
+  <script>
+  (async () => {
+    const commits = await fetch(
+      'https://api.github.com/repos/V-Tom/blog/commits?sha=hugo&path=content/blog\/2018-04-21-javascript sandbox\/index.md'
+    ).then(res => res.json());
+    const b = document.querySelector('#git-active-time').querySelector('b');
+    try {
+      const time = new Date(commits[0].commit.committer.date);
+      b.innerHTML = `${time.getFullYear()}-${time.getMonth() +
+        1}-${time.getDate()}`;
+    } catch (e) {
+      b.innerHTML = 'unknown';
+    }
+  })();
+</script>
+<div id="git-active-time">
+  ✏️✏️✏️ This article .MD file was last updated at:
+  <b>Loading ...</b>
+</div>
+
+
+  
 </hgroup>
-<hr class="sep" /></header>
+<hr class="sep" />
+</header>
     <section id="markdown">
         
 
@@ -137,12 +162,12 @@
 <p>eval 只是一个普通的函数，只不过他有一个快速通道通向编译器，可以将 string 变成可执行的代码。</p>
 
 <blockquote>
-<p>eval 的特性是如果当前域里面没有，则会向上遍历，一直到最顶层的 global scope：比如 window global ，他还可以访问closure内的变量。</p>
+<p>eval 的特性是如果当前域里面没有，则会向上遍历，一直到最顶层的 global scope：比如 window global ，他还可以访问 closure 内的变量。</p>
 </blockquote>
 
 <p>使用 eval 也带来了安全隐患，首先它可以访问和修改它外部作用域中的变量，其次被执行的代码（例如从网络来）可能已被篡改。</p>
 
-<pre><code class="language-javascript">global.name = 'TOM'
+<pre><code class="language-javascript">global.name = 'TOM';
 
 eval('console.log(&quot;i am &quot; + name + &quot; from eval&quot;);');
 // i am TOM from eval
@@ -154,59 +179,59 @@ eval('console.log(&quot;i am &quot; + name + &quot; from eval&quot;);');
 
 <h3 id="function">function</h3>
 
-<p>Function 构造函数会创建一个新的函数对象，它可以作为 <code>eval</code> 的替代品，如果你绝对必须使用 eval ，我们可以考虑使用 new Function() 代替。</p>
+<p>Function 构造函数会创建一个新的函数对象，它可以作为  <code>eval</code>  的替代品，如果你绝对必须使用 eval ，我们可以考虑使用 new Function() 代替。</p>
 
-<p><code>new Function</code> 中作代码评估是在局部函数作用域中运行，所以代码中任何被评估的通过var 定义的变量都不会自动变成全局变量。最常用的使用场景就是模板，可以参照 <a href="https://johnresig.com/blog/javascript-micro-templating/">javascript-micro-templating</a></p>
+<p><code>new Function</code> 中作代码评估是在局部函数作用域中运行，所以代码中任何被评估的通过 var 定义的变量都不会自动变成全局变量。最常用的使用场景就是模板，可以参照 <a href="https://johnresig.com/blog/javascript-micro-templating/">javascript-micro-templating</a></p>
 
-<pre><code class="language-javascript">global.name = 'TOM'
+<pre><code class="language-javascript">global.name = 'TOM';
 
 function runNewFunction() {
-  const script = 'console.log(&quot;i am &quot; + name + &quot; from new function&quot;);'
-  new Function(script)()  // i am TOM from new function
+  const script = 'console.log(&quot;i am &quot; + name + &quot; from new function&quot;);';
+  new Function(script)(); // i am TOM from new function
 }
 
-runNewFunction()
+runNewFunction();
 </code></pre>
 
 <p>我们注意到 new Function 还是可以访问到全局作用域，如何阻止？</p>
 
 <h3 id="with">with</h3>
 
-<p><code>with</code> 是阻止程序访问上一级作用域的一道防火墙：</p>
+<p><code>with</code>  是阻止程序访问上一级作用域的一道防火墙：</p>
 
-<pre><code class="language-javascript">global.name = 'TOM'
+<pre><code class="language-javascript">global.name = 'TOM';
 
 function runWith() {
-
   function compileCode(code) {
-    var name = 'jerry'
+    var name = 'jerry';
     code = 'with (sandbox) {' + code + '}';
     return new Function('sandbox', code);
   }
 
   const sandBox = {
     sex: 'female'
-  }
+  };
 
-  compileCode('console.log(&quot;i am &quot; + name + &quot; and my sex is &quot; + sandbox.sex + &quot; from with&quot; );')(sandBox)
-    
+  compileCode(
+    'console.log(&quot;i am &quot; + name + &quot; and my sex is &quot; + sandbox.sex + &quot; from with&quot; );'
+  )(sandBox);
+
   // i am TOM and my sex is female from with
-
 }
 
-runWith()
+runWith();
 </code></pre>
 
-<p>如上代码，<code>code</code> 被执行时，首先会寻找 <code>sandbox</code> 中的变量，如果不存在，会往上追溯<code>global</code> 对象，虽然有一道防火墙，但是依然不能阻止 fn 访问全局作用域。</p>
+<p>如上代码，<code>code</code>  被执行时，首先会寻找  <code>sandbox</code>  中的变量，如果不存在，会往上追溯<code>global</code>  对象，虽然有一道防火墙，但是依然不能阻止 fn 访问全局作用域。</p>
 
 <h3 id="iframe">iframe</h3>
 
 <p>浏览器当中我们可以通过 <code>iframe</code> 标签来添加一个 <code>sandbox</code> attribute 来实现真正的沙箱。</p>
 
-<pre><code class="language-html">&lt;iframe sandbox src=”...”&gt;&lt;/iframe&gt;
+<pre><code class="language-html">&lt;iframe sandbox src=&quot;”...”&quot;&gt;&lt;/iframe&gt;
 </code></pre>
 
-<p>参照 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/iframe">MDN Iframe</a>，关于 attribute <code>sandbox</code> 如果指定了空字符串，该属性对呈现在iframe框架中的内容启用一些额外的限制条件。属性值可以是用空格分隔的一系列指定的字符串</p>
+<p>参照 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/iframe">MDN Iframe</a>，关于 attribute <code>sandbox</code> 如果指定了空字符串，该属性对呈现在 iframe 框架中的内容启用一些额外的限制条件。属性值可以是用空格分隔的一系列指定的字符串</p>
 
 <p>下面简单列出一些常用的配置项，更详细的内容我们可以参考 mdn。</p>
 
@@ -231,12 +256,12 @@ runWith()
 
 <tr>
 <td align="left">allow-same-origin</td>
-<td align="left">允许同域请求,比如ajax,storage</td>
+<td align="left">允许同域请求,比如 ajax,storage</td>
 </tr>
 
 <tr>
 <td align="left">allow-popups</td>
-<td align="left">允许iframe中弹出新窗口,比如,window.open,target=&rdquo;_blank&rdquo;</td>
+<td align="left">允许 iframe 中弹出新窗口,比如,window.open,target=&rdquo;_blank&rdquo;</td>
 </tr>
 
 <tr>
@@ -248,7 +273,12 @@ runWith()
 
 <p>可以通过添加自定义的 value 来实现不同的权限：</p>
 
-<pre><code class="language-html">&lt;iframe sandbox=”allow-forms allow-same-origin allow-scripts” src=”...”&gt;&lt;/iframe&gt;
+<pre><code class="language-html">&lt;iframe
+  sandbox=&quot;”allow-forms&quot;
+  allow-same-origin
+  allow-scripts”
+  src=&quot;”...”&quot;
+&gt;&lt;/iframe&gt;
 </code></pre>
 
 <p>只需要添加一个 <code>allow-scripts</code> 的 sandbox attribute value，我们就可以使用 eval 或者 new function 在 iframe 当中执行自定义代码。</p>
@@ -263,29 +293,25 @@ runWith()
 
 <pre><code class="language-html">&lt;!--sandbox.html--&gt;
 
-&lt;button id='eval'&gt;eval() in a sandboxed frame.&lt;/button&gt;
+&lt;button id=&quot;eval&quot;&gt;eval() in a sandboxed frame.&lt;/button&gt;
 &lt;textarea&gt;
     &quot;a simple script from &quot; + name + &quot; by use iframe&quot;
 &lt;/textarea&gt;
 &lt;iframe src=&quot;./sandboxeval.html&quot;&gt;&lt;/iframe&gt;
 &lt;script&gt;
-
-  const iframe = document.querySelector(&quot;iframe&quot;)
-  const textarea = document.querySelector('textarea')
+  const iframe = document.querySelector('iframe');
+  const textarea = document.querySelector('textarea');
 
   // 执行 eval command
-  document.querySelector(&quot;#eval&quot;).addEventListener('click', _ =&gt; {
-    iframe.contentWindow.postMessage(textarea.textContent, '/')
-  })
+  document.querySelector('#eval').addEventListener('click', _ =&gt; {
+    iframe.contentWindow.postMessage(textarea.textContent, '/');
+  });
 
   // 接受 iframe eval result
-  window.addEventListener('message',
-    e =&gt; {
-      // 进行信息来源的验证
-      if (e.source === iframe.contentWindow)
-        alert('Result: ' + e.data);
-    });
-
+  window.addEventListener('message', e =&gt; {
+    // 进行信息来源的验证
+    if (e.source === iframe.contentWindow) alert('Result: ' + e.data);
+  });
 &lt;/script&gt;
 </code></pre>
 
@@ -293,16 +319,15 @@ runWith()
 
 <pre><code class="language-html">&lt;!--sandboxeval.html--&gt;
 &lt;script&gt;
+  window.name = 'iframe TOM';
 
-  window.name = 'iframe TOM'
-
-  window.addEventListener('message', function (e) {
+  window.addEventListener('message', function(e) {
     // 相当于window.top.currentWindow.
     const mainWindow = e.source;
     let result = '';
     try {
       result = eval(e.data);
-    } catch ( e ) {
+    } catch (e) {
       result = 'eval() threw an exception.';
     }
 
@@ -321,79 +346,81 @@ runWith()
 <p>ES6 中提供了一个 Proxy 函数，它是访问对象前的一个拦截器，在目标对象之前架设一层“拦截”，外界对该对象的访问，都必须先通过这层拦截，因此提供了一种机制，可以对外界的访问进行过滤和改写，配合 Reflect 来用十分强大，下面举一个简单的例子：</p>
 
 <pre><code class="language-javascript">(_ =&gt; {
-  const p = new Proxy({}, {
-    get(target, key) {
-      if (key === 'name') {
-        return 'TOM';
+  const p = new Proxy(
+    {},
+    {
+      get(target, key) {
+        if (key === 'name') {
+          return 'TOM';
+        }
+        Reflect.get(target, key);
       }
-      Reflect.get(target, key);
     }
-  });
+  );
 
-  console.log(p.name) // 'TOM'
-  console.log(p.sex) // undefined
+  console.log(p.name); // 'TOM'
+  console.log(p.sex); // undefined
 })();
 </code></pre>
 
-<p>上诉例子当中我们使用 <code>proxy</code> 对访问做拦截处理，<code>p</code> 本不存在的属性不会追溯到全局变量上访问，改进版本的 sandbox 看起来如下：</p>
+<p>上诉例子当中我们使用  <code>proxy</code>  对访问做拦截处理，<code>p</code>  本不存在的属性不会追溯到全局变量上访问，改进版本的 sandbox 看起来如下：</p>
 
-<pre><code class="language-javascript">function runProxy(){
-
+<pre><code class="language-javascript">function runProxy() {
   function compileCode(src) {
-    const code = new Function('sandbox', src)
-    return function (sandbox) {
-      const sandboxProxy = new Proxy(sandbox, { has, get })
-      return code(sandboxProxy)
-    }
+    const code = new Function('sandbox', src);
+    return function(sandbox) {
+      const sandboxProxy = new Proxy(sandbox, { has, get });
+      return code(sandboxProxy);
+    };
   }
 
   function has() {
-    return true
+    return true;
   }
 
   function get(target, key) {
-    const value = Reflect.get(target, key)
-    if (value) return value
+    const value = Reflect.get(target, key);
+    if (value) return value;
     // 获取不到 value 就返回 'undefined_from_Reflect'
-    return 'undefined_from_Reflect'
+    return 'undefined_from_Reflect';
   }
 
-  const script = 'with (sandbox) { log(&quot;i am &quot; + name + &quot; and my age is &quot; + age + &quot; by use Proxy &quot;); } '
+  const script =
+    'with (sandbox) { log(&quot;i am &quot; + name + &quot; and my age is &quot; + age + &quot; by use Proxy &quot;); } ';
 
-  const sandbox = Object.create(null)
-  sandbox.log = console.log
-  sandbox.name = 'TOM'
+  const sandbox = Object.create(null);
+  sandbox.log = console.log;
+  sandbox.name = 'TOM';
 
-  compileCode(script)(sandbox); // i am TOM and my age is undefined_from_Reflect by use Proxy 
+  compileCode(script)(sandbox); // i am TOM and my age is undefined_from_Reflect by use Proxy
 }
 
-runProxy()
+runProxy();
 </code></pre>
 
-<p>另外在 es6 当中有些方法是不会被 with scope 所影响，主要是通过Symbol.unscopables 这个特性来检测，比如：</p>
+<p>另外在 es6 当中有些方法是不会被 with scope 所影响，主要是通过 Symbol.unscopables 这个特性来检测，比如：</p>
 
-<pre><code class="language-javascript">Object.keys(Array.prototype[Symbol.unscopables]); 
+<pre><code class="language-javascript">Object.keys(Array.prototype[Symbol.unscopables]);
 //  [&quot;copyWithin&quot;, &quot;entries&quot;, &quot;fill&quot;, &quot;find&quot;, &quot;findIndex&quot;, &quot;includes&quot;, &quot;keys&quot;, &quot;values&quot;]
 </code></pre>
 
 <p>所以更改为：</p>
 
-<pre><code class="language-javascript">  function get(target, key) {
+<pre><code class="language-javascript">function get(target, key) {
+  // Symbol.unscopables
+  if (key === Symbol.unscopables) return undefined;
 
-    // Symbol.unscopables
-    if (key === Symbol.unscopables) return undefined
-      
-    const value = Reflect.get(target, key)
-    if (value) return value
-    // 获取不到 value 就返回 'undefined_from_Reflect'
-    return 'undefined_from_Reflect'
-  }
+  const value = Reflect.get(target, key);
+  if (value) return value;
+  // 获取不到 value 就返回 'undefined_from_Reflect'
+  return 'undefined_from_Reflect';
+}
 </code></pre>
 
 <p>不过这里还是存在一些漏洞：</p>
 
 <ul>
-<li><code>code</code> 中可以提前关闭 <code>sandbox</code> 的 <code>with</code> 语境，如 <code>'} alert(this); {'</code></li>
+<li><code>code</code>  中可以提前关闭  <code>sandbox</code>  的  <code>with</code>  语境，如  <code>'} alert(this); {'</code></li>
 <li><code>code</code> 中可以使用 <code>eval</code> 和 <code>new Function</code> 直接逃逸</li>
 </ul>
 
@@ -406,15 +433,15 @@ runProxy()
   const script = new vm.Script('m + n');
   const sandbox = { m: 1, n: 2 };
   const context = new vm.createContext(sandbox);
-  console.log(script.runInContext(context))
+  console.log(script.runInContext(context));
 }
 
-runVM() // 3
+runVM(); // 3
 </code></pre>
 
 <h4 id="node-require-的实现">Node require 的实现</h4>
 
-<p>我们 <code>require</code> 一个 <code>.js</code> 文件的时候，Node 本身对一些特定 extension 文件有内建的处理，比如 <a href="https://github.com/nodejs/node/blob/master/lib/internal/modules/cjs/loader.js#L711-L714">.js</a>、<a href="https://github.com/nodejs/node/blob/master/lib/internal/modules/cjs/loader.js#L718-L726">.json</a> 等等，其实也就是Node.js 本身对<a href="https://github.com/nodejs/node/blob/master/lib/internal/modules/cjs/loader.js#L698-L701">common.js 的实现</a>。</p>
+<p>我们 <code>require</code> 一个 <code>.js</code> 文件的时候，Node 本身对一些特定 extension 文件有内建的处理，比如 <a href="https://github.com/nodejs/node/blob/master/lib/internal/modules/cjs/loader.js#L711-L714">.js</a>、<a href="https://github.com/nodejs/node/blob/master/lib/internal/modules/cjs/loader.js#L718-L726">.json</a> 等等，其实也就是 Node.js 本身对<a href="https://github.com/nodejs/node/blob/master/lib/internal/modules/cjs/loader.js#L698-L701">common.js 的实现</a>。</p>
 
 <pre><code class="language-javascript">var wrapper = Module.wrap(content);
 
@@ -426,20 +453,26 @@ var compiledWrapper = vm.runInThisContext(wrapper, {
 
 // ...
 
-var result = compiledWrapper.call(this.exports, this.exports, require, this,
-  filename, dirname);
+var result = compiledWrapper.call(
+  this.exports,
+  this.exports,
+  require,
+  this,
+  filename,
+  dirname
+);
 </code></pre>
 
 <p>让我们来一步步进行解释。</p>
 
 <p>1、content 可以理解为你的 .js 文件，例如：</p>
 
-<pre><code class="language-javascript">'console.log(module)'
+<pre><code class="language-javascript">'console.log(module)';
 </code></pre>
 
 <p><code>Module.wrap(content)</code> 后生成一串字符串：</p>
 
-<pre><code class="language-javascript">'(function (exports, require, module, __filename, __dirname) { console.log(module)\n});'
+<pre><code class="language-javascript">'(function (exports, require, module, __filename, __dirname) { console.log(module)\n});';
 </code></pre>
 
 <p>2、通过 <code>VM.runInThisContext</code> 来执行，将上面的字符串输出变成了可执行的 JS 函数，实际上这个函数就是：</p>
@@ -451,7 +484,7 @@ var result = compiledWrapper.call(this.exports, this.exports, require, this,
 
 <p>3、最后执行这个函数，也就是 <code>compiledWrapper.call(this.exports, this.exports, require, this, filename, dirname)</code> 就是执行了这个模块。</p>
 
-<h4 id="vm用法">VM用法</h4>
+<h4 id="vm-用法">VM 用法</h4>
 
 <p>我们也可以参照 API 添加<a href="https://nodejs.org/api/vm.html#vm_new_vm_script_code_options">各种参数</a>来配置这个 vm script，比如 <code>timeout</code>：如果执行 code 时间大于 timeout 将终止执行并抛出一个异常：</p>
 
@@ -464,18 +497,20 @@ var result = compiledWrapper.call(this.exports, this.exports, require, this,
 }
 </code></pre>
 
-<p>但同时需要注意的是 <code>vm.Script</code> 的 <code>timeout</code> 选项「只针对同步代有效」，而不包括是异步调用的时间：</p>
+<p>但同时需要注意的是  <code>vm.Script</code>  的  <code>timeout</code>  选项「只针对同步代有效」，而不包括是异步调用的时间：</p>
 
-<pre><code class="language-javascript">  const script = new vm.Script('setTimeout(()=&gt;{},2000)',{ timeout: 50 });
+<pre><code class="language-javascript">const script = new vm.Script('setTimeout(()=&gt;{},2000)', { timeout: 50 });
 </code></pre>
 
-<p> <code>vm</code> 模块没有办法对异步代码直接限制执行时间。我们也不能额外通过一个 <code>timer</code> 去检查超时，因为检查了执行中的 vm 也没有方法去中止掉</p>
+<p><code>vm</code>  模块没有办法对异步代码直接限制执行时间。我们也不能额外通过一个  <code>timer</code>  去检查超时，因为检查了执行中的 vm 也没有方法去中止掉</p>
 
-<p>另外，在 Node.js 通过 <code>vm.runInContext</code> 看起来似乎隔离了代码执行环境，但实际上却很容易「逃逸」出去：</p>
+<p>另外，在 Node.js 通过  <code>vm.runInContext</code>  看起来似乎隔离了代码执行环境，但实际上却很容易「逃逸」出去：</p>
 
 <pre><code class="language-javascript">const vm = require('vm');
 const sandbox = {};
-const script = new vm.Script('this.constructor.constructor(&quot;return process&quot;)().exit()');
+const script = new vm.Script(
+  'this.constructor.constructor(&quot;return process&quot;)().exit()'
+);
 const context = vm.createContext(sandbox);
 script.runInContext(context);
 </code></pre>
@@ -483,15 +518,15 @@ script.runInContext(context);
 <p>执行上边的代码，宿主程序立即就会退出。除了退出进程序之外，实际上还能干更多的事情</p>
 
 <blockquote>
-<p>由于 JavaScript 本身的动态的特点，各种黑魔法防不胜防。事实 Node.js 的官方文档中也提到<strong>不要把 <code>VM</code> 当做一个安全的沙箱</strong>，去执行任意非信任的代码</p>
+<p>由于 JavaScript 本身的动态的特点，各种黑魔法防不胜防。事实 Node.js 的官方文档中也提到<strong>不要把  <code>VM</code>  当做一个安全的沙箱</strong>，去执行任意非信任的代码</p>
 </blockquote>
 
-<p>在社区中有一些开源的模块用于运行不信任代码，例如 <code>sandbox</code>、<code>vm2</code>、<code>jailed</code> 等。相比较而言 <code>vm2</code> 对各方面做了更多的安全工作，相对安全些</p>
+<p>在社区中有一些开源的模块用于运行不信任代码，例如  <code>sandbox</code>、<code>vm2</code>、<code>jailed</code>  等。相比较而言  <code>vm2</code>  对各方面做了更多的安全工作，相对安全些</p>
 
-<p>用同样的测试代码来试试 <code>vm2</code> ：</p>
+<p>用同样的测试代码来试试  <code>vm2</code> ：</p>
 
 <pre><code class="language-javascript">const { VM } = require('vm2');
-new VM().run('this.constructor.constructor(&quot;return process&quot;)().exit()');	
+new VM().run('this.constructor.constructor(&quot;return process&quot;)().exit()');
 </code></pre>
 
 <p>如上代码，并没有成功结束掉宿主程序。vm2 官方 REAME 中说 <strong>vm2 是一个沙盒，可以在 Node.js 中按全的执行不受信任的代码</strong></p>
@@ -499,17 +534,18 @@ new VM().run('this.constructor.constructor(&quot;return process&quot;)().exit()'
 <p>然而实际上还是可以干一些坏的事情：</p>
 
 <pre><code class="language-javascript">const { VM } = require('vm2');
-const vm = new VM({ timeout: 1000, sandbox: {}});
+const vm = new VM({ timeout: 1000, sandbox: {} });
 vm.run('new Promise(()=&gt;{})');
 </code></pre>
 
-<p>你会发现上边的代码永远不会结束，和 Node.js 内建 VM 模块一样， vm2 的 <code>timeout</code> 对异步操作是无效的</p>
+<p>你会发现上边的代码永远不会结束，和 Node.js 内建 VM 模块一样， vm2 的  <code>timeout</code>  对异步操作是无效的</p>
 
 <p>或许是否我们提供一个假的 Promise 从而禁用掉 Promise 呢？</p>
 
 <pre><code class="language-javascript">const { VM } = require('vm2');
-const vm = new VM({ 
-  timeout: 1000, sandbox: { Promise: function(){}}
+const vm = new VM({
+  timeout: 1000,
+  sandbox: { Promise: function() {} }
 });
 vm.run('Promise = (async function(){})().constructor;new Promise(()=&gt;{});');
 </code></pre>
@@ -578,298 +614,379 @@ vm.run('Promise = (async function(){})().constructor;new Promise(()=&gt;{});');
 
 
 <style rel="catalog">
-    #catalog {
-        position: fixed;
-        left: 3vw;
-        top: 8vh;
-    }
+  #catalog {
+    position: fixed;
+    left: 3vw;
+    top: 8vh;
+    overflow: auto;
+    height: calc(100% - 16vh);
+    background:
+      linear-gradient(
+        white 30%,
+        rgba(255, 255, 255, 0)
+      ),
+      linear-gradient(rgba(255, 255, 255, 0), white 70%) 0 100%,
+       
+        radial-gradient(
+          50% 0,
+          farthest-side,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        ),
+      radial-gradient(
+          50% 100%,
+          farthest-side,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        )
+        0 100%;
+    background:
+      linear-gradient(
+        white 30%,
+        rgba(255, 255, 255, 0)
+      ),
+      linear-gradient(rgba(255, 255, 255, 0), white 70%) 0 100%,
+       
+        radial-gradient(
+          farthest-side at 50% 0,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        ),
+      radial-gradient(
+          farthest-side at 50% 100%,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        )
+        0 100%;
+    background-repeat: no-repeat;
+    background-color: white;
+    background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
 
-    .cl-wrapper {
-        position: relative;
-    }
+     
+    background-attachment: local, local, scroll, scroll;
+  }
+  #catalog::-webkit-scrollbar {
+    display: none;
+  }
 
-    .cl-wrapper ul, .cl-wrapper li {
-        margin: 0;
-        -moz-padding-start: 12px;
-        -webkit-padding-start: 12px;
-        list-style: none;
-    }
+  .cl-wrapper {
+    position: relative;
+  }
 
-    .cl-wrapper li > .cl-link.cl-link-active {
-        color: #ff8181;
-        transition: .5s;
-    }
+  .cl-wrapper ul,
+  .cl-wrapper li {
+    margin: 0;
+    -moz-padding-start: 12px;
+    -webkit-padding-start: 12px;
+    list-style: none;
+  }
 
-    .cl-wrapper li > .cl-transform.cl-link-active {
-        transform: translate(3px);
-    }
+  .cl-wrapper li > .cl-link.cl-link-active {
+    color: #ff8181;
+    transition: 0.5s;
+  }
 
-    .cl-wrapper .cl-link {
-        cursor: pointer;
-        color: rgba(52, 73, 94, 0.5);
-        font-size: 13px;
-        transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-    }
+  .cl-wrapper li > .cl-transform.cl-link-active {
+    transform: translate(3px);
+  }
 
-    .cl-wrapper .cl-marker {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-    }
+  .cl-wrapper .cl-link {
+    cursor: pointer;
+    color: rgba(52, 73, 94, 0.5);
+    font-size: 13px;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  }
 
-    .cl-wrapper .cl-marker path {
-        transition: all 0.3s ease;
-    }
+  .cl-wrapper .cl-marker {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+
+  .cl-wrapper .cl-marker path {
+    transition: all 0.3s ease;
+  }
 </style>
 <main id="catalog"></main>
 <script rel="catalog">
-    void function () {
-        
-        if (window.innerWidth < 1024 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-            return
+  void (function() {
+    if (
+      window.innerWidth < 1024 ||
+      /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+    ) {
+      return;
+    }
+
+    const Catalog = (function() {
+      return function(opts) {
+        let defaultOpts = {
+          linkClass: 'cl-link', 
+          linkActiveClass: 'cl-link-active', 
+          datasetName: 'data-cata-target', 
+          selector: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'], 
+          scrollWrapper: null, 
+          activeHook: null, 
+          topMargin: 0,
+          bottomMargin: 0,
+          cool: true 
+        };
+
+        const Opt = Object.assign({}, defaultOpts, opts);
+
+        const $content = document.getElementById(Opt.contentEl); 
+        const $scroll_wrap = window; 
+        const $catalog = document.getElementById(Opt.catalogEl); 
+
+        let allCatalogs = $content.querySelectorAll(Opt.selector.join());
+        let tree = getCatalogsTree(allCatalogs);
+
+        try {
+          $catalog.innerHTML = `<div class='cl-wrapper'>${generateHtmlTree(
+            tree,
+            { id: -1 }
+          )}<svg class="cl-marker" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+            <path stroke="#ff8181" stroke-width="3" fill="transparent" stroke-dasharray="0, 0, 0, 1000" stroke-linecap="round" stroke-linejoin="round" transform="translate(-0.5, -0.5)" />
+            </svg></div>`;
+        } catch (e) {
+          console.error('error in progress-catalog', e);
         }
 
-        const Catalog = (function () {
-            return function (opts) {
-                let defaultOpts = {
-                    linkClass: 'cl-link',                             
-                    linkActiveClass: 'cl-link-active',                
-                    datasetName: 'data-cata-target',                  
-                    selector: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],   
-                    scrollWrapper: null,                              
-                    activeHook: null,                                 
-                    topMargin: 0,
-                    bottomMargin: 0,
-                    cool: true                                        
-                }
+        const tocPath = $catalog.querySelector('.cl-marker path');
+        let tocItems, pathLength; 
 
-                const Opt = Object.assign({}, defaultOpts, opts)
+        
+        window.addEventListener('resize', drawPath);
+        $catalog.addEventListener('click', clickHandler);
+        Opt.cool && $scroll_wrap.addEventListener('scroll', coolScrollHandler);
+        Opt.cool ||
+          $scroll_wrap.addEventListener('scroll', simpleScrollHandler);
 
-                const $content = document.getElementById(Opt.contentEl)                          
-                const $scroll_wrap = window   
-                const $catalog = document.getElementById(Opt.catalogEl)                          
+        setTimeout(drawPath); 
 
-                let allCatalogs = $content.querySelectorAll(Opt.selector.join())
-                let tree = getCatalogsTree(allCatalogs)
+        
 
-                try {
-                    $catalog.innerHTML = `<div class='cl-wrapper'>${generateHtmlTree(tree, {id: -1})}<svg class="cl-marker" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
-            <path stroke="#ff8181" stroke-width="3" fill="transparent" stroke-dasharray="0, 0, 0, 1000" stroke-linecap="round" stroke-linejoin="round" transform="translate(-0.5, -0.5)" />
-            </svg></div>`
-                } catch (e) {
-                    console.error('error in progress-catalog', e)
-                }
+        function drawPath() {
+          tocItems = [...$catalog.querySelectorAll('li')];
+          tocItems = tocItems.map(function(liDom) {
+            const anchor = liDom.querySelector(`.${Opt.linkClass}`);
+            const target = document.getElementById(
+              anchor.getAttribute('data-cata-target')
+            );
 
+            return {
+              listItem: liDom,
+              anchor: anchor,
+              target: target
+            };
+          });
+          tocItems = tocItems.filter(item => !!item.target);
 
-                const tocPath = $catalog.querySelector('.cl-marker path')
-                let tocItems, pathLength    
+          const path = [];
+          let pathIndent;
 
-                
-                window.addEventListener('resize', drawPath)
-                $catalog.addEventListener('click', clickHandler)
-                Opt.cool && $scroll_wrap.addEventListener('scroll', coolScrollHandler)
-                Opt.cool || $scroll_wrap.addEventListener('scroll', simpleScrollHandler)
+          tocItems &&
+            tocItems.forEach(function(item, idx) {
+              const { offsetLeft, offsetTop, offsetHeight } = item.anchor,
+                x = Opt.cool ? offsetLeft - 5 : offsetLeft,
+                y = offsetTop,
+                height = offsetHeight;
 
-                setTimeout(drawPath)          
+              if (idx === 0) {
+                path.push('M', x, y, 'L', x, y + height);
+                item.pathStart = 0;
+              } else {
+                if (pathIndent !== x) path.push('L', pathIndent, y); 
+                path.push('L', x, y);
+                tocPath.setAttribute('d', path.join(' '));
+                item.pathStart = tocPath.getTotalLength() || 0;
+                path.push('L', x, y + height);
+              }
+              pathIndent = x;
+              tocPath.setAttribute('d', path.join(' '));
+              item.pathEnd = tocPath.getTotalLength();
+            });
+          pathLength = tocPath.getTotalLength();
+          coolScrollHandler();
+        }
 
-                
+        
 
-                function drawPath() {
-                    tocItems = [...$catalog.querySelectorAll('li')]
-                    tocItems = tocItems.map(function (liDom) {
-                        const anchor = liDom.querySelector(`.${Opt.linkClass}`)
-                        const target = document.getElementById(anchor.getAttribute('data-cata-target'))
-
-                        return {
-                            listItem: liDom,
-                            anchor: anchor,
-                            target: target
-                        }
-                    })
-                    tocItems = tocItems.filter(item => !!item.target)
-
-                    const path = []
-                    let pathIndent
-
-                    tocItems && tocItems.forEach(function (item, idx) {
-                        const {offsetLeft, offsetTop, offsetHeight} = item.anchor,
-                            x = Opt.cool ? offsetLeft - 5 : offsetLeft,
-                            y = offsetTop,
-                            height = offsetHeight
-
-                        if (idx === 0) {
-                            path.push('M', x, y, 'L', x, y + height)
-                            item.pathStart = 0
-                        }
-                        else {
-                            if (pathIndent !== x) path.push('L', pathIndent, y)     
-                            path.push('L', x, y)
-                            tocPath.setAttribute('d', path.join(' '))
-                            item.pathStart = tocPath.getTotalLength() || 0
-                            path.push('L', x, y + height)
-                        }
-                        pathIndent = x
-                        tocPath.setAttribute('d', path.join(' '))
-                        item.pathEnd = tocPath.getTotalLength()
-                    })
-                    pathLength = tocPath.getTotalLength()
-                    coolScrollHandler()
-                }
-
-                
-
-                function coolScrollHandler() {
-                    const wrapHeight = document.documentElement.offsetHeight
-                    let pathStart = pathLength,
-                        pathEnd = 0,
-                        visibleItems = 0
-                    tocItems.forEach(function (liItem) {
-                        const {bottom, top} = liItem.target.getBoundingClientRect(),
-                            firstChild = liItem.listItem.firstChild
-                        if (bottom > Opt.topMargin && top < wrapHeight - Opt.bottomMargin) {
-                            firstChild.classList.remove(Opt.linkActiveClass)
-                            Opt.cool && firstChild.classList.remove('cl-transform')
-                        } else {
-                            pathStart = Math.min(liItem.pathStart, pathStart)
-                            pathEnd = Math.max(liItem.pathEnd, pathEnd)
-                            visibleItems += 1
-                            firstChild.classList.add(Opt.linkActiveClass)
-                            Opt.cool && firstChild.classList.add('cl-transform')
-                        }
-                    })
-                    if (visibleItems > 0 && pathStart < pathEnd && Opt.cool) {
-                        tocPath.setAttribute('stroke-dashoffset', '1')
-                        tocPath.setAttribute('stroke-dasharray', `1, ${pathStart}, ${pathEnd - pathStart}, ${pathLength}`)
-                        tocPath.setAttribute('opacity', '1')
-                    }
-                    else {
-                        tocPath.setAttribute('opacity', '0')
-                    }
-                }
-
-                
-
-                function simpleScrollHandler(el) {
-                    let scrollToEl = null
-                    for (let i = allCatalogs.length - 1; i >= 0; i--) {
-                        if (allCatalogs[i].offsetTop <= $scroll_wrap.scrollTop) {
-                            scrollToEl = allCatalogs[i]
-                            break
-                        }
-                    }
-                    if (scrollToEl) setActiveItem(scrollToEl.id)
-                    else setActiveItem(null)            
-                }
-
-                
-
-                function clickHandler({target}) {
-                    const datasetId = target.getAttribute(Opt.datasetName)
-                    target.classList.contains(Opt.linkClass) &&
-                    document.getElementById(datasetId)
-                        .scrollIntoView({behavior: "smooth", block: "start"})
-                }
-
-                
-
-                function getCatalogsTree(catalogs) {
-                    let title, tagName, tree = [], treeItem = {}, parentItem = {id: -1}, lastTreeItem = null, id
-
-                    for (let i = 0; i < catalogs.length; i++) {
-                        title = catalogs[i].innerText || catalogs[i].textContent
-                        tagName = catalogs[i].tagName
-                        id = 'heading-' + i
-                        catalogs[i].id = id
-                        treeItem = {
-                            name: title,
-                            tagName: tagName,
-                            id: id,
-                            level: +getLevel(tagName),
-                            parent: parentItem
-                        }
-                        if (lastTreeItem) {
-                            if (getLevel(treeItem.tagName) > getLevel(lastTreeItem.tagName)) {
-                                treeItem.parent = lastTreeItem
-                            } else {
-                                treeItem.parent = findParent(treeItem, lastTreeItem)
-                            }
-                        }
-                        lastTreeItem = treeItem
-                        tree.push(treeItem)
-                    }
-                    return tree
-                }
-
-                
-
-                function findParent(currTreeItem, lastTreeItem) {
-                    let lastTreeParent = lastTreeItem.parent
-                    while (lastTreeParent && (getLevel(currTreeItem.tagName) <= getLevel(lastTreeParent.tagName))) {
-                        lastTreeParent = lastTreeParent.parent
-                    }
-                    return lastTreeParent || {id: -1}
-                }
-
-                
-
-                function getLevel(tagName) {
-                    return tagName ? tagName.slice(1) : 0
-                }
-
-                
-
-                function generateHtmlTree(tree, _parent) {
-                    let ul, hasChild = false
-                    if (tree) {
-                        ul = `<ul>`
-                        for (let i = 0; i < tree.length; i++) {
-                            if (isEqual(tree[i].parent, _parent)) {
-                                hasChild = true
-                                ul += `<li><div class='${ Opt.linkClass } cl-level-${ tree[i].level }' ${Opt.datasetName}='${ tree[i].id }'>${tree[i].name}</div>`
-                                ul += generateHtmlTree(tree, tree[i])
-                                ul += '</li>'
-                            }
-                        }
-                        ul += `</ul>`
-                    }
-                    return hasChild ? ul : ''
-                }
-
-                /**
-                 * 判断是否是相同节点
-                 */
-                function isEqual(node, node2) {
-                    return node && node2 && typeof node === 'object' && typeof node2 === 'object' && node.id === node2.id
-                }
-
-                /**
-                 *  设置选中的项
-                 */
-                function setActiveItem(id) {
-                    let catas = [...$catalog.querySelectorAll(`[${Opt.datasetName}]`)]
-
-                    catas.forEach(T => {
-                        if (T.getAttribute(Opt.datasetName) === id) {
-                            typeof Opt.activeHook === 'function' &&
-                            !T.classList.contains(Opt.linkActiveClass) &&
-                            Opt.activeHook.call(this, T)                    // 执行active钩子
-                            T.classList.add(Opt.linkActiveClass)
-                        } else {
-                            T.classList.remove(Opt.linkActiveClass)
-                        }
-                    })
-                }
+        function coolScrollHandler() {
+          const wrapHeight = document.documentElement.offsetHeight;
+          let pathStart = pathLength,
+            pathEnd = 0,
+            visibleItems = 0;
+          tocItems.forEach(function(liItem) {
+            const { bottom, top } = liItem.target.getBoundingClientRect(),
+              firstChild = liItem.listItem.firstChild;
+            if (bottom > Opt.topMargin && top < wrapHeight - Opt.bottomMargin) {
+              firstChild.classList.remove(Opt.linkActiveClass);
+              Opt.cool && firstChild.classList.remove('cl-transform');
+            } else {
+              pathStart = Math.min(liItem.pathStart, pathStart);
+              pathEnd = Math.max(liItem.pathEnd, pathEnd);
+              visibleItems += 1;
+              firstChild.classList.add(Opt.linkActiveClass);
+              Opt.cool && firstChild.classList.add('cl-transform');
             }
-        })();
-        window.addEventListener('DOMContentLoaded', _ => new Catalog({
-            contentEl: 'markdown',
-            catalogEl: 'catalog'
-        }))
-    }();
+          });
+          if (visibleItems > 0 && pathStart < pathEnd && Opt.cool) {
+            tocPath.setAttribute('stroke-dashoffset', '1');
+            tocPath.setAttribute(
+              'stroke-dasharray',
+              `1, ${pathStart}, ${pathEnd - pathStart}, ${pathLength}`
+            );
+            tocPath.setAttribute('opacity', '1');
+          } else {
+            tocPath.setAttribute('opacity', '0');
+          }
+        }
+
+        
+
+        function simpleScrollHandler(el) {
+          let scrollToEl = null;
+          for (let i = allCatalogs.length - 1; i >= 0; i--) {
+            if (allCatalogs[i].offsetTop <= $scroll_wrap.scrollTop) {
+              scrollToEl = allCatalogs[i];
+              break;
+            }
+          }
+          if (scrollToEl) setActiveItem(scrollToEl.id);
+          else setActiveItem(null); 
+        }
+
+        
+
+        function clickHandler({ target }) {
+          const datasetId = target.getAttribute(Opt.datasetName);
+          target.classList.contains(Opt.linkClass) &&
+            document
+              .getElementById(datasetId)
+              .scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        
+
+        function getCatalogsTree(catalogs) {
+          let title,
+            tagName,
+            tree = [],
+            treeItem = {},
+            parentItem = { id: -1 },
+            lastTreeItem = null,
+            id;
+
+          for (let i = 0; i < catalogs.length; i++) {
+            title = catalogs[i].innerText || catalogs[i].textContent;
+            tagName = catalogs[i].tagName;
+            id = 'heading-' + i;
+            catalogs[i].id = id;
+            treeItem = {
+              name: title,
+              tagName: tagName,
+              id: id,
+              level: +getLevel(tagName),
+              parent: parentItem
+            };
+            if (lastTreeItem) {
+              if (getLevel(treeItem.tagName) > getLevel(lastTreeItem.tagName)) {
+                treeItem.parent = lastTreeItem;
+              } else {
+                treeItem.parent = findParent(treeItem, lastTreeItem);
+              }
+            }
+            lastTreeItem = treeItem;
+            tree.push(treeItem);
+          }
+          return tree;
+        }
+
+        
+
+        function findParent(currTreeItem, lastTreeItem) {
+          let lastTreeParent = lastTreeItem.parent;
+          while (
+            lastTreeParent &&
+            getLevel(currTreeItem.tagName) <= getLevel(lastTreeParent.tagName)
+          ) {
+            lastTreeParent = lastTreeParent.parent;
+          }
+          return lastTreeParent || { id: -1 };
+        }
+
+        
+
+        function getLevel(tagName) {
+          return tagName ? tagName.slice(1) : 0;
+        }
+
+        
+
+        function generateHtmlTree(tree, _parent) {
+          let ul,
+            hasChild = false;
+          if (tree) {
+            ul = `<ul>`;
+            for (let i = 0; i < tree.length; i++) {
+              if (isEqual(tree[i].parent, _parent)) {
+                hasChild = true;
+                ul += `<li><div class='${Opt.linkClass} cl-level-${tree[i].level}' ${Opt.datasetName}='${tree[i].id}'>${tree[i].name}</div>`;
+                ul += generateHtmlTree(tree, tree[i]);
+                ul += '</li>';
+              }
+            }
+            ul += `</ul>`;
+          }
+          return hasChild ? ul : '';
+        }
+
+        /**
+         * 判断是否是相同节点
+         */
+        function isEqual(node, node2) {
+          return (
+            node &&
+            node2 &&
+            typeof node === 'object' &&
+            typeof node2 === 'object' &&
+            node.id === node2.id
+          );
+        }
+
+        /**
+         *  设置选中的项
+         */
+        function setActiveItem(id) {
+          let catas = [...$catalog.querySelectorAll(`[${Opt.datasetName}]`)];
+
+          catas.forEach(T => {
+            if (T.getAttribute(Opt.datasetName) === id) {
+              typeof Opt.activeHook === 'function' &&
+                !T.classList.contains(Opt.linkActiveClass) &&
+                Opt.activeHook.call(this, T); // 执行active钩子
+              T.classList.add(Opt.linkActiveClass);
+            } else {
+              T.classList.remove(Opt.linkActiveClass);
+            }
+          });
+        }
+      };
+    })();
+    window.addEventListener(
+      'DOMContentLoaded',
+      _ =>
+        new Catalog({
+          contentEl: 'markdown',
+          catalogEl: 'catalog'
+        })
+    );
+  })();
 </script>
+
 			<hr class="sep" />
 		</main>
 		<footer class="container no-print">

@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="Keywords" content="">
+    <meta name="full-screen" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#006cb4">
+    <meta name="apple-mobile-web-app-title" content="TOM&#39;s zone">
+    <meta name="description" content="TOM&#39;s zone">
+    <link rel="dns-prefetch" href="https://hasaki.xyz">
+    <link rel="preconnect" href="https://hasaki.xyz">
+    <link rel="manifest" href="/sw/manifest.json"/>
+<title>Tensor &amp;&amp; flow - TOM&#39;s zone</title>
+
+<meta name="description" content="本文只是简单 TensorFlow 的一些理解和介绍，并不包含详细的安装、API、以及更多深层内容。
+ 首先简单说一下 标量（Scalar）、向量（Vector）、张量（Tensor）。
+下面会以 physical student 和 cs student 两个角度来解释。
+Scalar 在物理学角度，标量是遵循简单代数规则的一些量，与坐标系的选取无关。例如，加法，减法等。标量也可以被定义为仅需要识别幅度的量。例如温度，电流等
+CS 里面可以简单认为是一个常量（constant）
+Vector 物理学角度向量是空间中的箭头，也可以是矢量。
+决定一个向量的是它的长度（length）和它所指的方向（direction），而且只要以上特征相同，你一个任意移动一个向量而保持它不变。比如速度和力。而且平面中（平面直角坐标系）的向量是二维的，处于我们生活当中的向量是三维的。
+举个例子，一个二维向量 [-2,3] 以平面直角坐标系来表示为：
+ 第一个数代表沿 X 轴走多远，第二个数代表沿 Y 轴走多远。
+ 图中的黄色箭头就是向量，可以看到一个向量都有一个唯一一对对数
+而一个三维向量 [2,1,3] 以平面直角坐标系来表示为：
+ 第一个数代表沿 X 轴走多远，第二个数代表沿 Y 轴走多远，第三个数代表沿 Z 轴走了多远
+ CS 角度向量是一个二维数组（二维）、三维数组（三维）或者说是矩阵。代表有序的数字集合。
+线性代数 向量在线性代数当中可以叫做矩阵（matrix），矩阵可以做一些基本的运算，对应的加法和乘法规则是：
+ 两个矩阵行列数必须要相同才能进行求和运算。   两个矩阵要相乘，前一个矩阵的列数必须要等于后一个矩阵的行数，也可以看成是列的加权求和   至于更多的矩阵求逆、求导超出本文的范畴，请自行学习线性代数。
+ 我们也可以换一种方式来看向量的坐标，把一个 [1,1] 的向量定义为 基向量。
+上文的二维向量 [-2,3]，对应的每个坐标可以看作一个为 Scalar（标量）。这个向量可以看作把基向量按照标量的大小进行缩放所产生。-2 代表往右 2 倍，3 代表向上 3 倍">
+
+
+
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato|Raleway">
+
+
+    <link rel="stylesheet"
+          href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/ocean.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/javascript.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/python.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/go.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/css.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/swift.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/objectivec.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/rust.min.js"></script>
+
+
+    <link rel="stylesheet" href="/css/bundle.min.css"/>
+<script src="/js/bundle.js"></script>
+
+<style>
+	a { color: #ff8181; }
+	blockquote {
+		border-left-color: #ff8181;
+		border-right-color: #ff8181; }
+	.bar a:hover {
+		color: #ff8181;
+		text-decoration: none; }
+	.sep {
+		margin-top: 2rem;
+		margin-bottom: 1rem;
+		margin-left:0;
+		width: 24rem;
+		border-top: 2px solid #ff8181; }
+    .bar li.active a{
+        color:#ff8181;
+    }
+</style>
+
+</head>
+
+<body>
+<header class="container no-print">
+	<div class="u-header">
+		<nav class="bar">
+	<ul><li>
+			<a href="/">
+				<img class="icon-text" src="/img/prev.svg"/>
+			</a>
+		</li>
+		
+		<li class="active"><a href="/blog/">Blog</a></li>
+		<li class=""><a href="/gallery/">Gallery</a></li>
+		<li class=""><a href="/life/">Life</a></li></ul>
+</nav>
+
+	</div>
+</header>
+<main class="container">
+
+<article>
+    <header><hgroup id="brand">
+  <h1>Tensor &amp;&amp; flow</h1>
+  <h5>
+    
+    <time datetime="2019-08-09 13:22:30 &#43;0800 CST">Aug 09, 2019</time>
+    <span class="no-print">
+      -
+      
+      <a href="/tags/tensor">Tensor</a>
+      </span>
+  </h5>
+
+  <a
+    style="margin-top: 1.2rem;display: inline-block;"
+    href="https://github.com/V-Tom/blog/blob/hugo/content/blog/2019-08-09-Tensor%20&amp;&amp;%20flow/index.md"
+    >✨✨✨You can Edit this Article on Github site</a
+  >
+
+  <script>
+  (async () => {
+    const commits = await fetch(
+      'https://api.github.com/repos/V-Tom/blog/commits?sha=hugo&path=content/blog\/2019-08-09-Tensor \x26\x26 flow\/index.md'
+    ).then(res => res.json());
+    const b = document.querySelector('#git-active-time').querySelector('b');
+    try {
+      const time = new Date(commits[0].commit.committer.date);
+      b.innerHTML = `${time.getFullYear()}-${time.getMonth() +
+        1}-${time.getDate()}`;
+    } catch (e) {
+      b.innerHTML = 'unknown';
+    }
+  })();
+</script>
+<div id="git-active-time">
+  ✏️✏️✏️ This article .MD file was last updated at:
+  <b>Loading ...</b>
+</div>
+
+
+  
+</hgroup>
+<hr class="sep" />
+</header>
+    <section id="markdown">
+        
+
+<blockquote>
+<p>本文只是简单 TensorFlow 的一些理解和介绍，并不包含详细的安装、API、以及更多深层内容。</p>
+</blockquote>
+
+<p>首先简单说一下 标量（<code>Scalar</code>）、向量（<code>Vector</code>）、张量（<code>Tensor</code>）。</p>
+
+<p>下面会以 <code>physical student</code> 和 <code>cs student</code> 两个角度来解释。</p>
+
+<h2 id="scalar">Scalar</h2>
+
+<p>在物理学角度，标量是遵循简单代数规则的一些量，与坐标系的选取无关。例如，加法，减法等。标量也可以被定义为仅需要识别幅度的量。例如温度，电流等</p>
+
+<p>CS 里面可以简单认为是一个常量（<code>constant</code>）</p>
+
+<h2 id="vector">Vector</h2>
+
+<p>物理学角度向量是空间中的箭头，也可以是矢量。</p>
+
+<p>决定一个向量的是它的长度（<code>length</code>）和它所指的方向（<code>direction</code>），而且只要以上特征相同，你一个任意移动一个向量而保持它不变。比如速度和力。而且平面中（平面直角坐标系）的向量是二维的，处于我们生活当中的向量是三维的。</p>
+
+<p>举个例子，一个二维向量 <code>[-2,3]</code> 以平面直角坐标系来表示为：</p>
+
+<p><img src="./vector.2d.jpg" alt="vector.2d.jpg" /></p>
+
+<blockquote>
+<p>第一个数代表沿 X 轴走多远，第二个数代表沿 Y 轴走多远。</p>
+</blockquote>
+
+<p>图中的黄色箭头就是向量，可以看到一个向量都有一个唯一一对对数</p>
+
+<p>而一个三维向量 <code>[2,1,3]</code> 以平面直角坐标系来表示为：</p>
+
+<p><img src="./vector.3d.jpg" alt="vector.3d.jpg" /></p>
+
+<blockquote>
+<p>第一个数代表沿 X 轴走多远，第二个数代表沿 Y 轴走多远，第三个数代表沿 Z 轴走了多远</p>
+</blockquote>
+
+<p>CS 角度向量是一个二维数组（二维）、三维数组（三维）或者说是矩阵。代表有序的数字集合。</p>
+
+<h3 id="线性代数">线性代数</h3>
+
+<p>向量在线性代数当中可以叫做<strong>矩阵（matrix）</strong>，矩阵可以做一些基本的运算，对应的加法和乘法规则是：</p>
+
+<ul>
+<li>两个矩阵行列数必须要相同才能进行求和运算。</li>
+</ul>
+
+<p><img src="./vector.opreation.sum.png" alt="vector.opreation.sum.png" /></p>
+
+<ul>
+<li>两个矩阵要相乘，前一个矩阵的列数必须要等于后一个矩阵的行数，也可以看成是列的加权求和</li>
+</ul>
+
+<p><img src="./vector.opreation.multiply.png" alt="vector.opreation.multiply.png" /></p>
+
+<blockquote>
+<p>至于更多的矩阵求逆、求导超出本文的范畴，请自行学习线性代数。</p>
+</blockquote>
+
+<p>我们也可以换一种方式来看向量的坐标，把一个 <code>[1,1]</code> 的向量定义为 <code>基向量</code>。</p>
+
+<p><img src="./vector.basis.jpg" alt="vector.basis.jpg" /></p>
+
+<p>上文的二维向量 <code>[-2,3]</code>，对应的每个坐标可以看作一个为 <code>Scalar</code>（标量）。这个向量可以看作把<code>基向量</code>按照标量的大小进行缩放所产生。<code>-2</code> 代表往右 2 倍，<code>3</code> 代表向上 3 倍</p>
+
+<h2 id="tensor">Tensor</h2>
+
+<p><a href="https://en.wikipedia.org/wiki/Tensor">Tensor</a> 到底是什么？</p>
+
+<p>在物理学当中，张量是个很复杂的概念，简单来说：张量是在空间的不同方向上测量时具有不同值的量，例如<a href="https://zh.wikipedia.org/zh-tw/%E6%83%AF%E6%80%A7%E7%9F%A9">惯性矩</a>。</p>
+
+<p>张量在 CS 眼里其实就是一个多维数组。</p>
+
+<p>简单理解张量是向量和标量的一般形式，我们用一个属性来表示张量：<code>rank</code>，代表张量的<strong>阶</strong>，也可以叫做<strong>维度</strong>，或者叫做<strong>这是个几维数组</strong>：</p>
+
+<ul>
+<li>如果张量仅具有幅度而没有方向（即，等级 0 张量），则称为标量或者 rank 0</li>
+<li>如果张量具有幅度和一个方向（即，等级 1 张量），则称为向量、矢量或者 rank 1</li>
+<li>如果张量具有幅度和两个方向（即，等级 2 张量），则称为二元或者 rank 2</li>
+<li>&hellip;</li>
+</ul>
+
+<p>我们可以想象出这样的各种类型的张量：</p>
+
+<p><img src="./tensor-rank.jpeg" alt="tensor-rank.jpeg" /></p>
+
+<p>具体更多关于张量的解释请看这个视频：<a href="https://www.youtube.com/watch?v=f5liqUk0ZTw">What&rsquo;s a Tensor?</a>，或者<a href="https://www.youtube.com/watch?v=aL10dphqNuw">关于张量的描述及理解</a></p>
+
+<h2 id="dataflow-graphs">DataFlow Graphs</h2>
+
+<p>根据官方对 <a href="https://www.tensorflow.org/guide/graphs#why_dataflow_graphs">Graphs</a> 的解释：</p>
+
+<blockquote>
+<p>TensorFlow uses a dataflow graph to represent your computation in terms of the dependencies between individual operations. This leads to a low-level programming model in which you first define the dataflow graph, then create a TensorFlow session to run parts of the graph across a set of local and remote devices.</p>
+</blockquote>
+
+<p>简单来说 TensorFlow 使用数据流图表根据各个操作之间的依赖关系来表示您的计算。关于 Tensorflow 的最大想法是所有数值计算都表示为计算图。 换句话说，任何 Tensorflow 程序的主干都是 <code>Graph</code>。 模型中发生的任何事情都由计算图表示。 这使得它可以用于与您的模型相关的任何事情。</p>
+
+<p><code>Dataflow</code> 官方认为有很多好处，比如分布式执行、并行、可移植性等等，你也可以在 <a href="https://www.tensorflow.org/guide/summaries_and_tensorboard">TensorBoard</a> 上在线可视化编辑 Graph。</p>
+
+<blockquote>
+<p>流程通俗来讲：我们需要首先在其中定义数据流图（使用 TensorFlow 提供的 <code>operation</code> 来实现）并创建 <code>session</code> 来运行。</p>
+</blockquote>
+
+<p><img src="./dataflow-graph.gif" alt="dataflow-graph.gif" /></p>
+
+<p>比如我们如果实现一个简单的函数：<code>f(x,y)=x+y</code>，TensorFlow 中的 Graph 类似于：</p>
+
+<p><img src="./graph-sum.png" alt="graph-sum.png" /></p>
+
+<p>该图由一系列通过边连接的节点组成：图中的每个节点的操作都称为 <code>operation</code>，所以看起来我们是在操作每一个节点。</p>
+
+<p>通俗来讲 <code>Tensor</code> 通过 <code>operation</code>（如数学运算）或生成新的<code>Tensor</code>（如变量和常量）。 每个 <code>operation</code>节点将零个或多个 <code>Tensor</code> 作为输入，并产生新的 <code>Tensor</code> 作为输出。</p>
+
+<p>接下来实现一个稍微复杂的函数：<code>f(x,y)=x^2y+y+2</code>，Graph 将类似于：</p>
+
+<p><img src="./graph-quadratic-equation.png" alt="graph-quadratic-equation.png" /></p>
+
+<h2 id="tensor-flow">Tensor &amp;&amp; Flow</h2>
+
+<p>可是 Tensor 在实际当中有什么用处呢？</p>
+
+<p>我们知道 Tensor 简单可以理解为是多维数组，严格来讲：如果用数据来表示实物，高纬度（rank）的 Tensor 可以表示更多纬度的实物信息，什么意思呢？</p>
+
+<p>举个例子，我们有这样一组图片需要做 OCR，判断出来那张图片是 cat：</p>
+
+<p>图片拥有什么可用的信息来进行区分呢？简单列一下：</p>
+
+<ul>
+<li>宽度</li>
+<li>高度</li>
+<li>RGBA</li>
+</ul>
+
+<p>而且我们是一组图片，不是单个图片，有可能有一万张（毕竟样本数量越多训练精度越高），怎么处理这些数据呢？</p>
+
+<p>我们可以用 <code>[[rank 3 Tensor],[rank 3 Tensor],[rank 3 Tensor]...]</code>来表示这组数据，也就是一万个 <code>rank 3</code> 的 Tensor，根据这些数据再来进行科学计算、训练精度。</p>
+
+<p>至于为什么叫做 <code>TensorFlow</code> 呢？通过上面的解释应该很清楚了，尤其是 <code>f(x,y)=x+y</code> 的例子，个人理解通俗来讲就是 <code>Tensor</code> 之间的 <code>Flow</code>。</p>
+
+<h2 id="f-x-y-x-y"><code>f(x,y)=x+y</code></h2>
+
+<p>下面我们简单的用代码实现一下上面的：<code>f(x,y)=x+y</code>。</p>
+
+<blockquote>
+<p>因篇幅有限，<code>Tensor type</code>、<code>Placeholder</code>等概念本文不介绍，只简单说一下 <code>operation</code> 和 <code>session</code></p>
+</blockquote>
+
+<p><code>operation</code> 是实现 Tensor 科学运算的基本方式，在 <code>math_ops.py</code> 当中定义了很多运算规则，常见的<code>add</code>、<code>multiply</code>、<code>pow</code>、<code>multiply</code>等等。</p>
+
+<p><code>session</code> 是计算 graph 的必要条件。要计算任何内容，必须在 <code>session</code> 中启动图表。 从技术上讲，<code>session</code> 将图形操作放在诸如 CPU 或 GPU 之类的硬件上，并提供执行它们的方法，得到上下文才能运行。</p>
+
+<p>最终代码可以为：</p>
+
+<pre><code class="language-py">import tensorflow as tf
+
+x = 2
+y = 3
+
+with tf.Session() as sess:
+
+    # 加法运算
+    add_op = tf.add(x, y, name='Add')
+    print('sess.run(add_op) return value', sess.run(add_op))
+
+</code></pre>
+
+<p>最终输出<code>sess.run(add_op) return value 5</code>，并且对应的 <code>Tensorboard</code> 生成的图为：</p>
+
+<p><img src="./tensorboard-sum.png" alt="tensorboard-sum.png" /></p>
+
+<h2 id="reference">Reference</h2>
+
+<ul>
+<li><a href="http://zeus.plmsc.psu.edu/~manias/MatSE447/03_Tensors.pdf">Scalars, Vectors and Tensors</a></li>
+<li><a href="https://www.quora.com/Whats-the-difference-between-vector-and-tensor">What&rsquo;s the difference between vector and tensor?</a></li>
+<li><a href="https://www.youtube.com/watch?v=f5liqUk0ZTw">What&rsquo;s a Tensor?</a></li>
+<li><a href="https://www.youtube.com/watch?v=aL10dphqNuw">关于张量的描述及理解</a></li>
+<li><a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab">线性代数 Essence of linear algebra</a></li>
+<li><a href="https://hackernoon.com/learning-ai-if-you-suck-at-math-p4-tensors-illustrated-with-cats-27f0002c9b32#.2jpelkuhd">Learning AI if You Suck at Math — P4 — Tensors Illustrated (with Cats!)</a></li>
+</ul>
+
+    </section>
+    <nav class="no-print post-nav">
+        
+        <a class="prev-post" href="https://hasaki.xyz/blog/2019-07-20-%E4%BD%BF%E7%94%A8-rust-%E7%BC%96%E5%86%99-webassembly-/">
+            <img class="icon-text" src="/img/prev.svg"/>使用 Rust 编写 WebAssembly </a>
+        
+        
+    </nav>
+</article>
+
+
+
+<div id="disqus_thread" class="no-print"></div>
+<script type="text/javascript">
+    'use strict';
+    (function () {
+        if ('localhost' != window.location.hostname) {
+            var a = document.querySelector('#disqus_thread');
+            new IntersectionObserver(function (b) {
+                b.forEach(function (d) {
+                    if (0 < d.intersectionRatio && !a.classList.contains('active')) {
+                        var e = document.createElement('script');
+                        e.type = 'text/javascript', e.async = !0;
+                        e.src = '//' + 'hasaki-xyz' + '.disqus.com/embed.js', (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(e), a.classList.add('active')
+                    }
+                })
+            }, {rootMargin: '0px', threshold: 1}).observe(a)
+        }
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+</noscript>
+
+
+<style rel="catalog">
+  #catalog {
+    position: fixed;
+    left: 3vw;
+    top: 8vh;
+    overflow: auto;
+    height: calc(100% - 16vh);
+    background:
+      linear-gradient(
+        white 30%,
+        rgba(255, 255, 255, 0)
+      ),
+      linear-gradient(rgba(255, 255, 255, 0), white 70%) 0 100%,
+       
+        radial-gradient(
+          50% 0,
+          farthest-side,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        ),
+      radial-gradient(
+          50% 100%,
+          farthest-side,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        )
+        0 100%;
+    background:
+      linear-gradient(
+        white 30%,
+        rgba(255, 255, 255, 0)
+      ),
+      linear-gradient(rgba(255, 255, 255, 0), white 70%) 0 100%,
+       
+        radial-gradient(
+          farthest-side at 50% 0,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        ),
+      radial-gradient(
+          farthest-side at 50% 100%,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        )
+        0 100%;
+    background-repeat: no-repeat;
+    background-color: white;
+    background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
+
+     
+    background-attachment: local, local, scroll, scroll;
+  }
+  #catalog::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cl-wrapper {
+    position: relative;
+  }
+
+  .cl-wrapper ul,
+  .cl-wrapper li {
+    margin: 0;
+    -moz-padding-start: 12px;
+    -webkit-padding-start: 12px;
+    list-style: none;
+  }
+
+  .cl-wrapper li > .cl-link.cl-link-active {
+    color: #ff8181;
+    transition: 0.5s;
+  }
+
+  .cl-wrapper li > .cl-transform.cl-link-active {
+    transform: translate(3px);
+  }
+
+  .cl-wrapper .cl-link {
+    cursor: pointer;
+    color: rgba(52, 73, 94, 0.5);
+    font-size: 13px;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .cl-wrapper .cl-marker {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+
+  .cl-wrapper .cl-marker path {
+    transition: all 0.3s ease;
+  }
+</style>
+<main id="catalog"></main>
+<script rel="catalog">
+  void (function() {
+    if (
+      window.innerWidth < 1024 ||
+      /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+    ) {
+      return;
+    }
+
+    const Catalog = (function() {
+      return function(opts) {
+        let defaultOpts = {
+          linkClass: 'cl-link', 
+          linkActiveClass: 'cl-link-active', 
+          datasetName: 'data-cata-target', 
+          selector: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'], 
+          scrollWrapper: null, 
+          activeHook: null, 
+          topMargin: 0,
+          bottomMargin: 0,
+          cool: true 
+        };
+
+        const Opt = Object.assign({}, defaultOpts, opts);
+
+        const $content = document.getElementById(Opt.contentEl); 
+        const $scroll_wrap = window; 
+        const $catalog = document.getElementById(Opt.catalogEl); 
+
+        let allCatalogs = $content.querySelectorAll(Opt.selector.join());
+        let tree = getCatalogsTree(allCatalogs);
+
+        try {
+          $catalog.innerHTML = `<div class='cl-wrapper'>${generateHtmlTree(
+            tree,
+            { id: -1 }
+          )}<svg class="cl-marker" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+            <path stroke="#ff8181" stroke-width="3" fill="transparent" stroke-dasharray="0, 0, 0, 1000" stroke-linecap="round" stroke-linejoin="round" transform="translate(-0.5, -0.5)" />
+            </svg></div>`;
+        } catch (e) {
+          console.error('error in progress-catalog', e);
+        }
+
+        const tocPath = $catalog.querySelector('.cl-marker path');
+        let tocItems, pathLength; 
+
+        
+        window.addEventListener('resize', drawPath);
+        $catalog.addEventListener('click', clickHandler);
+        Opt.cool && $scroll_wrap.addEventListener('scroll', coolScrollHandler);
+        Opt.cool ||
+          $scroll_wrap.addEventListener('scroll', simpleScrollHandler);
+
+        setTimeout(drawPath); 
+
+        
+
+        function drawPath() {
+          tocItems = [...$catalog.querySelectorAll('li')];
+          tocItems = tocItems.map(function(liDom) {
+            const anchor = liDom.querySelector(`.${Opt.linkClass}`);
+            const target = document.getElementById(
+              anchor.getAttribute('data-cata-target')
+            );
+
+            return {
+              listItem: liDom,
+              anchor: anchor,
+              target: target
+            };
+          });
+          tocItems = tocItems.filter(item => !!item.target);
+
+          const path = [];
+          let pathIndent;
+
+          tocItems &&
+            tocItems.forEach(function(item, idx) {
+              const { offsetLeft, offsetTop, offsetHeight } = item.anchor,
+                x = Opt.cool ? offsetLeft - 5 : offsetLeft,
+                y = offsetTop,
+                height = offsetHeight;
+
+              if (idx === 0) {
+                path.push('M', x, y, 'L', x, y + height);
+                item.pathStart = 0;
+              } else {
+                if (pathIndent !== x) path.push('L', pathIndent, y); 
+                path.push('L', x, y);
+                tocPath.setAttribute('d', path.join(' '));
+                item.pathStart = tocPath.getTotalLength() || 0;
+                path.push('L', x, y + height);
+              }
+              pathIndent = x;
+              tocPath.setAttribute('d', path.join(' '));
+              item.pathEnd = tocPath.getTotalLength();
+            });
+          pathLength = tocPath.getTotalLength();
+          coolScrollHandler();
+        }
+
+        
+
+        function coolScrollHandler() {
+          const wrapHeight = document.documentElement.offsetHeight;
+          let pathStart = pathLength,
+            pathEnd = 0,
+            visibleItems = 0;
+          tocItems.forEach(function(liItem) {
+            const { bottom, top } = liItem.target.getBoundingClientRect(),
+              firstChild = liItem.listItem.firstChild;
+            if (bottom > Opt.topMargin && top < wrapHeight - Opt.bottomMargin) {
+              firstChild.classList.remove(Opt.linkActiveClass);
+              Opt.cool && firstChild.classList.remove('cl-transform');
+            } else {
+              pathStart = Math.min(liItem.pathStart, pathStart);
+              pathEnd = Math.max(liItem.pathEnd, pathEnd);
+              visibleItems += 1;
+              firstChild.classList.add(Opt.linkActiveClass);
+              Opt.cool && firstChild.classList.add('cl-transform');
+            }
+          });
+          if (visibleItems > 0 && pathStart < pathEnd && Opt.cool) {
+            tocPath.setAttribute('stroke-dashoffset', '1');
+            tocPath.setAttribute(
+              'stroke-dasharray',
+              `1, ${pathStart}, ${pathEnd - pathStart}, ${pathLength}`
+            );
+            tocPath.setAttribute('opacity', '1');
+          } else {
+            tocPath.setAttribute('opacity', '0');
+          }
+        }
+
+        
+
+        function simpleScrollHandler(el) {
+          let scrollToEl = null;
+          for (let i = allCatalogs.length - 1; i >= 0; i--) {
+            if (allCatalogs[i].offsetTop <= $scroll_wrap.scrollTop) {
+              scrollToEl = allCatalogs[i];
+              break;
+            }
+          }
+          if (scrollToEl) setActiveItem(scrollToEl.id);
+          else setActiveItem(null); 
+        }
+
+        
+
+        function clickHandler({ target }) {
+          const datasetId = target.getAttribute(Opt.datasetName);
+          target.classList.contains(Opt.linkClass) &&
+            document
+              .getElementById(datasetId)
+              .scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        
+
+        function getCatalogsTree(catalogs) {
+          let title,
+            tagName,
+            tree = [],
+            treeItem = {},
+            parentItem = { id: -1 },
+            lastTreeItem = null,
+            id;
+
+          for (let i = 0; i < catalogs.length; i++) {
+            title = catalogs[i].innerText || catalogs[i].textContent;
+            tagName = catalogs[i].tagName;
+            id = 'heading-' + i;
+            catalogs[i].id = id;
+            treeItem = {
+              name: title,
+              tagName: tagName,
+              id: id,
+              level: +getLevel(tagName),
+              parent: parentItem
+            };
+            if (lastTreeItem) {
+              if (getLevel(treeItem.tagName) > getLevel(lastTreeItem.tagName)) {
+                treeItem.parent = lastTreeItem;
+              } else {
+                treeItem.parent = findParent(treeItem, lastTreeItem);
+              }
+            }
+            lastTreeItem = treeItem;
+            tree.push(treeItem);
+          }
+          return tree;
+        }
+
+        
+
+        function findParent(currTreeItem, lastTreeItem) {
+          let lastTreeParent = lastTreeItem.parent;
+          while (
+            lastTreeParent &&
+            getLevel(currTreeItem.tagName) <= getLevel(lastTreeParent.tagName)
+          ) {
+            lastTreeParent = lastTreeParent.parent;
+          }
+          return lastTreeParent || { id: -1 };
+        }
+
+        
+
+        function getLevel(tagName) {
+          return tagName ? tagName.slice(1) : 0;
+        }
+
+        
+
+        function generateHtmlTree(tree, _parent) {
+          let ul,
+            hasChild = false;
+          if (tree) {
+            ul = `<ul>`;
+            for (let i = 0; i < tree.length; i++) {
+              if (isEqual(tree[i].parent, _parent)) {
+                hasChild = true;
+                ul += `<li><div class='${Opt.linkClass} cl-level-${tree[i].level}' ${Opt.datasetName}='${tree[i].id}'>${tree[i].name}</div>`;
+                ul += generateHtmlTree(tree, tree[i]);
+                ul += '</li>';
+              }
+            }
+            ul += `</ul>`;
+          }
+          return hasChild ? ul : '';
+        }
+
+        /**
+         * 判断是否是相同节点
+         */
+        function isEqual(node, node2) {
+          return (
+            node &&
+            node2 &&
+            typeof node === 'object' &&
+            typeof node2 === 'object' &&
+            node.id === node2.id
+          );
+        }
+
+        /**
+         *  设置选中的项
+         */
+        function setActiveItem(id) {
+          let catas = [...$catalog.querySelectorAll(`[${Opt.datasetName}]`)];
+
+          catas.forEach(T => {
+            if (T.getAttribute(Opt.datasetName) === id) {
+              typeof Opt.activeHook === 'function' &&
+                !T.classList.contains(Opt.linkActiveClass) &&
+                Opt.activeHook.call(this, T); // 执行active钩子
+              T.classList.add(Opt.linkActiveClass);
+            } else {
+              T.classList.remove(Opt.linkActiveClass);
+            }
+          });
+        }
+      };
+    })();
+    window.addEventListener(
+      'DOMContentLoaded',
+      _ =>
+        new Catalog({
+          contentEl: 'markdown',
+          catalogEl: 'catalog'
+        })
+    );
+  })();
+</script>
+
+			<hr class="sep" />
+		</main>
+		<footer class="container no-print">
+			<div class="u-footer">
+				
+<a href="mailto:iamnomand@gmail.com"><img class="icon-social" src="/img/email.svg" alt="Email Me!"/></a>
+
+
+<a href="https://github.com/v-tom/"><img class="icon-social" src="/img/github.svg" alt="Github"/></a>
+
+
+<a href="https://twitter.com/iamnomand"><img class="icon-social" src="/img/twitter.svg" alt="Twitter"/></a>
+
+<a href="https://hasaki.xyz/index.xml" target="_blank"><img class="icon-social" src="/img/feed.svg" alt="Feed"></a>
+
+				<p>
+					
+					
+					Early 2016 ~ 2019 &copy; TOM's Zone
+					
+					
+				</p>
+				
+				<a href="#brand">
+					<img class="icon-text" src="/img/toup.svg" alt="To Up"/>
+					<span>Back to Up</span>
+				</a>
+				
+			</div>
+		</footer>
+		
+		<script>hljs.initHighlightingOnLoad();</script>
+		
+	</body>
+</html>
+

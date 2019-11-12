@@ -14,24 +14,24 @@
     
     <item>
       <title>Tensor &amp;&amp; flow</title>
-      <link>https://hasaki.xyz/blog/2019-08-09-tensor-flow/</link>
+      <link>https://hasaki.xyz/blog/2019-08-09-tensor--flow/</link>
       <pubDate>Fri, 09 Aug 2019 13:22:30 +0800</pubDate>
       
-      <guid>https://hasaki.xyz/blog/2019-08-09-tensor-flow/</guid>
+      <guid>https://hasaki.xyz/blog/2019-08-09-tensor--flow/</guid>
       <description>本文只是简单 TensorFlow 的一些理解和介绍，并不包含详细的安装、API、以及更多深层内容。
  首先简单说一下 标量（Scalar）、向量（Vector）、张量（Tensor）。
 下面会以 physical student 和 cs student 两个角度来解释。
 Scalar 在物理学角度，标量是遵循简单代数规则的一些量，与坐标系的选取无关。例如，加法，减法等。标量也可以被定义为仅需要识别幅度的量。例如温度，电流等
 CS 里面可以简单认为是一个常量（constant）
-Vector 物理学角度向量是空间中的箭头，决定一个向量的是它的长度（length）和它所指的方向（direction），而且只要以上特征相同，你一个任意移动一个向量而保持它不变。也可以是矢量，比如速度和力。
-平面中（平面直角坐标系）的向量是二维的，处于我们生活当中的向量是三维的。
+Vector 物理学角度向量是空间中的箭头，也可以是矢量。
+决定一个向量的是它的长度（length）和它所指的方向（direction），而且只要以上特征相同，你一个任意移动一个向量而保持它不变。比如速度和力。而且平面中（平面直角坐标系）的向量是二维的，处于我们生活当中的向量是三维的。
 举个例子，一个二维向量 [-2,3] 以平面直角坐标系来表示为：
  第一个数代表沿 X 轴走多远，第二个数代表沿 Y 轴走多远。
  图中的黄色箭头就是向量，可以看到一个向量都有一个唯一一对对数
 而一个三维向量 [2,1,3] 以平面直角坐标系来表示为：
  第一个数代表沿 X 轴走多远，第二个数代表沿 Y 轴走多远，第三个数代表沿 Z 轴走了多远
  CS 角度向量是一个二维数组（二维）、三维数组（三维）或者说是矩阵。代表有序的数字集合。
-线性代数 向量在线性代数当中可以叫做矩阵（matrix），对应的加法和乘法规则是：
+线性代数 向量在线性代数当中可以叫做矩阵（matrix），矩阵可以做一些基本的运算，对应的加法和乘法规则是：
  两个矩阵行列数必须要相同才能进行求和运算。   两个矩阵要相乘，前一个矩阵的列数必须要等于后一个矩阵的行数，也可以看成是列的加权求和   至于更多的矩阵求逆、求导超出本文的范畴，请自行学习线性代数。
  我们也可以换一种方式来看向量的坐标，把一个 [1,1] 的向量定义为 基向量。
 上文的二维向量 [-2,3]，对应的每个坐标可以看作一个为 Scalar（标量）。这个向量可以看作把基向量按照标量的大小进行缩放所产生。-2 代表往右 2 倍，3 代表向上 3 倍</description>
@@ -108,10 +108,10 @@ JIT 计算机使用的是机器语言，也就是 010101 二进制，而我们�
     
     <item>
       <title>gRPC 浅谈与实践</title>
-      <link>https://hasaki.xyz/blog/2019-03-04-grpc-%E6%B5%85%E8%B0%88%E4%B8%8E%E5%AE%9E%E8%B7%B5/</link>
+      <link>https://hasaki.xyz/blog/2019-03-04--grpc-%E6%B5%85%E8%B0%88%E4%B8%8E%E5%AE%9E%E8%B7%B5/</link>
       <pubDate>Mon, 04 Mar 2019 11:32:40 +0800</pubDate>
       
-      <guid>https://hasaki.xyz/blog/2019-03-04-grpc-%E6%B5%85%E8%B0%88%E4%B8%8E%E5%AE%9E%E8%B7%B5/</guid>
+      <guid>https://hasaki.xyz/blog/2019-03-04--grpc-%E6%B5%85%E8%B0%88%E4%B8%8E%E5%AE%9E%E8%B7%B5/</guid>
       <description>由于不同的环境下面的例子可能会存在一些误差，下面列出本机环境：
  Docker -v ：Docker version 18.09.1, build 4c52b90 docker-compose -v ：docker-compose version 1.23.2, build 1110ad01 go version : go version go1.12.4 darwin/amd64 system_profiler SPSoftwareDataType : macOS 10.14.3 (18D42) Darwin 18.2.0 IDE golang latest  RPC RPC 全名为 Remote procedure call ,直译过来就是 远程过程调用 ，也就是说两台服务器 A，B，一个应用部署在 A 服务器上，想要调用 B 服务器上应用提供的函数/方法，由于不在一个内存空间，不能直接调用，需要通过网络来表达调用的语义和传达调用的数据。
 调用的基本流程可以看下图：
@@ -132,13 +132,13 @@ http vs RPC HTTP 调用其实也是一种特殊的 RPC 。RPC 可以基于 HTTP 
 国外的一些优质云网盘如 google drive 和 one drive 等由于和谐因素又无法顺利的访问。
 本来想买个 nas ，看到价格和组 raid 的成本放弃了。
 刚好我有一台新组装的主机电脑，平时也是偶尔开着，所以特意买了个 2t 的希捷数据盘，准备搭建一套私有云的环境给家庭用。
-开源云盘选择  其实在搭建之前，考虑过自己写一个简单的文件系统上传预览，后来发现需要考虑的问题太多卒🤣
+开源云盘选择  其实在搭建之前，考虑过自己写一个简单的文件系统上传预览，后来发现需要考虑的问题太多卒 🤣
  搭建前我仔细看了一下各个开源私有云盘的实现，有以下几种：
  owncloud sealife nextcloud  对这几家比较了以下，考虑了以下因素：
  开源且免费，可以自定义插件开发 全客户端的支持，免费更好，ui 视觉还能过得去 支持外挂磁盘，可以随时更改，不需要分块、加密和过多的文件控制、权限控制等等，简单就好 部署难度，vm 还行，最好可以 Docker  最终我选择了 nextcloud，至于更多的详细差异，大家可以根据需求选择。
 内网穿透 由于家里的电信没有外网 ip ，打电话给运营商也无济于事，只能选择内网穿透。
 内网穿透选择了很多办法：
- 根据开源实现自己部署到一台公共可访问的服务器上，比如：frp、ngrok等等 使用现有的内网穿透服务商，比如：花生壳、natapp 等等  最终我选择了 natapp 免费使用版
+ 根据开源实现自己部署到一台公共可访问的服务器上，比如：frp、ngrok 等等 使用现有的内网穿透服务商，比如：花生壳、natapp 等等  最终我选择了 natapp 免费使用版
 开始搭建 我个人的网盘需求只是偶尔让我爸妈把照片上传到我的主机上。
 对性能、速度、可持续性都没有太高的要求，所以很多条件都可以简化，只要保证数据完整性就可以了。
 首先在 Windows 上安装所需要的环境： Docker 、Python 等。并且在 E 盘下创建了特定的 nas 文件夹来作为 nextcloud 的目录。</description>
@@ -177,9 +177,9 @@ ADT List { Data: Operation: InitList(&amp;amp;L) CreateList(&amp;amp;L) ListEmpt
 javascript 本身有很多种方式可以实现沙箱，各有千秋，各有使用的地方。
  eval new Function with proxy Node VM Deno  eval 最简单的方式就是直接使用 eval 执行：
 eval(&#39;console.log(&amp;quot;a simple script&amp;quot;);&#39;); // a simple script  eval 只是一个普通的函数，只不过他有一个快速通道通向编译器，可以将 string 变成可执行的代码。
- eval 的特性是如果当前域里面没有，则会向上遍历，一直到最顶层的 global scope：比如 window global ，他还可以访问closure内的变量。
+ eval 的特性是如果当前域里面没有，则会向上遍历，一直到最顶层的 global scope：比如 window global ，他还可以访问 closure 内的变量。
  使用 eval 也带来了安全隐患，首先它可以访问和修改它外部作用域中的变量，其次被执行的代码（例如从网络来）可能已被篡改。
-global.name = &#39;TOM&#39; eval(&#39;console.log(&amp;quot;i am &amp;quot; + name + &amp;quot; from eval&amp;quot;);&#39;); // i am TOM from eval  并且 eval 可读性较差，调试难度较高，也会轻微增加性能消耗。
+global.name = &#39;TOM&#39;; eval(&#39;console.log(&amp;quot;i am &amp;quot; + name + &amp;quot; from eval&amp;quot;);&#39;); // i am TOM from eval  并且 eval 可读性较差，调试难度较高，也会轻微增加性能消耗。
 对于 eval 开发者是贬褒不一，eval 是魔鬼 以及 eval 不是魔鬼</description>
     </item>
     
@@ -259,25 +259,25 @@ ART能干什么 俗话说，库如其名，背负着如此具有“艺术感”�
       <description>这篇文章整理了学习 React 过程中以及实际开发应用当中一些模式，技巧，技巧和窍门。
 大部门内容是基于 React 框架下面产生的一些内容，有很大的局限性，但是确实带来了新的理念和开发方式，仁者见仁智者见智，多学习一点内容总归对职业生涯有好处。
  本篇文章还在持续更新中，如果有错误烦请指正。
- Normally React 一些常见的关于React需要了解的内容，就简单列举如下。下面只会列到本人认为比较值得重视的部分进行详细陈述。
+ Normally React 一些常见的关于 React 需要了解的内容，就简单列举如下。下面只会列到本人认为比较值得重视的部分进行详细陈述。
  语法层面——基础入门
-  JSX语法、React基本内容等 Derocator 或者 async await 等常见ES6、ES7的内容 React Lists and Keys   常用层面——日常开发必备
+  JSX 语法、React 基本内容等 Derocator 或者 async await 等常见 ES6、ES7 的内容 React Lists and Keys   常用层面——日常开发必备
   smart component and dumb component container component and presentation component stateless component Events handler bind this：bind this 或者 Derocator 或者 proposal-class-public-fields-declarations Conditionals render in JSX 或者 IIFE render in JSX 或者 methods render in JSX Dynamic router 以及 Dynamic component，甚至于 Dynamic redux injection HOC Render props 16.</description>
     </item>
     
     <item>
-      <title>RN性能检测和错误捕捉</title>
-      <link>https://hasaki.xyz/blog/2017-09-12-rn%E6%80%A7%E8%83%BD%E6%A3%80%E6%B5%8B%E5%92%8C%E9%94%99%E8%AF%AF%E6%8D%95%E6%8D%89/</link>
+      <title>前端性能检测和错误捕捉</title>
+      <link>https://hasaki.xyz/blog/2017-09-12-%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E6%A3%80%E6%B5%8B%E5%92%8C%E9%94%99%E8%AF%AF%E6%8D%95%E6%8D%89/</link>
       <pubDate>Tue, 12 Sep 2017 15:29:40 +0800</pubDate>
       
-      <guid>https://hasaki.xyz/blog/2017-09-12-rn%E6%80%A7%E8%83%BD%E6%A3%80%E6%B5%8B%E5%92%8C%E9%94%99%E8%AF%AF%E6%8D%95%E6%8D%89/</guid>
-      <description>在复杂的网络环境和浏览器环境下，自测、QA测试以及 Code Review 都是不够的，如果对页面稳定性和准确性要求较高，就必须有一套完善的代码异常监控体系好的产品，这样才能很好的得到用户的反馈从而不断的迭代改进我们的产品。
+      <guid>https://hasaki.xyz/blog/2017-09-12-%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E6%A3%80%E6%B5%8B%E5%92%8C%E9%94%99%E8%AF%AF%E6%8D%95%E6%8D%89/</guid>
+      <description>在复杂的网络环境和浏览器环境下，自测、QA 测试以及 Code Review 都是不够的，如果对页面稳定性和准确性要求较高，就必须有一套完善的代码异常监控体系好的产品，这样才能很好的得到用户的反馈从而不断的迭代改进我们的产品。
 而且复杂的用户终端设备，也需要通过性能监控发现部分前端性能瓶颈，以便进行优化；通过错误日志收集，及时获得前端的运行时错误
 收集错误异常  错误异常分为 web 错误异常和React-native 错误异常
  web 错误异常 总体来说：平时收集日志的手段，可以归类为两个方面，一个是逻辑中的错误判断，为主动判断，如try...catch；一个是利用语言给我们提供的捷径，暴力式获取错误信息，如 window.onerror；当然也存在另外一种错误，那就是Promise unhandlerejection
 try…catch 判断一个代码段中可能存在的错误：
-try { doSomeThing() // code... } catch(e){ // send format error Reporter.send(format(e)) }  window.onerror 这个用来捕获全局错误：
-window.onerror = function() { // send format error var errInfo = format(arguments); Reporter.send(errInfo) return true };  在上面的函数中返回 return true，错误便不会暴露到控制台中。下面是它的参数信息：
+try { doSomeThing(); // code... } catch (e) { // send format error Reporter.send(format(e)); }  window.onerror 这个用来捕获全局错误：
+window.onerror = function() { // send format error var errInfo = format(arguments); Reporter.send(errInfo); return true; };  在上面的函数中返回 return true，错误便不会暴露到控制台中。下面是它的参数信息：
 /** * @param {String} errorMessage 错误信息 * @param {String} scriptURI 出错的文件 * @param {Long} lineNumber 出错代码的行号 * @param {Long} columnNumber 出错代码的列号 * @param {Object} errorObj 错误的详细信息，Anything */ window.</description>
     </item>
     

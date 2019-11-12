@@ -103,6 +103,15 @@
     </item>
     
     <item>
+      <title>Gallery</title>
+      <link>https://hasaki.xyz/tags/gallery/</link>
+      <pubDate>Wed, 06 Nov 2019 15:39:30 +0800</pubDate>
+      
+      <guid>https://hasaki.xyz/tags/gallery/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Golang</title>
       <link>https://hasaki.xyz/tags/golang/</link>
       <pubDate>Mon, 04 Mar 2019 11:32:40 +0800</pubDate>
@@ -123,7 +132,7 @@
     <item>
       <title>Life</title>
       <link>https://hasaki.xyz/tags/life/</link>
-      <pubDate>Sat, 27 Jul 2019 13:12:30 +0800</pubDate>
+      <pubDate>Wed, 06 Nov 2019 15:39:30 +0800</pubDate>
       
       <guid>https://hasaki.xyz/tags/life/</guid>
       <description></description>

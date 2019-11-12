@@ -39,9 +39,9 @@ ART能干什么 俗话说，库如其名，背负着如此具有“艺术感”�
       <description>这篇文章整理了学习 React 过程中以及实际开发应用当中一些模式，技巧，技巧和窍门。
 大部门内容是基于 React 框架下面产生的一些内容，有很大的局限性，但是确实带来了新的理念和开发方式，仁者见仁智者见智，多学习一点内容总归对职业生涯有好处。
  本篇文章还在持续更新中，如果有错误烦请指正。
- Normally React 一些常见的关于React需要了解的内容，就简单列举如下。下面只会列到本人认为比较值得重视的部分进行详细陈述。
+ Normally React 一些常见的关于 React 需要了解的内容，就简单列举如下。下面只会列到本人认为比较值得重视的部分进行详细陈述。
  语法层面——基础入门
-  JSX语法、React基本内容等 Derocator 或者 async await 等常见ES6、ES7的内容 React Lists and Keys   常用层面——日常开发必备
+  JSX 语法、React 基本内容等 Derocator 或者 async await 等常见 ES6、ES7 的内容 React Lists and Keys   常用层面——日常开发必备
   smart component and dumb component container component and presentation component stateless component Events handler bind this：bind this 或者 Derocator 或者 proposal-class-public-fields-declarations Conditionals render in JSX 或者 IIFE render in JSX 或者 methods render in JSX Dynamic router 以及 Dynamic component，甚至于 Dynamic redux injection HOC Render props 16.</description>
     </item>
     

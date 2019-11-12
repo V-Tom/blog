@@ -82,6 +82,7 @@
 		</li>
 		
 		<li class="active"><a href="/blog/">Blog</a></li>
+		<li class=""><a href="/gallery/">Gallery</a></li>
 		<li class=""><a href="/life/">Life</a></li></ul>
 </nav>
 
@@ -91,28 +92,52 @@
 
 <article>
     <header><hgroup id="brand">
-	<h1>谈谈 Node.js 的单线程</h1>
-	<h5>
-		
-		<time datetime="2018-02-08 14:22:25 &#43;0800 CST">Feb 08, 2018</time>
-		<span class="no-print">
-			-
-			
-			<a href="/tags/node.js">Node.js</a>
-			
-			<a href="/tags/backend">BackEnd</a>
-			
-			<a href="/tags/cluster">Cluster</a>
-			</span>
-	</h5>
+  <h1>谈谈 Node.js 的单线程</h1>
+  <h5>
+    
+    <time datetime="2018-02-08 14:22:25 &#43;0800 CST">Feb 08, 2018</time>
+    <span class="no-print">
+      -
+      
+      <a href="/tags/node.js">Node.js</a>
+      
+      <a href="/tags/backend">BackEnd</a>
+      
+      <a href="/tags/cluster">Cluster</a>
+      </span>
+  </h5>
 
-	
-	<a style="margin-top: 1.2rem;display: inline-block;" href="https://github.com/V-Tom/blog/blob/hugo/content/blog/2018-02-08-%E8%B0%88%E8%B0%88Node.js%E7%9A%84%E5%8D%95%E7%BA%BF%E7%A8%8B/index.md">✨✨✨You can Edit this Article on Github</a>
-	
-	
-	
+  <a
+    style="margin-top: 1.2rem;display: inline-block;"
+    href="https://github.com/V-Tom/blog/blob/hugo/content/blog/2018-02-08-%e8%b0%88%e8%b0%88Node.js%e7%9a%84%e5%8d%95%e7%ba%bf%e7%a8%8b/index.md"
+    >✨✨✨You can Edit this Article on Github site</a
+  >
+
+  <script>
+  (async () => {
+    const commits = await fetch(
+      'https://api.github.com/repos/V-Tom/blog/commits?sha=hugo&path=content/blog\/2018-02-08-谈谈Node.js的单线程\/index.md'
+    ).then(res => res.json());
+    const b = document.querySelector('#git-active-time').querySelector('b');
+    try {
+      const time = new Date(commits[0].commit.committer.date);
+      b.innerHTML = `${time.getFullYear()}-${time.getMonth() +
+        1}-${time.getDate()}`;
+    } catch (e) {
+      b.innerHTML = 'unknown';
+    }
+  })();
+</script>
+<div id="git-active-time">
+  ✏️✏️✏️ This article .MD file was last updated at:
+  <b>Loading ...</b>
+</div>
+
+
+  
 </hgroup>
-<hr class="sep" /></header>
+<hr class="sep" />
+</header>
     <section id="markdown">
         
 
@@ -205,9 +230,7 @@
 <p><strong>摘自《深入理解计算机操作系统》</strong></p>
 </blockquote>
 
-<p>当我们说“上下文切换”的时候，表达的是一种从一个上下文切换到另一个上下文执行的技术。</p>
-
-<p>深入可以查看这篇文章<a href="http://guojing.me/linux-kernel-architecture/posts/process-switch/">进程切换</a></p>
+<p>根据任务的不同，CPU 的上下文切换可以分为几个不同的场景，也就是：进程上下文切换、线程上下文切换、中断上下文切换。</p>
 
 <h4 id="fd">FD</h4>
 
@@ -923,6 +946,8 @@ cluster.on('disconnect', function() {
 <ul>
 <li><a href="https://segmentfault.com/a/1190000001813992">Python 中的进程、线程、协程、同步、异步、回调</a></li>
 <li><a href="http://blog.shell909090.org/blog/archives/2703/">上下文切换技术</a></li>
+<li><a href="https://www.linuxblogs.cn/articles/18120200.html">深入理解 Linux 的 CPU 上下文切换</a></li>
+<li><a href="https://github.com/GuoJing/linux-kernel-architecture">Linux 内核架构这本书的笔记</a></li>
 <li><a href="https://en.wikipedia.org/wiki/C10k_problem">c10k</a></li>
 <li><a href="https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/"><code>event loop</code> 官方解释</a></li>
 <li><a href="http://www.cnblogs.com/aylin/p/5601969.html">Python 当中的多线程，多进程，协程</a></li>
@@ -941,6 +966,7 @@ cluster.on('disconnect', function() {
 <li><a href="http://taobaofed.org/blog/2015/11/10/nodejs-cluster-2/">tabao fed 当我们谈论 cluster 时我们在谈论什么（下）</a></li>
 <li><a href="https://www.zhihu.com/question/19732473">怎样理解阻塞非阻塞与同步异步的区别？</a></li>
 <li><a href="https://www.cnblogs.com/sparkdev/p/8410350.html">Linux 内核空间与用户空间</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/79772089">进程/线程上下文切换会用掉你多少 CPU？</a></li>
 </ul>
 
     </section>
@@ -981,298 +1007,379 @@ cluster.on('disconnect', function() {
 
 
 <style rel="catalog">
-    #catalog {
-        position: fixed;
-        left: 3vw;
-        top: 8vh;
-    }
+  #catalog {
+    position: fixed;
+    left: 3vw;
+    top: 8vh;
+    overflow: auto;
+    height: calc(100% - 16vh);
+    background:
+      linear-gradient(
+        white 30%,
+        rgba(255, 255, 255, 0)
+      ),
+      linear-gradient(rgba(255, 255, 255, 0), white 70%) 0 100%,
+       
+        radial-gradient(
+          50% 0,
+          farthest-side,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        ),
+      radial-gradient(
+          50% 100%,
+          farthest-side,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        )
+        0 100%;
+    background:
+      linear-gradient(
+        white 30%,
+        rgba(255, 255, 255, 0)
+      ),
+      linear-gradient(rgba(255, 255, 255, 0), white 70%) 0 100%,
+       
+        radial-gradient(
+          farthest-side at 50% 0,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        ),
+      radial-gradient(
+          farthest-side at 50% 100%,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        )
+        0 100%;
+    background-repeat: no-repeat;
+    background-color: white;
+    background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
 
-    .cl-wrapper {
-        position: relative;
-    }
+     
+    background-attachment: local, local, scroll, scroll;
+  }
+  #catalog::-webkit-scrollbar {
+    display: none;
+  }
 
-    .cl-wrapper ul, .cl-wrapper li {
-        margin: 0;
-        -moz-padding-start: 12px;
-        -webkit-padding-start: 12px;
-        list-style: none;
-    }
+  .cl-wrapper {
+    position: relative;
+  }
 
-    .cl-wrapper li > .cl-link.cl-link-active {
-        color: #ff8181;
-        transition: .5s;
-    }
+  .cl-wrapper ul,
+  .cl-wrapper li {
+    margin: 0;
+    -moz-padding-start: 12px;
+    -webkit-padding-start: 12px;
+    list-style: none;
+  }
 
-    .cl-wrapper li > .cl-transform.cl-link-active {
-        transform: translate(3px);
-    }
+  .cl-wrapper li > .cl-link.cl-link-active {
+    color: #ff8181;
+    transition: 0.5s;
+  }
 
-    .cl-wrapper .cl-link {
-        cursor: pointer;
-        color: rgba(52, 73, 94, 0.5);
-        font-size: 13px;
-        transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-    }
+  .cl-wrapper li > .cl-transform.cl-link-active {
+    transform: translate(3px);
+  }
 
-    .cl-wrapper .cl-marker {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-    }
+  .cl-wrapper .cl-link {
+    cursor: pointer;
+    color: rgba(52, 73, 94, 0.5);
+    font-size: 13px;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  }
 
-    .cl-wrapper .cl-marker path {
-        transition: all 0.3s ease;
-    }
+  .cl-wrapper .cl-marker {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+
+  .cl-wrapper .cl-marker path {
+    transition: all 0.3s ease;
+  }
 </style>
 <main id="catalog"></main>
 <script rel="catalog">
-    void function () {
-        
-        if (window.innerWidth < 1024 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-            return
+  void (function() {
+    if (
+      window.innerWidth < 1024 ||
+      /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+    ) {
+      return;
+    }
+
+    const Catalog = (function() {
+      return function(opts) {
+        let defaultOpts = {
+          linkClass: 'cl-link', 
+          linkActiveClass: 'cl-link-active', 
+          datasetName: 'data-cata-target', 
+          selector: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'], 
+          scrollWrapper: null, 
+          activeHook: null, 
+          topMargin: 0,
+          bottomMargin: 0,
+          cool: true 
+        };
+
+        const Opt = Object.assign({}, defaultOpts, opts);
+
+        const $content = document.getElementById(Opt.contentEl); 
+        const $scroll_wrap = window; 
+        const $catalog = document.getElementById(Opt.catalogEl); 
+
+        let allCatalogs = $content.querySelectorAll(Opt.selector.join());
+        let tree = getCatalogsTree(allCatalogs);
+
+        try {
+          $catalog.innerHTML = `<div class='cl-wrapper'>${generateHtmlTree(
+            tree,
+            { id: -1 }
+          )}<svg class="cl-marker" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+            <path stroke="#ff8181" stroke-width="3" fill="transparent" stroke-dasharray="0, 0, 0, 1000" stroke-linecap="round" stroke-linejoin="round" transform="translate(-0.5, -0.5)" />
+            </svg></div>`;
+        } catch (e) {
+          console.error('error in progress-catalog', e);
         }
 
-        const Catalog = (function () {
-            return function (opts) {
-                let defaultOpts = {
-                    linkClass: 'cl-link',                             
-                    linkActiveClass: 'cl-link-active',                
-                    datasetName: 'data-cata-target',                  
-                    selector: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],   
-                    scrollWrapper: null,                              
-                    activeHook: null,                                 
-                    topMargin: 0,
-                    bottomMargin: 0,
-                    cool: true                                        
-                }
+        const tocPath = $catalog.querySelector('.cl-marker path');
+        let tocItems, pathLength; 
 
-                const Opt = Object.assign({}, defaultOpts, opts)
+        
+        window.addEventListener('resize', drawPath);
+        $catalog.addEventListener('click', clickHandler);
+        Opt.cool && $scroll_wrap.addEventListener('scroll', coolScrollHandler);
+        Opt.cool ||
+          $scroll_wrap.addEventListener('scroll', simpleScrollHandler);
 
-                const $content = document.getElementById(Opt.contentEl)                          
-                const $scroll_wrap = window   
-                const $catalog = document.getElementById(Opt.catalogEl)                          
+        setTimeout(drawPath); 
 
-                let allCatalogs = $content.querySelectorAll(Opt.selector.join())
-                let tree = getCatalogsTree(allCatalogs)
+        
 
-                try {
-                    $catalog.innerHTML = `<div class='cl-wrapper'>${generateHtmlTree(tree, {id: -1})}<svg class="cl-marker" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
-            <path stroke="#ff8181" stroke-width="3" fill="transparent" stroke-dasharray="0, 0, 0, 1000" stroke-linecap="round" stroke-linejoin="round" transform="translate(-0.5, -0.5)" />
-            </svg></div>`
-                } catch (e) {
-                    console.error('error in progress-catalog', e)
-                }
+        function drawPath() {
+          tocItems = [...$catalog.querySelectorAll('li')];
+          tocItems = tocItems.map(function(liDom) {
+            const anchor = liDom.querySelector(`.${Opt.linkClass}`);
+            const target = document.getElementById(
+              anchor.getAttribute('data-cata-target')
+            );
 
+            return {
+              listItem: liDom,
+              anchor: anchor,
+              target: target
+            };
+          });
+          tocItems = tocItems.filter(item => !!item.target);
 
-                const tocPath = $catalog.querySelector('.cl-marker path')
-                let tocItems, pathLength    
+          const path = [];
+          let pathIndent;
 
-                
-                window.addEventListener('resize', drawPath)
-                $catalog.addEventListener('click', clickHandler)
-                Opt.cool && $scroll_wrap.addEventListener('scroll', coolScrollHandler)
-                Opt.cool || $scroll_wrap.addEventListener('scroll', simpleScrollHandler)
+          tocItems &&
+            tocItems.forEach(function(item, idx) {
+              const { offsetLeft, offsetTop, offsetHeight } = item.anchor,
+                x = Opt.cool ? offsetLeft - 5 : offsetLeft,
+                y = offsetTop,
+                height = offsetHeight;
 
-                setTimeout(drawPath)          
+              if (idx === 0) {
+                path.push('M', x, y, 'L', x, y + height);
+                item.pathStart = 0;
+              } else {
+                if (pathIndent !== x) path.push('L', pathIndent, y); 
+                path.push('L', x, y);
+                tocPath.setAttribute('d', path.join(' '));
+                item.pathStart = tocPath.getTotalLength() || 0;
+                path.push('L', x, y + height);
+              }
+              pathIndent = x;
+              tocPath.setAttribute('d', path.join(' '));
+              item.pathEnd = tocPath.getTotalLength();
+            });
+          pathLength = tocPath.getTotalLength();
+          coolScrollHandler();
+        }
 
-                
+        
 
-                function drawPath() {
-                    tocItems = [...$catalog.querySelectorAll('li')]
-                    tocItems = tocItems.map(function (liDom) {
-                        const anchor = liDom.querySelector(`.${Opt.linkClass}`)
-                        const target = document.getElementById(anchor.getAttribute('data-cata-target'))
-
-                        return {
-                            listItem: liDom,
-                            anchor: anchor,
-                            target: target
-                        }
-                    })
-                    tocItems = tocItems.filter(item => !!item.target)
-
-                    const path = []
-                    let pathIndent
-
-                    tocItems && tocItems.forEach(function (item, idx) {
-                        const {offsetLeft, offsetTop, offsetHeight} = item.anchor,
-                            x = Opt.cool ? offsetLeft - 5 : offsetLeft,
-                            y = offsetTop,
-                            height = offsetHeight
-
-                        if (idx === 0) {
-                            path.push('M', x, y, 'L', x, y + height)
-                            item.pathStart = 0
-                        }
-                        else {
-                            if (pathIndent !== x) path.push('L', pathIndent, y)     
-                            path.push('L', x, y)
-                            tocPath.setAttribute('d', path.join(' '))
-                            item.pathStart = tocPath.getTotalLength() || 0
-                            path.push('L', x, y + height)
-                        }
-                        pathIndent = x
-                        tocPath.setAttribute('d', path.join(' '))
-                        item.pathEnd = tocPath.getTotalLength()
-                    })
-                    pathLength = tocPath.getTotalLength()
-                    coolScrollHandler()
-                }
-
-                
-
-                function coolScrollHandler() {
-                    const wrapHeight = document.documentElement.offsetHeight
-                    let pathStart = pathLength,
-                        pathEnd = 0,
-                        visibleItems = 0
-                    tocItems.forEach(function (liItem) {
-                        const {bottom, top} = liItem.target.getBoundingClientRect(),
-                            firstChild = liItem.listItem.firstChild
-                        if (bottom > Opt.topMargin && top < wrapHeight - Opt.bottomMargin) {
-                            firstChild.classList.remove(Opt.linkActiveClass)
-                            Opt.cool && firstChild.classList.remove('cl-transform')
-                        } else {
-                            pathStart = Math.min(liItem.pathStart, pathStart)
-                            pathEnd = Math.max(liItem.pathEnd, pathEnd)
-                            visibleItems += 1
-                            firstChild.classList.add(Opt.linkActiveClass)
-                            Opt.cool && firstChild.classList.add('cl-transform')
-                        }
-                    })
-                    if (visibleItems > 0 && pathStart < pathEnd && Opt.cool) {
-                        tocPath.setAttribute('stroke-dashoffset', '1')
-                        tocPath.setAttribute('stroke-dasharray', `1, ${pathStart}, ${pathEnd - pathStart}, ${pathLength}`)
-                        tocPath.setAttribute('opacity', '1')
-                    }
-                    else {
-                        tocPath.setAttribute('opacity', '0')
-                    }
-                }
-
-                
-
-                function simpleScrollHandler(el) {
-                    let scrollToEl = null
-                    for (let i = allCatalogs.length - 1; i >= 0; i--) {
-                        if (allCatalogs[i].offsetTop <= $scroll_wrap.scrollTop) {
-                            scrollToEl = allCatalogs[i]
-                            break
-                        }
-                    }
-                    if (scrollToEl) setActiveItem(scrollToEl.id)
-                    else setActiveItem(null)            
-                }
-
-                
-
-                function clickHandler({target}) {
-                    const datasetId = target.getAttribute(Opt.datasetName)
-                    target.classList.contains(Opt.linkClass) &&
-                    document.getElementById(datasetId)
-                        .scrollIntoView({behavior: "smooth", block: "start"})
-                }
-
-                
-
-                function getCatalogsTree(catalogs) {
-                    let title, tagName, tree = [], treeItem = {}, parentItem = {id: -1}, lastTreeItem = null, id
-
-                    for (let i = 0; i < catalogs.length; i++) {
-                        title = catalogs[i].innerText || catalogs[i].textContent
-                        tagName = catalogs[i].tagName
-                        id = 'heading-' + i
-                        catalogs[i].id = id
-                        treeItem = {
-                            name: title,
-                            tagName: tagName,
-                            id: id,
-                            level: +getLevel(tagName),
-                            parent: parentItem
-                        }
-                        if (lastTreeItem) {
-                            if (getLevel(treeItem.tagName) > getLevel(lastTreeItem.tagName)) {
-                                treeItem.parent = lastTreeItem
-                            } else {
-                                treeItem.parent = findParent(treeItem, lastTreeItem)
-                            }
-                        }
-                        lastTreeItem = treeItem
-                        tree.push(treeItem)
-                    }
-                    return tree
-                }
-
-                
-
-                function findParent(currTreeItem, lastTreeItem) {
-                    let lastTreeParent = lastTreeItem.parent
-                    while (lastTreeParent && (getLevel(currTreeItem.tagName) <= getLevel(lastTreeParent.tagName))) {
-                        lastTreeParent = lastTreeParent.parent
-                    }
-                    return lastTreeParent || {id: -1}
-                }
-
-                
-
-                function getLevel(tagName) {
-                    return tagName ? tagName.slice(1) : 0
-                }
-
-                
-
-                function generateHtmlTree(tree, _parent) {
-                    let ul, hasChild = false
-                    if (tree) {
-                        ul = `<ul>`
-                        for (let i = 0; i < tree.length; i++) {
-                            if (isEqual(tree[i].parent, _parent)) {
-                                hasChild = true
-                                ul += `<li><div class='${ Opt.linkClass } cl-level-${ tree[i].level }' ${Opt.datasetName}='${ tree[i].id }'>${tree[i].name}</div>`
-                                ul += generateHtmlTree(tree, tree[i])
-                                ul += '</li>'
-                            }
-                        }
-                        ul += `</ul>`
-                    }
-                    return hasChild ? ul : ''
-                }
-
-                /**
-                 * 判断是否是相同节点
-                 */
-                function isEqual(node, node2) {
-                    return node && node2 && typeof node === 'object' && typeof node2 === 'object' && node.id === node2.id
-                }
-
-                /**
-                 *  设置选中的项
-                 */
-                function setActiveItem(id) {
-                    let catas = [...$catalog.querySelectorAll(`[${Opt.datasetName}]`)]
-
-                    catas.forEach(T => {
-                        if (T.getAttribute(Opt.datasetName) === id) {
-                            typeof Opt.activeHook === 'function' &&
-                            !T.classList.contains(Opt.linkActiveClass) &&
-                            Opt.activeHook.call(this, T)                    // 执行active钩子
-                            T.classList.add(Opt.linkActiveClass)
-                        } else {
-                            T.classList.remove(Opt.linkActiveClass)
-                        }
-                    })
-                }
+        function coolScrollHandler() {
+          const wrapHeight = document.documentElement.offsetHeight;
+          let pathStart = pathLength,
+            pathEnd = 0,
+            visibleItems = 0;
+          tocItems.forEach(function(liItem) {
+            const { bottom, top } = liItem.target.getBoundingClientRect(),
+              firstChild = liItem.listItem.firstChild;
+            if (bottom > Opt.topMargin && top < wrapHeight - Opt.bottomMargin) {
+              firstChild.classList.remove(Opt.linkActiveClass);
+              Opt.cool && firstChild.classList.remove('cl-transform');
+            } else {
+              pathStart = Math.min(liItem.pathStart, pathStart);
+              pathEnd = Math.max(liItem.pathEnd, pathEnd);
+              visibleItems += 1;
+              firstChild.classList.add(Opt.linkActiveClass);
+              Opt.cool && firstChild.classList.add('cl-transform');
             }
-        })();
-        window.addEventListener('DOMContentLoaded', _ => new Catalog({
-            contentEl: 'markdown',
-            catalogEl: 'catalog'
-        }))
-    }();
+          });
+          if (visibleItems > 0 && pathStart < pathEnd && Opt.cool) {
+            tocPath.setAttribute('stroke-dashoffset', '1');
+            tocPath.setAttribute(
+              'stroke-dasharray',
+              `1, ${pathStart}, ${pathEnd - pathStart}, ${pathLength}`
+            );
+            tocPath.setAttribute('opacity', '1');
+          } else {
+            tocPath.setAttribute('opacity', '0');
+          }
+        }
+
+        
+
+        function simpleScrollHandler(el) {
+          let scrollToEl = null;
+          for (let i = allCatalogs.length - 1; i >= 0; i--) {
+            if (allCatalogs[i].offsetTop <= $scroll_wrap.scrollTop) {
+              scrollToEl = allCatalogs[i];
+              break;
+            }
+          }
+          if (scrollToEl) setActiveItem(scrollToEl.id);
+          else setActiveItem(null); 
+        }
+
+        
+
+        function clickHandler({ target }) {
+          const datasetId = target.getAttribute(Opt.datasetName);
+          target.classList.contains(Opt.linkClass) &&
+            document
+              .getElementById(datasetId)
+              .scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        
+
+        function getCatalogsTree(catalogs) {
+          let title,
+            tagName,
+            tree = [],
+            treeItem = {},
+            parentItem = { id: -1 },
+            lastTreeItem = null,
+            id;
+
+          for (let i = 0; i < catalogs.length; i++) {
+            title = catalogs[i].innerText || catalogs[i].textContent;
+            tagName = catalogs[i].tagName;
+            id = 'heading-' + i;
+            catalogs[i].id = id;
+            treeItem = {
+              name: title,
+              tagName: tagName,
+              id: id,
+              level: +getLevel(tagName),
+              parent: parentItem
+            };
+            if (lastTreeItem) {
+              if (getLevel(treeItem.tagName) > getLevel(lastTreeItem.tagName)) {
+                treeItem.parent = lastTreeItem;
+              } else {
+                treeItem.parent = findParent(treeItem, lastTreeItem);
+              }
+            }
+            lastTreeItem = treeItem;
+            tree.push(treeItem);
+          }
+          return tree;
+        }
+
+        
+
+        function findParent(currTreeItem, lastTreeItem) {
+          let lastTreeParent = lastTreeItem.parent;
+          while (
+            lastTreeParent &&
+            getLevel(currTreeItem.tagName) <= getLevel(lastTreeParent.tagName)
+          ) {
+            lastTreeParent = lastTreeParent.parent;
+          }
+          return lastTreeParent || { id: -1 };
+        }
+
+        
+
+        function getLevel(tagName) {
+          return tagName ? tagName.slice(1) : 0;
+        }
+
+        
+
+        function generateHtmlTree(tree, _parent) {
+          let ul,
+            hasChild = false;
+          if (tree) {
+            ul = `<ul>`;
+            for (let i = 0; i < tree.length; i++) {
+              if (isEqual(tree[i].parent, _parent)) {
+                hasChild = true;
+                ul += `<li><div class='${Opt.linkClass} cl-level-${tree[i].level}' ${Opt.datasetName}='${tree[i].id}'>${tree[i].name}</div>`;
+                ul += generateHtmlTree(tree, tree[i]);
+                ul += '</li>';
+              }
+            }
+            ul += `</ul>`;
+          }
+          return hasChild ? ul : '';
+        }
+
+        /**
+         * 判断是否是相同节点
+         */
+        function isEqual(node, node2) {
+          return (
+            node &&
+            node2 &&
+            typeof node === 'object' &&
+            typeof node2 === 'object' &&
+            node.id === node2.id
+          );
+        }
+
+        /**
+         *  设置选中的项
+         */
+        function setActiveItem(id) {
+          let catas = [...$catalog.querySelectorAll(`[${Opt.datasetName}]`)];
+
+          catas.forEach(T => {
+            if (T.getAttribute(Opt.datasetName) === id) {
+              typeof Opt.activeHook === 'function' &&
+                !T.classList.contains(Opt.linkActiveClass) &&
+                Opt.activeHook.call(this, T); // 执行active钩子
+              T.classList.add(Opt.linkActiveClass);
+            } else {
+              T.classList.remove(Opt.linkActiveClass);
+            }
+          });
+        }
+      };
+    })();
+    window.addEventListener(
+      'DOMContentLoaded',
+      _ =>
+        new Catalog({
+          contentEl: 'markdown',
+          catalogEl: 'catalog'
+        })
+    );
+  })();
 </script>
+
 			<hr class="sep" />
 		</main>
 		<footer class="container no-print">

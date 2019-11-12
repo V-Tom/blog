@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="Keywords" content="">
+    <meta name="full-screen" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#006cb4">
+    <meta name="apple-mobile-web-app-title" content="TOM&#39;s zone">
+    <meta name="description" content="TOM&#39;s zone">
+    <link rel="dns-prefetch" href="https://hasaki.xyz">
+    <link rel="preconnect" href="https://hasaki.xyz">
+    <link rel="manifest" href="/sw/manifest.json"/>
+<title>前端性能检测和错误捕捉 - TOM&#39;s zone</title>
+
+<meta name="description" content="在复杂的网络环境和浏览器环境下，自测、QA 测试以及 Code Review 都是不够的，如果对页面稳定性和准确性要求较高，就必须有一套完善的代码异常监控体系好的产品，这样才能很好的得到用户的反馈从而不断的迭代改进我们的产品。
+而且复杂的用户终端设备，也需要通过性能监控发现部分前端性能瓶颈，以便进行优化；通过错误日志收集，及时获得前端的运行时错误
+收集错误异常  错误异常分为 web 错误异常和React-native 错误异常
+ web 错误异常 总体来说：平时收集日志的手段，可以归类为两个方面，一个是逻辑中的错误判断，为主动判断，如try...catch；一个是利用语言给我们提供的捷径，暴力式获取错误信息，如 window.onerror；当然也存在另外一种错误，那就是Promise unhandlerejection
+try…catch 判断一个代码段中可能存在的错误：
+try { doSomeThing(); // code... } catch (e) { // send format error Reporter.send(format(e)); }  window.onerror 这个用来捕获全局错误：
+window.onerror = function() { // send format error var errInfo = format(arguments); Reporter.send(errInfo); return true; };  在上面的函数中返回 return true，错误便不会暴露到控制台中。下面是它的参数信息：
+/** * @param {String} errorMessage 错误信息 * @param {String} scriptURI 出错的文件 * @param {Long} lineNumber 出错代码的行号 * @param {Long} columnNumber 出错代码的列号 * @param {Object} errorObj 错误的详细信息，Anything */ window.">
+
+
+
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato|Raleway">
+
+
+    <link rel="stylesheet"
+          href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/ocean.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/javascript.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/python.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/go.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/css.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/swift.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/objectivec.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/rust.min.js"></script>
+
+
+    <link rel="stylesheet" href="/css/bundle.min.css"/>
+<script src="/js/bundle.js"></script>
+
+<style>
+	a { color: #ff8181; }
+	blockquote {
+		border-left-color: #ff8181;
+		border-right-color: #ff8181; }
+	.bar a:hover {
+		color: #ff8181;
+		text-decoration: none; }
+	.sep {
+		margin-top: 2rem;
+		margin-bottom: 1rem;
+		margin-left:0;
+		width: 24rem;
+		border-top: 2px solid #ff8181; }
+    .bar li.active a{
+        color:#ff8181;
+    }
+</style>
+
+</head>
+
+<body>
+<header class="container no-print">
+	<div class="u-header">
+		<nav class="bar">
+	<ul><li>
+			<a href="/">
+				<img class="icon-text" src="/img/prev.svg"/>
+			</a>
+		</li>
+		
+		<li class="active"><a href="/blog/">Blog</a></li>
+		<li class=""><a href="/gallery/">Gallery</a></li>
+		<li class=""><a href="/life/">Life</a></li></ul>
+</nav>
+
+	</div>
+</header>
+<main class="container">
+
+<article>
+    <header><hgroup id="brand">
+  <h1>前端性能检测和错误捕捉</h1>
+  <h5>
+    
+    <time datetime="2017-09-12 15:29:40 &#43;0800 CST">Sep 12, 2017</time>
+    <span class="no-print">
+      -
+      
+      <a href="/tags/rn">RN</a>
+      
+      <a href="/tags/frontend">FrontEnd</a>
+      
+      <a href="/tags/monitor">Monitor</a>
+      </span>
+  </h5>
+
+  <a
+    style="margin-top: 1.2rem;display: inline-block;"
+    href="https://github.com/V-Tom/blog/blob/hugo/content/blog/2017-09-12-%e5%89%8d%e7%ab%af%e6%80%a7%e8%83%bd%e6%a3%80%e6%b5%8b%e5%92%8c%e9%94%99%e8%af%af%e6%8d%95%e6%8d%89/index.md"
+    >✨✨✨You can Edit this Article on Github site</a
+  >
+
+  <script>
+  (async () => {
+    const commits = await fetch(
+      'https://api.github.com/repos/V-Tom/blog/commits?sha=hugo&path=content/blog\/2017-09-12-前端性能检测和错误捕捉\/index.md'
+    ).then(res => res.json());
+    const b = document.querySelector('#git-active-time').querySelector('b');
+    try {
+      const time = new Date(commits[0].commit.committer.date);
+      b.innerHTML = `${time.getFullYear()}-${time.getMonth() +
+        1}-${time.getDate()}`;
+    } catch (e) {
+      b.innerHTML = 'unknown';
+    }
+  })();
+</script>
+<div id="git-active-time">
+  ✏️✏️✏️ This article .MD file was last updated at:
+  <b>Loading ...</b>
+</div>
+
+
+  
+</hgroup>
+<hr class="sep" />
+</header>
+    <section id="markdown">
+        
+
+<p>在复杂的网络环境和浏览器环境下，自测、QA 测试以及 Code Review 都是不够的，如果对页面稳定性和准确性要求较高，就必须有一套完善的代码异常监控体系好的产品，这样才能很好的得到用户的反馈从而不断的迭代改进我们的产品。</p>
+
+<p>而且复杂的用户终端设备，也需要通过性能监控发现部分前端性能瓶颈，以便进行优化；通过错误日志收集，及时获得前端的运行时错误</p>
+
+<h2 id="收集错误异常">收集错误异常</h2>
+
+<blockquote>
+<p>错误异常分为 <strong>web 错误异常</strong>和<strong>React-native 错误异常</strong></p>
+</blockquote>
+
+<h3 id="web-错误异常">web 错误异常</h3>
+
+<p>总体来说：平时收集日志的手段，可以归类为两个方面，一个是逻辑中的错误判断，为主动判断，如<code>try...catch</code>；一个是利用语言给我们提供的捷径，暴力式获取错误信息，如 <code>window.onerror</code>；当然也存在另外一种错误，那就是<code>Promise unhandlerejection</code></p>
+
+<h4 id="try-catch">try…catch</h4>
+
+<p>判断一个代码段中可能存在的错误：</p>
+
+<pre><code class="language-javascript">try {
+  doSomeThing();
+  // code...
+} catch (e) {
+  // send format error
+  Reporter.send(format(e));
+}
+</code></pre>
+
+<h4 id="window-onerror">window.onerror</h4>
+
+<p>这个用来捕获全局错误：</p>
+
+<pre><code class="language-javascript">window.onerror = function() {
+  // send format error
+  var errInfo = format(arguments);
+  Reporter.send(errInfo);
+  return true;
+};
+</code></pre>
+
+<p>在上面的函数中返回 <code>return true</code>，错误便不会暴露到控制台中。下面是它的参数信息：</p>
+
+<pre><code class="language-javascript">/**
+ * @param {String}  errorMessage   错误信息
+ * @param {String}  scriptURI      出错的文件
+ * @param {Long}    lineNumber     出错代码的行号
+ * @param {Long}    columnNumber   出错代码的列号
+ * @param {Object}  errorObj       错误的详细信息，Anything
+ */
+window.onerror = function(
+  errorMessage,
+  scriptURI,
+  lineNumber,
+  columnNumber,
+  errorObj
+) {
+  // code..
+};
+</code></pre>
+
+<h4 id="unhandledrejection">unhandledrejection</h4>
+
+<p><code>Promise</code> 内部未捕获的异常可以通过监听<code>onunhandledrejection</code>来捕获</p>
+
+<pre><code class="language-javascript">window.addEventListener('unhandledrejection', (error, id) =&gt; {});
+</code></pre>
+
+<p>如果你想还原出 <code>Promise</code> 的错误，关键点是要拿到 <code>Error Stack</code>，native 提供的监听方法得不到更多的信息，可以考虑采用 <a href="https://github.com/taylorhakes/promise-polyfill#unhandled-rejections">promise polyfill</a> 提供的方法来拿到。</p>
+
+<blockquote>
+<p>为什么可以拿到呢？如果你实现过 Promise 的话就很容易理解了，Promise 里面的代码也是同步执行的（只是 notify 的方式是异步的 ），所以 try catch 是可以拿到当前 <code>Error Stack</code> 的</p>
+</blockquote>
+
+<h3 id="react-native-错误异常">React-native 错误异常</h3>
+
+<p>下面我们看如何在 RN 环境当中收集异常，当然这个异常也分为 2 个方面：</p>
+
+<h4 id="runtime-error">Runtime Error</h4>
+
+<p>由于在 RN 环境当中并不存在<code>window</code>这种宿主对象。</p>
+
+<p>只存在<code>javascriptCore</code>，所以官方提供了方法：<code>global.ErrorUtils.setGlobalHandler</code>来监听全局的错误，可以参考以下代码：</p>
+
+<pre><code class="language-javascript">import { Platform } from 'react-native';
+
+// 保留原来内部的error handler
+const originalHandler = global.ErrorUtils.getGlobalHandler();
+
+// 配置我们自定义的错误 handler
+global.ErrorUtils.setGlobalHandler(ErrorHandler);
+
+function ErrorHandler(e, isFatal) {
+  if (Platform.OS === 'ios') {
+    CrashHandler.originalHandler(arguments);
+  } else {
+    setTimeout(() =&gt; {
+      CrashHandler.originalHandler(arguments);
+    }, 300);
+  }
+
+  __DEV__ &amp;&amp; throwErrorToNative();
+
+  // 我们自己的错误处理方式
+  // 发送检测数据
+  Report.send(e);
+}
+</code></pre>
+
+<blockquote>
+<p>资料：<a href="https://github.com/facebook/react-native/blob/d33b554f5d4bb7856cf2fc21175bab23d8225fe4/packager/react-packager/src/Resolver/polyfills/error-guard.js#L20-L28">参考官方源码</a></p>
+</blockquote>
+
+<p>然而，在 RN 当中的错误并没有显式的返回 line 和 column 这两个很重要的值，不要怕，我们有<code>error.stack</code>，可以在这上面做文章：</p>
+
+<pre><code class="language-javascript">/**
+ * lsErrorStack
+ * @param e
+ * @returns {{line: *, column: *}}
+ */
+function lsErrorStack(e) {
+  if (!e || !e instanceof Error || !e.stack) return {};
+
+  try {
+    const stack = e.stack.toString().split(/\r\n|\n/),
+      frameRE = /:(\d+:\d+)[^\d]*$/;
+
+    while (stack.length) {
+      const frame = frameRE.exec(stack.shift());
+      if (frame) {
+        const position = frame[1].split(':');
+        return { line: position[0], column: position[1] };
+      }
+    }
+  } catch (e) {
+    return {};
+  }
+}
+
+const error = new Error('this is a test');
+
+// 我们可以得到 line 和 column
+console.log(lsErrorStack(e));
+</code></pre>
+
+<h4 id="promise-error">Promise Error</h4>
+
+<p>同理，RN 环境当中当然也不能通过上面的<code>unhandledrejection</code>来进行监听。</p>
+
+<p>事实上，RN 内部执行的 JavaScript 是通过 babel 编译后的代码，而且这个 babel 上的 Promise 是依赖于一个<a href="https://github.com/then/promise">Promise lib</a>，刚好这个 lib 上有提供监听未捕获 rejection 的钩子：</p>
+
+<pre><code class="language-javascript">// 在非开发环境下进行监听
+if (!__DEV__) {
+  require('promise/setimmediate/rejection-tracking').enable({
+    allRejections: true,
+
+    /**
+     * onUnhandled
+     * @param id
+     * @param error
+     */
+    onUnhandled: (id, error) =&gt; {
+      // Promise 错误
+      this.onUnhandled(id, error);
+    },
+
+    /**
+     * onHandled
+     * @param id
+     */
+    onHandled: id =&gt; {
+      this.onHandled(id);
+    }
+  });
+}
+</code></pre>
+
+<blockquote>
+<p>资料：<a href="https://github.com/facebook/react-native/blob/b0640946873945ee95d2cab8f549c915dbfffd70/Libraries/Promise.js#L28-L47">官方 PR-1</a></p>
+
+<p>资料：<a href="https://github.com/facebook/react-native/commit/b0640946873945ee95d2cab8f549c915dbfffd70">官方 PR-2</a></p>
+
+<p>资料：<a href="https://github.com/then/promise#unhandled-rejections">Promise polyfill</a></p>
+</blockquote>
+
+<p>同理，promise error 也可以通过这个方式来得到真正的 line 和 column</p>
+
+<h4 id="sourcemap-还原错误完整信息">SourceMap 还原错误完整信息</h4>
+
+<p>当 runtime 当中发生了错误，我们收集到了错误，怎么进行还原事发现场呢？</p>
+
+<blockquote>
+<p>我们可以通过完整的<code>srouceMap</code>和出错的<code>line</code>、<code>column</code>来准确还原发生错误时代码上下文。</p>
+</blockquote>
+
+<p>在 RN 当中我们可以在执行打包命令的时候带上<code>--sourcemap-output youbundle.map</code>来生成。</p>
+
+<p>web 环境下就很灵活了，对比常用的打包工具<code>webpack</code>、<code>Rollup</code>等都提供了很简便的方式去生成 sourcemap。</p>
+
+<p>当然我们可以参照 <a href="https://github.com/mozilla/source-map">moz sourcemap</a> 来自己生成自定义 sourcemap。</p>
+
+<p>接下来我们可以很简单的还原事发现场：</p>
+
+<pre><code class="language-javascript">const {
+  SourceMapConsumer,
+  SourceMapGenerator,
+  SourceNode
+} = require('source-map');
+const fs = require('fs');
+
+/**
+ * rawMap
+ */
+const rawMap = JSON.parse(fs.readFileSync('./index.map').toString());
+
+const smc = new SourceMapConsumer(rawMap);
+const position = smc.originalPositionFor({
+  line: 1,
+  column: 75422
+});
+
+const { source, line, column } = position;
+
+// output
+console.log(`事故发生现场：${source}，位于第${line}行，第${column}列！`);
+</code></pre>
+
+<p>当然如果是带有 <code>sourceContent</code> 的 sourcemap，我们还能继续还原到具体原始文件，可以参考一下代码：</p>
+
+<blockquote>
+<p>这个方法只针对于存在 sourceContents 的 sourcemap，个别部分不带，比如 RN（RN 需要改打包源码</p>
+</blockquote>
+
+<pre><code class="language-javascript">/**
+ * 这里认为我们已经按照上诉代码拿到了 consumer 以及 错误的 position
+ */
+const { source, line, column } = position;
+
+/**
+ * 我们想还原原始代码上下10行
+ */
+const showOriginCodeLines = 10;
+const finalSource = [];
+
+/**
+ * 通过 consumer sourceContentFor 方法拿到 原始的 代码，并处理换行，转换成数组
+ */
+const sourceContent = consumer.sourceContentFor(source);
+const sourceContentMaps = sourceContent.toString().split(/\r\n|\n/);
+
+/**
+ * 这里是垃圾代码，凑合看吧
+ * 取上下 showOriginCodeLines 行 组合在一起
+ */
+for (let i = 0; i &lt; showOriginCodeLines; i++) {
+  finalSource.unshift(sourceContentMaps[line - 1 - i]);
+}
+
+for (let i = 1; i &lt; showOriginCodeLines + 1; i++) {
+  finalSource.push(sourceContentMaps[line - 1 + i]);
+}
+
+/**
+ * 输出最终结果
+ */
+console.log(finalSource.join('\n'));
+</code></pre>
+
+<p>这里拿到原始代码后，我们可以通过一些插件做些简单的高亮，美化等处理，完全可以做一个低配版本的 Sentry 平台。</p>
+
+<h2 id="收集性能数据">收集性能数据</h2>
+
+<p>收集性能数据分为 web 性能数据和 RN 性能数据。</p>
+
+<h3 id="web-性能数据">web 性能数据</h3>
+
+<p>web 上的性能数据我们可以通过<code>performance</code>API 来收集。</p>
+
+<blockquote>
+<p>当然这个有兼容性的问题，IE 和 Safari 都只能在 11 上得到支持。</p>
+</blockquote>
+
+<p>具体我们参考这篇 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Performance">mdn 介绍</a>，以及下面这张简单的介绍图：</p>
+
+<p><img src="https://www.w3.org/TR/navigation-timing/timing-overview.png" alt="performance api overview" /></p>
+
+<p>简单来说就是在 <code>window.onload</code> 后来去按照需要获取 <code>performance</code> 数据并上传到服务器主机。</p>
+
+<p>目前来说我觉得有用的数据大概是以下几个，仅供参考：</p>
+
+<ul>
+<li><code>domComplete</code></li>
+<li><code>loadEvent</code></li>
+<li><code>unloadEvent</code></li>
+<li><code>request</code></li>
+<li><code>domContentLoaded</code></li>
+<li><code>totalImageLoaded</code></li>
+</ul>
+
+<h3 id="react-native-性能数据">React-native 性能数据</h3>
+
+<p>RN 上的性能数据其实在<strong>开发</strong>环境当中已经可以查看，生产环境下需要更改 RN 源码来打开 <code>monitor</code>，这里不做深入介绍。</p>
+
+<h3 id="前端-browser-日志上报优化">前端 browser 日志上报优化</h3>
+
+<p>日志上报可以选择 ajax 或者 empty GIF 等形式来进行上报，但是如果前端业务复杂、访问量级较大，那么相应地，前端监控上报的日志类型及日志量也会快速增长。</p>
+
+<p>前端监控的最基本原则是日志获取和日志上报不能影响业务性能，所以需要优化上报的性能。</p>
+
+<p>这里大概有以下几种常见的方法：</p>
+
+<ul>
+<li>HTTP No Content</li>
+<li>HTTP/2 头部压缩，HTTP/2 多路复用</li>
+<li>HTTP post 合并多条信息</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator/sendBeacon">navigator.sendBeacon</a></li>
+</ul>
+
+<h4 id="http-no-content">HTTP No Content</h4>
+
+<p>日志上报只关心日志有没有上报，并不关心上报请求的返回内容，甚至完全可以不需要返回内容。所以使用 <code>HTTP HEAD</code> 的方式上报，并且返回的响应体为空，可避免响应体传输造成的资源损耗</p>
+
+<pre><code class="language-javascript">fetch(`${url}?t=perf&amp;page=lazada-home&amp;load=1168`, {
+  mode: 'no-cors',
+  method: 'HEAD'
+});
+</code></pre>
+
+<h4 id="http-2-头部压缩">HTTP/2 头部压缩</h4>
+
+<p>每次 HTTP 请求都会传输一系列的请求头来描述请求的资源及其特性，然而实际上每次请求都有很多相同的值，如 <code>Host:</code>、<code>user-agent:</code>、<code>Accept</code> 等。这些数据会占用 300-800 byte 的传输量，如果携带大的 cookie，请求头甚至会占据 1 kb 的空间，而实际真正需要上报的日志数据仅有 10~50 byte。在 HTTP 1.x 中，每次日志上报请求头都携带了大量的重复数据导致性能浪费。</p>
+
+<p>HTTP/2 <a href="https://link.zhihu.com/?target=https%3A//www.oreilly.com/learning/http2-a-new-excerpt">头部压缩</a>采用 Huffman Code 压缩请求头，并用动态表更新每次请求不同的数据，从而将每次请求的头部压缩到很小。</p>
+
+<h4 id="http-2-多路复用">HTTP/2 多路复用</h4>
+
+<p>用户浏览器和日志服务器之间产生多次 HTTP 请求，而在 <strong>HTTP/1.1 Keep-Alive</strong> 下，日志上报会以串行的方式传输，并让后面的日志上报延时。通过 HTTP/2 的多路复用来合并上报，可以节省网络连接的开销。</p>
+
+<h4 id="sendbeacon">sendBeacon</h4>
+
+<blockquote>
+<p>详情可以参考 <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/sendBeacon">MDN 文档</a></p>
+</blockquote>
+
+<p>有些时候我们需要在 <code>unload</code> 或者 <code>beforeunload</code> 事件监听当中来进行发送<strong>同步</strong>的 ajax 来上传监控数据，但是同步的 ajax 会导致下一个页面加载能力较差。</p>
+
+<p>虽然采用 empty GIF 的方式可以实现，因为绝大多数用户代理会延迟卸载以保证图片的载入。但是这种方法有较差的编码方式而且不可靠，会影响页面性能。</p>
+
+<p>当使用 <code>sendBeacon</code> 方法将会使用户代理在有机会时异步地向服务器发送数据，同时不会延迟页面的卸载或影响下一导航的载入性能。这就解决了提交分析数据时的所有的问题：使它可靠，异步并且不会影响下一页面的加载。</p>
+
+    </section>
+    <nav class="no-print post-nav">
+        
+        <a class="prev-post" href="https://hasaki.xyz/blog/2017-08-13-%E8%AF%91%E6%96%87understanding-asts-by-building-your-own-babel-plugin/">
+            <img class="icon-text" src="/img/prev.svg"/>译文:Understanding ASTs by Building Your Own Babel Plugin</a>
+        
+        
+        <a class="next-post" href="https://hasaki.xyz/blog/2017-11-02-react-%E6%A8%A1%E5%BC%8F%E6%8A%80%E5%B7%A7%E6%8A%80%E5%B7%A7%E5%92%8C%E7%AA%8D%E9%97%A8/">React 模式，技巧，技巧和窍门<img class="icon-text" src="/img/next.svg"/>
+        </a>
+        
+    </nav>
+</article>
+
+
+
+<div id="disqus_thread" class="no-print"></div>
+<script type="text/javascript">
+    'use strict';
+    (function () {
+        if ('localhost' != window.location.hostname) {
+            var a = document.querySelector('#disqus_thread');
+            new IntersectionObserver(function (b) {
+                b.forEach(function (d) {
+                    if (0 < d.intersectionRatio && !a.classList.contains('active')) {
+                        var e = document.createElement('script');
+                        e.type = 'text/javascript', e.async = !0;
+                        e.src = '//' + 'hasaki-xyz' + '.disqus.com/embed.js', (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(e), a.classList.add('active')
+                    }
+                })
+            }, {rootMargin: '0px', threshold: 1}).observe(a)
+        }
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+</noscript>
+
+
+<style rel="catalog">
+  #catalog {
+    position: fixed;
+    left: 3vw;
+    top: 8vh;
+    overflow: auto;
+    height: calc(100% - 16vh);
+    background:
+      linear-gradient(
+        white 30%,
+        rgba(255, 255, 255, 0)
+      ),
+      linear-gradient(rgba(255, 255, 255, 0), white 70%) 0 100%,
+       
+        radial-gradient(
+          50% 0,
+          farthest-side,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        ),
+      radial-gradient(
+          50% 100%,
+          farthest-side,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        )
+        0 100%;
+    background:
+      linear-gradient(
+        white 30%,
+        rgba(255, 255, 255, 0)
+      ),
+      linear-gradient(rgba(255, 255, 255, 0), white 70%) 0 100%,
+       
+        radial-gradient(
+          farthest-side at 50% 0,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        ),
+      radial-gradient(
+          farthest-side at 50% 100%,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        )
+        0 100%;
+    background-repeat: no-repeat;
+    background-color: white;
+    background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
+
+     
+    background-attachment: local, local, scroll, scroll;
+  }
+  #catalog::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cl-wrapper {
+    position: relative;
+  }
+
+  .cl-wrapper ul,
+  .cl-wrapper li {
+    margin: 0;
+    -moz-padding-start: 12px;
+    -webkit-padding-start: 12px;
+    list-style: none;
+  }
+
+  .cl-wrapper li > .cl-link.cl-link-active {
+    color: #ff8181;
+    transition: 0.5s;
+  }
+
+  .cl-wrapper li > .cl-transform.cl-link-active {
+    transform: translate(3px);
+  }
+
+  .cl-wrapper .cl-link {
+    cursor: pointer;
+    color: rgba(52, 73, 94, 0.5);
+    font-size: 13px;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .cl-wrapper .cl-marker {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+
+  .cl-wrapper .cl-marker path {
+    transition: all 0.3s ease;
+  }
+</style>
+<main id="catalog"></main>
+<script rel="catalog">
+  void (function() {
+    if (
+      window.innerWidth < 1024 ||
+      /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+    ) {
+      return;
+    }
+
+    const Catalog = (function() {
+      return function(opts) {
+        let defaultOpts = {
+          linkClass: 'cl-link', 
+          linkActiveClass: 'cl-link-active', 
+          datasetName: 'data-cata-target', 
+          selector: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'], 
+          scrollWrapper: null, 
+          activeHook: null, 
+          topMargin: 0,
+          bottomMargin: 0,
+          cool: true 
+        };
+
+        const Opt = Object.assign({}, defaultOpts, opts);
+
+        const $content = document.getElementById(Opt.contentEl); 
+        const $scroll_wrap = window; 
+        const $catalog = document.getElementById(Opt.catalogEl); 
+
+        let allCatalogs = $content.querySelectorAll(Opt.selector.join());
+        let tree = getCatalogsTree(allCatalogs);
+
+        try {
+          $catalog.innerHTML = `<div class='cl-wrapper'>${generateHtmlTree(
+            tree,
+            { id: -1 }
+          )}<svg class="cl-marker" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+            <path stroke="#ff8181" stroke-width="3" fill="transparent" stroke-dasharray="0, 0, 0, 1000" stroke-linecap="round" stroke-linejoin="round" transform="translate(-0.5, -0.5)" />
+            </svg></div>`;
+        } catch (e) {
+          console.error('error in progress-catalog', e);
+        }
+
+        const tocPath = $catalog.querySelector('.cl-marker path');
+        let tocItems, pathLength; 
+
+        
+        window.addEventListener('resize', drawPath);
+        $catalog.addEventListener('click', clickHandler);
+        Opt.cool && $scroll_wrap.addEventListener('scroll', coolScrollHandler);
+        Opt.cool ||
+          $scroll_wrap.addEventListener('scroll', simpleScrollHandler);
+
+        setTimeout(drawPath); 
+
+        
+
+        function drawPath() {
+          tocItems = [...$catalog.querySelectorAll('li')];
+          tocItems = tocItems.map(function(liDom) {
+            const anchor = liDom.querySelector(`.${Opt.linkClass}`);
+            const target = document.getElementById(
+              anchor.getAttribute('data-cata-target')
+            );
+
+            return {
+              listItem: liDom,
+              anchor: anchor,
+              target: target
+            };
+          });
+          tocItems = tocItems.filter(item => !!item.target);
+
+          const path = [];
+          let pathIndent;
+
+          tocItems &&
+            tocItems.forEach(function(item, idx) {
+              const { offsetLeft, offsetTop, offsetHeight } = item.anchor,
+                x = Opt.cool ? offsetLeft - 5 : offsetLeft,
+                y = offsetTop,
+                height = offsetHeight;
+
+              if (idx === 0) {
+                path.push('M', x, y, 'L', x, y + height);
+                item.pathStart = 0;
+              } else {
+                if (pathIndent !== x) path.push('L', pathIndent, y); 
+                path.push('L', x, y);
+                tocPath.setAttribute('d', path.join(' '));
+                item.pathStart = tocPath.getTotalLength() || 0;
+                path.push('L', x, y + height);
+              }
+              pathIndent = x;
+              tocPath.setAttribute('d', path.join(' '));
+              item.pathEnd = tocPath.getTotalLength();
+            });
+          pathLength = tocPath.getTotalLength();
+          coolScrollHandler();
+        }
+
+        
+
+        function coolScrollHandler() {
+          const wrapHeight = document.documentElement.offsetHeight;
+          let pathStart = pathLength,
+            pathEnd = 0,
+            visibleItems = 0;
+          tocItems.forEach(function(liItem) {
+            const { bottom, top } = liItem.target.getBoundingClientRect(),
+              firstChild = liItem.listItem.firstChild;
+            if (bottom > Opt.topMargin && top < wrapHeight - Opt.bottomMargin) {
+              firstChild.classList.remove(Opt.linkActiveClass);
+              Opt.cool && firstChild.classList.remove('cl-transform');
+            } else {
+              pathStart = Math.min(liItem.pathStart, pathStart);
+              pathEnd = Math.max(liItem.pathEnd, pathEnd);
+              visibleItems += 1;
+              firstChild.classList.add(Opt.linkActiveClass);
+              Opt.cool && firstChild.classList.add('cl-transform');
+            }
+          });
+          if (visibleItems > 0 && pathStart < pathEnd && Opt.cool) {
+            tocPath.setAttribute('stroke-dashoffset', '1');
+            tocPath.setAttribute(
+              'stroke-dasharray',
+              `1, ${pathStart}, ${pathEnd - pathStart}, ${pathLength}`
+            );
+            tocPath.setAttribute('opacity', '1');
+          } else {
+            tocPath.setAttribute('opacity', '0');
+          }
+        }
+
+        
+
+        function simpleScrollHandler(el) {
+          let scrollToEl = null;
+          for (let i = allCatalogs.length - 1; i >= 0; i--) {
+            if (allCatalogs[i].offsetTop <= $scroll_wrap.scrollTop) {
+              scrollToEl = allCatalogs[i];
+              break;
+            }
+          }
+          if (scrollToEl) setActiveItem(scrollToEl.id);
+          else setActiveItem(null); 
+        }
+
+        
+
+        function clickHandler({ target }) {
+          const datasetId = target.getAttribute(Opt.datasetName);
+          target.classList.contains(Opt.linkClass) &&
+            document
+              .getElementById(datasetId)
+              .scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        
+
+        function getCatalogsTree(catalogs) {
+          let title,
+            tagName,
+            tree = [],
+            treeItem = {},
+            parentItem = { id: -1 },
+            lastTreeItem = null,
+            id;
+
+          for (let i = 0; i < catalogs.length; i++) {
+            title = catalogs[i].innerText || catalogs[i].textContent;
+            tagName = catalogs[i].tagName;
+            id = 'heading-' + i;
+            catalogs[i].id = id;
+            treeItem = {
+              name: title,
+              tagName: tagName,
+              id: id,
+              level: +getLevel(tagName),
+              parent: parentItem
+            };
+            if (lastTreeItem) {
+              if (getLevel(treeItem.tagName) > getLevel(lastTreeItem.tagName)) {
+                treeItem.parent = lastTreeItem;
+              } else {
+                treeItem.parent = findParent(treeItem, lastTreeItem);
+              }
+            }
+            lastTreeItem = treeItem;
+            tree.push(treeItem);
+          }
+          return tree;
+        }
+
+        
+
+        function findParent(currTreeItem, lastTreeItem) {
+          let lastTreeParent = lastTreeItem.parent;
+          while (
+            lastTreeParent &&
+            getLevel(currTreeItem.tagName) <= getLevel(lastTreeParent.tagName)
+          ) {
+            lastTreeParent = lastTreeParent.parent;
+          }
+          return lastTreeParent || { id: -1 };
+        }
+
+        
+
+        function getLevel(tagName) {
+          return tagName ? tagName.slice(1) : 0;
+        }
+
+        
+
+        function generateHtmlTree(tree, _parent) {
+          let ul,
+            hasChild = false;
+          if (tree) {
+            ul = `<ul>`;
+            for (let i = 0; i < tree.length; i++) {
+              if (isEqual(tree[i].parent, _parent)) {
+                hasChild = true;
+                ul += `<li><div class='${Opt.linkClass} cl-level-${tree[i].level}' ${Opt.datasetName}='${tree[i].id}'>${tree[i].name}</div>`;
+                ul += generateHtmlTree(tree, tree[i]);
+                ul += '</li>';
+              }
+            }
+            ul += `</ul>`;
+          }
+          return hasChild ? ul : '';
+        }
+
+        /**
+         * 判断是否是相同节点
+         */
+        function isEqual(node, node2) {
+          return (
+            node &&
+            node2 &&
+            typeof node === 'object' &&
+            typeof node2 === 'object' &&
+            node.id === node2.id
+          );
+        }
+
+        /**
+         *  设置选中的项
+         */
+        function setActiveItem(id) {
+          let catas = [...$catalog.querySelectorAll(`[${Opt.datasetName}]`)];
+
+          catas.forEach(T => {
+            if (T.getAttribute(Opt.datasetName) === id) {
+              typeof Opt.activeHook === 'function' &&
+                !T.classList.contains(Opt.linkActiveClass) &&
+                Opt.activeHook.call(this, T); // 执行active钩子
+              T.classList.add(Opt.linkActiveClass);
+            } else {
+              T.classList.remove(Opt.linkActiveClass);
+            }
+          });
+        }
+      };
+    })();
+    window.addEventListener(
+      'DOMContentLoaded',
+      _ =>
+        new Catalog({
+          contentEl: 'markdown',
+          catalogEl: 'catalog'
+        })
+    );
+  })();
+</script>
+
+			<hr class="sep" />
+		</main>
+		<footer class="container no-print">
+			<div class="u-footer">
+				
+<a href="mailto:iamnomand@gmail.com"><img class="icon-social" src="/img/email.svg" alt="Email Me!"/></a>
+
+
+<a href="https://github.com/v-tom/"><img class="icon-social" src="/img/github.svg" alt="Github"/></a>
+
+
+<a href="https://twitter.com/iamnomand"><img class="icon-social" src="/img/twitter.svg" alt="Twitter"/></a>
+
+<a href="https://hasaki.xyz/index.xml" target="_blank"><img class="icon-social" src="/img/feed.svg" alt="Feed"></a>
+
+				<p>
+					
+					
+					Early 2016 ~ 2019 &copy; TOM's Zone
+					
+					
+				</p>
+				
+				<a href="#brand">
+					<img class="icon-text" src="/img/toup.svg" alt="To Up"/>
+					<span>Back to Up</span>
+				</a>
+				
+			</div>
+		</footer>
+		
+		<script>hljs.initHighlightingOnLoad();</script>
+		
+	</body>
+</html>
+

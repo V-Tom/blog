@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Gallery on TOM&#39;s zone</title>
+    <link>https://hasaki.xyz/gallery/</link>
+    <description>Recent content in Gallery on TOM&#39;s zone</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ZH-CN</language>
+    <copyright>Early 2016 ~ 2019 &amp;copy; TOM&#39;s Zone</copyright>
+    <lastBuildDate>Wed, 06 Nov 2019 15:39:30 +0800</lastBuildDate>
+    
+	<atom:link href="https://hasaki.xyz/gallery/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>随便放点什么照片</title>
+      <link>https://hasaki.xyz/gallery/2019-11-07-%E9%9A%8F%E4%BE%BF%E6%94%BE%E7%82%B9%E4%BB%80%E4%B9%88%E7%85%A7%E7%89%87/</link>
+      <pubDate>Wed, 06 Nov 2019 15:39:30 +0800</pubDate>
+      
+      <guid>https://hasaki.xyz/gallery/2019-11-07-%E9%9A%8F%E4%BE%BF%E6%94%BE%E7%82%B9%E4%BB%80%E4%B9%88%E7%85%A7%E7%89%87/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

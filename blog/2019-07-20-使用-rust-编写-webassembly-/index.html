@@ -85,6 +85,7 @@ JIT 计算机使用的是机器语言，也就是 010101 二进制，而我们�
 		</li>
 		
 		<li class="active"><a href="/blog/">Blog</a></li>
+		<li class=""><a href="/gallery/">Gallery</a></li>
 		<li class=""><a href="/life/">Life</a></li></ul>
 </nav>
 
@@ -94,28 +95,52 @@ JIT 计算机使用的是机器语言，也就是 010101 二进制，而我们�
 
 <article>
     <header><hgroup id="brand">
-	<h1>使用 Rust 编写 WebAssembly </h1>
-	<h5>
-		
-		<time datetime="2019-07-20 15:42:40 &#43;0800 CST">Jul 20, 2019</time>
-		<span class="no-print">
-			-
-			
-			<a href="/tags/rust">Rust</a>
-			
-			<a href="/tags/webassembly">WebAssembly</a>
-			
-			<a href="/tags/frontend">FrontEnd</a>
-			</span>
-	</h5>
+  <h1>使用 Rust 编写 WebAssembly </h1>
+  <h5>
+    
+    <time datetime="2019-07-20 15:42:40 &#43;0800 CST">Jul 20, 2019</time>
+    <span class="no-print">
+      -
+      
+      <a href="/tags/rust">Rust</a>
+      
+      <a href="/tags/webassembly">WebAssembly</a>
+      
+      <a href="/tags/frontend">FrontEnd</a>
+      </span>
+  </h5>
 
-	
-	<a style="margin-top: 1.2rem;display: inline-block;" href="https://github.com/V-Tom/blog/blob/hugo/content/blog/2019-07-20-%E4%BD%BF%E7%94%A8%20Rust%20%E7%BC%96%E5%86%99%20WebAssembly%20/index.md">✨✨✨You can Edit this Article on Github</a>
-	
-	
-	
+  <a
+    style="margin-top: 1.2rem;display: inline-block;"
+    href="https://github.com/V-Tom/blog/blob/hugo/content/blog/2019-07-20-%e4%bd%bf%e7%94%a8%20Rust%20%e7%bc%96%e5%86%99%20WebAssembly%20/index.md"
+    >✨✨✨You can Edit this Article on Github site</a
+  >
+
+  <script>
+  (async () => {
+    const commits = await fetch(
+      'https://api.github.com/repos/V-Tom/blog/commits?sha=hugo&path=content/blog\/2019-07-20-使用 Rust 编写 WebAssembly \/index.md'
+    ).then(res => res.json());
+    const b = document.querySelector('#git-active-time').querySelector('b');
+    try {
+      const time = new Date(commits[0].commit.committer.date);
+      b.innerHTML = `${time.getFullYear()}-${time.getMonth() +
+        1}-${time.getDate()}`;
+    } catch (e) {
+      b.innerHTML = 'unknown';
+    }
+  })();
+</script>
+<div id="git-active-time">
+  ✏️✏️✏️ This article .MD file was last updated at:
+  <b>Loading ...</b>
+</div>
+
+
+  
 </hgroup>
-<hr class="sep" /></header>
+<hr class="sep" />
+</header>
     <section id="markdown">
         
 
@@ -229,9 +254,14 @@ int main()
 
 <p>最后就是 <code>backend</code> 阶段生成对应的机器码，这里我们生成 x86-64 平台的机器码：<code>llc -O3 sample.ll -march=x86-64 -o sample-x86-64.s</code></p>
 
+<blockquote>
+<p>在本机环境当中，<code>llc</code> 需要指定 PATH ：<code>export PATH=&quot;/usr/local/opt/llvm/bin:$PATH&quot;</code></p>
+</blockquote>
+
 <pre><code class="language-s">	.section	__TEXT,__text,regular,pure_instructions
 	.macosx_version_min 10, 14
 	.globl	_main                   ## -- Begin function main
+	.p2align	4, 0x90
 _main:                                  ## @main
 	.cfi_startproc
 ## %bb.0:
@@ -240,6 +270,7 @@ _main:                                  ## @main
 	.cfi_offset %rbp, -16
 	movq	%rsp, %rbp
 	.cfi_def_cfa_register %rbp
+	movl	$0, -4(%rbp)
 	xorl	%eax, %eax
 	popq	%rbp
 	retq
@@ -300,7 +331,7 @@ _main:                                  ## @main
 </code></pre>
 
 <blockquote>
-<p>your profile 根据你的 shell 环境而定，我用的 zsh 因此是 <code>.zshrc</code></p>
+<p>your profile 根据你的 shell 环境而定，我用的 zsh 因此是 <code>~/.zshrc</code></p>
 </blockquote>
 
 <p>通过 rustup 安装了 Rust 之后，很容易更新到最新版本：<code>rustup update</code></p>
@@ -385,7 +416,7 @@ wasm-bindgen = &quot;0.2.48&quot;
 </code></pre>
 
 <blockquote>
-<p>更新 dependencies 后一般 IDE 是自动更新 ，如果你的 IDE 支持则需要手动执行 <code>Cargo update</code> 来更新包</p>
+<p>如果你的 IDE 支持，更新 dependencies 后一般 IDE 是自动更新，否则需要手动执行 <code>Cargo update</code> 来更新包</p>
 </blockquote>
 
 <p><code>Cargo update</code>：</p>
@@ -696,6 +727,10 @@ fn draw_canvas(canvas: web_sys::HtmlCanvasElement) {
 
 <p>根据官方的例子可以很轻松的实现一个 Rust WebAssembly 版本的 TODO MVC，这里不再一一阐述，读者可以自行线下实现</p>
 
+<h2 id="debug-webassembly-outside-of-browser">debug WebAssembly Outside of Browser</h2>
+
+<p><a href="https://hacks.mozilla.org/2019/09/debugging-webassembly-outside-of-the-browser/">Debugging WebAssembly Outside of the Browser</a></p>
+
 <h2 id="webassembly-in-node">WebAssembly in Node</h2>
 
 <p>TODO</p>
@@ -715,9 +750,8 @@ fn draw_canvas(canvas: web_sys::HtmlCanvasElement) {
 <p>WebAssembly 应用场景在我看来更多的是：</p>
 
 <ul>
-<li><p>扩展浏览器端视音频处理能力（H.265）</p></li>
-
-<li><p>基于 WebAssembly 的高性能 Web 应用 (加密、游戏、挖矿？</p></li>
+<li>扩展浏览器端视音频处理能力（H.265）</li>
+<li>基于 WebAssembly 的高性能 Web 应用 (加密、游戏、挖矿？</li>
 </ul>
 
 <blockquote>
@@ -754,7 +788,7 @@ fn draw_canvas(canvas: web_sys::HtmlCanvasElement) {
             <img class="icon-text" src="/img/prev.svg"/>七牛云许式伟：我所理解的架构是什么</a>
         
         
-        <a class="next-post" href="https://hasaki.xyz/blog/2019-08-09-tensor-flow/">Tensor &amp;&amp; flow<img class="icon-text" src="/img/next.svg"/>
+        <a class="next-post" href="https://hasaki.xyz/blog/2019-08-09-tensor--flow/">Tensor &amp;&amp; flow<img class="icon-text" src="/img/next.svg"/>
         </a>
         
     </nav>
@@ -785,298 +819,379 @@ fn draw_canvas(canvas: web_sys::HtmlCanvasElement) {
 
 
 <style rel="catalog">
-    #catalog {
-        position: fixed;
-        left: 3vw;
-        top: 8vh;
-    }
+  #catalog {
+    position: fixed;
+    left: 3vw;
+    top: 8vh;
+    overflow: auto;
+    height: calc(100% - 16vh);
+    background:
+      linear-gradient(
+        white 30%,
+        rgba(255, 255, 255, 0)
+      ),
+      linear-gradient(rgba(255, 255, 255, 0), white 70%) 0 100%,
+       
+        radial-gradient(
+          50% 0,
+          farthest-side,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        ),
+      radial-gradient(
+          50% 100%,
+          farthest-side,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        )
+        0 100%;
+    background:
+      linear-gradient(
+        white 30%,
+        rgba(255, 255, 255, 0)
+      ),
+      linear-gradient(rgba(255, 255, 255, 0), white 70%) 0 100%,
+       
+        radial-gradient(
+          farthest-side at 50% 0,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        ),
+      radial-gradient(
+          farthest-side at 50% 100%,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        )
+        0 100%;
+    background-repeat: no-repeat;
+    background-color: white;
+    background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
 
-    .cl-wrapper {
-        position: relative;
-    }
+     
+    background-attachment: local, local, scroll, scroll;
+  }
+  #catalog::-webkit-scrollbar {
+    display: none;
+  }
 
-    .cl-wrapper ul, .cl-wrapper li {
-        margin: 0;
-        -moz-padding-start: 12px;
-        -webkit-padding-start: 12px;
-        list-style: none;
-    }
+  .cl-wrapper {
+    position: relative;
+  }
 
-    .cl-wrapper li > .cl-link.cl-link-active {
-        color: #ff8181;
-        transition: .5s;
-    }
+  .cl-wrapper ul,
+  .cl-wrapper li {
+    margin: 0;
+    -moz-padding-start: 12px;
+    -webkit-padding-start: 12px;
+    list-style: none;
+  }
 
-    .cl-wrapper li > .cl-transform.cl-link-active {
-        transform: translate(3px);
-    }
+  .cl-wrapper li > .cl-link.cl-link-active {
+    color: #ff8181;
+    transition: 0.5s;
+  }
 
-    .cl-wrapper .cl-link {
-        cursor: pointer;
-        color: rgba(52, 73, 94, 0.5);
-        font-size: 13px;
-        transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-    }
+  .cl-wrapper li > .cl-transform.cl-link-active {
+    transform: translate(3px);
+  }
 
-    .cl-wrapper .cl-marker {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-    }
+  .cl-wrapper .cl-link {
+    cursor: pointer;
+    color: rgba(52, 73, 94, 0.5);
+    font-size: 13px;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  }
 
-    .cl-wrapper .cl-marker path {
-        transition: all 0.3s ease;
-    }
+  .cl-wrapper .cl-marker {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+
+  .cl-wrapper .cl-marker path {
+    transition: all 0.3s ease;
+  }
 </style>
 <main id="catalog"></main>
 <script rel="catalog">
-    void function () {
-        
-        if (window.innerWidth < 1024 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-            return
+  void (function() {
+    if (
+      window.innerWidth < 1024 ||
+      /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+    ) {
+      return;
+    }
+
+    const Catalog = (function() {
+      return function(opts) {
+        let defaultOpts = {
+          linkClass: 'cl-link', 
+          linkActiveClass: 'cl-link-active', 
+          datasetName: 'data-cata-target', 
+          selector: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'], 
+          scrollWrapper: null, 
+          activeHook: null, 
+          topMargin: 0,
+          bottomMargin: 0,
+          cool: true 
+        };
+
+        const Opt = Object.assign({}, defaultOpts, opts);
+
+        const $content = document.getElementById(Opt.contentEl); 
+        const $scroll_wrap = window; 
+        const $catalog = document.getElementById(Opt.catalogEl); 
+
+        let allCatalogs = $content.querySelectorAll(Opt.selector.join());
+        let tree = getCatalogsTree(allCatalogs);
+
+        try {
+          $catalog.innerHTML = `<div class='cl-wrapper'>${generateHtmlTree(
+            tree,
+            { id: -1 }
+          )}<svg class="cl-marker" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+            <path stroke="#ff8181" stroke-width="3" fill="transparent" stroke-dasharray="0, 0, 0, 1000" stroke-linecap="round" stroke-linejoin="round" transform="translate(-0.5, -0.5)" />
+            </svg></div>`;
+        } catch (e) {
+          console.error('error in progress-catalog', e);
         }
 
-        const Catalog = (function () {
-            return function (opts) {
-                let defaultOpts = {
-                    linkClass: 'cl-link',                             
-                    linkActiveClass: 'cl-link-active',                
-                    datasetName: 'data-cata-target',                  
-                    selector: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],   
-                    scrollWrapper: null,                              
-                    activeHook: null,                                 
-                    topMargin: 0,
-                    bottomMargin: 0,
-                    cool: true                                        
-                }
+        const tocPath = $catalog.querySelector('.cl-marker path');
+        let tocItems, pathLength; 
 
-                const Opt = Object.assign({}, defaultOpts, opts)
+        
+        window.addEventListener('resize', drawPath);
+        $catalog.addEventListener('click', clickHandler);
+        Opt.cool && $scroll_wrap.addEventListener('scroll', coolScrollHandler);
+        Opt.cool ||
+          $scroll_wrap.addEventListener('scroll', simpleScrollHandler);
 
-                const $content = document.getElementById(Opt.contentEl)                          
-                const $scroll_wrap = window   
-                const $catalog = document.getElementById(Opt.catalogEl)                          
+        setTimeout(drawPath); 
 
-                let allCatalogs = $content.querySelectorAll(Opt.selector.join())
-                let tree = getCatalogsTree(allCatalogs)
+        
 
-                try {
-                    $catalog.innerHTML = `<div class='cl-wrapper'>${generateHtmlTree(tree, {id: -1})}<svg class="cl-marker" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
-            <path stroke="#ff8181" stroke-width="3" fill="transparent" stroke-dasharray="0, 0, 0, 1000" stroke-linecap="round" stroke-linejoin="round" transform="translate(-0.5, -0.5)" />
-            </svg></div>`
-                } catch (e) {
-                    console.error('error in progress-catalog', e)
-                }
+        function drawPath() {
+          tocItems = [...$catalog.querySelectorAll('li')];
+          tocItems = tocItems.map(function(liDom) {
+            const anchor = liDom.querySelector(`.${Opt.linkClass}`);
+            const target = document.getElementById(
+              anchor.getAttribute('data-cata-target')
+            );
 
+            return {
+              listItem: liDom,
+              anchor: anchor,
+              target: target
+            };
+          });
+          tocItems = tocItems.filter(item => !!item.target);
 
-                const tocPath = $catalog.querySelector('.cl-marker path')
-                let tocItems, pathLength    
+          const path = [];
+          let pathIndent;
 
-                
-                window.addEventListener('resize', drawPath)
-                $catalog.addEventListener('click', clickHandler)
-                Opt.cool && $scroll_wrap.addEventListener('scroll', coolScrollHandler)
-                Opt.cool || $scroll_wrap.addEventListener('scroll', simpleScrollHandler)
+          tocItems &&
+            tocItems.forEach(function(item, idx) {
+              const { offsetLeft, offsetTop, offsetHeight } = item.anchor,
+                x = Opt.cool ? offsetLeft - 5 : offsetLeft,
+                y = offsetTop,
+                height = offsetHeight;
 
-                setTimeout(drawPath)          
+              if (idx === 0) {
+                path.push('M', x, y, 'L', x, y + height);
+                item.pathStart = 0;
+              } else {
+                if (pathIndent !== x) path.push('L', pathIndent, y); 
+                path.push('L', x, y);
+                tocPath.setAttribute('d', path.join(' '));
+                item.pathStart = tocPath.getTotalLength() || 0;
+                path.push('L', x, y + height);
+              }
+              pathIndent = x;
+              tocPath.setAttribute('d', path.join(' '));
+              item.pathEnd = tocPath.getTotalLength();
+            });
+          pathLength = tocPath.getTotalLength();
+          coolScrollHandler();
+        }
 
-                
+        
 
-                function drawPath() {
-                    tocItems = [...$catalog.querySelectorAll('li')]
-                    tocItems = tocItems.map(function (liDom) {
-                        const anchor = liDom.querySelector(`.${Opt.linkClass}`)
-                        const target = document.getElementById(anchor.getAttribute('data-cata-target'))
-
-                        return {
-                            listItem: liDom,
-                            anchor: anchor,
-                            target: target
-                        }
-                    })
-                    tocItems = tocItems.filter(item => !!item.target)
-
-                    const path = []
-                    let pathIndent
-
-                    tocItems && tocItems.forEach(function (item, idx) {
-                        const {offsetLeft, offsetTop, offsetHeight} = item.anchor,
-                            x = Opt.cool ? offsetLeft - 5 : offsetLeft,
-                            y = offsetTop,
-                            height = offsetHeight
-
-                        if (idx === 0) {
-                            path.push('M', x, y, 'L', x, y + height)
-                            item.pathStart = 0
-                        }
-                        else {
-                            if (pathIndent !== x) path.push('L', pathIndent, y)     
-                            path.push('L', x, y)
-                            tocPath.setAttribute('d', path.join(' '))
-                            item.pathStart = tocPath.getTotalLength() || 0
-                            path.push('L', x, y + height)
-                        }
-                        pathIndent = x
-                        tocPath.setAttribute('d', path.join(' '))
-                        item.pathEnd = tocPath.getTotalLength()
-                    })
-                    pathLength = tocPath.getTotalLength()
-                    coolScrollHandler()
-                }
-
-                
-
-                function coolScrollHandler() {
-                    const wrapHeight = document.documentElement.offsetHeight
-                    let pathStart = pathLength,
-                        pathEnd = 0,
-                        visibleItems = 0
-                    tocItems.forEach(function (liItem) {
-                        const {bottom, top} = liItem.target.getBoundingClientRect(),
-                            firstChild = liItem.listItem.firstChild
-                        if (bottom > Opt.topMargin && top < wrapHeight - Opt.bottomMargin) {
-                            firstChild.classList.remove(Opt.linkActiveClass)
-                            Opt.cool && firstChild.classList.remove('cl-transform')
-                        } else {
-                            pathStart = Math.min(liItem.pathStart, pathStart)
-                            pathEnd = Math.max(liItem.pathEnd, pathEnd)
-                            visibleItems += 1
-                            firstChild.classList.add(Opt.linkActiveClass)
-                            Opt.cool && firstChild.classList.add('cl-transform')
-                        }
-                    })
-                    if (visibleItems > 0 && pathStart < pathEnd && Opt.cool) {
-                        tocPath.setAttribute('stroke-dashoffset', '1')
-                        tocPath.setAttribute('stroke-dasharray', `1, ${pathStart}, ${pathEnd - pathStart}, ${pathLength}`)
-                        tocPath.setAttribute('opacity', '1')
-                    }
-                    else {
-                        tocPath.setAttribute('opacity', '0')
-                    }
-                }
-
-                
-
-                function simpleScrollHandler(el) {
-                    let scrollToEl = null
-                    for (let i = allCatalogs.length - 1; i >= 0; i--) {
-                        if (allCatalogs[i].offsetTop <= $scroll_wrap.scrollTop) {
-                            scrollToEl = allCatalogs[i]
-                            break
-                        }
-                    }
-                    if (scrollToEl) setActiveItem(scrollToEl.id)
-                    else setActiveItem(null)            
-                }
-
-                
-
-                function clickHandler({target}) {
-                    const datasetId = target.getAttribute(Opt.datasetName)
-                    target.classList.contains(Opt.linkClass) &&
-                    document.getElementById(datasetId)
-                        .scrollIntoView({behavior: "smooth", block: "start"})
-                }
-
-                
-
-                function getCatalogsTree(catalogs) {
-                    let title, tagName, tree = [], treeItem = {}, parentItem = {id: -1}, lastTreeItem = null, id
-
-                    for (let i = 0; i < catalogs.length; i++) {
-                        title = catalogs[i].innerText || catalogs[i].textContent
-                        tagName = catalogs[i].tagName
-                        id = 'heading-' + i
-                        catalogs[i].id = id
-                        treeItem = {
-                            name: title,
-                            tagName: tagName,
-                            id: id,
-                            level: +getLevel(tagName),
-                            parent: parentItem
-                        }
-                        if (lastTreeItem) {
-                            if (getLevel(treeItem.tagName) > getLevel(lastTreeItem.tagName)) {
-                                treeItem.parent = lastTreeItem
-                            } else {
-                                treeItem.parent = findParent(treeItem, lastTreeItem)
-                            }
-                        }
-                        lastTreeItem = treeItem
-                        tree.push(treeItem)
-                    }
-                    return tree
-                }
-
-                
-
-                function findParent(currTreeItem, lastTreeItem) {
-                    let lastTreeParent = lastTreeItem.parent
-                    while (lastTreeParent && (getLevel(currTreeItem.tagName) <= getLevel(lastTreeParent.tagName))) {
-                        lastTreeParent = lastTreeParent.parent
-                    }
-                    return lastTreeParent || {id: -1}
-                }
-
-                
-
-                function getLevel(tagName) {
-                    return tagName ? tagName.slice(1) : 0
-                }
-
-                
-
-                function generateHtmlTree(tree, _parent) {
-                    let ul, hasChild = false
-                    if (tree) {
-                        ul = `<ul>`
-                        for (let i = 0; i < tree.length; i++) {
-                            if (isEqual(tree[i].parent, _parent)) {
-                                hasChild = true
-                                ul += `<li><div class='${ Opt.linkClass } cl-level-${ tree[i].level }' ${Opt.datasetName}='${ tree[i].id }'>${tree[i].name}</div>`
-                                ul += generateHtmlTree(tree, tree[i])
-                                ul += '</li>'
-                            }
-                        }
-                        ul += `</ul>`
-                    }
-                    return hasChild ? ul : ''
-                }
-
-                /**
-                 * 判断是否是相同节点
-                 */
-                function isEqual(node, node2) {
-                    return node && node2 && typeof node === 'object' && typeof node2 === 'object' && node.id === node2.id
-                }
-
-                /**
-                 *  设置选中的项
-                 */
-                function setActiveItem(id) {
-                    let catas = [...$catalog.querySelectorAll(`[${Opt.datasetName}]`)]
-
-                    catas.forEach(T => {
-                        if (T.getAttribute(Opt.datasetName) === id) {
-                            typeof Opt.activeHook === 'function' &&
-                            !T.classList.contains(Opt.linkActiveClass) &&
-                            Opt.activeHook.call(this, T)                    // 执行active钩子
-                            T.classList.add(Opt.linkActiveClass)
-                        } else {
-                            T.classList.remove(Opt.linkActiveClass)
-                        }
-                    })
-                }
+        function coolScrollHandler() {
+          const wrapHeight = document.documentElement.offsetHeight;
+          let pathStart = pathLength,
+            pathEnd = 0,
+            visibleItems = 0;
+          tocItems.forEach(function(liItem) {
+            const { bottom, top } = liItem.target.getBoundingClientRect(),
+              firstChild = liItem.listItem.firstChild;
+            if (bottom > Opt.topMargin && top < wrapHeight - Opt.bottomMargin) {
+              firstChild.classList.remove(Opt.linkActiveClass);
+              Opt.cool && firstChild.classList.remove('cl-transform');
+            } else {
+              pathStart = Math.min(liItem.pathStart, pathStart);
+              pathEnd = Math.max(liItem.pathEnd, pathEnd);
+              visibleItems += 1;
+              firstChild.classList.add(Opt.linkActiveClass);
+              Opt.cool && firstChild.classList.add('cl-transform');
             }
-        })();
-        window.addEventListener('DOMContentLoaded', _ => new Catalog({
-            contentEl: 'markdown',
-            catalogEl: 'catalog'
-        }))
-    }();
+          });
+          if (visibleItems > 0 && pathStart < pathEnd && Opt.cool) {
+            tocPath.setAttribute('stroke-dashoffset', '1');
+            tocPath.setAttribute(
+              'stroke-dasharray',
+              `1, ${pathStart}, ${pathEnd - pathStart}, ${pathLength}`
+            );
+            tocPath.setAttribute('opacity', '1');
+          } else {
+            tocPath.setAttribute('opacity', '0');
+          }
+        }
+
+        
+
+        function simpleScrollHandler(el) {
+          let scrollToEl = null;
+          for (let i = allCatalogs.length - 1; i >= 0; i--) {
+            if (allCatalogs[i].offsetTop <= $scroll_wrap.scrollTop) {
+              scrollToEl = allCatalogs[i];
+              break;
+            }
+          }
+          if (scrollToEl) setActiveItem(scrollToEl.id);
+          else setActiveItem(null); 
+        }
+
+        
+
+        function clickHandler({ target }) {
+          const datasetId = target.getAttribute(Opt.datasetName);
+          target.classList.contains(Opt.linkClass) &&
+            document
+              .getElementById(datasetId)
+              .scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        
+
+        function getCatalogsTree(catalogs) {
+          let title,
+            tagName,
+            tree = [],
+            treeItem = {},
+            parentItem = { id: -1 },
+            lastTreeItem = null,
+            id;
+
+          for (let i = 0; i < catalogs.length; i++) {
+            title = catalogs[i].innerText || catalogs[i].textContent;
+            tagName = catalogs[i].tagName;
+            id = 'heading-' + i;
+            catalogs[i].id = id;
+            treeItem = {
+              name: title,
+              tagName: tagName,
+              id: id,
+              level: +getLevel(tagName),
+              parent: parentItem
+            };
+            if (lastTreeItem) {
+              if (getLevel(treeItem.tagName) > getLevel(lastTreeItem.tagName)) {
+                treeItem.parent = lastTreeItem;
+              } else {
+                treeItem.parent = findParent(treeItem, lastTreeItem);
+              }
+            }
+            lastTreeItem = treeItem;
+            tree.push(treeItem);
+          }
+          return tree;
+        }
+
+        
+
+        function findParent(currTreeItem, lastTreeItem) {
+          let lastTreeParent = lastTreeItem.parent;
+          while (
+            lastTreeParent &&
+            getLevel(currTreeItem.tagName) <= getLevel(lastTreeParent.tagName)
+          ) {
+            lastTreeParent = lastTreeParent.parent;
+          }
+          return lastTreeParent || { id: -1 };
+        }
+
+        
+
+        function getLevel(tagName) {
+          return tagName ? tagName.slice(1) : 0;
+        }
+
+        
+
+        function generateHtmlTree(tree, _parent) {
+          let ul,
+            hasChild = false;
+          if (tree) {
+            ul = `<ul>`;
+            for (let i = 0; i < tree.length; i++) {
+              if (isEqual(tree[i].parent, _parent)) {
+                hasChild = true;
+                ul += `<li><div class='${Opt.linkClass} cl-level-${tree[i].level}' ${Opt.datasetName}='${tree[i].id}'>${tree[i].name}</div>`;
+                ul += generateHtmlTree(tree, tree[i]);
+                ul += '</li>';
+              }
+            }
+            ul += `</ul>`;
+          }
+          return hasChild ? ul : '';
+        }
+
+        /**
+         * 判断是否是相同节点
+         */
+        function isEqual(node, node2) {
+          return (
+            node &&
+            node2 &&
+            typeof node === 'object' &&
+            typeof node2 === 'object' &&
+            node.id === node2.id
+          );
+        }
+
+        /**
+         *  设置选中的项
+         */
+        function setActiveItem(id) {
+          let catas = [...$catalog.querySelectorAll(`[${Opt.datasetName}]`)];
+
+          catas.forEach(T => {
+            if (T.getAttribute(Opt.datasetName) === id) {
+              typeof Opt.activeHook === 'function' &&
+                !T.classList.contains(Opt.linkActiveClass) &&
+                Opt.activeHook.call(this, T); // 执行active钩子
+              T.classList.add(Opt.linkActiveClass);
+            } else {
+              T.classList.remove(Opt.linkActiveClass);
+            }
+          });
+        }
+      };
+    })();
+    window.addEventListener(
+      'DOMContentLoaded',
+      _ =>
+        new Catalog({
+          contentEl: 'markdown',
+          catalogEl: 'catalog'
+        })
+    );
+  })();
 </script>
+
 			<hr class="sep" />
 		</main>
 		<footer class="container no-print">
