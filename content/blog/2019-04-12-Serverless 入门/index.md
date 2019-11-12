@@ -3,7 +3,6 @@ title: 'Serverless 入门'
 subTitle: 'Serverless 入门'
 tags: ['BackEnd']
 date: 2019-04-12T12:52:40+08:00
-host: 'https://github.com/V-Tom/blog/blob/hugo/content/blog/2019-04-12-Serverless%20%E5%85%A5%E9%97%A8/index.md'
 ---
 
 老规矩，列出本机器环境

@@ -3,7 +3,6 @@ title: '使用 Rust 编写 WebAssembly '
 subTitle: '使用 Rust 编写 WebAssembly '
 tags: ['Rust', 'WebAssembly', 'FrontEnd']
 date: 2019-07-20T15:42:40+08:00
-host: 'https://github.com/V-Tom/blog/blob/hugo/content/blog/2019-07-20-%E4%BD%BF%E7%94%A8%20Rust%20%E7%BC%96%E5%86%99%20WebAssembly%20/index.md'
 ---
 
 老规矩，列出本机器环境
@@ -107,10 +106,13 @@ define i32 @main() local_unnamed_addr #0 {
 
 最后就是 `backend` 阶段生成对应的机器码，这里我们生成 x86-64 平台的机器码：`llc -O3 sample.ll -march=x86-64 -o sample-x86-64.s`
 
+> 在本机环境当中，`llc` 需要指定 PATH ：`export PATH="/usr/local/opt/llvm/bin:$PATH"`
+
 ```s
 	.section	__TEXT,__text,regular,pure_instructions
 	.macosx_version_min 10, 14
 	.globl	_main                   ## -- Begin function main
+	.p2align	4, 0x90
 _main:                                  ## @main
 	.cfi_startproc
 ## %bb.0:
@@ -119,6 +121,7 @@ _main:                                  ## @main
 	.cfi_offset %rbp, -16
 	movq	%rsp, %rbp
 	.cfi_def_cfa_register %rbp
+	movl	$0, -4(%rbp)
 	xorl	%eax, %eax
 	popq	%rbp
 	retq
@@ -173,7 +176,7 @@ Rust 的安装比较方便：`curl https://sh.rustup.rs -sSf | sh` 按照提示�
 echo PATH="$PATH:\$HOME/.cargo/bin" >> you_profile && source your_profile && rustc --version
 ```
 
-> your profile 根据你的 shell 环境而定，我用的 zsh 因此是 `.zshrc`
+> your profile 根据你的 shell 环境而定，我用的 zsh 因此是 `~/.zshrc`
 
 通过 rustup 安装了 Rust 之后，很容易更新到最新版本：`rustup update`
 
@@ -258,7 +261,7 @@ path = "src/main.rs"
 wasm-bindgen = "0.2.48"
 ```
 
-> 更新 dependencies 后一般 IDE 是自动更新 ，如果你的 IDE 支持则需要手动执行 `Cargo update` 来更新包
+> 如果你的 IDE 支持，更新 dependencies 后一般 IDE 是自动更新，否则需要手动执行 `Cargo update` 来更新包
 
 `Cargo update`：
 
@@ -567,6 +570,10 @@ fn draw_canvas(canvas: web_sys::HtmlCanvasElement) {
 
 根据官方的例子可以很轻松的实现一个 Rust WebAssembly 版本的 TODO MVC，这里不再一一阐述，读者可以自行线下实现
 
+## debug WebAssembly Outside of Browser
+
+[Debugging WebAssembly Outside of the Browser](https://hacks.mozilla.org/2019/09/debugging-webassembly-outside-of-the-browser/)
+
 ## WebAssembly in Node
 
 TODO
@@ -584,7 +591,6 @@ WebAssembly 的出现似乎给客户端干掉前端的机会？
 WebAssembly 应用场景在我看来更多的是：
 
 - 扩展浏览器端视音频处理能力（H.265）
-
 - 基于 WebAssembly 的高性能 Web 应用 (加密、游戏、挖矿？
 
 > Webpack4 已经支持 import wasm 的形式，未来 WebAssembly 将可能直接通过 HTML 标签进行引用

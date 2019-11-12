@@ -3,7 +3,6 @@ title: 'gRPC 浅谈与实践'
 subTitle: 'gRPC 浅谈与实践'
 tags: ['Docker', 'Golang', 'BackEnd']
 date: 2019-03-04T11:32:40+08:00
-host: 'https://github.com/V-Tom/blog/blob/hugo/content/blog/2019-03-04-%20gRPC%20%E6%B5%85%E8%B0%88%E4%B8%8E%E5%AE%9E%E8%B7%B5/index.md'
 ---
 
 由于不同的环境下面的例子可能会存在一些误差，下面列出本机环境：
@@ -605,13 +604,15 @@ docker-compose up --build
 
 ## think in further
 
-RPC 框架目前据我所知除了 gRPC 有很多实现，阿里的 java double ，百度的 c++ incubator-brpc，twitchTV 的 go twirp，以及 windows c++ thrift 等等，各有各的优点、缺点，以及擅长处理的痛点。在我看来，没有银弹，性能，接口，易用性都要进行权衡，也要结合实际项目环境去选择。
+RPC 框架目前据我所知除了 gRPC 有很多实现，阿里的 java `double` ，百度的 c++ `incubator-brpc`，twitchTV 的 go `twirp`，以及 windows c++ `thrift` 等等，各有各的优点、缺点，以及擅长处理的业务场景。
+
+在我看来，没有银弹，性能，接口，易用性都要进行权衡，也要结合实际项目环境去选择。
 
 ## reference
 
 - [既然有了 http 请求为什么还要有 RPC](https://www.zhihu.com/question/41609070/answer/191965937)
 - [聊聊 Node RPC](https://www.yuque.com/egg/nodejs/dklip5)
-- [QUIC 简介](https://mp.weixin.qq.com/s?__biz=MzI4NzEyMjUxMA==&mid=2649068604&idx=1&sn=9d34b782a5d7c147e108f1af1c0fbc23&chksm=f3c3411dc4b4c80b7e8a72013a7b884e21814f6bcbc6f0ea8752ff6c434b93005efc854520ef&xtrack=1&scene=0&subscene=131&clicktime=1552095539&ascene=7&devic)
+- [HTTP/3 都来了，你却还在用 HTTP/1.1？](https://mp.weixin.qq.com/s?__biz=MzI4NzEyMjUxMA==&mid=2649068604&idx=1&sn=9d34b782a5d7c147e108f1af1c0fbc23&chksm=f3c3411dc4b4c80b7e8a72013a7b884e21814f6bcbc6f0ea8752ff6c434b93005efc854520ef&xtrack=1&scene=0&subscene=131&clicktime=1552095539&ascene=7&devic)
 - [思考 gRPC ：为什么是 HTTP/2](https://blog.csdn.net/hengyunabc/article/details/81120904)
 - [grpc-web github hellowolrd example](https://github.com/grpc/grpc-web/blob/master/net/grpc/gateway/examples/helloworld/README.md)
 - [envoy 快速入门](https://juejin.im/post/5ad6fb06518825364001f619)

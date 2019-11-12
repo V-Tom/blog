@@ -1,10 +1,22 @@
 ---
 title: 'some interview question'
 subTitle: 'some interview question'
-tags: ['life']
+tags: ['interview']
 date: 2019-07-23T14:01:30+08:00
 host: ''
+draft: true
 ---
+
+### list
+
+- webpack loader && webpack plugins
+- webp 图片的浏览器兼容检测
+- jsCore
+- DSL
+- 漫画浅显解释和对比 docker 、K8S
+- React 合成事件
+- Event Loop
+- 堆内存与栈内存
 
 ### webpack loader && webpack plugins
 
@@ -41,3 +53,16 @@ host: ''
 
 - [小女孩也能看懂的插画版 Kubernetes 指南](https://linux.cn/article-7531-1.html)
 - [漫画 | Kubernetes 带你一帆风顺去远航](https://blog.csdn.net/M2l0ZgSsVc7r69eFdTj/article/details/78890222)
+
+### React 合成事件
+
+- [谈谈 React 事件机制和未来(react-events)](https://zhuanlan.zhihu.com/p/78669634)
+
+### Event Loop
+
+- [浏览器与 Node 的事件循环(Event Loop)有何区别?](https://juejin.im/post/5c337ae06fb9a049bc4cd218)
+
+### 堆内存与栈内存
+
+- [前端知识点总结——堆内存与栈内存](https://zhuanlan.zhihu.com/p/27534451)
+- [什么是堆？什么是栈？他们之间有什么区别和联系？](https://www.zhihu.com/question/19729973)

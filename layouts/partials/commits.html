@@ -1,0 +1,19 @@
+<script>
+  (async () => {
+    const commits = await fetch(
+      'https://api.github.com/repos/{{ .Site.Params.host.user }}/{{ .Site.Params.host.repo }}/commits?sha={{ .Site.Params.host.branch }}&path=content/{{ .File.Path }}'
+    ).then(res => res.json());
+    const b = document.querySelector('#git-active-time').querySelector('b');
+    try {
+      const time = new Date(commits[0].commit.committer.date);
+      b.innerHTML = `${time.getFullYear()}-${time.getMonth() +
+        1}-${time.getDate()}`;
+    } catch (e) {
+      b.innerHTML = 'unknown';
+    }
+  })();
+</script>
+<div id="git-active-time">
+  ✏️✏️✏️ This article .MD file was last updated at:
+  <b>Loading ...</b>
+</div>

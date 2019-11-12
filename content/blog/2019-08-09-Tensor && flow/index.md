@@ -3,7 +3,6 @@ title: 'Tensor && flow'
 subTitle: 'Tensor && flow'
 tags: ['Tensor']
 date: 2019-08-09T13:22:30+08:00
-host: 'https://github.com/V-Tom/blog/blob/hugo/content/blog/2019-08-09-Tensor%20%26%26%20flow/index.md'
 ---
 
 > 本文只是简单 TensorFlow 的一些理解和介绍，并不包含详细的安装、API、以及更多深层内容。

@@ -1092,6 +1092,8 @@ function breadthFirstSearch(Node) {
 
 ### 排序
 
+> TBD
+
 #### 快速排序
 
 分而治之 （divide and conquer，D&C）——一种著名的递归式问题解决方法
@@ -1209,3 +1211,25 @@ function selectionSort(list) {
 贪婪算法很简单：每步都采取最优的做法。
 
 用专业术语说，就是你每步都选择局部最优解，最终得到的就是全局最优解。
+
+### DP 动态规划
+
+动态规划先解决子问题，再逐 步解决大问题。
+
+常用的地方有 `斐波那契数列`、`背包问题` 等。
+
+leetcode 题目有：
+
+- [爬楼梯 Climbing Stairs](https://leetcode-cn.com/problems/climbing-stairs/)
+- [最长回文字符串 Palindrome String loggest](https://leetcode-cn.com/problems/longest-palindromic-substring/)
+- [最大子序和 Maximum Subarray](https://leetcode-cn.com/problems/maximum-subarray/)
+
+相应的解释：
+
+- [知乎：什么是动态规划](https://www.zhihu.com/question/23995189)
+- [动态规划对应的 leetcode 题](https://hit-alibaba.github.io/interview/basic/algo/DP.html?q=)
+
+#### N sum
+
+- [两数之和](https://leetcode-cn.com/problems/two-sum/)
+- [三数之和](https://leetcode-cn.com/problems/3sum/)

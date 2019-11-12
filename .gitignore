@@ -13,3 +13,7 @@ node_modules
 # ssl
 /app/t-tom.key
 /app/t-tom.crt
+
+build/
+
+_gallery/static

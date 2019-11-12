@@ -1,9 +1,8 @@
 ---
-title: "使用 nextcloud 搭建个人私有网盘"
-subTitle: "使用 nextcloud 搭建个人私有网盘"
-tags: ["Docker","折腾"]
+title: '使用 nextcloud 搭建个人私有网盘'
+subTitle: '使用 nextcloud 搭建个人私有网盘'
+tags: ['Docker', '折腾']
 date: 2019-02-12T10:58:40+08:00
-host: "https://github.com/V-Tom/blog/blob/hugo/content/blog/2019-02-12-%E4%BD%BF%E7%94%A8%20nextcloud%20%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%A7%81%E6%9C%89%E7%BD%91%E7%9B%98/index.md"
 ---
 
 国内各大云网盘要么限速要么需要充值 vip 、超级 vip、超超级 vip。
@@ -14,10 +13,9 @@ host: "https://github.com/V-Tom/blog/blob/hugo/content/blog/2019-02-12-%E4%BD%BF
 
 刚好我有一台新组装的主机电脑，平时也是偶尔开着，所以特意买了个 `2t` 的希捷数据盘，准备搭建一套私有云的环境给家庭用。
 
-
 ### 开源云盘选择
 
-> 其实在搭建之前，考虑过自己写一个简单的文件系统上传预览，后来发现需要考虑的问题太多卒🤣
+> 其实在搭建之前，考虑过自己写一个简单的文件系统上传预览，后来发现需要考虑的问题太多卒 🤣
 
 搭建前我仔细看了一下各个开源私有云盘的实现，有以下几种：
 
@@ -30,10 +28,9 @@ host: "https://github.com/V-Tom/blog/blob/hugo/content/blog/2019-02-12-%E4%BD%BF
 - 开源且免费，可以自定义插件开发
 - 全客户端的支持，免费更好，ui 视觉还能过得去
 - 支持外挂磁盘，可以随时更改，不需要分块、加密和过多的文件控制、权限控制等等，简单就好
-- 部署难度，vm 还行，最好可以 Docker 
+- 部署难度，vm 还行，最好可以 Docker
 
 最终我选择了 `nextcloud`，至于更多的详细差异，大家可以根据需求选择。
-
 
 ### 内网穿透
 
@@ -41,7 +38,7 @@ host: "https://github.com/V-Tom/blog/blob/hugo/content/blog/2019-02-12-%E4%BD%BF
 
 内网穿透选择了很多办法：
 
-- 根据开源实现自己部署到一台公共可访问的服务器上，比如：frp、ngrok等等
+- 根据开源实现自己部署到一台公共可访问的服务器上，比如：frp、ngrok 等等
 - 使用现有的内网穿透服务商，比如：花生壳、natapp 等等
 
 最终我选择了 natapp 免费使用版
@@ -59,7 +56,6 @@ host: "https://github.com/V-Tom/blog/blob/hugo/content/blog/2019-02-12-%E4%BD%BF
 创建 `docker-compose.yml` 文件来配置 `Docker` ：
 
 ```yaml
-
 version: '2'
 
 volumes:
@@ -68,7 +64,6 @@ volumes:
   apps:
 
 services:
-
   app:
     image: nextcloud
     ports:
@@ -82,5 +77,4 @@ services:
       - /e/nas/extend-disk/:/home
 
     restart: always
-
 ```

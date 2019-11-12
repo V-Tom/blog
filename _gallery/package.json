@@ -1,0 +1,34 @@
+{
+  "name": "_gallery",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "main": "index.js",
+  "dependencies": {
+    "lodash-es": "4.17.15",
+    "react": "16.9.0",
+    "react-dom": "16.9.0",
+    "react-scripts": "3.0.0",
+    "react-spring": "9.0.0-beta.34",
+    "react-use-gesture": "latest"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "rm -rf ./build && node ./build-non-split.js build"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "rewire": "^4.0.1"
+  }
+}

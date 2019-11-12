@@ -4,7 +4,6 @@ subTitle: "从jwt到OAuth"
 summary: "从jwt到OAuth"
 tags: ["OAuth","BackEnd"]
 date: 2018-01-02T11:31:25+08:00
-host: "https://github.com/V-Tom/blog/blob/hugo/content/blog/2018-01-02-%E4%BB%8Ejwt%E5%88%B0OAuth/index.md"
 ---
 
 ### JWT
