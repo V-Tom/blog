@@ -1,9 +1,11 @@
 ---
-title: '七牛云许式伟：我所理解的架构是什么'
-subTitle: '七牛云许式伟：我所理解的架构是什么'
+title: '转载：七牛云许式伟：我所理解的架构是什么'
+subTitle: '转载：七牛云许式伟：我所理解的架构是什么'
 tags: ['CodeLife', 'Excerpt']
 date: 2019-06-17T17:52:40+08:00
 ---
+
+> 本文转载于许式伟在 INFOQ 大会上的演讲，原文地址为：[七牛云许式伟：我所理解的架构是什么](https://www.infoq.cn/article/scbBuLydXi00sZ4v*UyN)
 
 ### 从软件工程说起
 

@@ -20,6 +20,7 @@ function Viewpager() {
     scale: 1,
     display: 'block'
   }));
+  
   const bind = useDrag(
     ({ down, movement: [mx], direction: [xDir], distance, cancel }) => {
       if (down && distance > window.innerWidth / 2) {
