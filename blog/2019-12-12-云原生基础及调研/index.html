@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="Keywords" content="">
+    <meta name="full-screen" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#006cb4">
+    <meta name="apple-mobile-web-app-title" content="TOM&#39;s zone">
+    <meta name="description" content="TOM&#39;s zone">
+    <link rel="dns-prefetch" href="https://hasaki.xyz">
+    <link rel="preconnect" href="https://hasaki.xyz">
+    <link rel="manifest" href="/sw/manifest.json"/>
+<title>云原生基础及调研 - TOM&#39;s zone</title>
+
+<meta name="description" content="本文部分转载于 Cody Chan 在掘金上的文章云原生基础及调研，有一些个人理解和修改
+ 本文仅用于简单普及，达到的目的是给没接触过或者很少接触过这方面的人一点感觉，阅读起来会比较轻松，作者深知短篇幅文章是不可能真正教会什么的，所以也不会出现 RTFM 的内容。
+概念 提到云原生（Cloud Native）可能部分人会陌生，但是如果说 Serverless 相信很多人就知道了，实际上两者并不等价。Serverless 是一种理念或者服务交付形态，目标是屏蔽硬件和运维细节。
+而云原生则是实现此类目标的一种规范以及基础设施。
+再进一步，介于 Docker 天然的隔离性和高效等特点，以及 Kubernetes 成为事实意义上的 Docker 编排标准，凡是见到云原生或者 Serverless 的地方，几乎都可以认为是基于 Docker &#43; Kubernetes 的一种实践。
+单个点展开讲太枯燥，索性我们从历史的角度看看为什么会有云原生。
+Docker 先申明下，Docker 是一种容器技术（具体可深入 namespaces 和 cgroups），而不是虚拟化技术，真正的虚拟化比较常见的是 Xen 和 KVM，可能有同学要举手了：老师，那我们经常用的 VirtualBox 和 VMware 算虚拟化么？当然算！不过大多数情况下，它们用在桌面虚拟化领域。不要急着撕，我说的是大多数，而且虚拟化方案也还有很多。
+可能大家之前经常遇到这样的场景：为什么在我这可以运行在你那就不行了？为什么刚刚可以运行现在就不行了？最终解决下来，大多是环境不一致导致的问题。这里的环境除了开发环境还包括操作系统。
+所以一般给别人代码的时候还需要告诉别人此代码可运行的操作系统版本，所依赖的各种软件的版本，甚至目录、磁盘、内存、CPU 都有要求！
+当然这个问题还有更直接的办法，就是把代码跑在虚拟机里，然后打包虚拟机！（不要笑，实际上还真有人这么干）为什么此刻你笑了，因为虚拟机太重了，无论从打包的体积还是运行时占用的资源都太重了。
+那有没有轻点的「虚拟机」呢？嗯，如标题，不过我们叫做容器化，特点：
+ 进程级别的隔离性； 除里面运行的应用本身外几乎不占用宿主资源； 结构化的配置文件（Dockerfile）； 无状态无副作用（主流方式）； 分层的联合文件系统； &hellip;  Docker 让运行环境变得可编程！
+拿一个最近部署 Sourcegraph 的经历举个栗子，官方有个开发者 清单，一堆依赖和环境设置，照着这个部署会爆炸的，好在官方还提供了可快速部署的镜像，就是这么简单：
+微服务 传统的 WEB 应用核心分为业务逻辑、适配器以及 API 或通过 UI 访问的 WEB 界面，这种单体应用比较适合于小项目。">
+
+
+
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato|Raleway">
+
+
+    <link rel="stylesheet"
+          href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/ocean.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/javascript.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/python.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/go.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/css.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/swift.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/objectivec.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/rust.min.js"></script>
+
+
+    <link rel="stylesheet" href="/css/bundle.min.css"/>
+<script src="/js/bundle.js"></script>
+
+<style>
+	a { color: #ff8181; }
+	blockquote {
+		background: rgba(255, 129, 129, .1);
+		border-left-color: #ff8181;
+		border-right-color: #ff8181; }
+	.bar a:hover {
+		color: #ff8181;
+		text-decoration: none; }
+	.sep {
+		margin-top: 2rem;
+		margin-bottom: 1rem;
+		margin-left:0;
+		width: 24rem;
+		border-top: 2px solid #ff8181; }
+    .bar li.active a{
+        color:#ff8181;
+    }
+</style>
+
+</head>
+
+<body>
+<header class="container no-print">
+	<div class="u-header">
+		<nav class="bar">
+	<ul><li>
+			<a href="/">
+				<img class="icon-text" src="/img/prev.svg"/>
+			</a>
+		</li>
+		
+		<li class="active"><a href="/blog/">Blog</a></li>
+		<li class=""><a href="/gallery/">Gallery</a></li>
+		<li class=""><a href="/life/">Life</a></li></ul>
+</nav>
+
+	</div>
+</header>
+<main class="container">
+
+<article>
+    <header><hgroup id="brand">
+  <h1>云原生基础及调研</h1>
+  <h5>
+    
+    <time datetime="2019-11-12 13:09:31 &#43;0800 CST">Nov 12, 2019</time>
+    <span class="no-print">
+      -
+      
+      <a href="/tags/frontend">FrontEnd</a>
+      </span>
+  </h5>
+
+  <a
+    style="margin-top: 1.2rem;display: inline-block;"
+    href="https://github.com/V-Tom/blog/blob/hugo/content/blog/2019-12-12-%e4%ba%91%e5%8e%9f%e7%94%9f%e5%9f%ba%e7%a1%80%e5%8f%8a%e8%b0%83%e7%a0%94/index.md"
+    >✨✨✨You can Edit this Article on Github site</a
+  >
+
+  <div id="git-update-time">
+  ✏️✏️✏️ This article .MD file was last updated at:
+  <b>Loading ...</b>
+</div>
+
+<script data-name="commits">
+  ;(async () => {
+    const b = document.querySelector('#git-update-time').querySelector('b')
+
+    if (window.location.href.includes('localhost')) {
+      b.innerHTML = 'localhost disable'
+      return
+    }
+
+    const commits = await fetch(
+      'https://api.github.com/repos/V-Tom/blog/commits?sha=hugo&path=content/blog\/2019-12-12-云原生基础及调研\/index.md',
+    ).then(res => res.json())
+    try {
+      const time = new Date(commits[0].commit.committer.date)
+      b.innerHTML = `${time.getFullYear()}-${time.getMonth() +
+        1}-${time.getDate()}`
+    } catch (e) {
+      b.innerHTML = 'unknown'
+    }
+  })()
+</script>
+
+
+  
+</hgroup>
+<hr class="sep" />
+</header>
+    <section id="markdown">
+        
+
+<blockquote>
+<p>本文部分转载于 Cody Chan 在掘金上的文章<a href="https://juejin.im/post/5deda052f265da33942a7631">云原生基础及调研</a>，有一些个人理解和修改</p>
+</blockquote>
+
+<p>本文仅用于简单普及，达到的目的是给没接触过或者很少接触过这方面的人一点感觉，阅读起来会比较轻松，作者深知短篇幅文章是不可能真正教会什么的，所以也不会出现 <a href="https://en.wikipedia.org/wiki/RTFM">RTFM</a> 的内容。</p>
+
+<h2 id="概念">概念</h2>
+
+<p>提到云原生（Cloud Native）可能部分人会陌生，但是如果说 Serverless 相信很多人就知道了，实际上两者并不等价。Serverless 是一种理念或者服务交付形态，目标是屏蔽硬件和运维细节。</p>
+
+<p>而云原生则是实现此类目标的一种规范以及基础设施。</p>
+
+<p>再进一步，介于 Docker 天然的隔离性和高效等特点，以及 <a href="https://kubernetes.io/">Kubernetes</a> 成为事实意义上的 <a href="https://www.docker.com/">Docker</a> 编排标准，凡是见到云原生或者 Serverless 的地方，几乎都可以认为是基于 Docker + Kubernetes 的一种实践。</p>
+
+<p>单个点展开讲太枯燥，索性我们从历史的角度看看为什么会有云原生。</p>
+
+<h2 id="docker">Docker</h2>
+
+<p>先申明下，Docker 是一种容器技术（具体可深入 <a href="https://en.wikipedia.org/wiki/Linux_namespaces">namespaces</a> 和 <a href="https://en.wikipedia.org/wiki/Cgroups">cgroups</a>），而不是虚拟化技术，真正的虚拟化比较常见的是 Xen 和 KVM，可能有同学要举手了：老师，那我们经常用的 VirtualBox 和 VMware 算虚拟化么？当然算！不过大多数情况下，它们用在桌面虚拟化领域。不要急着撕，我说的是大多数，而且虚拟化方案也还有很多。</p>
+
+<p>可能大家之前经常遇到这样的场景：为什么在我这可以运行在你那就不行了？为什么刚刚可以运行现在就不行了？最终解决下来，大多是环境不一致导致的问题。这里的环境除了开发环境还包括操作系统。</p>
+
+<p>所以一般给别人代码的时候还需要告诉别人此代码可运行的操作系统版本，所依赖的各种软件的版本，甚至目录、磁盘、内存、CPU 都有要求！</p>
+
+<p>当然这个问题还有更直接的办法，就是把代码跑在虚拟机里，然后打包虚拟机！（不要笑，实际上还真有人这么干）为什么此刻你笑了，因为虚拟机太重了，无论从打包的体积还是运行时占用的资源都太重了。</p>
+
+<p>那有没有轻点的「虚拟机」呢？嗯，如标题，不过我们叫做容器化，特点：</p>
+
+<ul>
+<li>进程级别的隔离性；</li>
+<li>除里面运行的应用本身外几乎不占用宿主资源；</li>
+<li>结构化的配置文件（Dockerfile）；</li>
+<li>无状态无副作用（主流方式）；</li>
+<li>分层的联合文件系统；</li>
+<li>&hellip;</li>
+</ul>
+
+<p><strong>Docker 让运行环境变得可编程！</strong></p>
+
+<p>拿一个最近部署 <a href="https://github.com/sourcegraph/sourcegraph">Sourcegraph</a> 的经历举个栗子，官方有个开发者 <a href="https://github.com/sourcegraph/sourcegraph/blob/master/doc/dev/local_development.md#step-1-install-dependencies">清单</a>，一堆依赖和环境设置，照着这个部署会爆炸的，好在官方还提供了可快速部署的镜像，就是这么简单：</p>
+
+<p><img src="./Sourcegraph-quickstart.webp" alt="Sourcegraph-quickstart.webp" /></p>
+
+<h2 id="微服务">微服务</h2>
+
+<p>传统的 WEB 应用核心分为业务逻辑、适配器以及 API 或通过 UI 访问的 WEB 界面，这种单体应用比较适合于小项目。</p>
+
+<p>开发简单直接，集中式管理，而且基本不会重复开发，</p>
+
+<p>当然对于互联网公司来说，缺点也是很明显，比如效率、维护、稳定性和拓展性等等。</p>
+
+<p>所以，现在主流的设计一般会采用微服务架构。其思路不是开发一个巨大的单体式应用，而是将应用分解为小的、互相连接的微服务。</p>
+
+<p>每个业务逻辑都被分解为一个 <code>微服务</code>，微服务之间通过 <code>REST API</code> 通信。一些微服务也会向终端用户或客户端开发 API 接口</p>
+
+<p>微服务这种架构相比传统应用有很多的优点：</p>
+
+<ul>
+<li>解决了复杂性问题，将单体应用分解为一组服务</li>
+<li>只要符合服务 API 契约，每个服务都可以由专注于此服务的团队独立开发，开发人员可以自由选择开发技术。这就意味着开发人员可以采用新技术编写或重构服务</li>
+<li>微服务架构可以使每个微服务独立部署，更好的 CI、CD</li>
+<li>微服务架构使得每个服务都可独立扩展</li>
+</ul>
+
+<p>当然微服务也有一些缺点：</p>
+
+<ul>
+<li>没有一个统一的标准。</li>
+<li>微服务的分布式特点带来的复杂性。</li>
+</ul>
+
+<blockquote>
+<p>开发人员需要基于 RPC 或者消息实现微服务之间的调用和通信，而这就使得服务之间的发现、服务调用链的跟踪和质量问题变得的相当棘手。</p>
+</blockquote>
+
+<ul>
+<li>跨服务的更改和依赖，而且在微服务架构中，一个服务故障可能会产生雪崩效用，导致整个系统故障</li>
+<li>分布式数据库体系和分布式事务</li>
+<li>微服务架构对测试也带来了很大的挑战。传统的单体 WEB 应用只需测试单一的 <code>REST API</code> 即可，而对微服务进行测试，需要启动它依赖的所有其他服务。这种复杂性不可低估。</li>
+<li>部署困难</li>
+</ul>
+
+<blockquote>
+<p>单体应用可以简单的部署在一组相同的服务器上，然后前端使用负载均衡即可。每个应用都有相同的基础服务地址，例如数据库和消息队列。而微服务由不同的大量服务构成。每种服务可能拥有自己的配置、应用实例数量以及基础服务地址。这里就需要不同的配置、部署、扩展和监控组件。此外，我们还需要服务发现机制，以便服务可以发现与其通信的其他服务的地址。</p>
+</blockquote>
+
+<p>针对以上问题和挑战，以及如何解决这些痛点可以大致概况为：</p>
+
+<ul>
+<li><code>API Gateway</code></li>
+<li><code>Service Proxy</code></li>
+<li><code>Monitor &amp;&amp; Logging &amp;&amp; Tracing</code></li>
+<li><code>RPC</code></li>
+<li><code>Distributed Stroage &amp;&amp; Messaging</code></li>
+<li><code>Server Discovery</code>、<code>服务容错（熔断、服务降级、限流）</code>、<code>服务部署（Container Define &amp;&amp; Image Build）</code></li>
+</ul>
+
+<p>你会发现这些其实在 <code>Docker</code> 和 <code>K8s</code> 里面或多或少已经都实现了，而且各种各样的库也是为了解决这些痛点而生：比如 <a href="https://grpc.io/">GRPC-RPC</a>、<a href="https://www.envoyproxy.io/">Enovy-Service Proxy</a>、<a href="https://github.com/Kong/kong">Kong-API Gateway</a>、<a href="https://www.fluentd.org-Logger/">Fluentd</a>等等</p>
+
+<p>个人认为可以说正是微服务的流行，促使了这些工具或者库的繁荣</p>
+
+<p>但是这些都没有一个统一的标准</p>
+
+<h2 id="kubernetes">Kubernetes</h2>
+
+<blockquote>
+<p>Kubernetes 名字太长，以下简称 K8S，类似的简称形式还有 <a href="https://en.wikipedia.org/wiki/Numeronym">很多</a>。</p>
+</blockquote>
+
+<p>Docker 虽然很厉害，但是在成人看来也只是小孩的玩具，稍微大点的公司内部可能服务就多的吓人，特别是 <a href="https://en.wikipedia.org/wiki/Microservices">微服务架构</a> 盛行后。</p>
+
+<p>Docker 只解决了单个服务的交付问题，一个具备完整形态的应用必然会涉及各种服务依赖，人为组织这些依赖也是会死人的。Docker 把我们从各种跟环境纠缠里解放出来，却让我们陷入了更高维度的服务依赖之间的纠缠。</p>
+
+<p>是个 Docker 用户应该都会想到去解决这个问题，如你所愿，出现了三国争霸的局面：<a href="https://docs.docker.com/engine/swarm/">Docker Swarm</a>、<a href="http://mesos.apache.org/">Apache Mesos</a> 和 <a href="https://kubernetes.io/">Google Kubernetes</a>，一定程度上 K8S 成为了现在主流的 Docker 编排标准。有意思的是 K8S 有舵手之意，而 Docker 有集装箱之意，所以结合下是不是更合理了？</p>
+
+<p><img src="./docker-k8s.webp" alt="docker-k8s.webp" /></p>
+
+<p>更有意思的是，K8S 管理 Docker 的过程也是一层层抽象，并针对抽象出来一些概念：</p>
+
+<ul>
+<li><a href="https://kubernetes.io/docs/concepts/workloads/pods/pod/">Pod</a></li>
+</ul>
+
+<blockquote>
+<p>为了解决一组密切相关容器集合的调度，K8S 的最小的调度单位是 Pod，而不是容器，同一个 Pod 里的容器的资源可以互相访问。</p>
+</blockquote>
+
+<ul>
+<li><a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/">Deployment</a></li>
+</ul>
+
+<blockquote>
+<p>为了管理发布、回滚、扩缩容，又在这之上抽象了一个 Deployment，实际上这是我们最直接使用的单元</p>
+</blockquote>
+
+<ul>
+<li><a href="https://kubernetes.io/docs/concepts/services-networking/service/">Service</a></li>
+</ul>
+
+<blockquote>
+<p>为了管理负载均衡和调度，又抽象了一个叫 Service</p>
+</blockquote>
+
+<p>以上概念是 K8S 基本概念，不过我想强调的是这个：<strong>解决复杂问题很多都是在一层层抽象</strong>，这点展开还可以说很多东西。</p>
+
+<p>K8S 做的比较极致的点就是以上所有资源的管理都是通过声明式的配置进行，<strong>K8S 把容器运维变得可编程！</strong></p>
+
+<h2 id="cloud-native">Cloud Native</h2>
+
+<p>如果要直接在生产环境使用 K8S 基本也可以了，但是：</p>
+
+<p>都知道 Java 后端广泛采用的 Web 框架是 Spring MVC，那可是 02 年的老古董了！即使现在有了 Spring Boot，也可以算是一种升级，跟近几年百花齐放的前端三大框架比少了太多的口水仗。</p>
+
+<p>百花齐放的原因很大一部分就是前端一开始就没有形成强有力的最佳实践！从工程化角度看，太多的重复轮子很容易导致工程的可维护性变差。</p>
+
+<p>Web 后端稳定性的特点不太能容忍这样的事情发生，推导到云上也一样。</p>
+
+<p><strong>云原生就是云的（或狭义指 K8S 的）最佳实践，生而为云，所谓云原生！</strong></p>
+
+<p>为了达到此目的，还有了 <a href="https://www.cncf.io/">CNCF 云原生计算基金会</a>，有了组织就靠谱多了。这个组织有一个收集（或孵化）了各种最佳实践的 <a href="https://landscape.cncf.io/">云原生全景图谱</a>。</p>
+
+<p>比如，一个比较有意思的叫 <a href="https://github.com/helm/helm">helm</a>，作为 K8S 应用包管理器，它把一个 K8S 应用抽象成一个包，一键就可以部署一个应用，跟很多包管理器一样，它也有源 <a href="https://hub.kubeapps.com/">KubeApps Hub</a>（甚至有阿里云提供的 <a href="https://developer.aliyun.com/hub">国内源</a>）。</p>
+
+<h2 id="serverless">Serverless</h2>
+
+<p>有了云原生，基本各种业务场景都可以找到适合的最佳实践，Serverless 就是其中一种。个人很不理解为什么这个词被翻译成：无服务器架构，Serverless 屏蔽的是运维，所以叫无运维架构更合适。迫于无法接受其中文翻译，文中还是用 Serverless。</p>
+
+<p>你可能好奇，为啥这里要把 Serverless 单独拉出来说下，因为这是 CNCF 的宠儿啊！CNCF 范畴内太多项目了，但是大多还是偏硬，普通业务很难用上并落地，所以抓了个可以落地的当典型，还为其起草了个 <a href="https://github.com/cncf/wg-serverless/tree/master/whitepapers/serverless-overview">白皮书</a>，建议有兴趣的可以细品。</p>
+
+<p>在说屏蔽运维之前，我们先回顾下运维一般包括哪些：</p>
+
+<ul>
+<li>服务器、网络、存储等物理资源（IaaS）申请；</li>
+<li>测试、发布、扩缩容；</li>
+<li>监控、日志；</li>
+<li>&hellip;</li>
+</ul>
+
+<p>要达到屏蔽运维大体就是无需关心以上点，目前业界主流形式有 BaaS 和 FaaS：</p>
+
+<ul>
+<li>BaaS（Backend as a Service）：此服务做法就是把常见的后端服务抽象出来，比如数据存储、文件存储、消息等，客户端使用这些服务时感觉就像在使用普通的 SDK/API。</li>
+</ul>
+
+<p><img src="./front-back.webp" alt="front-back.webp" /></p>
+
+<ul>
+<li>FaaS（Function as a Service）：BaaS 只在大多数场景好使，某些特殊场景可能就比较麻烦，有些能力可能并没有提供，但是又必须要在后端写。完整关心整个后端代码框架并没必要，所以就可以抽象简单一个个 function 让用户去完成。目前 Google 采用的是 Knative，这里还有个其它方案的对比 文章。</li>
+</ul>
+
+<p>具体采用何种方式取决于业务形态，大体上就是用灵活性换方便度，给各种云服务一个灵活度排序：<code>IaaS（各种云主机） &gt; CaaS（Docker 等容器服务） &gt; PaaS（BAE、SAE、GAE 等 APP Engine） &gt; FaaS &gt; BaaS &gt; SaaS（各种 Web APP，如 Google Doc）</code>。</p>
+
+<p><img src="./*ass.webp" alt="*ass.webp" /></p>
+
+<p>歪歪的云计算九层架构，深色的表示留给用户定制的，<a href="https://www.google.com/search?q=iaas+paas+saas&amp;source=lnms&amp;tbm=isch">灵感来源</a></p>
+
+<p><strong>Serverless 为开发者提供了一种屏蔽运维又具备一定灵活度的云服务。</strong></p>
+
+<h2 id="业界现状">业界现状</h2>
+
+<p>本文只关心云原生相关产品，即 Docker/K8S 之上的产品，以下是部分主流产品：</p>
+
+<p>K8S &amp;&amp; CaaS</p>
+
+<ul>
+<li><code>Google Kubernetes Engine</code></li>
+<li><code>Google Cloud Run</code></li>
+<li><code>Amazon EKS</code></li>
+<li><code>Azure AKS</code></li>
+<li><code>阿里云容器服务</code></li>
+</ul>
+
+<p>FaaS</p>
+
+<ul>
+<li><code>Google Cloud Functions</code></li>
+<li><code>AWS Lambda</code></li>
+<li><code>ZEIT Now</code></li>
+<li><code>阿里云函数计算</code></li>
+</ul>
+
+<p>BaaS</p>
+
+<ul>
+<li><code>LeanCloud</code></li>
+</ul>
+
+<p>BaaS + FaaS</p>
+
+<ul>
+<li><code>阿里云小程序云</code></li>
+</ul>
+
+<h2 id="reference">Reference</h2>
+
+<ul>
+<li><a href="http://dockone.io/article/3687">一篇文章快速理解微服务架构</a></li>
+<li><a href="https://juejin.im/post/5deda052f265da33942a7631">云原生基础及调研</a></li>
+</ul>
+
+    </section>
+    <nav class="no-print post-nav">
+        
+        <a class="prev-post" href="https://hasaki.xyz/blog/2019-08-09-tensor--flow/">
+            <img class="icon-text" src="/img/prev.svg"/>Tensor &amp;&amp; flow</a>
+        
+        
+    </nav>
+</article>
+
+
+
+<div id="disqus_thread" class="no-print"></div>
+<script type="text/javascript">
+    'use strict';
+    (function () {
+        if ('localhost' != window.location.hostname) {
+            var a = document.querySelector('#disqus_thread');
+            new IntersectionObserver(function (b) {
+                b.forEach(function (d) {
+                    if (0 < d.intersectionRatio && !a.classList.contains('active')) {
+                        var e = document.createElement('script');
+                        e.type = 'text/javascript', e.async = !0;
+                        e.src = '//' + 'hasaki-xyz' + '.disqus.com/embed.js', (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(e), a.classList.add('active')
+                    }
+                })
+            }, {rootMargin: '0px', threshold: 1}).observe(a)
+        }
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+</noscript>
+
+
+<style rel="catalog">
+  #catalog {
+    position: fixed;
+    left: 3vw;
+    top: 8vh;
+    overflow: auto;
+    height: calc(100% - 16vh);
+    background:
+      linear-gradient(
+        white 30%,
+        rgba(255, 255, 255, 0)
+      ),
+      linear-gradient(rgba(255, 255, 255, 0), white 70%) 0 100%,
+       
+        radial-gradient(
+          50% 0,
+          farthest-side,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        ),
+      radial-gradient(
+          50% 100%,
+          farthest-side,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        )
+        0 100%;
+    background:
+      linear-gradient(
+        white 30%,
+        rgba(255, 255, 255, 0)
+      ),
+      linear-gradient(rgba(255, 255, 255, 0), white 70%) 0 100%,
+       
+        radial-gradient(
+          farthest-side at 50% 0,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        ),
+      radial-gradient(
+          farthest-side at 50% 100%,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        )
+        0 100%;
+    background-repeat: no-repeat;
+    background-color: white;
+    background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
+
+     
+    background-attachment: local, local, scroll, scroll;
+  }
+  @media (max-width: 1280px) {
+    #catalog {
+      display: none;
+    }
+  }
+
+  #catalog::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cl-wrapper {
+    position: relative;
+  }
+
+  .cl-wrapper ul,
+  .cl-wrapper li {
+    margin: 0;
+    -moz-padding-start: 12px;
+    -webkit-padding-start: 12px;
+    list-style: none;
+  }
+
+  .cl-wrapper li > .cl-link.cl-link-active {
+    color: #ff8181;
+    transition: 0.5s;
+  }
+
+  .cl-wrapper li > .cl-transform.cl-link-active {
+    transform: translate(3px);
+  }
+
+  .cl-wrapper .cl-link {
+    cursor: pointer;
+    color: rgba(52, 73, 94, 0.5);
+    font-size: 13px;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .cl-wrapper .cl-marker {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+
+  .cl-wrapper .cl-marker path {
+    transition: all 0.3s ease;
+  }
+</style>
+<main id="catalog"></main>
+<script rel="catalog">
+  void (function() {
+    if (
+      window.innerWidth < 1024 ||
+      /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+    ) {
+      return
+    }
+
+    const Catalog = (function() {
+      return function(opts) {
+        let defaultOpts = {
+          linkClass: 'cl-link', 
+          linkActiveClass: 'cl-link-active', 
+          datasetName: 'data-cata-target', 
+          selector: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'], 
+          scrollWrapper: null, 
+          activeHook: null, 
+          topMargin: 0,
+          bottomMargin: 0,
+          cool: true, 
+        }
+
+        const Opt = Object.assign({}, defaultOpts, opts)
+
+        const $content = document.getElementById(Opt.contentEl) 
+        const $scroll_wrap = window 
+        const $catalog = document.getElementById(Opt.catalogEl) 
+
+        let allCatalogs = $content.querySelectorAll(Opt.selector.join())
+        let tree = getCatalogsTree(allCatalogs)
+
+        try {
+          $catalog.innerHTML = `<div class='cl-wrapper'>${generateHtmlTree(
+            tree,
+            { id: -1 },
+          )}<svg class="cl-marker" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+            <path stroke="#ff8181" stroke-width="3" fill="transparent" stroke-dasharray="0, 0, 0, 1000" stroke-linecap="round" stroke-linejoin="round" transform="translate(-0.5, -0.5)" />
+            </svg></div>`
+        } catch (e) {
+          console.error('error in progress-catalog', e)
+        }
+
+        const tocPath = $catalog.querySelector('.cl-marker path')
+        let tocItems, pathLength 
+
+        
+        window.addEventListener('resize', drawPath)
+        $catalog.addEventListener('click', clickHandler)
+        Opt.cool && $scroll_wrap.addEventListener('scroll', coolScrollHandler)
+        Opt.cool || $scroll_wrap.addEventListener('scroll', simpleScrollHandler)
+
+        setTimeout(drawPath) 
+
+        
+
+        function drawPath() {
+          tocItems = [...$catalog.querySelectorAll('li')]
+          tocItems = tocItems.map(function(liDom) {
+            const anchor = liDom.querySelector(`.${Opt.linkClass}`)
+            const target = document.getElementById(
+              anchor.getAttribute('data-cata-target'),
+            )
+
+            return {
+              listItem: liDom,
+              anchor: anchor,
+              target: target,
+            }
+          })
+          tocItems = tocItems.filter(item => !!item.target)
+
+          const path = []
+          let pathIndent
+
+          tocItems &&
+            tocItems.forEach(function(item, idx) {
+              const { offsetLeft, offsetTop, offsetHeight } = item.anchor,
+                x = Opt.cool ? offsetLeft - 5 : offsetLeft,
+                y = offsetTop,
+                height = offsetHeight
+
+              if (idx === 0) {
+                path.push('M', x, y, 'L', x, y + height)
+                item.pathStart = 0
+              } else {
+                if (pathIndent !== x) path.push('L', pathIndent, y) 
+                path.push('L', x, y)
+                tocPath.setAttribute('d', path.join(' '))
+                item.pathStart = tocPath.getTotalLength() || 0
+                path.push('L', x, y + height)
+              }
+              pathIndent = x
+              tocPath.setAttribute('d', path.join(' '))
+              item.pathEnd = tocPath.getTotalLength()
+            })
+          pathLength = tocPath.getTotalLength()
+          coolScrollHandler()
+        }
+
+        
+
+        function coolScrollHandler() {
+          const wrapHeight = document.documentElement.offsetHeight
+          let pathStart = pathLength,
+            pathEnd = 0,
+            visibleItems = 0
+          tocItems.forEach(function(liItem) {
+            const { bottom, top } = liItem.target.getBoundingClientRect(),
+              firstChild = liItem.listItem.firstChild
+            if (bottom > Opt.topMargin && top < wrapHeight - Opt.bottomMargin) {
+              firstChild.classList.remove(Opt.linkActiveClass)
+              Opt.cool && firstChild.classList.remove('cl-transform')
+            } else {
+              pathStart = Math.min(liItem.pathStart, pathStart)
+              pathEnd = Math.max(liItem.pathEnd, pathEnd)
+              visibleItems += 1
+              firstChild.classList.add(Opt.linkActiveClass)
+              Opt.cool && firstChild.classList.add('cl-transform')
+            }
+          })
+          if (visibleItems > 0 && pathStart < pathEnd && Opt.cool) {
+            tocPath.setAttribute('stroke-dashoffset', '1')
+            tocPath.setAttribute(
+              'stroke-dasharray',
+              `1, ${pathStart}, ${pathEnd - pathStart}, ${pathLength}`,
+            )
+            tocPath.setAttribute('opacity', '1')
+          } else {
+            tocPath.setAttribute('opacity', '0')
+          }
+        }
+
+        
+
+        function simpleScrollHandler(el) {
+          let scrollToEl = null
+          for (let i = allCatalogs.length - 1; i >= 0; i--) {
+            if (allCatalogs[i].offsetTop <= $scroll_wrap.scrollTop) {
+              scrollToEl = allCatalogs[i]
+              break
+            }
+          }
+          if (scrollToEl) setActiveItem(scrollToEl.id)
+          else setActiveItem(null) 
+        }
+
+        
+
+        function clickHandler({ target }) {
+          const datasetId = target.getAttribute(Opt.datasetName)
+          target.classList.contains(Opt.linkClass) &&
+            document
+              .getElementById(datasetId)
+              .scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }
+
+        
+
+        function getCatalogsTree(catalogs) {
+          let title,
+            tagName,
+            tree = [],
+            treeItem = {},
+            parentItem = { id: -1 },
+            lastTreeItem = null,
+            id
+
+          for (let i = 0; i < catalogs.length; i++) {
+            title = catalogs[i].innerText || catalogs[i].textContent
+            tagName = catalogs[i].tagName
+            id = 'heading-' + i
+            catalogs[i].id = id
+            treeItem = {
+              name: title,
+              tagName: tagName,
+              id: id,
+              level: +getLevel(tagName),
+              parent: parentItem,
+            }
+            if (lastTreeItem) {
+              if (getLevel(treeItem.tagName) > getLevel(lastTreeItem.tagName)) {
+                treeItem.parent = lastTreeItem
+              } else {
+                treeItem.parent = findParent(treeItem, lastTreeItem)
+              }
+            }
+            lastTreeItem = treeItem
+            tree.push(treeItem)
+          }
+          return tree
+        }
+
+        
+
+        function findParent(currTreeItem, lastTreeItem) {
+          let lastTreeParent = lastTreeItem.parent
+          while (
+            lastTreeParent &&
+            getLevel(currTreeItem.tagName) <= getLevel(lastTreeParent.tagName)
+          ) {
+            lastTreeParent = lastTreeParent.parent
+          }
+          return lastTreeParent || { id: -1 }
+        }
+
+        
+
+        function getLevel(tagName) {
+          return tagName ? tagName.slice(1) : 0
+        }
+
+        
+
+        function generateHtmlTree(tree, _parent) {
+          let ul,
+            hasChild = false
+          if (tree) {
+            ul = `<ul>`
+            for (let i = 0; i < tree.length; i++) {
+              if (isEqual(tree[i].parent, _parent)) {
+                hasChild = true
+                ul += `<li><div class='${Opt.linkClass} cl-level-${tree[i].level}' ${Opt.datasetName}='${tree[i].id}'>${tree[i].name}</div>`
+                ul += generateHtmlTree(tree, tree[i])
+                ul += '</li>'
+              }
+            }
+            ul += `</ul>`
+          }
+          return hasChild ? ul : ''
+        }
+
+        /**
+         * 判断是否是相同节点
+         */
+        function isEqual(node, node2) {
+          return (
+            node &&
+            node2 &&
+            typeof node === 'object' &&
+            typeof node2 === 'object' &&
+            node.id === node2.id
+          )
+        }
+
+        /**
+         *  设置选中的项
+         */
+        function setActiveItem(id) {
+          let catas = [...$catalog.querySelectorAll(`[${Opt.datasetName}]`)]
+
+          catas.forEach(T => {
+            if (T.getAttribute(Opt.datasetName) === id) {
+              typeof Opt.activeHook === 'function' &&
+                !T.classList.contains(Opt.linkActiveClass) &&
+                Opt.activeHook.call(this, T) // 执行active钩子
+              T.classList.add(Opt.linkActiveClass)
+            } else {
+              T.classList.remove(Opt.linkActiveClass)
+            }
+          })
+        }
+      }
+    })()
+    window.addEventListener(
+      'DOMContentLoaded',
+      _ =>
+        new Catalog({
+          contentEl: 'markdown',
+          catalogEl: 'catalog',
+        }),
+    )
+  })()
+</script>
+
+			<hr class="sep" />
+		</main>
+		<footer class="container no-print">
+			<div class="u-footer">
+				
+<a href="mailto:iamnomand@gmail.com"><img class="icon-social" src="/img/email.svg" alt="Email Me!"/></a>
+
+
+<a href="https://github.com/v-tom/"><img class="icon-social" src="/img/github.svg" alt="Github"/></a>
+
+
+<a href="https://twitter.com/iamnomand"><img class="icon-social" src="/img/twitter.svg" alt="Twitter"/></a>
+
+<a href="https://hasaki.xyz/index.xml" target="_blank"><img class="icon-social" src="/img/feed.svg" alt="Feed"></a>
+
+				<p>
+					
+					
+					Early 2016 ~ 2019 &copy; TOM's Zone
+					
+					
+				</p>
+				
+				<a href="#brand">
+					<img class="icon-text" src="/img/toup.svg" alt="To Up"/>
+					<span>Back to Up</span>
+				</a>
+				
+			</div>
+		</footer>
+		
+		<script>hljs.initHighlightingOnLoad();</script>
+		
+	</body>
+</html>
+
