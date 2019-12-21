@@ -146,6 +146,10 @@ kubectl version
 
 你也可以使用官方更方便的 [Docker desktop GUI](https://docs.docker.com/)，然后配置 `Enable Kubernetes` 等待自动下载就会安装好所需的库，在后台跑起一个默认的 `Kubernetes cluster`。
 
+![docker-desktop.png](./docker-desktop.png)
+
+> 请注意上图的 `Docker Desktop is Running` 和 `Kubernetes is Running` 两个都为绿点才是安装成功
+
 下一步我们需要安装 [Kubernetes Dashboard](https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/#deploying-the-dashboard-ui)：
 
 ```sh
