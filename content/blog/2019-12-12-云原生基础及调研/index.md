@@ -7,6 +7,13 @@ date: 2019-11-12T13:09:31+08:00
 
 > 本文部分转载于 Cody Chan 在掘金上的文章[云原生基础及调研](https://juejin.im/post/5deda052f265da33942a7631)，有一些个人理解和修改
 
+老规矩，列出本机器环境
+
+- `system_profiler SPSoftwareDataType` : macOS 10.14.1 (18B75) Darwin 18.2.0
+- `docker -v` : Docker version 19.03.5, build 633a0ea
+- Docker desktop GUI : 2.1.0.5(40693) stable
+- `kubectl version` : 根据 Docker desktop GUI 而定
+
 本文仅用于简单普及，达到的目的是给没接触过或者很少接触过这方面的人一点感觉，阅读起来会比较轻松，作者深知短篇幅文章是不可能真正教会什么的，所以也不会出现 [RTFM](https://en.wikipedia.org/wiki/RTFM) 的内容。
 
 ## 概念
@@ -122,6 +129,480 @@ Docker 只解决了单个服务的交付问题，一个具备完整形态的应�
 
 K8S 做的比较极致的点就是以上所有资源的管理都是通过声明式的配置进行，**K8S 把容器运维变得可编程！**
 
+### 第一个 K8s 应用
+
+K8s 在 Mac 上安装也是非常方便，参照[官方文档](https://kubernetes.io/docs/tasks/tools/install-kubectl/)：
+
+```bash
+
+brew install kubectl
+
+kubectl version
+
+# 根据个人需要是否添加 alias
+# echo 'alias k=kubectl' >>~/.zshrc
+
+```
+
+你也可以使用官方更方便的 [Docker desktop GUI](https://docs.docker.com/)，然后配置 `Enable Kubernetes` 等待自动下载就会安装好所需的库，在后台跑起一个默认的 `Kubernetes cluster`。
+
+![docker-desktop.png](./docker-desktop.png)
+
+> 请注意上图的 `Docker Desktop is Running` 和 `Kubernetes is Running` 两个都为绿点才是安装成功
+
+下一步我们需要安装 [Kubernetes Dashboard](https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/#deploying-the-dashboard-ui)：
+
+```sh
+
+# 我们这里把官方推荐的配置文件下载到本地，便于修改配置
+
+curl https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta8/aio/deploy/recommended.yaml >> recommended.yaml
+
+kubectl apply -f ./recommended.yaml
+kubectl proxy
+
+```
+
+> 上诉关于 Kubernetes Dashboard 的 [kubernetes-dashboard.yaml](https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta8/aio/deploy/recommended.yaml) 文件也是一个很好的学习 K8s 配置的例子，可以读一读。
+
+另外还需要参照这个 anwser 设置一下 [enable-skip-login](https://stackoverflow.com/questions/46664104/how-to-sign-in-kubernetes-dashboard)，这样就可以**跳过登录阶段，不用 config 和 token**。我这里选择在 `containers kubernetes-dashboard` 的配置下添加 `--enable-skip-login`
+
+> If you are using dashboard version v1.10.1 or later, you must also add --enable-skip-login to the deployment's command line arguments. You can do so by adding it to the args in kubectl edit deployment/kubernetes-dashboard --namespace=kube-system:
+
+比如下面配置：
+
+```yaml
+containers:
+  - args:
+      - --auto-generate-certificates
+      - --enable-skip-login # <-- add this line
+      - --namespace=kubernetes-dashboard
+```
+
+然后在浏览器里面访问地址就可以看到如下界面，然后点击跳过来直接进入 Dashboard：[http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/.](http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/.)
+
+![kubernetes-dashboard-login.png](./kubernetes-dashboard-login.png)
+
+### Pod
+
+> 请注意，`Pod` TYPE 分为 `ClusterIP` 和 `NodePort`，前者说明当前 `Pod` 只能在集群内访问，需要端口转发，和 `Docker` 的 `EXPOSE` 有点类似（只是类似），后者则说明可以在宿主机，也就是当前我们的机器浏览器当中访问。
+
+这时候 Dashboard 是空的，我们来添加一个小型的 `Pod` ：
+
+我们使用 `nginx:alpine` 作为镜像部署了一个 `Pod`，并且暴露了 80 端口
+
+```yaml
+# nginx-pod.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  # 指定 label，便于检索
+  labels:
+    app: nginx
+spec:
+  containers:
+    - name: nginx
+      # 指定镜像
+      image: nginx:alpine
+      # 指定暴露端口
+      ports:
+        - containerPort: 80
+```
+
+使用 `kubectly apply`，部署 Pod：
+
+```sh
+
+kubectl apply -f nginx-pod.yaml
+
+# output
+# pod/nginx created
+
+```
+
+校验部署状态，此时 `STATUS` 为 `Running` 表明部署成功：
+
+```sh
+
+# 获取 Pod 部署的状态，特别是 IP
+# -o wide 列出IP/Node等更多信息
+
+kubectl get pods nginx -o wide
+
+# output
+# NAME    READY   STATUS    RESTARTS   AGE   IP          NODE             NOMINATED NODE   READINESS GATES
+# nginx   1/1     Running   0          65s   10.1.0.14   docker-desktop   <none>           <none>
+
+```
+
+如果你想得到当前 `nginx pod` 的更详细的信息，也可以通过 `kubectl describe pod nginx` 来获取
+这个时候刷新 Dashboard 我们可以看到：
+
+![dashboard-nginx-pod.png](./dashboard-nginx-pod.png)
+
+此时我们可以使用 `kubectl exec` 进入 `Pod` 的内部容器。如果 `Pod` 中有多个容器，使用 `kubectl exec -c` 指定容器：`kubectl exec -it nginx sh` （ sh 是 alpine 的默认终端 sh 入口）
+
+这个时候我们是不能直接访问这个 `Pod` 的，只能在集群内访问，所以如果我们要想在浏览器当中访问，我们需要 `port-forward`：
+
+```sh
+kubectl port-forward nginx 8080:80
+
+# output
+# Forwarding from 127.0.0.1:8080 -> 80
+# Forwarding from [::1]:8080 -> 80
+```
+
+然后就可以直接访问这个 nginx 服务了：
+
+```sh
+
+curl 127.0.0.1:8080
+
+# output
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+```
+
+> 前面我们说到 `Pod` 是最小的一个单元，而且这个方法只能暴露特定的 `Pod`，所以并不实用，后面我们把整个 `Deployment` 暴露成一个服务供给外部访问
+
+### Deployment
+
+在 k8s 中编排应用可以更好地做容器编排弹性扩容，负载均衡。既然要均衡，一个 Pod 肯定不能均衡，自然要部署多个 Pod
+
+> `docker-compose` 可以简单地通过 `docker-compose scale` 来扩容
+
+在 k8s 中管理 `Pod` 的称作 `Controller`，我们可以使用 `Deployment` 这种 `Controller` 来为 `Pod` 进行编排管理
+
+根据[官方文档](https://kubernetes.io/docs/tasks/run-application/run-stateless-application-deployment/)，我们可以简单编写一个 `Deployment` 的资源配置文件，其中：
+
+- `spec.template` : 指定要部署的 Pod
+- `spec.replicas` : 指定要部署的个数
+- `spec.selector` : 定位需要管理的 Pod
+
+```yaml
+# nginx-deployment.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:alpine
+          ports:
+            - containerPort: 80
+```
+
+我们使用 `kubectl apply` 部署生效后查看 `Pod` 以及 `Deployment` 状态
+
+```bash
+kubectl apply -f
+
+# output
+# deployment.apps/nginx-deployment created
+```
+
+成功部署后来查看一下 `Pod`：
+
+```bash
+kubectl get pods -o wide -l 'app=nginx'
+
+# output
+
+NAME                                READY   STATUS    RESTARTS   AGE    IP          NODE             NOMINATED NODE   READINESS GATES
+nginx                               1/1     Running   0          160m   10.1.0.14   docker-desktop   <none>           <none>
+nginx-deployment-66d89c74cb-d6zbw   1/1     Running   0          48s    10.1.0.15   docker-desktop   <none>           <none>
+nginx-deployment-66d89c74cb-phw8h   1/1     Running   0          48s    10.1.0.16   docker-desktop   <none>           <none>
+nginx-deployment-66d89c74cb-qc6sg   1/1     Running   0          48s    10.1.0.17   docker-desktop   <none>           <none>
+```
+
+再来查看一下部署状态：
+
+```bash
+kubectl get deploy nginx-deployment
+
+# output
+NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+nginx-deployment   3/3     3            3           2m9s
+```
+
+这个时候我们发现 `READY 3/3` 这表明全部部署成功，此时再来查看 Dashboard，我们会发现已经成功：
+
+![dashboard-nginx-deployment.png](./dashboard-nginx-deployment.png)
+
+接下来我们填一下上面 `Pod` 末尾的坑，我们把 `Deployment` 暴露成一个服务，供外部访问：
+
+```bash
+kubectl get deployment
+
+# output
+
+NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+nginx-deployment   3/3     3            3           10m
+
+kubectl expose deployment nginx-deployment --type=NodePort --name=nginx-deployment
+
+# output
+service/nginx-deployment exposed
+
+kubectl get service  -o wide
+
+# output
+NAME               TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE    SELECTOR
+kubernetes         ClusterIP   10.96.0.1       <none>        443/TCP        29h    <none>
+nginx-deployment   NodePort    10.98.205.114   <none>        80:31422/TCP   5m1s   app=nginx
+```
+
+> 你会发现最后一条命令的 output 里面 `TYPE` 有不同的值，这个在上面开始的时候已经强调过： `NodePort`，这代表外部或者宿主机可以访问，而 `ClusterIP` 代表服务只能在集群内部访问
+
+接下来就可以以 [http://localhost:31422/](http://localhost:31422/) 来访问 `nginx` 服务了
+
+### Service
+
+现在我们已经部署了一个 `Deployment`，但是你可能发现这些 `Pod` 的 ip 都不是固定的，那我们如何向这三个 Pod 请求服务呢？怎么做服务发现呢？
+
+我们可以通过 `Service` 解决这个问题，做指定 `Deployment` 或者特定集合 `Pod` 的网络层抽象
+
+配置文件如下
+
+- `spec.selector` : 指定如何选择 Pod
+- `spec.ports` : 指定如何暴露端口
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: nginx
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+```
+
+接下来部署：
+
+```bash
+kubectl apply -f nginx-service.yaml
+
+# output
+service/nginx-service created
+
+kubectl get svc nginx-service -o wide
+
+# output
+NAME            TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE   SELECTOR
+nginx-service   ClusterIP   10.110.133.24   <none>        80/TCP    30m   app=nginx
+```
+
+此时我们都是发现 `ClusterIP`，这代表服务只能在集群内部访问，所以我们需要进入 `Pod` 内部进行访问。
+
+- 为了验证，我们需要再建立一个 `Pod` 或者 集群来测试这个集群的 IP 是否能在当前 `Cluster`，也就是 k8s 的 `Context` 内访问。我们偷一下懒，新建个 `Pod` 就好了，把上面的 `nginx Pod` 配置文件稍微更改一下：
+
+```yaml
+# nginx-pod2.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-2 # 这里名称改 nginx-2
+  # 指定 label，便于检索
+  labels:
+    app: nginx
+spec:
+  containers:
+    - name: nginx-2 # 这里名称改 nginx-2
+      # 指定镜像
+      image: nginx:alpine
+      # 指定暴露端口
+      ports:
+        - containerPort: 80
+```
+
+- 然后创建这个 `Pod`：`kubectl apply -f nginx-pod2.yaml`，Dashboard 上多了一个 nginx-2 的 `Pod`：
+
+![dashboard-nginx-2.png](./dashboard-nginx-2.png)
+
+- 然入这个 `Pod` : `kubectl exec -it nginx-2 sh`
+- 安装 curl：`apk add curl`
+- 最后访问上面 `Service` 的地址：`curl 10.110.133.24` 就能访问到其他集群的 nginx 服务了
+
+进入 `Pod` 后的完整命令如下：
+
+```bash
+
+kubectl exec -it nginx-2 sh
+
+/ # apk add curl
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.10/main/x86_64/APKINDEX.tar.gz
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.10/community/x86_64/APKINDEX.tar.gz
+(1/4) Installing ca-certificates (20190108-r0)
+(2/4) Installing nghttp2-libs (1.39.2-r0)
+(3/4) Installing libcurl (7.66.0-r0)
+(4/4) Installing curl (7.66.0-r0)
+Executing busybox-1.30.1-r2.trigger
+Executing ca-certificates-20190108-r0.trigger
+OK: 30 MiB in 41 packages
+/ # curl 10.110.133.24
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+/ #
+```
+
+但是服务发现的含义是我们只需要知道服务的名字便能够访问服务，只能通过 IP 访问也肯定不行
+
+在 k8s 中，所有的服务可以通过 `my-svc.my-namespace.svc.cluster.local` 做服务发现，对于刚才部署的 `Service` 就是 `nginx-service.default.svc.cluster.local`
+
+所以在这个新建的 `Pod` 当中访问 `nginx-service.default.svc.cluster.local` 也是可以的
+
+```bash
+
+/ # curl nginx-service.default.svc.cluster.local
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+
+```
+
+### 完整配置
+
+完整配置如下：
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  # 指定 label，便于检索
+  labels:
+    app: nginx
+spec:
+  containers:
+    - name: nginx
+      # 指定镜像
+      image: nginx:alpine
+      # 指定暴露端口
+      ports:
+        - containerPort: 80
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:alpine
+          ports:
+            - containerPort: 80
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: nginx
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+```
+
+至此，简单的 K8s 部署我们也过了一遍
+
 ## Cloud Native
 
 如果要直接在生产环境使用 K8S 基本也可以了，但是：
@@ -198,3 +679,4 @@ BaaS + FaaS
 
 - [一篇文章快速理解微服务架构](http://dockone.io/article/3687)
 - [云原生基础及调研](https://juejin.im/post/5deda052f265da33942a7631)
+- [How to sign in kubernetes dashboard?](https://stackoverflow.com/questions/46664104/how-to-sign-in-kubernetes-dashboard)
