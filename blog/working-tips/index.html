@@ -480,6 +480,23 @@ alias ssr-off=&quot;networksetup -setsocksfirewallproxy &quot;Wi-Fi&quot; '' &qu
 
 <p>实际上当硬件性能足够高、优化较好，微内核和宏内核之间的性能差距也很小，<a href="https://zh.wikipedia.org/wiki/L4%E5%BE%AE%E5%86%85%E6%A0%B8%E7%B3%BB%E5%88%97">L4</a> 就是一个例子。</p>
 
+<h3 id="node-js-readline-async-iteration">Node.js readline &amp; async iteration:</h3>
+
+<p>直接用 Node 执行下面的代码片段，<a href="https://twitter.com/rauschma/status/1207886154714034177">source</a></p>
+
+<pre><code class="language-js">const fs = require('fs')
+const { createInterface: ci } = require('readline')
+
+async function logLines(ls) {
+  for await (const l of ls) {
+    console.log(`Received: ${l}`)
+  }
+}
+
+const rl = ci({ input: process.stdin, output: process.stdout })
+logLines(rl)
+</code></pre>
+
     </section>
     <nav class="no-print post-nav">
         
