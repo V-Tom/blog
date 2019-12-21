@@ -330,3 +330,21 @@ Linus 还就微内核和宏内核的问题和 Andy 论战过: [塔能鲍姆-托�
 微内核的代码大大的简化(少去多半的驱动代码),适合一些嵌入式设备，维护成本下降, 只要提供一个合理的驱动接口即可，但是会频繁用户态和内核态切换，效率会很低。
 
 实际上当硬件性能足够高、优化较好，微内核和宏内核之间的性能差距也很小，[L4](https://zh.wikipedia.org/wiki/L4%E5%BE%AE%E5%86%85%E6%A0%B8%E7%B3%BB%E5%88%97) 就是一个例子。
+
+### Node.js readline & async iteration:
+
+直接用 Node 执行下面的代码片段，[source](https://twitter.com/rauschma/status/1207886154714034177)
+
+```js
+const fs = require('fs')
+const { createInterface: ci } = require('readline')
+
+async function logLines(ls) {
+  for await (const l of ls) {
+    console.log(`Received: ${l}`)
+  }
+}
+
+const rl = ci({ input: process.stdin, output: process.stdout })
+logLines(rl)
+```
