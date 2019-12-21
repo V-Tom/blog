@@ -185,9 +185,11 @@ containers:
 
 ### Pod
 
+> 请注意，`Pod` TYPE 分为 `ClusterIP` 和 `NodePort`，前者说明当前 `Pod` 只能在集群内访问，需要端口转发，和 `Docker` 的 `EXPOSE` 有点类似（只是类似），后者则说明可以在宿主机，也就是当前我们的机器浏览器当中访问。
+
 这时候 Dashboard 是空的，我们来添加一个小型的 `Pod` ：
 
-> 我们使用 `nginx:alpine` 作为镜像部署了一个 `Pod`，并且暴露了 80 端口
+我们使用 `nginx:alpine` 作为镜像部署了一个 `Pod`，并且暴露了 80 端口
 
 ```yaml
 # nginx-pod.yaml
@@ -242,7 +244,7 @@ kubectl get pods nginx -o wide
 
 此时我们可以使用 `kubectl exec` 进入 `Pod` 的内部容器。如果 `Pod` 中有多个容器，使用 `kubectl exec -c` 指定容器：`kubectl exec -it nginx sh` （ sh 是 alpine 的默认终端 sh 入口）
 
-这个时候我们是不能直接访问这个 `Pod` 的，我们需要 `port-forward`：
+这个时候我们是不能直接访问这个 `Pod` 的，只能在集群内访问，所以如果我们要想在浏览器当中访问，我们需要 `port-forward`：
 
 ```sh
 kubectl port-forward nginx 8080:80
@@ -387,7 +389,7 @@ kubernetes         ClusterIP   10.96.0.1       <none>        443/TCP        29h 
 nginx-deployment   NodePort    10.98.205.114   <none>        80:31422/TCP   5m1s   app=nginx
 ```
 
-> 你会发现最后一条命令的 output 里面 `TYPE` 为 `NodePort`，这代表外部可以访问，而 `ClusterIP` 代表服务只能在集群内部访问
+> 你会发现最后一条命令的 output 里面 `TYPE` 有不同的值，这个在上面开始的时候已经强调过： `NodePort`，这代表外部或者宿主机可以访问，而 `ClusterIP` 代表服务只能在集群内部访问
 
 接下来就可以以 [http://localhost:31422/](http://localhost:31422/) 来访问 `nginx` 服务了
 
@@ -433,7 +435,7 @@ nginx-service   ClusterIP   10.110.133.24   <none>        80/TCP    30m   app=ng
 
 此时我们都是发现 `ClusterIP`，这代表服务只能在集群内部访问，所以我们需要进入 `Pod` 内部进行访问。
 
-- 我们选择再建立一个 `Pod` 或者 集群来测试这个集群的 IP 是否能在当前 `Cluster`，也就是 k8s 的 `Context` 内访问。我们把上面的 `nginx Pod` 配置文件稍微更改一下：
+- 为了验证，我们需要再建立一个 `Pod` 或者 集群来测试这个集群的 IP 是否能在当前 `Cluster`，也就是 k8s 的 `Context` 内访问。我们偷一下懒，新建个 `Pod` 就好了，把上面的 `nginx Pod` 配置文件稍微更改一下：
 
 ```yaml
 # nginx-pod2.yaml
