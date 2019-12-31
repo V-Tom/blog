@@ -1,11 +1,11 @@
 ---
 title: '云原生基础及调研'
 subTitle: '云原生基础及调研'
-tags: ['FrontEnd']
+tags: ['BackEnd']
 date: 2019-11-12T13:09:31+08:00
 ---
 
-> 本文部分转载于 Cody Chan 在掘金上的文章[云原生基础及调研](https://juejin.im/post/5deda052f265da33942a7631)，有一些个人理解和修改
+> 本文部分文案转载于 Cody Chan 在掘金上的文章[云原生基础及调研](https://juejin.im/post/5deda052f265da33942a7631)，有大量的个人实践和修改
 
 老规矩，列出本机器环境
 
@@ -115,7 +115,7 @@ Docker 只解决了单个服务的交付问题，一个具备完整形态的应�
 
 - [Pod](https://kubernetes.io/docs/concepts/workloads/pods/pod/)
 
-> 为了解决一组密切相关容器集合的调度，K8S 的最小的调度单位是 Pod，而不是容器，同一个 Pod 里的容器的资源可以互相访问。
+> 为了解决一组密切相关容器集合的调度，K8S 的最小的调度单位是 Pod，而不是容器，同一个 Pod 里的容器的资源可以互相访问，它将应用的容器、存储资源以及独立的网络 IP 地址等资源打包到了一起，表示一个最小的部署单元，但是每一个 Pod 中的运行的容器可能不止一个
 
 - [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)
 
@@ -123,11 +123,22 @@ Docker 只解决了单个服务的交付问题，一个具备完整形态的应�
 
 - [Service](https://kubernetes.io/docs/concepts/services-networking/service/)
 
-> 为了管理负载均衡和调度，又抽象了一个叫 Service
+> 为了管理负载均衡（LB）和调度、网络可以访问到集群内部的 `Pod` 又抽象了一个叫 Service
+
+请注意，`service` 大致分为 `ClusterIP`、`NodePort`、`LoadBalancer`、`ExternalName`，默认是 `ClusterIP` 。具体详细的请看[官方文档 Publishing Services (ServiceTypes)](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types)，也可以查看[Kubernetes NodePort vs LoadBalancer vs Ingress? When should I use what?](https://medium.com/google-cloud/kubernetes-nodeport-vs-loadbalancer-vs-ingress-when-should-i-use-what-922f010849e0)。这里简单介绍一下：
+
+- `ClusterIP`，默认值， 说明当前 `Pod` 只能在集群内访问，需要端口转发（和 `Docker` 的 `EXPOSE` 有点类似）
+- `NodePort` 表示可以当前 `Pod` 可以通过端口在集群外部访问（在本例子当中也就是宿主机或者我们的浏览器）
+- `LoadBalancer` 表示云服务提供者可以自动根据当前负载情况将请求转发到当前 `Pod`
+- `ExternalName` 在 [CoreDNS](https://coredns.io/) 1.7 以上的版本才可使用的类型，通过配置 `externalName` 来一个 `CNAME`记录。
+
+还有一个 [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)，这个严格来讲实际上不是一种服务。相反，它位于多个服务之前，充当集群中的“智能路由器”或入口点，可以做路由的转发、HTTPS、蓝绿发布等等，大概作用如下：
+
+![ingress.png](./ingress.png)
 
 以上概念是 K8S 基本概念，不过我想强调的是这个：**解决复杂问题很多都是在一层层抽象**，这点展开还可以说很多东西。
 
-K8S 做的比较极致的点就是以上所有资源的管理都是通过声明式的配置进行，**K8S 把容器运维变得可编程！**
+K8S 做的比较极致的点就是以上所有资源的管理都是通过声明式（Declarative）的编程方式，**K8S 把容器运维变得可编程！**，开发者只需要提交一份文件，K8S 将会自动为你分配创建所需的资源。对这些设施的 CRUD 都可以通过程序的方式自动化操作，下面会有对应的例子可以感受。
 
 ### 第一个 K8s 应用
 
@@ -165,7 +176,7 @@ kubectl proxy
 
 > 上诉关于 Kubernetes Dashboard 的 [kubernetes-dashboard.yaml](https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta8/aio/deploy/recommended.yaml) 文件也是一个很好的学习 K8s 配置的例子，可以读一读。
 
-另外还需要参照这个 anwser 设置一下 [enable-skip-login](https://stackoverflow.com/questions/46664104/how-to-sign-in-kubernetes-dashboard)，这样就可以**跳过登录阶段，不用 config 和 token**。我这里选择在 `containers kubernetes-dashboard` 的配置下添加 `--enable-skip-login`
+另外还需要参照这个 stackoverflow 的问题设置一下 [enable-skip-login](https://stackoverflow.com/questions/46664104/how-to-sign-in-kubernetes-dashboard)，这样就可以**跳过登录阶段，不用配置 config 和 token**。我这里选择在 `containers kubernetes-dashboard` 的配置下添加 `--enable-skip-login`
 
 > If you are using dashboard version v1.10.1 or later, you must also add --enable-skip-login to the deployment's command line arguments. You can do so by adding it to the args in kubectl edit deployment/kubernetes-dashboard --namespace=kube-system:
 
@@ -175,7 +186,7 @@ kubectl proxy
 containers:
   - args:
       - --auto-generate-certificates
-      - --enable-skip-login # <-- add this line
+      - --enable-skip-login # <-- 添加这一行配置
       - --namespace=kubernetes-dashboard
 ```
 
@@ -184,8 +195,6 @@ containers:
 ![kubernetes-dashboard-login.png](./kubernetes-dashboard-login.png)
 
 ### Pod
-
-> 请注意，`Pod` TYPE 分为 `ClusterIP` 和 `NodePort`，前者说明当前 `Pod` 只能在集群内访问，需要端口转发，和 `Docker` 的 `EXPOSE` 有点类似（只是类似），后者则说明可以在宿主机，也就是当前我们的机器浏览器当中访问。
 
 这时候 Dashboard 是空的，我们来添加一个小型的 `Pod` ：
 
@@ -397,6 +406,8 @@ nginx-deployment   NodePort    10.98.205.114   <none>        80:31422/TCP   5m1s
 
 现在我们已经部署了一个 `Deployment`，但是你可能发现这些 `Pod` 的 ip 都不是固定的，那我们如何向这三个 Pod 请求服务呢？怎么做服务发现呢？
 
+> k8s 里面的[服务发现](https://kubernetes.io/docs/concepts/services-networking/service/#discovering-services)可以通过 `Environment variables` 和 `DNS` 实现
+
 我们可以通过 `Service` 解决这个问题，做指定 `Deployment` 或者特定集合 `Pod` 的网络层抽象
 
 配置文件如下
@@ -405,6 +416,8 @@ nginx-deployment   NodePort    10.98.205.114   <none>        80:31422/TCP   5m1s
 - `spec.ports` : 指定如何暴露端口
 
 ```yaml
+# nginx-service.yaml
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -433,7 +446,7 @@ NAME            TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE   SELECT
 nginx-service   ClusterIP   10.110.133.24   <none>        80/TCP    30m   app=nginx
 ```
 
-此时我们都是发现 `ClusterIP`，这代表服务只能在集群内部访问，所以我们需要进入 `Pod` 内部进行访问。
+此时我们都是发现 `ClusterIP`，所以我们需要进入 `Pod` 内部进行访问。
 
 - 为了验证，我们需要再建立一个 `Pod` 或者 集群来测试这个集群的 IP 是否能在当前 `Cluster`，也就是 k8s 的 `Context` 内访问。我们偷一下懒，新建个 `Pod` 就好了，把上面的 `nginx Pod` 配置文件稍微更改一下：
 
@@ -617,8 +630,6 @@ Web 后端稳定性的特点不太能容忍这样的事情发生，推导到云�
 
 为了达到此目的，还有了 [CNCF 云原生计算基金会](https://www.cncf.io/)，有了组织就靠谱多了。这个组织有一个收集（或孵化）了各种最佳实践的 [云原生全景图谱](https://landscape.cncf.io/)。
 
-比如，一个比较有意思的叫 [helm](https://github.com/helm/helm)，作为 K8S 应用包管理器，它把一个 K8S 应用抽象成一个包，一键就可以部署一个应用，跟很多包管理器一样，它也有源 [KubeApps Hub](https://hub.kubeapps.com/)（甚至有阿里云提供的 [国内源](https://developer.aliyun.com/hub)）。
-
 ## Serverless
 
 有了云原生，基本各种业务场景都可以找到适合的最佳实践，Serverless 就是其中一种。个人很不理解为什么这个词被翻译成：无服务器架构，Serverless 屏蔽的是运维，所以叫无运维架构更合适。迫于无法接受其中文翻译，文中还是用 Serverless。
@@ -648,35 +659,11 @@ Web 后端稳定性的特点不太能容忍这样的事情发生，推导到云�
 
 **Serverless 为开发者提供了一种屏蔽运维又具备一定灵活度的云服务。**
 
-## 业界现状
-
-本文只关心云原生相关产品，即 Docker/K8S 之上的产品，以下是部分主流产品：
-
-K8S && CaaS
-
-- `Google Kubernetes Engine`
-- `Google Cloud Run`
-- `Amazon EKS`
-- `Azure AKS`
-- `阿里云容器服务`
-
-FaaS
-
-- `Google Cloud Functions`
-- `AWS Lambda`
-- `ZEIT Now`
-- `阿里云函数计算`
-
-BaaS
-
-- `LeanCloud`
-
-BaaS + FaaS
-
-- `阿里云小程序云`
-
 ## Reference
 
 - [一篇文章快速理解微服务架构](http://dockone.io/article/3687)
 - [云原生基础及调研](https://juejin.im/post/5deda052f265da33942a7631)
+- [Docker 核心技术与实现原理](https://draveness.me/docker)
+- [谈 Kubernetes 的架构设计与实现原理](https://draveness.me/understanding-kubernetes)
 - [How to sign in kubernetes dashboard?](https://stackoverflow.com/questions/46664104/how-to-sign-in-kubernetes-dashboard)
+- [Kubernetes NodePort vs LoadBalancer vs Ingress? When should I use what?](https://medium.com/google-cloud/kubernetes-nodeport-vs-loadbalancer-vs-ingress-when-should-i-use-what-922f010849e0)
