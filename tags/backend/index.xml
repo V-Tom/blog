@@ -7,10 +7,26 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ZH-CN</language>
     <copyright>Early 2016 ~ 2019 &amp;copy; TOM&#39;s Zone</copyright>
-    <lastBuildDate>Fri, 12 Apr 2019 12:52:40 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 12 Nov 2019 13:09:31 +0800</lastBuildDate>
     
 	<atom:link href="https://hasaki.xyz/tags/backend/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>云原生基础及调研</title>
+      <link>https://hasaki.xyz/blog/2019-12-12-%E4%BA%91%E5%8E%9F%E7%94%9F%E5%9F%BA%E7%A1%80%E5%8F%8A%E8%B0%83%E7%A0%94/</link>
+      <pubDate>Tue, 12 Nov 2019 13:09:31 +0800</pubDate>
+      
+      <guid>https://hasaki.xyz/blog/2019-12-12-%E4%BA%91%E5%8E%9F%E7%94%9F%E5%9F%BA%E7%A1%80%E5%8F%8A%E8%B0%83%E7%A0%94/</guid>
+      <description>老规矩，列出本机器环境
+ system_profiler SPSoftwareDataType : macOS 10.14.1 (18B75) Darwin 18.2.0 docker -v : Docker version 19.03.5, build 633a0ea Docker desktop GUI : 2.1.0.5(40693) stable kubectl version : 根据 Docker desktop GUI 而定  概念 提到云原生（Cloud Native）可能部分人会陌生，但是如果说 Serverless 相信很多人就知道了，实际上两者并不等价。Serverless 是一种理念或者服务交付形态，目标是屏蔽硬件和运维细节。
+而云原生则是实现此类目标的一种规范以及基础设施。
+再进一步，介于 Docker 天然的隔离性和高效等特点，以及 Kubernetes 成为事实意义上的 Docker 编排标准，凡是见到云原生或者 Serverless 的地方，几乎都可以认为是基于 Docker + Kubernetes 的一种实践。
+单个点展开讲太枯燥，索性我们从历史的角度看看为什么会有云原生。
+Docker 先申明下，Docker 是一种容器技术（具体可深入 namespaces 和 cgroups），而不是虚拟化技术，真正的虚拟化比较常见的是 Xen 和 KVM，可能有同学要举手了：老师，那我们经常用的 VirtualBox 和 VMware 算虚拟化么？当然算！不过大多数情况下，它们用在桌面虚拟化领域
+可能大家之前经常遇到这样的场景：为什么在我这可以运行在你那就不行了？为什么刚刚可以运行现在就不行了？最终解决下来，大多是环境不一致导致的问题。这里的环境除了开发环境还包括操作系统。
+所以一般给别人代码的时候还需要告诉别人此代码可运行的操作系统版本，所依赖的各种软件的版本，甚至目录、磁盘、内存、CPU 都有要求！</description>
+    </item>
     
     <item>
       <title>Serverless 入门</title>
@@ -29,10 +45,10 @@
     
     <item>
       <title>gRPC 浅谈与实践</title>
-      <link>https://hasaki.xyz/blog/2019-03-04--grpc-%E6%B5%85%E8%B0%88%E4%B8%8E%E5%AE%9E%E8%B7%B5/</link>
+      <link>https://hasaki.xyz/blog/2019-03-04-grpc-%E6%B5%85%E8%B0%88%E4%B8%8E%E5%AE%9E%E8%B7%B5/</link>
       <pubDate>Mon, 04 Mar 2019 11:32:40 +0800</pubDate>
       
-      <guid>https://hasaki.xyz/blog/2019-03-04--grpc-%E6%B5%85%E8%B0%88%E4%B8%8E%E5%AE%9E%E8%B7%B5/</guid>
+      <guid>https://hasaki.xyz/blog/2019-03-04-grpc-%E6%B5%85%E8%B0%88%E4%B8%8E%E5%AE%9E%E8%B7%B5/</guid>
       <description>由于不同的环境下面的例子可能会存在一些误差，下面列出本机环境：
  Docker -v ：Docker version 18.09.1, build 4c52b90 docker-compose -v ：docker-compose version 1.23.2, build 1110ad01 go version : go version go1.12.4 darwin/amd64 system_profiler SPSoftwareDataType : macOS 10.14.3 (18D42) Darwin 18.2.0 IDE golang latest  RPC RPC 全名为 Remote procedure call ,直译过来就是 远程过程调用 ，也就是说两台服务器 A，B，一个应用部署在 A 服务器上，想要调用 B 服务器上应用提供的函数/方法，由于不在一个内存空间，不能直接调用，需要通过网络来表达调用的语义和传达调用的数据。
 调用的基本流程可以看下图：
