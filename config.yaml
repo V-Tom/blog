@@ -1,23 +1,23 @@
-baseURL: 'https://hasaki.xyz'
-languageCode: 'ZH-CN'
+baseURL: "https://hasaki.xyz"
+languageCode: "ZH-CN"
 title: "TOM's zone"
 pluralizeListTitles: false
-DisqusShortname: 'hasaki-xyz'
-defaultContentLanguage: 'en'
+DisqusShortname: "hasaki-xyz"
+defaultContentLanguage: "en"
 disableHugoGeneratorInject: true
 copyright: "Early 2016 ~ 2019 &copy; TOM's Zone"
-SectionPagesMenu: 'main'
+SectionPagesMenu: "main"
 Paginate: 24
 
 taxonomies:
-  tags: 'tags'
+  tags: "tags"
 
 Params:
   host:
-    url: 'https://github.com'
-    user: 'V-Tom'
-    repo: 'blog'
-    branch: 'hugo'
+    url: "https://github.com"
+    user: "V-Tom"
+    repo: "blog"
+    branch: "hugo"
 
   # Site meta description
   description: "TOM's zone"
@@ -25,10 +25,10 @@ Params:
   webAppTitle: "TOM's zone"
 
   # Site's Tagline (Subtitle or Keyword)
-  tagline: 'Nothing sweeter than this'
+  tagline: "Nothing sweeter than this"
 
-  dateFormat: 'January 2, 2006'
-  colorTheme: '#ff8181'
+  dateFormat: "January 2, 2006"
+  colorTheme: "#ff8181"
 
   head404: "Sorry, I can't find what you want."
   sub404: "Back to <a href='/'>Home</a>."
@@ -38,7 +38,7 @@ Params:
   themeAttrib: false
   # HighlightJs
   HighlightJs: true
-  highlightJsStyle: 'ocean'
+  highlightJsStyle: "ocean"
   HighlightJsLanguages:
     - javascript
     - python
@@ -47,11 +47,12 @@ Params:
     - swift
     - objectivec
     - rust
+    - yaml
 
   # Social Links
-  email: 'iamnomand@gmail.com'
-  github: 'https://github.com/v-tom/'
-  twitter: 'https://twitter.com/iamnomand'
+  email: "iamnomand@gmail.com"
+  github: "https://github.com/v-tom/"
+  twitter: "https://twitter.com/iamnomand"
 
-  postSection: 'blog'
-  workSection: 'work'
+  postSection: "blog"
+  workSection: "work"

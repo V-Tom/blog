@@ -5,16 +5,12 @@ tags: ['BackEnd']
 date: 2019-11-12T13:09:31+08:00
 ---
 
-> 本文部分文案转载于 Cody Chan 在掘金上的文章[云原生基础及调研](https://juejin.im/post/5deda052f265da33942a7631)，有大量的个人实践和修改
-
 老规矩，列出本机器环境
 
 - `system_profiler SPSoftwareDataType` : macOS 10.14.1 (18B75) Darwin 18.2.0
 - `docker -v` : Docker version 19.03.5, build 633a0ea
 - Docker desktop GUI : 2.1.0.5(40693) stable
 - `kubectl version` : 根据 Docker desktop GUI 而定
-
-本文仅用于简单普及，达到的目的是给没接触过或者很少接触过这方面的人一点感觉，阅读起来会比较轻松，作者深知短篇幅文章是不可能真正教会什么的，所以也不会出现 [RTFM](https://en.wikipedia.org/wiki/RTFM) 的内容。
 
 ## 概念
 
@@ -28,7 +24,7 @@ date: 2019-11-12T13:09:31+08:00
 
 ## Docker
 
-先申明下，Docker 是一种容器技术（具体可深入 [namespaces](https://en.wikipedia.org/wiki/Linux_namespaces) 和 [cgroups](https://en.wikipedia.org/wiki/Cgroups)），而不是虚拟化技术，真正的虚拟化比较常见的是 Xen 和 KVM，可能有同学要举手了：老师，那我们经常用的 VirtualBox 和 VMware 算虚拟化么？当然算！不过大多数情况下，它们用在桌面虚拟化领域。不要急着撕，我说的是大多数，而且虚拟化方案也还有很多。
+先申明下，Docker 是一种容器技术（具体可深入 [namespaces](https://en.wikipedia.org/wiki/Linux_namespaces) 和 [cgroups](https://en.wikipedia.org/wiki/Cgroups)），而不是虚拟化技术，真正的虚拟化比较常见的是 Xen 和 KVM，可能有同学要举手了：老师，那我们经常用的 VirtualBox 和 VMware 算虚拟化么？当然算！不过大多数情况下，它们用在桌面虚拟化领域
 
 可能大家之前经常遇到这样的场景：为什么在我这可以运行在你那就不行了？为什么刚刚可以运行现在就不行了？最终解决下来，大多是环境不一致导致的问题。这里的环境除了开发环境还包括操作系统。
 
@@ -125,18 +121,24 @@ Docker 只解决了单个服务的交付问题，一个具备完整形态的应�
 
 > 为了管理负载均衡（LB）和调度、网络可以访问到集群内部的 `Pod` 又抽象了一个叫 Service
 
-请注意，`service` 大致分为 `ClusterIP`、`NodePort`、`LoadBalancer`、`ExternalName`，默认是 `ClusterIP` 。具体详细的请看[官方文档 Publishing Services (ServiceTypes)](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types)，也可以查看[Kubernetes NodePort vs LoadBalancer vs Ingress? When should I use what?](https://medium.com/google-cloud/kubernetes-nodeport-vs-loadbalancer-vs-ingress-when-should-i-use-what-922f010849e0)。这里简单介绍一下：
+请注意，`service` 类型大致分为 `ClusterIP`、`NodePort`、`LoadBalancer`、`ExternalName`，默认是 `ClusterIP`
 
-- `ClusterIP`，默认值， 说明当前 `Pod` 只能在集群内访问，需要端口转发（和 `Docker` 的 `EXPOSE` 有点类似）
-- `NodePort` 表示可以当前 `Pod` 可以通过端口在集群外部访问（在本例子当中也就是宿主机或者我们的浏览器）
-- `LoadBalancer` 表示云服务提供者可以自动根据当前负载情况将请求转发到当前 `Pod`
+具体详细的请看 [官方文档-Publishing Services (ServiceTypes)](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types)，也可以查看 [Kubernetes NodePort vs LoadBalancer vs Ingress? When should I use what?](https://medium.com/google-cloud/kubernetes-nodeport-vs-loadbalancer-vs-ingress-when-should-i-use-what-922f010849e0)
+
+我们这里简单介绍下：
+
+- `ClusterIP` 是默认的 Kubernetes 服务，说明当前 `Pod` 只能在集群内访问，如果希望外部访问则需要端口转发 `kubectl proxy`（和 `Docker` 的 `EXPOSE` 有点类似），适合用于 debug 模式
+- `NodePort` 是暴露服务的最原始方式，表示可以当前 `Pod` 可以通过端口在集群外部访问（在本例子当中也就是宿主机或者我们的浏览器）
+- `LoadBalancer` 是暴露服务的标准方式，表示云服务提供者可以自动根据当前负载情况将请求转发到当前 `Pod`
 - `ExternalName` 在 [CoreDNS](https://coredns.io/) 1.7 以上的版本才可使用的类型，通过配置 `externalName` 来一个 `CNAME`记录。
 
 还有一个 [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)，这个严格来讲实际上不是一种服务。相反，它位于多个服务之前，充当集群中的“智能路由器”或入口点，可以做路由的转发、HTTPS、蓝绿发布等等，大概作用如下：
 
 ![ingress.png](./ingress.png)
 
-以上概念是 K8S 基本概念，不过我想强调的是这个：**解决复杂问题很多都是在一层层抽象**，这点展开还可以说很多东西。
+以上概念是 K8S 基本概念，不过我想强调的是这个：**解决复杂问题很多都是在一层层抽象**，这点展开还可以说很多东西，一张图简单描述一下：
+
+![Pods-Deployment-Service.png](./Pods-Deployment-Service.png)
 
 K8S 做的比较极致的点就是以上所有资源的管理都是通过声明式（Declarative）的编程方式，**K8S 把容器运维变得可编程！**，开发者只需要提交一份文件，K8S 将会自动为你分配创建所需的资源。对这些设施的 CRUD 都可以通过程序的方式自动化操作，下面会有对应的例子可以感受。
 
@@ -190,7 +192,7 @@ containers:
       - --namespace=kubernetes-dashboard
 ```
 
-然后在浏览器里面访问地址就可以看到如下界面，然后点击跳过来直接进入 Dashboard：[http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/.](http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/.)
+然后在浏览器里面访问地址就可以看到如下界面，然后点击 `跳过` 来直接进入 Dashboard：[http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/.](http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/.)
 
 ![kubernetes-dashboard-login.png](./kubernetes-dashboard-login.png)
 
@@ -198,7 +200,7 @@ containers:
 
 这时候 Dashboard 是空的，我们来添加一个小型的 `Pod` ：
 
-我们使用 `nginx:alpine` 作为镜像部署了一个 `Pod`，并且暴露了 80 端口
+我们根据 [官方文档示例](https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/#pod-templates) 来简单使用 `nginx:alpine` 作为镜像部署了一个 `Pod`，并且暴露了 80 端口
 
 ```yaml
 # nginx-pod.yaml
@@ -406,8 +408,6 @@ nginx-deployment   NodePort    10.98.205.114   <none>        80:31422/TCP   5m1s
 
 现在我们已经部署了一个 `Deployment`，但是你可能发现这些 `Pod` 的 ip 都不是固定的，那我们如何向这三个 Pod 请求服务呢？怎么做服务发现呢？
 
-> k8s 里面的[服务发现](https://kubernetes.io/docs/concepts/services-networking/service/#discovering-services)可以通过 `Environment variables` 和 `DNS` 实现
-
 我们可以通过 `Service` 解决这个问题，做指定 `Deployment` 或者特定集合 `Pod` 的网络层抽象
 
 配置文件如下
@@ -474,7 +474,7 @@ spec:
 
 ![dashboard-nginx-2.png](./dashboard-nginx-2.png)
 
-- 然入这个 `Pod` : `kubectl exec -it nginx-2 sh`
+- 进入这个 `Pod` : `kubectl exec -it nginx-2 sh`
 - 安装 curl：`apk add curl`
 - 最后访问上面 `Service` 的地址：`curl 10.110.133.24` 就能访问到其他集群的 nginx 服务了
 
@@ -523,7 +523,9 @@ Commercial support is available at
 / #
 ```
 
-但是服务发现的含义是我们只需要知道服务的名字便能够访问服务，只能通过 IP 访问也肯定不行
+**但是服务发现的含义是我们只需要知道服务的名字便能够访问服务，只能通过 IP 访问也肯定不行**
+
+> k8s 里面的服务发现可以通过 [Environment variables](https://kubernetes.io/docs/concepts/services-networking/service/#environment-variables) 和 [DNS](https://kubernetes.io/docs/concepts/services-networking/service/#dns) 实现
 
 在 k8s 中，所有的服务可以通过 `my-svc.my-namespace.svc.cluster.local` 做服务发现，对于刚才部署的 `Service` 就是 `nginx-service.default.svc.cluster.local`
 
@@ -654,8 +656,6 @@ Web 后端稳定性的特点不太能容忍这样的事情发生，推导到云�
 具体采用何种方式取决于业务形态，大体上就是用灵活性换方便度，给各种云服务一个灵活度排序：`IaaS（各种云主机） > CaaS（Docker 等容器服务） > PaaS（BAE、SAE、GAE 等 APP Engine） > FaaS > BaaS > SaaS（各种 Web APP，如 Google Doc）`。
 
 ![*ass.webp](./*ass.webp)
-
-歪歪的云计算九层架构，深色的表示留给用户定制的，[灵感来源](https://www.google.com/search?q=iaas+paas+saas&source=lnms&tbm=isch)
 
 **Serverless 为开发者提供了一种屏蔽运维又具备一定灵活度的云服务。**
 
