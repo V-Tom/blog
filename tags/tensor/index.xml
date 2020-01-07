@@ -14,10 +14,10 @@
     
     <item>
       <title>Tensor &amp;&amp; flow</title>
-      <link>https://hasaki.xyz/blog/2019-08-09-tensor-flow/</link>
+      <link>https://hasaki.xyz/blog/2019-08-09-tensor--flow/</link>
       <pubDate>Fri, 09 Aug 2019 13:22:30 +0800</pubDate>
       
-      <guid>https://hasaki.xyz/blog/2019-08-09-tensor-flow/</guid>
+      <guid>https://hasaki.xyz/blog/2019-08-09-tensor--flow/</guid>
       <description>本文只是简单 TensorFlow 的一些理解和介绍，并不包含详细的安装、API、以及更多深层内容。
  首先简单说一下 标量（Scalar）、向量（Vector）、张量（Tensor）。
 下面会以 physical student 和 cs student 两个角度来解释。

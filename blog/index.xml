@@ -30,10 +30,10 @@ Docker 先申明下，Docker 是一种容器技术（具体可深入 namespaces 
     
     <item>
       <title>Tensor &amp;&amp; flow</title>
-      <link>https://hasaki.xyz/blog/2019-08-09-tensor-flow/</link>
+      <link>https://hasaki.xyz/blog/2019-08-09-tensor--flow/</link>
       <pubDate>Fri, 09 Aug 2019 13:22:30 +0800</pubDate>
       
-      <guid>https://hasaki.xyz/blog/2019-08-09-tensor-flow/</guid>
+      <guid>https://hasaki.xyz/blog/2019-08-09-tensor--flow/</guid>
       <description>本文只是简单 TensorFlow 的一些理解和介绍，并不包含详细的安装、API、以及更多深层内容。
  首先简单说一下 标量（Scalar）、向量（Vector）、张量（Tensor）。
 下面会以 physical student 和 cs student 两个角度来解释。
@@ -121,10 +121,10 @@ JIT 计算机使用的是机器语言，也就是 010101 二进制，而我们�
     
     <item>
       <title>gRPC 浅谈与实践</title>
-      <link>https://hasaki.xyz/blog/2019-03-04-grpc-%E6%B5%85%E8%B0%88%E4%B8%8E%E5%AE%9E%E8%B7%B5/</link>
+      <link>https://hasaki.xyz/blog/2019-03-04--grpc-%E6%B5%85%E8%B0%88%E4%B8%8E%E5%AE%9E%E8%B7%B5/</link>
       <pubDate>Mon, 04 Mar 2019 11:32:40 +0800</pubDate>
       
-      <guid>https://hasaki.xyz/blog/2019-03-04-grpc-%E6%B5%85%E8%B0%88%E4%B8%8E%E5%AE%9E%E8%B7%B5/</guid>
+      <guid>https://hasaki.xyz/blog/2019-03-04--grpc-%E6%B5%85%E8%B0%88%E4%B8%8E%E5%AE%9E%E8%B7%B5/</guid>
       <description>由于不同的环境下面的例子可能会存在一些误差，下面列出本机环境：
  Docker -v ：Docker version 18.09.1, build 4c52b90 docker-compose -v ：docker-compose version 1.23.2, build 1110ad01 go version : go version go1.12.4 darwin/amd64 system_profiler SPSoftwareDataType : macOS 10.14.3 (18D42) Darwin 18.2.0 IDE golang latest  RPC RPC 全名为 Remote procedure call ,直译过来就是 远程过程调用 ，也就是说两台服务器 A，B，一个应用部署在 A 服务器上，想要调用 B 服务器上应用提供的函数/方法，由于不在一个内存空间，不能直接调用，需要通过网络来表达调用的语义和传达调用的数据。
 调用的基本流程可以看下图：
