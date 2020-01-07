@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://hasaki.xyz/life/2020-01-03-%E7%98%9F%E7%96%AB%E4%BC%A0%E8%AF%B4%E6%97%A0%E7%BD%AA/</loc>
+    <lastmod>2020-01-03T13:12:30+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://hasaki.xyz/blog/2019-12-12-%E4%BA%91%E5%8E%9F%E7%94%9F%E5%9F%BA%E7%A1%80%E5%8F%8A%E8%B0%83%E7%A0%94/</loc>
     <lastmod>2019-11-12T13:09:31+08:00</lastmod>
   </url>
@@ -206,6 +211,12 @@
   </url>
   
   <url>
+    <loc>https://hasaki.xyz/tags/game/</loc>
+    <lastmod>2020-01-03T13:12:30+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://hasaki.xyz/tags/golang/</loc>
     <lastmod>2019-03-04T11:32:40+08:00</lastmod>
     <priority>0</priority>
@@ -219,7 +230,7 @@
   
   <url>
     <loc>https://hasaki.xyz/life/</loc>
-    <lastmod>2019-07-27T13:12:30+08:00</lastmod>
+    <lastmod>2020-01-03T13:12:30+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -291,7 +302,7 @@
   
   <url>
     <loc>https://hasaki.xyz/</loc>
-    <lastmod>2019-11-12T13:09:31+08:00</lastmod>
+    <lastmod>2020-01-03T13:12:30+08:00</lastmod>
     <priority>0</priority>
   </url>
   
