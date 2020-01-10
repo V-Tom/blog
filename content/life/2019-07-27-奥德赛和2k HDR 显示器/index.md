@@ -1,7 +1,7 @@
 ---
 title: '奥德赛和2k HDR 显示器'
 subTitle: '奥德赛和2k HDR 显示器'
-tags: ['life', '电子产品']
+tags: ['Game', '电子产品']
 date: 2019-07-27T13:12:30+08:00
 ---
 

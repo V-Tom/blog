@@ -3,20 +3,20 @@ title: 'some interview question'
 subTitle: 'some interview question'
 tags: ['interview']
 date: 2019-07-23T14:01:30+08:00
-host: ''
 draft: true
 ---
 
-### list
+### 重点关注
 
-- webpack loader && webpack plugins
-- webp 图片的浏览器兼容检测
-- jsCore
-- DSL
-- 漫画浅显解释和对比 docker 、K8S
-- React 合成事件
-- Event Loop
-- 堆内存与栈内存
+- 原型链、`new` 是怎么实现的
+- Redux、Connect
+- 虚拟 DOM
+- Fiber
+- 垃圾回收策略、垃圾回收时栈和堆的区别
+- HTTPS 建立流程
+- [Webpack HMR 原理解析](https://zhuanlan.zhihu.com/p/30669007)
+- [一次安全可靠的通信——HTTPS 原理](https://developers.weixin.qq.com/community/develop/article/doc/000046a5fdc7802a15f7508b556413)
+- RN 基本原理、和原生通信
 
 ### webpack loader && webpack plugins
 
@@ -35,9 +35,7 @@ draft: true
 ### webp 图片的浏览器兼容检测
 
 - canvas ：`return /^data:image\/webp/.test(document.createElement('canvas').toDataURL('image/webp', 0.5));`
-
 - HTTP header：浏览器在图片请求发出的时候，Request Headers 里有 Accept，服务端可以根据 Accept 里面是否有 image/webp 进行判断。
-
 - new Image：先加载一个 WebP 图片，如果能获取到图片的宽度和高度，就说明是支持 WebP 的，反之则不支持
 
 ### jsCore
@@ -54,8 +52,9 @@ draft: true
 - [小女孩也能看懂的插画版 Kubernetes 指南](https://linux.cn/article-7531-1.html)
 - [漫画 | Kubernetes 带你一帆风顺去远航](https://blog.csdn.net/M2l0ZgSsVc7r69eFdTj/article/details/78890222)
 
-### React 合成事件
+### React
 
+- [单页面应用路由实现原理：以 React-Router 为例](https://github.com/youngwind/blog/issues/109)
 - [谈谈 React 事件机制和未来(react-events)](https://zhuanlan.zhihu.com/p/78669634)
 
 ### Event Loop
@@ -66,3 +65,8 @@ draft: true
 
 - [前端知识点总结——堆内存与栈内存](https://zhuanlan.zhihu.com/p/27534451)
 - [什么是堆？什么是栈？他们之间有什么区别和联系？](https://www.zhihu.com/question/19729973)
+
+### koa
+
+- [Koa2 中间件原理解析](https://juejin.im/post/5ba7868e6fb9a05cdf309292)
+- pm2 && cluster

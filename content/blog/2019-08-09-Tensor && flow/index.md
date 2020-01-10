@@ -1,7 +1,7 @@
 ---
 title: 'Tensor && flow'
 subTitle: 'Tensor && flow'
-tags: ['Tensor']
+tags: ['MachineLearn']
 date: 2019-08-09T13:22:30+08:00
 ---
 

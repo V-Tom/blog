@@ -308,10 +308,8 @@ git 默认对文件名大小写不敏感，需要配置：`git config core.ignor
 [内核](https://zh.wikipedia.org/wiki/%E5%86%85%E6%A0%B8)主要分为：
 
 - 集成式核心、宏内核[https://en.wikipedia.org/wiki/Monolithic_kernel] **Monolithic kernel** linux
-
 - [微内核](https://zh.wikipedia.org/wiki/%E5%BE%AE%E5%85%A7%E6%A0%B8) **Micro kernel** MINIX 3、Fuchsia OS、L4
-
-- 混合内核[https://zh.wikipedia.org/wiki/%E6%B7%B7%E5%90%88%E6%A0%B8%E5%BF%83] **Hybird Kernel** OSX、NT
+- [混合内核](https://zh.wikipedia.org/wiki/%E6%B7%B7%E5%90%88%E6%A0%B8%E5%BF%83) **Hybird Kernel** OSX、NT
 
 ![kernel.png](./kernel.png)
 

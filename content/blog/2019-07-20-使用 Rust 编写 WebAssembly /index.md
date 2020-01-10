@@ -410,15 +410,15 @@ pkg
 
 ```html
 <script type="module">
-  main();
+  main()
 
   async function main() {
     // 引入胶水文件
-    const wasm = await import('/pkg/wasm.js');
+    const wasm = await import('/pkg/wasm.js')
     // 加载 wasm
-    await wasm.default('/pkg/wasm_bg.wasm');
+    await wasm.default('/pkg/wasm_bg.wasm')
 
-    console.log(wasm.fibonacci(40));
+    console.log(wasm.fibonacci(40))
   }
 </script>
 ```
@@ -576,8 +576,6 @@ fn draw_canvas(canvas: web_sys::HtmlCanvasElement) {
 
 ## WebAssembly in Node
 
-TODO
-
 > WebAssembly in Node compare with Node Addon ???
 
 ## 新的银弹？
@@ -597,7 +595,7 @@ WebAssembly 应用场景在我看来更多的是：
 
 那现在到底谁在使用 WebAssembly 呢？印象比较深刻的是 [AutoCAD](https://blogs.autodesk.com/autocad/autocad-web-app-google-io-2018/) ，更多的可以查看下面的 Twitter：
 
-[JamesLMilner who is actually using WebAssembly?](https://twitter.com/JamesLMilner/status/1151824280914731008)
+[JamesLMilner who is actually using WebAswsembly?](https://twitter.com/JamesLMilner/status/1151824280914731008)
 
 ## Reference
 
