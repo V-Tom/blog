@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Machinelearn on TOM&#39;s zone</title>
+    <link>https://hasaki.xyz/tags/machinelearn/</link>
+    <description>Recent content in Machinelearn on TOM&#39;s zone</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ZH-CN</language>
+    <copyright>Early 2016 ~ 2020 &amp;copy; TOM&#39;s Zone</copyright>
+    <lastBuildDate>Fri, 09 Aug 2019 13:22:30 +0800</lastBuildDate>
+    
+	<atom:link href="https://hasaki.xyz/tags/machinelearn/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Tensor &amp;&amp; flow</title>
+      <link>https://hasaki.xyz/blog/2019-08-09-tensor--flow/</link>
+      <pubDate>Fri, 09 Aug 2019 13:22:30 +0800</pubDate>
+      
+      <guid>https://hasaki.xyz/blog/2019-08-09-tensor--flow/</guid>
+      <description>本文只是简单 TensorFlow 的一些理解和介绍，并不包含详细的安装、API、以及更多深层内容。
+ 首先简单说一下 标量（Scalar）、向量（Vector）、张量（Tensor）。
+下面会以 physical student 和 cs student 两个角度来解释。
+Scalar 在物理学角度，标量是遵循简单代数规则的一些量，与坐标系的选取无关。例如，加法，减法等。标量也可以被定义为仅需要识别幅度的量。例如温度，电流等
+CS 里面可以简单认为是一个常量（constant）
+Vector 物理学角度向量是空间中的箭头，也可以是矢量。
+决定一个向量的是它的长度（length）和它所指的方向（direction），而且只要以上特征相同，你一个任意移动一个向量而保持它不变。比如速度和力。而且平面中（平面直角坐标系）的向量是二维的，处于我们生活当中的向量是三维的。
+举个例子，一个二维向量 [-2,3] 以平面直角坐标系来表示为：
+ 第一个数代表沿 X 轴走多远，第二个数代表沿 Y 轴走多远。
+ 图中的黄色箭头就是向量，可以看到一个向量都有一个唯一一对对数
+而一个三维向量 [2,1,3] 以平面直角坐标系来表示为：
+ 第一个数代表沿 X 轴走多远，第二个数代表沿 Y 轴走多远，第三个数代表沿 Z 轴走了多远
+ CS 角度向量是一个二维数组（二维）、三维数组（三维）或者说是矩阵。代表有序的数字集合。
+线性代数 向量在线性代数当中可以叫做矩阵（matrix），矩阵可以做一些基本的运算，对应的加法和乘法规则是：
+ 两个矩阵行列数必须要相同才能进行求和运算。   两个矩阵要相乘，前一个矩阵的列数必须要等于后一个矩阵的行数，也可以看成是列的加权求和   至于更多的矩阵求逆、求导超出本文的范畴，请自行学习线性代数。
+ 我们也可以换一种方式来看向量的坐标，把一个 [1,1] 的向量定义为 基向量。
+上文的二维向量 [-2,3]，对应的每个坐标可以看作一个为 Scalar（标量）。这个向量可以看作把基向量按照标量的大小进行缩放所产生。-2 代表往右 2 倍，3 代表向上 3 倍</description>
+    </item>
+    
+  </channel>
+</rss>

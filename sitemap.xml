@@ -3,18 +3,23 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://hasaki.xyz/life/2020-01-03-%E7%98%9F%E7%96%AB%E4%BC%A0%E8%AF%B4%E6%97%A0%E7%BD%AA/</loc>
-    <lastmod>2020-01-03T13:12:30+08:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://hasaki.xyz/blog/2019-12-12-%E4%BA%91%E5%8E%9F%E7%94%9F%E5%9F%BA%E7%A1%80%E5%8F%8A%E8%B0%83%E7%A0%94/</loc>
     <lastmod>2019-11-12T13:09:31+08:00</lastmod>
   </url>
   
   <url>
+    <loc>https://hasaki.xyz/gallery/2020-01-15-2020%E5%B9%B4%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%9C%88%E4%BB%BD%E6%9D%82%E8%AE%B0/</loc>
+    <lastmod>2019-11-06T15:39:30+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://hasaki.xyz/gallery/2019-11-07-%E9%9A%8F%E4%BE%BF%E6%94%BE%E7%82%B9%E4%BB%80%E4%B9%88%E7%85%A7%E7%89%87/</loc>
     <lastmod>2019-11-06T15:39:30+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://hasaki.xyz/blog/2019-10-23-%E8%BD%AC%E8%BD%BD%E8%BF%99%E5%8F%AF%E8%83%BD%E6%98%AF%E6%9C%80%E9%80%9A%E4%BF%97%E7%9A%84-react-fiber%E6%97%B6%E9%97%B4%E5%88%86%E7%89%87-%E6%89%93%E5%BC%80%E6%96%B9%E5%BC%8F/</loc>
+    <lastmod>2019-10-23T14:01:30+08:00</lastmod>
   </url>
   
   <url>
@@ -194,7 +199,7 @@
   
   <url>
     <loc>https://hasaki.xyz/tags/frontend/</loc>
-    <lastmod>2019-07-20T15:42:40+08:00</lastmod>
+    <lastmod>2019-10-23T14:01:30+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -212,7 +217,7 @@
   
   <url>
     <loc>https://hasaki.xyz/tags/game/</loc>
-    <lastmod>2020-01-03T13:12:30+08:00</lastmod>
+    <lastmod>2019-07-27T13:12:30+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -230,13 +235,19 @@
   
   <url>
     <loc>https://hasaki.xyz/life/</loc>
-    <lastmod>2020-01-03T13:12:30+08:00</lastmod>
+    <lastmod>2019-07-27T13:12:30+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://hasaki.xyz/tags/life/</loc>
     <lastmod>2019-11-06T15:39:30+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://hasaki.xyz/tags/machinelearn/</loc>
+    <lastmod>2019-08-09T13:22:30+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -302,19 +313,13 @@
   
   <url>
     <loc>https://hasaki.xyz/</loc>
-    <lastmod>2020-01-03T13:12:30+08:00</lastmod>
+    <lastmod>2019-11-12T13:09:31+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://hasaki.xyz/tags/</loc>
     <lastmod>2017-08-13T15:29:40+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://hasaki.xyz/tags/tensor/</loc>
-    <lastmod>2019-08-09T13:22:30+08:00</lastmod>
     <priority>0</priority>
   </url>
   

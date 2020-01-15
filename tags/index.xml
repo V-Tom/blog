@@ -6,7 +6,7 @@
     <description>Recent content in Tags on TOM&#39;s zone</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ZH-CN</language>
-    <copyright>Early 2016 ~ 2019 &amp;copy; TOM&#39;s Zone</copyright>
+    <copyright>Early 2016 ~ 2020 &amp;copy; TOM&#39;s Zone</copyright>
     <lastBuildDate>Sun, 13 Aug 2017 15:29:40 +0800</lastBuildDate>
     
 	<atom:link href="https://hasaki.xyz/tags/index.xml" rel="self" type="application/rss+xml" />
@@ -96,7 +96,7 @@
     <item>
       <title>Frontend</title>
       <link>https://hasaki.xyz/tags/frontend/</link>
-      <pubDate>Sat, 20 Jul 2019 15:42:40 +0800</pubDate>
+      <pubDate>Wed, 23 Oct 2019 14:01:30 +0800</pubDate>
       
       <guid>https://hasaki.xyz/tags/frontend/</guid>
       <description></description>
@@ -114,7 +114,7 @@
     <item>
       <title>Game</title>
       <link>https://hasaki.xyz/tags/game/</link>
-      <pubDate>Fri, 03 Jan 2020 13:12:30 +0800</pubDate>
+      <pubDate>Sat, 27 Jul 2019 13:12:30 +0800</pubDate>
       
       <guid>https://hasaki.xyz/tags/game/</guid>
       <description></description>
@@ -144,6 +144,15 @@
       <pubDate>Wed, 06 Nov 2019 15:39:30 +0800</pubDate>
       
       <guid>https://hasaki.xyz/tags/life/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Machinelearn</title>
+      <link>https://hasaki.xyz/tags/machinelearn/</link>
+      <pubDate>Fri, 09 Aug 2019 13:22:30 +0800</pubDate>
+      
+      <guid>https://hasaki.xyz/tags/machinelearn/</guid>
       <description></description>
     </item>
     
@@ -234,15 +243,6 @@
       <pubDate>Sun, 03 Apr 2016 15:29:40 +0800</pubDate>
       
       <guid>https://hasaki.xyz/tags/shadowsocksr/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Tensor</title>
-      <link>https://hasaki.xyz/tags/tensor/</link>
-      <pubDate>Fri, 09 Aug 2019 13:22:30 +0800</pubDate>
-      
-      <guid>https://hasaki.xyz/tags/tensor/</guid>
       <description></description>
     </item>
     

@@ -6,7 +6,7 @@
     <description>Recent content in Cluster on TOM&#39;s zone</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ZH-CN</language>
-    <copyright>Early 2016 ~ 2019 &amp;copy; TOM&#39;s Zone</copyright>
+    <copyright>Early 2016 ~ 2020 &amp;copy; TOM&#39;s Zone</copyright>
     <lastBuildDate>Thu, 08 Feb 2018 14:22:25 +0800</lastBuildDate>
     
 	<atom:link href="https://hasaki.xyz/tags/cluster/index.xml" rel="self" type="application/rss+xml" />
@@ -18,11 +18,11 @@
       <pubDate>Thu, 08 Feb 2018 14:22:25 +0800</pubDate>
       
       <guid>https://hasaki.xyz/blog/2018-02-08-%E8%B0%88%E8%B0%88node.js%E7%9A%84%E5%8D%95%E7%BA%BF%E7%A8%8B/</guid>
-      <description>本文较长，内容较广，涉及内容也比较多，可能存在一些纰漏，希望读者读到本篇时遇到错误请指出，感激不尽。
+      <description>本文较长，内容较广，涉及内容也比较多，可能存在一些纰漏，希望读者读到本篇时如果遇到错误请指出，感激不尽。
  前言 从 Node.js 进入人们的视野时，我们所知道的它就由这些关键字组成 事件驱动、非阻塞 I/O、高效、轻量，它在官网中也是这么描述自己的。
  Node.js® is a JavaScript runtime built on Chrome’s V8 JavaScript engine. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient.
  Node.js 结构 我们可以看到，Node.js 的结构大致分为三个层次：
- Node.js 标准库，这部分是由 Javascript 编写的，即我们使用过程中直接能调用的 API。在源码中的 lib 目录下可以看到。 Node bindings，这一层是 Javascript 与底层 C/C++ 能够沟通的关键，前者通过 bindings 调用后者，相互交换数据。实现在 node.cc 这一层是支撑 Node.js 运行的关键，由 C/C++ 实现。  V8：Google 推出的 Javascript VM，也是 Node.js 为什么使用的是 Javascript 的关键，它为 Javascript 提供了在非浏览器端运行的环境，它的高效是 Node.</description>
+ Node.js 标准库，这部分是由 Javascript 编写的，即我们使用过程中直接能调用的 API。在源码中的 lib 目录下可以看到。 Node bindings，这一层是 Javascript 与底层 C/C++ 能够沟通的关键，前者通过 bindings 调用后者，相互交换数据。实现在 node.cc 这一层是支撑 Node.js 运行的关键，由 C/C++ 实现。 V8：Google 推出的 Javascript VM，也是 Node.js 为什么使用的是 Javascript 的关键，它为 Javascript 提供了在非浏览器端运行的环境，它的高效是 Node.</description>
     </item>
     
     <item>

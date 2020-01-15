@@ -16,11 +16,11 @@
     <link rel="manifest" href="/sw/manifest.json"/>
 <title>谈谈 Node.js 的单线程 - TOM&#39;s zone</title>
 
-<meta name="description" content="本文较长，内容较广，涉及内容也比较多，可能存在一些纰漏，希望读者读到本篇时遇到错误请指出，感激不尽。
+<meta name="description" content="本文较长，内容较广，涉及内容也比较多，可能存在一些纰漏，希望读者读到本篇时如果遇到错误请指出，感激不尽。
  前言 从 Node.js 进入人们的视野时，我们所知道的它就由这些关键字组成 事件驱动、非阻塞 I/O、高效、轻量，它在官网中也是这么描述自己的。
  Node.js® is a JavaScript runtime built on Chrome’s V8 JavaScript engine. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient.
  Node.js 结构 我们可以看到，Node.js 的结构大致分为三个层次：
- Node.js 标准库，这部分是由 Javascript 编写的，即我们使用过程中直接能调用的 API。在源码中的 lib 目录下可以看到。 Node bindings，这一层是 Javascript 与底层 C/C&#43;&#43; 能够沟通的关键，前者通过 bindings 调用后者，相互交换数据。实现在 node.cc 这一层是支撑 Node.js 运行的关键，由 C/C&#43;&#43; 实现。  V8：Google 推出的 Javascript VM，也是 Node.js 为什么使用的是 Javascript 的关键，它为 Javascript 提供了在非浏览器端运行的环境，它的高效是 Node.">
+ Node.js 标准库，这部分是由 Javascript 编写的，即我们使用过程中直接能调用的 API。在源码中的 lib 目录下可以看到。 Node bindings，这一层是 Javascript 与底层 C/C&#43;&#43; 能够沟通的关键，前者通过 bindings 调用后者，相互交换数据。实现在 node.cc 这一层是支撑 Node.js 运行的关键，由 C/C&#43;&#43; 实现。 V8：Google 推出的 Javascript VM，也是 Node.js 为什么使用的是 Javascript 的关键，它为 Javascript 提供了在非浏览器端运行的环境，它的高效是 Node.">
 
 
 
@@ -47,6 +47,8 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/rust.min.js"></script>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/yaml.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/bash.min.js"></script>
 
 
     <link rel="stylesheet" href="/css/bundle.min.css"/>
@@ -152,7 +154,7 @@
         
 
 <blockquote>
-<p>本文较长，内容较广，涉及内容也比较多，可能存在一些纰漏，希望读者读到本篇时遇到错误请指出，感激不尽。</p>
+<p>本文较长，内容较广，涉及内容也比较多，可能存在一些纰漏，希望读者读到本篇时如果遇到错误请指出，感激不尽。</p>
 </blockquote>
 
 <h3 id="前言">前言</h3>
@@ -172,14 +174,11 @@
 <ul>
 <li>Node.js 标准库，这部分是由 Javascript 编写的，即我们使用过程中直接能调用的 API。在源码中的 <a href="https://github.com/nodejs/node/tree/master/lib">lib</a> 目录下可以看到。</li>
 <li>Node bindings，这一层是 Javascript 与底层 C/C++ 能够沟通的关键，前者通过 bindings 调用后者，相互交换数据。实现在 <a href="https://github.com/nodejs/node/blob/master/src/node.cc">node.cc</a></li>
-<li>这一层是支撑 Node.js 运行的关键，由 C/C++ 实现。
-
-<ul>
+<li>这一层是支撑 Node.js 运行的关键，由 C/C++ 实现。</li>
 <li>V8：Google 推出的 Javascript VM，也是 Node.js 为什么使用的是 Javascript 的关键，它为 Javascript 提供了在非浏览器端运行的环境，它的高效是 Node.js 之所以高效的原因之一。</li>
 <li>Libuv：它为 Node.js 提供了跨平台，线程池，事件池，异步 I/O 等能力，是 Node.js 如此强大的关键。</li>
 <li>C-ares：提供了异步处理 DNS 相关的能力。</li>
 <li>http_parser、OpenSSL、zlib 等：提供包括 http 解析、SSL、数据压缩等其他的能力。</li>
-</ul></li>
 </ul>
 
 <p>所以，由此可以看出 <code>Node.js</code> 并不是一门语言，只是一个平台。</p>
@@ -461,15 +460,11 @@ loop.close()
 <p>到底什么是同步、异步、阻塞、非阻塞、异步？根据 《UNIX 网络编程：卷一》，书中向我们提及了 5 种类 UNIX 下可用的 I/O 模型：</p>
 
 <ul>
-<li><p>阻塞式 I/O</p></li>
-
-<li><p>非阻塞式 I/O</p></li>
-
-<li><p>I/O 复用（select，poll，epoll&hellip;）这里下面会说到</p></li>
-
-<li><p>信号驱动式 I/O（SIGIO）这里不做介绍</p></li>
-
-<li><p>异步 I/O（POSIX 的 aio_系列函数）</p></li>
+<li>阻塞式 I/O</li>
+<li>非阻塞式 I/O</li>
+<li>I/O 复用（select，poll，epoll&hellip;）这里下面会说到</li>
+<li>信号驱动式 I/O（SIGIO）这里不做介绍</li>
+<li>异步 I/O（POSIX 的 aio_系列函数）</li>
 </ul>
 
 <p>下面我们调出一些常见的来做些简单介绍</p>
@@ -478,8 +473,10 @@ loop.close()
 
 <p>默认情况下，所有套接字都是阻塞的。怎么理解？先理解这么个流程，一个输入操作通常包括两个不同阶段：</p>
 
-<p>（1）等待数据准备好；
-（2）从内核向进程复制数据。</p>
+<ul>
+<li>1、等待数据准备好；</li>
+<li>2、从内核向进程复制数据。</li>
+</ul>
 
 <p>对于一个套接字上的输入操作，第一步通常涉及等待数据从网络中到达。当所有等待分组到达时，它被复制到内核中的某个缓冲区。第二步就是把数据从内核缓冲区复制到应用程序缓冲区。 好，下面我们以阻塞套接字的 recvfrom 的的调用图来说明阻塞</p>
 
@@ -680,7 +677,7 @@ loop.close()
 
 <pre><code class="language-javascript">setTimeout(() =&gt; {
   // do something
-}, 0);
+}, 0)
 </code></pre>
 
 <p>实际上这样写不但浪费性能，而且根据 event loop 顺序，setTimeout 的优先级也不高。实际上 <code>process.nextTick</code> 方法操作较为轻量、高效，功能实现上也较为符合需求。</p>
@@ -692,14 +689,14 @@ loop.close()
 <p>这个 <code>setImmediate</code> 方法和 <code>process.nextTick</code> 十分相似，都是回调函数延迟执行，两者的差别是：</p>
 
 <pre><code class="language-javascript">process.nextTick(function() {
-  console.log('nextTick');
-});
+  console.log('nextTick')
+})
 
 setImmediate(function() {
-  console.log('setImmediate');
-});
+  console.log('setImmediate')
+})
 
-console.log('runtime');
+console.log('runtime')
 </code></pre>
 
 <p>执行结果是：</p>
@@ -786,21 +783,21 @@ setImmediate
 
 <p>下面是采用 <code>cluster</code> 来创建一个简单的集群：</p>
 
-<pre><code class="language-javascript">const cluster = require('cluster'); // | |
-const http = require('http'); // | |
-const numCPUs = require('os').cpus().length; // | |    都执行了
+<pre><code class="language-javascript">const cluster = require('cluster') // | |
+const http = require('http') // | |
+const numCPUs = require('os').cpus().length // | |    都执行了
 // | |
 if (cluster.isMaster) {
   // |-|-----------------
   // Fork workers.                             //   |
   for (var i = 0; i &lt; numCPUs; i++) {
     //   |
-    cluster.fork(); //   |
+    cluster.fork() //   |
   } //   | 仅父进程执行 (a.js)
   cluster.on('exit', worker =&gt; {
     //   |
-    console.log(`${worker.process.pid} died`); //   |
-  }); //   |
+    console.log(`${worker.process.pid} died`) //   |
+  }) //   |
 } else {
   // |-------------------
   // Workers can share any TCP connection      // |
@@ -808,13 +805,13 @@ if (cluster.isMaster) {
   http
     .createServer((req, res) =&gt; {
       // |
-      res.writeHead(200); // |   仅子进程执行 (b.js)
-      res.end('hello world\n'); // |
+      res.writeHead(200) // |   仅子进程执行 (b.js)
+      res.end('hello world\n') // |
     })
-    .listen(8000); // |
+    .listen(8000) // |
 } // |-------------------
 // | |
-console.log('hello'); // | |    都执行了
+console.log('hello') // | |    都执行了
 </code></pre>
 
 <p>真实的工作进程是通过使用 <code>child_process.fork</code> 方法实现并派送的,他们可以通过 IPC （Inter-Process Communication）进行进程间的通信。</p>
@@ -913,35 +910,41 @@ export NODE_CLUSTER_SCHED_POLICY=none
 
 <pre><code class="language-javascript">process.on('uncaughtException', err =&gt; {
   // 记录日志
-  logger.error(err);
+  logger.error(err)
 
   // 发送自杀信号
-  process.send({ act: 'suicide' });
+  process.send({ act: 'suicide' })
 
   // 停止接收新的连接
   worker.close(function() {
-    process.exit(1);
-  });
+    process.exit(1)
+  })
 
   // 5秒后自动退出
   setTimeout(function() {
-    process.exit(1);
-  }, 5e3);
-});
+    process.exit(1)
+  }, 5e3)
+})
 </code></pre>
 
 <p>在 <code>cluster</code> 模块当中我们可以这样进行处理：</p>
 
 <pre><code class="language-javascript">cluster.on('exit', function() {
-  clsuter.fork();
-});
+  clsuter.fork()
+})
 
 cluster.on('disconnect', function() {
-  clsuter.fork();
-});
+  clsuter.fork()
+})
 </code></pre>
 
 <p>整个应用的稳定性就落在了 master 身上，要百分百保证它的健壮性。</p>
+
+<p>当然也可以采用 <a href="https://pm2.keymetrics.io/">PM2</a>（偷懒的办法），这个基于 Cluster 模块 进行了一些封装，它能自动监控进程状态（守护进程）、重启进程、停止不稳定进程、日志存储等。</p>
+
+<p>利用 PM2 时，可以在不修改代码的情况下实现负载均衡集群。</p>
+
+<p><img src="./pm2.png" alt="pm2.png" /></p>
 
 <h3 id="个人看法">个人看法</h3>
 
@@ -1414,7 +1417,7 @@ cluster.on('disconnect', function() {
 				<p>
 					
 					
-					Early 2016 ~ 2019 &copy; TOM's Zone
+					Early 2016 ~ 2020 &copy; TOM's Zone
 					
 					
 				</p>

@@ -51,6 +51,8 @@ JIT 计算机使用的是机器语言，也就是 010101 二进制，而我们�
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/yaml.min.js"></script>
 
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/bash.min.js"></script>
+
 
     <link rel="stylesheet" href="/css/bundle.min.css"/>
 <script src="/js/bundle.js"></script>
@@ -575,15 +577,15 @@ pkg
 <p>接下来我们在 HTML 当中调用这个 WebAssembly：</p>
 
 <pre><code class="language-html">&lt;script type=&quot;module&quot;&gt;
-  main();
+  main()
 
   async function main() {
     // 引入胶水文件
-    const wasm = await import('/pkg/wasm.js');
+    const wasm = await import('/pkg/wasm.js')
     // 加载 wasm
-    await wasm.default('/pkg/wasm_bg.wasm');
+    await wasm.default('/pkg/wasm_bg.wasm')
 
-    console.log(wasm.fibonacci(40));
+    console.log(wasm.fibonacci(40))
   }
 &lt;/script&gt;
 </code></pre>
@@ -743,8 +745,6 @@ fn draw_canvas(canvas: web_sys::HtmlCanvasElement) {
 
 <h2 id="webassembly-in-node">WebAssembly in Node</h2>
 
-<p>TODO</p>
-
 <blockquote>
 <p>WebAssembly in Node compare with Node Addon ???</p>
 </blockquote>
@@ -770,7 +770,7 @@ fn draw_canvas(canvas: web_sys::HtmlCanvasElement) {
 
 <p>那现在到底谁在使用 WebAssembly 呢？印象比较深刻的是 <a href="https://blogs.autodesk.com/autocad/autocad-web-app-google-io-2018/">AutoCAD</a> ，更多的可以查看下面的 Twitter：</p>
 
-<p><a href="https://twitter.com/JamesLMilner/status/1151824280914731008">JamesLMilner who is actually using WebAssembly?</a></p>
+<p><a href="https://twitter.com/JamesLMilner/status/1151824280914731008">JamesLMilner who is actually using WebAswsembly?</a></p>
 
 <h2 id="reference">Reference</h2>
 
@@ -1226,7 +1226,7 @@ fn draw_canvas(canvas: web_sys::HtmlCanvasElement) {
 				<p>
 					
 					
-					Early 2016 ~ 2019 &copy; TOM's Zone
+					Early 2016 ~ 2020 &copy; TOM's Zone
 					
 					
 				</p>

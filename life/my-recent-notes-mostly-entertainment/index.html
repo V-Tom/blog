@@ -17,7 +17,7 @@
 <title>My Recent Notes (mostly entertainment) - TOM&#39;s zone</title>
 
 <meta name="description" content="此文稿列出了我最近的一些安排，主要是娱乐安排，比如电影、电视剧、游戏、旅游之类的，每个种类已经手动按照时间进行排序 其中 ✅ 代表当前电视剧已经完结、游戏已经通关等等
- Code Github Projects
+ Books  《机器学习实战》 《苍穹浩瀚》  Code Github Projects
 Movies  ✅ 硅谷 第六季 Silicon Valley Season 6 (2019) 首播: 2019-10(美国) ✅ 苍穹浩瀚 第四季 The Expanse Season 4 (2019) 首播: 2019-12-13(美国) ✅ 星际迷航：发现号 第三季 Star Trek: Discovery Season 3 (2020) 首播: 2020-01(美国) 新世纪福音战士新剧场版：终 首播: 2020 曼达洛人 第一季 首播：Nov. 12, 2019  已经开播，4K，1080P 下载地址
 Games  ✅ 瘟疫傳說：無罪 ✅ 巫师 3：狂猎 Cyberpunk 2077 Initial release date: April 16, 2020  组建 NAS 自建 NAS 的所需硬件以及需要满足条件简单如下表：">
 
@@ -46,6 +46,8 @@ Games  ✅ 瘟疫傳說：無罪 ✅ 巫师 3：狂猎 Cyberpunk 2077 Initial re
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/rust.min.js"></script>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/yaml.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/bash.min.js"></script>
 
 
     <link rel="stylesheet" href="/css/bundle.min.css"/>
@@ -151,6 +153,13 @@ Games  ✅ 瘟疫傳說：無罪 ✅ 巫师 3：狂猎 Cyberpunk 2077 Initial re
 其中 ✅ 代表当前电视剧已经完结、游戏已经通关等等</p>
 </blockquote>
 
+<h2 id="books">Books</h2>
+
+<ul>
+<li>《机器学习实战》</li>
+<li>《苍穹浩瀚》</li>
+</ul>
+
 <h2 id="code">Code</h2>
 
 <p><a href="https://github.com/V-Tom/gist/projects/1?fullscreen=true">Github Projects</a></p>
@@ -196,10 +205,10 @@ Games  ✅ 瘟疫傳說：無罪 ✅ 巫师 3：狂猎 Cyberpunk 2077 Initial re
 
 <p>ASRock 主板可以在它家<a href="https://www.asrockrack.com/general/products.tw.asp#Server">官网查询所需要的型号</a>，主要过滤条件是 SATA 接口数量和 ECC Memory Supported 和 RAID 支持程度，另外可以根据个人需求是否需要支持万兆网络</p>
 
-<p><a href="https://ark.intel.com/content/www/us/en/ark/search/featurefilter.html?productType=873&amp;0_ECCMemory=True">CPU 支持 ECC</a> 可以在 intel 官网上过滤条件查询，可以根据你选择的主板接口类型（sockets）以及型号（intel family），可以添加更多的筛选条件。</p>
+<p><a href="https://ark.intel.com/content/www/us/en/ark/search/featurefilter.html?productType=873&amp;0_ECCMemory=True">CPU 支持 ECC</a> 可以在 Intel 官网上过滤条件查询，可以根据你选择的主板接口类型（sockets）以及型号（Intel family），可以添加更多的筛选条件。</p>
 
 <blockquote>
-<p>比如：主板接口类型（sockets）需要 <code>LGA1151</code> ，型号（intel family）需要 <code>XENO</code>，所以更新下<a href="https://ark.intel.com/content/www/us/en/ark/search/featurefilter.html?productType=873&amp;0_ECCMemory=True&amp;1_Filter-SocketsSupported=3582&amp;1_Filter-Family=595">查询条件</a>就可以查询了</p>
+<p>比如：主板接口类型（sockets）需要 <code>LGA1151</code> ，型号（Intel family）需要 <code>XENO</code>，所以更新下<a href="https://ark.intel.com/content/www/us/en/ark/search/featurefilter.html?productType=873&amp;0_ECCMemory=True&amp;1_Filter-SocketsSupported=3582&amp;1_Filter-Family=595">查询条件</a>就可以查询了</p>
 </blockquote>
 
 <p><strong>CPU 不用需要太高的性能，查询出来的表格直接拉到最下面去淘宝查询价格就行了</strong></p>
@@ -210,15 +219,39 @@ Games  ✅ 瘟疫傳說：無罪 ✅ 巫师 3：狂猎 Cyberpunk 2077 Initial re
 
 <p>组装 RAID 方案可以根据需求来定，建议组 RAID 5，其中的区别和其他 RAID 的区别可以看这个<a href="https://www.youtube.com/watch?v=U-OCdTeZLac">RAID 入门视频</a></p>
 
+<h2 id="黑苹果配置清单">黑苹果配置清单</h2>
+
+<blockquote>
+<p>清单日期为：2020-01-07</p>
+</blockquote>
+
+<p>首先，由于 Apple 官方的原因，显卡必须选择 A 卡，其次 CPU 由于 Adobe 全家桶依赖某些 Intel 指令集，所以 CPU 必须要为 Intel</p>
+
+<blockquote>
+<p>由于今年上半年 Intel 14nm 难产，AMD 7nm 发力，不知道以后 Apple 会不会选择 AMD CPU</p>
+</blockquote>
+
+<p>机箱和主板方面优先选择 MINI-ITX，这样便于移动或者偶尔携带</p>
+
+<p>电源方面优先选择 SFX 电源，散热优先选择下压式散热</p>
+
+<ul>
+<li>CPU：优先选择 8700 散片或者 9700</li>
+<li>GPU：AMD RX 5700</li>
+<li>motherboard：（ROG）STRIX B360-I</li>
+<li>RAM：Kingston DDR4 2666 8GB * 2</li>
+<li>SSD：阿斯加特 1TB M.2</li>
+<li>CPU cooling：NOCTUA NH-L9i</li>
+<li>Power：USCORSAIR SFX 450 或者 550</li>
+<li>Monitor： 优先选择 4k</li>
+</ul>
+
     </section>
     <nav class="no-print post-nav">
         
         <a class="prev-post" href="https://hasaki.xyz/life/2019-07-27-%E5%A5%A5%E5%BE%B7%E8%B5%9B%E5%92%8C2k-hdr-%E6%98%BE%E7%A4%BA%E5%99%A8/">
             <img class="icon-text" src="/img/prev.svg"/>奥德赛和2k HDR 显示器</a>
         
-        
-        <a class="next-post" href="https://hasaki.xyz/life/2020-01-03-%E7%98%9F%E7%96%AB%E4%BC%A0%E8%AF%B4%E6%97%A0%E7%BD%AA/">《瘟疫传说：无罪》(A Plague Tale: Innocence)<img class="icon-text" src="/img/next.svg"/>
-        </a>
         
     </nav>
 </article>
@@ -645,7 +678,7 @@ Games  ✅ 瘟疫傳說：無罪 ✅ 巫师 3：狂猎 Cyberpunk 2077 Initial re
 				<p>
 					
 					
-					Early 2016 ~ 2019 &copy; TOM's Zone
+					Early 2016 ~ 2020 &copy; TOM's Zone
 					
 					
 				</p>
