@@ -17,15 +17,12 @@
 <title>从jwt到OAuth - TOM&#39;s zone</title>
 
 <meta name="description" content="JWT JWT 是 JSON Web Token 的缩写，可以简单理解为生产者颁发给消费者一个令牌。参照 JWT 规范 对其所做的描述是：
- JSON Web令牌（JWT）是一种紧凑的、URL安全的方式，用来表示要在双方之间传递的“声明”。JWT中的声明被编码为JSON对象，用作JSON Web签名（JWS）结构的有效内容或JSON Web加密（JWE）结构的明文，使得声明能够被：数字签名、或利用消息认证码（MAC）保护完整性、加密。
- 这个规范允许我们使用JWT在用户和服务器之间传递安全可靠的信息。
-JWT的构成 JWT 由三部分构成：
- Header ：头部，即 JOSE Header Claims ：声明，即 JWT Payload Signature ：签名，即 JWT Signature  JWT由这三部分组成，每一部分都是使用base64url编码的，并使用句点（.）连接起来
- 这里使用base64url编码而不是普通的base64，是因为base64编码会产生&#43;和/，这两个字符在URL中是有特殊意义的，会导致JWT不是URL安全的。
- 头部(JOSE Header) JSOE 是 JSON Object Signing and Encryption，即JSON对象签名与加密的缩写。
-{ &quot;typ&quot;: &quot;JWT&quot;, &quot;alg&quot;: &quot;HS256&quot; }  示例中给出了两个声明：
- typ：类型，在JOSE Header中这是个可选参数，但这里我们需要指明类型是JWT。 alg：算法，必须是 jwt 支持的算法，算法列表可以在jwt 规范当中找到。  简单示例：
-package main import &quot;bytes&quot; import ( &quot;encoding/json&quot; &quot;encoding/base64&quot; &quot;fmt&quot; ) func header() string { header := struct { Alg string `json:&quot;alg&quot;` Typ string `json:&quot;typ&quot;` }{ Alg: &quot;HS256&quot;, Typ: &quot;JWT&quot;, } data, _ := json.">
+ JSON Web 令牌（JWT）是一种紧凑的、URL 安全的方式，用来表示要在双方之间传递的“声明”。JWT 中的声明被编码为 JSON 对象，用作 JSON Web 签名（JWS）结构的有效内容或 JSON Web 加密（JWE）结构的明文，使得声明能够被：数字签名、或利用消息认证码（MAC）保护完整性、加密。
+ 这个规范允许我们使用 JWT 在用户和服务器之间传递安全可靠的信息。
+JWT 的构成 JWT 由三部分构成：
+ Header ：头部，即 JOSE Header Claims ：声明，即 JWT Payload Signature ：签名，即 JWT Signature  JWT 由这三部分组成，每一部分都是使用 base64url 编码的，并使用句点（.）连接起来
+ 这里使用base64url编码而不是普通的 base64，是因为 base64 编码会产生&#43;和/，这两个字符在 URL 中是有特殊意义的，会导致 JWT 不是 URL 安全的。
+ 头部(JOSE Header) JSOE 是 JSON Object Signing and Encryption，即JSON对象签名与加密的缩写。">
 
 
 
@@ -161,25 +158,25 @@ package main import &quot;bytes&quot; import ( &quot;encoding/json&quot; &quot;e
 <p><code>JWT</code> 是 <code>JSON Web Token</code> 的缩写，可以简单理解为生产者颁发给消费者一个令牌。参照 <a href="https://tools.ietf.org/html/rfc7519">JWT 规范</a> 对其所做的描述是：</p>
 
 <blockquote>
-<p>JSON Web令牌（JWT）是一种紧凑的、URL安全的方式，用来表示要在双方之间传递的“声明”。JWT中的声明被编码为JSON对象，用作JSON Web签名（JWS）结构的有效内容或JSON Web加密（JWE）结构的明文，使得声明能够被：数字签名、或利用消息认证码（MAC）保护完整性、加密。</p>
+<p>JSON Web 令牌（JWT）是一种紧凑的、URL 安全的方式，用来表示要在双方之间传递的“声明”。JWT 中的声明被编码为 JSON 对象，用作 JSON Web 签名（JWS）结构的有效内容或 JSON Web 加密（JWE）结构的明文，使得声明能够被：数字签名、或利用消息认证码（MAC）保护完整性、加密。</p>
 </blockquote>
 
-<p>这个规范允许我们使用JWT在用户和服务器之间传递安全可靠的信息。</p>
+<p>这个规范允许我们使用 JWT 在用户和服务器之间传递安全可靠的信息。</p>
 
-<h4 id="jwt的构成">JWT的构成</h4>
+<h4 id="jwt-的构成">JWT 的构成</h4>
 
 <p><code>JWT</code> 由三部分构成：</p>
 
 <ul>
-<li><code>Header</code>  ：头部，即 <code>JOSE Header</code></li>
+<li><code>Header</code> ：头部，即 <code>JOSE Header</code></li>
 <li><code>Claims</code> ：声明，即 <code>JWT Payload</code></li>
 <li><code>Signature</code> ：签名，即 <code>JWT Signature</code></li>
 </ul>
 
-<p>JWT由这三部分组成，每一部分都是使用base64url编码的，并使用句点（<code>.</code>）连接起来</p>
+<p>JWT 由这三部分组成，每一部分都是使用 base64url 编码的，并使用句点（<code>.</code>）连接起来</p>
 
 <blockquote>
-<p>这里使用<a href="https://tools.ietf.org/html/rfc4648#section-5">base64url</a>编码而不是普通的base64，是因为base64编码会产生+和/，这两个字符在URL中是有特殊意义的，会导致JWT不是URL安全的。</p>
+<p>这里使用<a href="https://tools.ietf.org/html/rfc4648#section-5">base64url</a>编码而不是普通的 base64，是因为 base64 编码会产生+和/，这两个字符在 URL 中是有特殊意义的，会导致 JWT 不是 URL 安全的。</p>
 </blockquote>
 
 <h5 id="头部-jose-header">头部(JOSE Header)</h5>
@@ -195,8 +192,8 @@ package main import &quot;bytes&quot; import ( &quot;encoding/json&quot; &quot;e
 <p>示例中给出了两个声明：</p>
 
 <ul>
-<li><code>typ</code>：类型，在JOSE Header中这是个可选参数，但这里我们需要指明类型是<code>JWT</code>。</li>
-<li><code>alg</code>：算法，必须是 <code>jwt</code> 支持的算法，算法列表可以在jwt 规范当中找到。</li>
+<li><code>typ</code>：类型，在 JOSE Header 中这是个可选参数，但这里我们需要指明类型是<code>JWT</code>。</li>
+<li><code>alg</code>：算法，必须是 <code>jwt</code> 支持的算法，算法列表可以在 jwt 规范当中找到。</li>
 </ul>
 
 <p>简单示例：</p>
@@ -235,7 +232,7 @@ func main(){
 
 </code></pre>
 
-<p>上述代码片段会输出 <code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9</code>，这就是编码后的JWT头部。</p>
+<p>上述代码片段会输出 <code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9</code>，这就是编码后的 JWT 头部。</p>
 
 <h5 id="声明-jwt-claims">声明（JWT Claims）</h5>
 
@@ -251,12 +248,12 @@ func main(){
 
 <ul>
 <li><code>iss</code>: （Issuer）签发者</li>
-<li><code>iat</code>: （Issued At）签发时间，用Unix时间戳表示</li>
-<li><code>exp</code>: （Expiration Time）过期时间，用Unix时间戳表示</li>
-<li><code>aud</code>: （Audience）接收该JWT的一方</li>
-<li><code>sub</code>: （Subject）该JWT的主题</li>
+<li><code>iat</code>: （Issued At）签发时间，用 Unix 时间戳表示</li>
+<li><code>exp</code>: （Expiration Time）过期时间，用 Unix 时间戳表示</li>
+<li><code>aud</code>: （Audience）接收该 JWT 的一方</li>
+<li><code>sub</code>: （Subject）该 JWT 的主题</li>
 <li><code>nbf</code>: （Not Before）不要早于这个时间</li>
-<li><code>jti</code>: （JWT ID）用于标识JWT的唯一ID</li>
+<li><code>jti</code>: （JWT ID）用于标识 JWT 的唯一 ID</li>
 </ul>
 
 <blockquote>
@@ -267,7 +264,7 @@ func main(){
 
 <p>接下来就是<code>Private Claim Names</code> ，<code>JWT</code> 的生产者和消费者都可以使用的声明名称，可能会发生冲突，我们一般用来定义 token 的详细内容。</p>
 
-<p>上面详细的介绍和解释可以在  <a href="https://tools.ietf.org/html/rfc7519">JWT 规范</a> 当中找到。</p>
+<p>上面详细的介绍和解释可以在 <a href="https://tools.ietf.org/html/rfc7519">JWT 规范</a> 当中找到。</p>
 
 <p>示例代码：</p>
 
@@ -312,7 +309,7 @@ func main(){
 <p>我们要做的就是对这个字符串进行签名。</p>
 
 <pre><code class="language-go">func sign() string {
-    
+
 	header := header()
 	claims := claims()
 
@@ -322,7 +319,7 @@ func main(){
 	mac := hmac.New(sha256.New, []byte(&quot;secret&quot;))
 	mac.Write([]byte(s))
 	expectedMAC := mac.Sum(nil)
-    
+
     // signature
 	signature := strings.TrimRight(base64.URLEncoding.EncodeToString(expectedMAC), &quot;=&quot;)
 
@@ -350,7 +347,7 @@ func main(){
 
 <p>如果不知道服务器加密的时候用的<strong>private 密钥</strong>的话，得出来的签名也一定会是不一样的。</p>
 
-<p>服务器应用在接受到JWT后，会首先对头部和载荷的内容用同一算法再次签名（我们在JWT的头部中已经用 <code>alg</code> 字段指明了我们的加密算法了。</p>
+<p>服务器应用在接受到 JWT 后，会首先对头部和载荷的内容用同一算法再次签名（我们在 JWT 的头部中已经用 <code>alg</code> 字段指明了我们的加密算法了。</p>
 
 <p>如果服务器应用对头部和载荷再次以同样方法签名之后发现，自己计算出来的签名和接受到的签名不一样，那么就说明这个 <code>Token</code> 的内容被别人动过的，我们应该拒绝这个 <code>Token</code>，返回一个 <code>HTTP 401 Unauthorized</code> 响应。</p>
 
@@ -358,13 +355,13 @@ func main(){
 
 <h4 id="信息会暴露">信息会暴露？</h4>
 
-<p>Base64是一种编码，是可逆的。</p>
+<p>Base64 是一种编码，是可逆的。</p>
 
 <p>所以，在 <code>JWT</code> 中，不应该在载荷里面加入任何敏感的数据。在上面的例子中，我们传输的是用户的<code>User ID</code>。这个值实际上不是什么敏感内容，一般情况下被知道也是安全的。</p>
 
-<p>但是像密码这样的内容就不能被放在 <code>JWT</code> 中了。如果将用户的密码放在了 <code>JWT</code> 中，那么怀有恶意的第三方通过Base64解码就能很快地知道你的密码了。</p>
+<p>但是像密码这样的内容就不能被放在 <code>JWT</code> 中了。如果将用户的密码放在了 <code>JWT</code> 中，那么怀有恶意的第三方通过 Base64 解码就能很快地知道你的密码了。</p>
 
-<p>所以 <code>JWT</code> 适合用于向Web应用传递一些非敏感信息</p>
+<p>所以 <code>JWT</code> 适合用于向 Web 应用传递一些非敏感信息</p>
 
 <h4 id="解码">解码</h4>
 
@@ -386,7 +383,7 @@ func compareHmac(message string, messageHmac string, secret string) bool {
 
 // main decode
 func Decode(jwt string, secret string) (interface{}, error) {
-    
+
     // 按照 JWT 规范，我们可以得到：
     // token[0] 是 header
     // token[1] 是 claims
@@ -404,7 +401,7 @@ func Decode(jwt string, secret string) (interface{}, error) {
 	if PayloadErr != nil {
         return nil, fmt.Errorf(&quot;Base64Decode failed: %s&quot;, PayloadErr.Error())
 	}
-    
+
 	payload := Claims{}
 
 	// parse
@@ -433,16 +430,16 @@ func Decode(jwt string, secret string) (interface{}, error) {
 
 <h4 id="jwt-和-session-的区别">JWT 和 session 的区别</h4>
 
-<p>session需要在服务器中存储标记用户的信息，比如 <code>session_id</code>，而JWT则需要服务器端需要一定量的计算来确定用户身份。</p>
+<p>session 需要在服务器中存储标记用户的信息，比如 <code>session_id</code>，而 JWT 则需要服务器端需要一定量的计算来确定用户身份。</p>
 
-<p>在分布式系统中，使用Session的方式，需要在多台服务器之间 <code>session id</code>，增加了服务器的内存和IO压力。</p>
+<p>在分布式系统中，使用 Session 的方式，需要在多台服务器之间 <code>session id</code>，增加了服务器的内存和 IO 压力。</p>
 
-<p>而JWT方式则免去了同步的麻烦。因为用户的状态已经存储在客户端中了，虽然增加了一些计算开销，但是与IO开销比起来，还是要好很多的。</p>
+<p>而 JWT 方式则免去了同步的麻烦。因为用户的状态已经存储在客户端中了，虽然增加了一些计算开销，但是与 IO 开销比起来，还是要好很多的。</p>
 
 <h4 id="应用-jwt-的案例">应用 JWT 的案例</h4>
 
 <ul>
-<li>更适合RESTful方案</li>
+<li>更适合 RESTful 方案</li>
 <li>验证用户，客户端持久化登录</li>
 <li>单点登录</li>
 <li>免登录退订邮件</li>
@@ -468,9 +465,9 @@ func Decode(jwt string, secret string) (interface{}, error) {
 <p>按照 <a href="https://www.ietf.org/rfc/rfc6749.txt">OAuth RFC 6749</a> 的定义：</p>
 
 <blockquote>
-<p>OAuth通过引入授权层并将客户端的角色与资源所有者的角色分开来解决这些问题。</p>
+<p>OAuth 通过引入授权层并将客户端的角色与资源所有者的角色分开来解决这些问题。</p>
 
-<p>在OAuth中，客户端请求访问由资源所有者控制并由资源服务器托管的资源，并发出与资源所有者不同的凭据集。</p>
+<p>在 OAuth 中，客户端请求访问由资源所有者控制并由资源服务器托管的资源，并发出与资源所有者不同的凭据集。</p>
 </blockquote>
 
 <p>具体流程可以大致理解为：</p>
@@ -513,7 +510,7 @@ func Decode(jwt string, secret string) (interface{}, error) {
 
 <p>上面授权流程的关键点在于 B ，用户怎样才能给于客户端授权。</p>
 
-<p>OAuth 2.0定义了四种授权方式以及对应的可拓展性，定义了一些附加类型：</p>
+<p>OAuth 2.0 定义了四种授权方式以及对应的可拓展性，定义了一些附加类型：</p>
 
 <ul>
 <li>授权码模式（authorization code）</li>
@@ -538,7 +535,7 @@ func Decode(jwt string, secret string) (interface{}, error) {
 
 <p>流程可以理解为：</p>
 
-<p><strong>流程A）</strong>用户访问客户端，然后被导向认证服务器（有可能需要在认证服务器进行登录。</p>
+<p><strong>流程 A）</strong>用户访问客户端，然后被导向认证服务器（有可能需要在认证服务器进行登录。</p>
 
 <p>按照官方定义，这个流程，客户端申请认证的 URI 包含以下参数：</p>
 
@@ -548,8 +545,8 @@ func Decode(jwt string, secret string) (interface{}, error) {
 
 <ul>
 <li><code>response_type</code> 默认必须设置为 <code>code</code></li>
-<li><code>client_id</code> 表示客户端的ID，必选项</li>
-<li><code>redirect_uri</code> 重定向的uri，可选项</li>
+<li><code>client_id</code> 表示客户端的 ID，必选项</li>
+<li><code>redirect_uri</code> 重定向的 uri，可选项</li>
 <li><code>scope</code> 申请的权限范围，可选项</li>
 <li><code>state</code> 客户端的当前状态，可以指定任意值，认证服务器会原封不动地返回这个值</li>
 </ul>
@@ -567,17 +564,17 @@ func Decode(jwt string, secret string) (interface{}, error) {
 
 <p><img src="./github-auth-login.png" alt="github auth login" /></p>
 
-<p><strong>流程B）</strong>用户选择是否给予客户端授权。</p>
+<p><strong>流程 B）</strong>用户选择是否给予客户端授权。</p>
 
 <p>用户选择是否愿意授权：</p>
 
 <p><img src="./github-authorize-confirm.png" alt="github-authorize-confirm.png" /></p>
 
-<p><strong>流程C）</strong>假设用户给予授权，<code>authorize</code> 认证服务器将用户导向客户端事先指定的&rdquo;重定向URI&rdquo;（redirection URI），同时附上一个授权码 <code>code</code>。</p>
+<p><strong>流程 C）</strong>假设用户给予授权，<code>authorize</code> 认证服务器将用户导向客户端事先指定的&rdquo;重定向 URI&rdquo;（redirection URI），同时附上一个授权码 <code>code</code>。</p>
 
 <p>如果授权后，GitHub 会重定向到到 <code>Authorization callback URL</code> 或者 <code>redirect uri</code>，并且会附带一个 <code>code</code> 授权码。</p>
 
-<p><strong>流程D）</strong>客户端收到授权码，附上早先的重定向URI，向认证服务器申请令牌：<code>access_token</code> 这一步是在客户端的后台的服务器上完成的，对用户不可见。</p>
+<p><strong>流程 D）</strong>客户端收到授权码，附上早先的重定向 URI，向认证服务器申请令牌：<code>access_token</code> 这一步是在客户端的后台的服务器上完成的，对用户不可见。</p>
 
 <p>第三方应用在得到这个授权码后，会拿刚才得到的 <code>code</code> 和 <code>client_id</code> 以及私有的 <code>client_secret</code> 和 GitHub 进行通信，这对用户是不可见的</p>
 
@@ -590,7 +587,7 @@ func Decode(jwt string, secret string) (interface{}, error) {
 
 <p>结果会响应 <code>access_token</code></p>
 
-<p><strong>流程E）</strong>认证服务器核对了授权码和重定向URI，确认无误后，向客户端再次发送访问令牌（access token）和更新令牌（refresh token）</p>
+<p><strong>流程 E）</strong>认证服务器核对了授权码和重定向 URI，确认无误后，向客户端再次发送访问令牌（access token）和更新令牌（refresh token）</p>
 
 <p>根据刚才拿到的 <code>access_token</code>，第三方应用去调用 GitHub 的 API 根据 <code>sope</code> 来拿到 登录用户的一些信息。</p>
 
@@ -616,7 +613,7 @@ func Decode(jwt string, secret string) (interface{}, error) {
 <p>首先定义一些路由，其中：</p>
 
 <ul>
-<li><code>third_part</code>  代表第三方应用程序</li>
+<li><code>third_part</code> 代表第三方应用程序</li>
 <li><code>auth_server</code> 代表验证服务器</li>
 <li><code>resource_server</code> 代表资源服务器</li>
 </ul>
@@ -653,7 +650,7 @@ func Decode(jwt string, secret string) (interface{}, error) {
 <ul>
 <li>用户访问 <code>\</code> ，这个已经是步骤 A ，用户可以选择是否授权</li>
 <li>如果授权，跳向 <code>/auth_server/authorize</code> 来验证第三方应用，并在重定向的 URI 上带上 <code>code</code></li>
-<li>接下来访问 <code>/third_part/callback</code> ，第三方服务通过和授权服务器路由  <code>/auth_server/access_token</code> 通信来验证 <code>code</code>，获取新的 <code>token</code> 或者 <code>refresh token</code></li>
+<li>接下来访问 <code>/third_part/callback</code> ，第三方服务通过和授权服务器路由 <code>/auth_server/access_token</code> 通信来验证 <code>code</code>，获取新的 <code>token</code> 或者 <code>refresh token</code></li>
 <li>然后 第三方服务器 <code>/resource_server/get_user_info</code>可以根据拿到的新的 <code>token</code> 去资源服务器</li>
 <li>为了显示出来 <code>OAuth</code> 的结果，我添加了额外一个路由 <code>/third_part/show_user_info</code> ，在和资源服务器通信成功后，第三方服务器重定向到这个路由上来显示结果</li>
 </ul>
@@ -718,7 +715,7 @@ func Callback(Context echo.Context) error {
 
 	code, _ := base64Decode(Context.QueryParam(&quot;code&quot;))
 
-	// 和验证服务器通信生成新的 token 
+	// 和验证服务器通信生成新的 token
     // 为了方便，我这里直接调用方法来代替验证服务器通信
 	reNewToken, err := AccessToken(code)
 
@@ -754,7 +751,7 @@ func Authorize(Context echo.Context) error {
 	code, _ := json.Marshal(Token{
 		Exp: time.Now().Add(time.Second * 10).Unix(),
 	})
-	
+
     // 判断 client id 是否符合
 	if clientId == ThirdClientUUID {
 		Context.Redirect(http.StatusFound, redirectUri+&quot;?code=&quot;+base64Encode(string(code)))
@@ -782,7 +779,7 @@ func AccessToken(code string) (string, error) {
 func GetUser(code string) (string, error) {
 
 	token := ParseToken(code)
-    
+
     // 我这里通过验证 token 是否过期来判断是否符合要求
 	if token.Exp &gt; time.Now().Unix() {
 		// 返回构造的 user info

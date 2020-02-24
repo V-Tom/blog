@@ -106,7 +106,7 @@
 
   <a
     style="margin-top: 1.2rem;display: inline-block;"
-    href="https://github.com/V-Tom/blog/blob/hugo/content/blog/Working-Tips/index.md"
+    href="https://github.com/V-Tom/blog/blob/hugo/content/blog/Working%20Tips/index.md"
     >✨✨✨You can Edit this Article on Github site</a
   >
 
@@ -125,7 +125,7 @@
     }
 
     const commits = await fetch(
-      'https://api.github.com/repos/V-Tom/blog/commits?sha=hugo&path=content/blog\/Working-Tips\/index.md',
+      'https://api.github.com/repos/V-Tom/blog/commits?sha=hugo&path=content/blog\/Working Tips\/index.md',
     ).then(res => res.json())
     try {
       const time = new Date(commits[0].commit.committer.date)
@@ -502,8 +502,8 @@ logLines(rl)
     </section>
     <nav class="no-print post-nav">
         
-        <a class="prev-post" href="https://hasaki.xyz/blog/datastructure/">
-            <img class="icon-text" src="/img/prev.svg"/>learn Data Structure</a>
+        <a class="prev-post" href="https://hasaki.xyz/blog/data-structure/">
+            <img class="icon-text" src="/img/prev.svg"/>Data Structure</a>
         
         
         <a class="next-post" href="https://hasaki.xyz/blog/2019-02-12-%E4%BD%BF%E7%94%A8-nextcloud-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%A7%81%E6%9C%89%E7%BD%91%E7%9B%98/">使用 nextcloud 搭建个人私有网盘<img class="icon-text" src="/img/next.svg"/>

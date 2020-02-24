@@ -200,7 +200,7 @@ mori.get(baz, 'a') === 2;
 <p>if we look beneath the surface of <code>Babel</code>, we’ll find three important tools that handle the majority of the process.</p>
 </blockquote>
 
-<p>如果我们来看看 <code>Babel</code> 的表面，我们会发现这里有3个重要的工具来处理大部分的流程：</p>
+<p>如果我们来看看 <code>Babel</code> 的表面，我们会发现这里有 3 个重要的工具来处理大部分的流程：</p>
 
 <p><img src="https://oga6csqie.qnssl.com/MTQ1OTk0OTgwOGJhYmVsLnBuZz90eXBlPWltYWdlL3BuZyZ0aW1lPTE0ODc2MDEwMDcwNDcmc2l6ZT0zMDAxMQ==" alt="babel overview" /></p>
 
@@ -210,7 +210,7 @@ mori.get(baz, 'a') === 2;
 <p><a href="https://github.com/babel/babylon">Babylon</a> is the parser and it understands how to take a string of JavaScript code and turn it into a computer friendly representation called an Abstract Syntax Tree (AST).</p>
 </blockquote>
 
-<p><a href="https://github.com/babel/babylon">Babylon</a>是解析器，它知道如何提取一串JavaScript代码，并将其转换为计算机友好的表示方式，称为抽象语法树（AST）。</p>
+<p><a href="https://github.com/babel/babylon">Babylon</a>是解析器，它知道如何提取一串 JavaScript 代码，并将其转换为计算机友好的表示方式，称为抽象语法树（AST）。</p>
 
 <h4 id="transform">Transform</h4>
 
@@ -240,7 +240,7 @@ mori.get(baz, 'a') === 2;
 <p>JavaScript programs are generally made up of a sequence of characters, each with some visual meaning for our human brains. This works really well for us, as it allows us to use matching characters ([], {}, ()), pairs of characters (&ldquo;, &ldquo;&rdquo;) and indentation to make our programs easier for us to interpret.</p>
 </blockquote>
 
-<p>JavaScript程序通常由一系列字符组成，每个字符对我们的人类大脑来说都有一些视觉意义。 这对我们真的非常有用，因为它允许我们使用匹配的字符（[]，{}，（）），字符对（&rdquo;，“”）和缩进，使我们的程序对我们来说更容易解释、抽象。</p>
+<p>JavaScript 程序通常由一系列字符组成，每个字符对我们的人类大脑来说都有一些视觉意义。 这对我们真的非常有用，因为它允许我们使用匹配的字符（[]，{}，（）），字符对（&rdquo;，“”）和缩进，使我们的程序对我们来说更容易解释、抽象。</p>
 
 <blockquote>
 <p>However, this isn’t very helpful for computers. For them, each of these characters is just a numeric value in memory and they can’t use them to ask high level questions like “How many variables are there in this declaration?”. Instead we need to compromise and find a way to turn our code into something that we can program and computers can understand.</p>
@@ -254,7 +254,7 @@ mori.get(baz, 'a') === 2;
 
 <p>看看下面的代码</p>
 
-<pre><code class="language-javascript">var a = 3;
+<pre><code class="language-javascript">var a = 3
 a + 5
 </code></pre>
 
@@ -270,7 +270,7 @@ a + 5
 <p>All ASTs start with a Program node at the root of the tree, which contains all of the top level statements in our program. In this case, we only have two:</p>
 </blockquote>
 
-<p>所有的 AST 程序都从树结构的根节点开始，它包含我们程序中所有的顶层语句，在这种情况下，我们只有2个：</p>
+<p>所有的 AST 程序都从树结构的根节点开始，它包含我们程序中所有的顶层语句，在这种情况下，我们只有 2 个：</p>
 
 <blockquote>
 <p>A VariableDeclaration with one VariableDeclarator that assigns the Identifier &ldquo;a&rdquo; to the NumericLiteral &ldquo;3&rdquo;.</p>
@@ -288,7 +288,7 @@ a + 5
 <p>Despite the fact that they are made up of simple building blocks, the size of ASTs means they are often quite complex, especially for nontrivial programs. Rather than trying to figure out ASTs ourselves, we can use <a href="https://astexplorer.net/">astexplorer.net</a>, which allows us to input JavaScript on the left, then outputs an explorable representation of the AST on the right. We’ll use this tool exclusively to understand and experiment with code as we continue.</p>
 </blockquote>
 
-<p>事实上它们尽管由一些简单的组件组成，AST的大小意味着它们往往相当复杂，特别是对于非平凡的程序，我们可以使用<a href="https://astexplorer.net/">astexplorer.net</a>，它允许我们在左边输入JavaScript，然后在右边输出一个可探索的AST视图，而不是试图我们自己来找出AST。 我们将继续使用此工具专门用于理解和实验代码。</p>
+<p>事实上它们尽管由一些简单的组件组成，AST 的大小意味着它们往往相当复杂，特别是对于非平凡的程序，我们可以使用<a href="https://astexplorer.net/">astexplorer.net</a>，它允许我们在左边输入 JavaScript，然后在右边输出一个可探索的 AST 视图，而不是试图我们自己来找出 AST。 我们将继续使用此工具专门用于理解和实验代码。</p>
 
 <blockquote>
 <p>To stay consistent with <code>Babel</code>, make sure you choose <code>babylon6</code> as a parser.</p>
@@ -300,7 +300,7 @@ a + 5
 <p>When writing a <code>Babel</code> plugin, it’s our job to take an AST then insert/move/replace/delete some nodes to create a new AST which can be used to generate code.</p>
 </blockquote>
 
-<p>当开始去写一个 <code>Babel</code> 插件的时候,我们的工作便是：提取一个AST，然后插入/移动/替换/删除一些节点创建一个新的AST，这些可用于生成代码。</p>
+<p>当开始去写一个 <code>Babel</code> 插件的时候,我们的工作便是：提取一个 AST，然后插入/移动/替换/删除一些节点创建一个新的 AST，这些可用于生成代码。</p>
 
 <h3 id="setup">Setup</h3>
 
@@ -323,13 +323,11 @@ npm install --save-dev babel-core
 
 <pre><code class="language-javascript">// moriscript.js
 module.exports = function(babel) {
-  var t = babel.types;
+  var t = babel.types
   return {
-    visitor: {
-
-    }
-  };
-};
+    visitor: {},
+  }
+}
 </code></pre>
 
 <blockquote>
@@ -345,36 +343,35 @@ module.exports = function(babel) {
 <p>最后，我们将创建一个运行器以便我们可以用它来测试我们的插件。</p>
 
 <pre><code class="language-javascript">// run.js
-var fs = require('fs');
-var babel = require('babel-core');
-var moriscript = require('./moriscript');
+var fs = require('fs')
+var babel = require('babel-core')
+var moriscript = require('./moriscript')
 
 // read the filename from the command line arguments
-var fileName = process.argv[2];
+var fileName = process.argv[2]
 
 // read the code from this file
 fs.readFile(fileName, function(err, data) {
-  if(err) throw err;
+  if (err) throw err
 
   // convert from a buffer to a string
-  var src = data.toString();
+  var src = data.toString()
 
   // use our plugin to transform the source
   var out = babel.transform(src, {
-    plugins: [moriscript]
-  });
+    plugins: [moriscript],
+  })
 
   // print the generated code to screen
-  console.log(out.code);
-});
-
+  console.log(out.code)
+})
 </code></pre>
 
 <blockquote>
 <p>We can call this script with the name of an example <code>MoriScript</code> file to check that it generates the JavaScript we are expecting. For example, <code>node run.js example.js</code></p>
 </blockquote>
 
-<p>我们可以使用一个示例 <code>MoriScript</code> 文件的名称来调用此脚本，以检查它是否生成我们期望的JavaScript，例如：<code>node run.js example.js</code></p>
+<p>我们可以使用一个示例 <code>MoriScript</code> 文件的名称来调用此脚本，以检查它是否生成我们期望的 JavaScript，例如：<code>node run.js example.js</code></p>
 
 <h3 id="arrays">Arrays</h3>
 
@@ -382,18 +379,18 @@ fs.readFile(fileName, function(err, data) {
 <p>The first and foremost goal for <code>MoriScript</code> is to convert <code>Object</code> and <code>Array</code> literals into their Mori counterparts:<code>HashMaps</code> and<code>Vectors</code>. We’ll tackle arrays first, as they’re slightly simpler.</p>
 </blockquote>
 
-<p><code>MoriScript</code>的首要目标是将<code>Object</code>和<code>Array</code>字面量转换为Mori对应函数：<code>HashMaps</code>和<code>Vectors</code>。 我们将首先处理数组，因为它们稍微简单一些。</p>
+<p><code>MoriScript</code>的首要目标是将<code>Object</code>和<code>Array</code>字面量转换为 Mori 对应函数：<code>HashMaps</code>和<code>Vectors</code>。 我们将首先处理数组，因为它们稍微简单一些。</p>
 
-<pre><code class="language-javascript">var bar = [1, 2, 3];
+<pre><code class="language-javascript">var bar = [1, 2, 3]
 // should become
-var bar = mori.vector(1, 2, 3);
+var bar = mori.vector(1, 2, 3)
 </code></pre>
 
 <blockquote>
 <p>Paste the code from above into <a href="https://astexplorer.net/">astexplorer</a> and highlight the array literal [1, 2, 3] to see the corresponding AST nodes.</p>
 </blockquote>
 
-<p>将上面的代码粘贴到<a href="https://astexplorer.net/">astexplorer</a>中并突出显示数组文本[1，2，3]以查看对应的AST节点。</p>
+<p>将上面的代码粘贴到<a href="https://astexplorer.net/">astexplorer</a>中并突出显示数组文本[1，2，3]以查看对应的 AST 节点。</p>
 
 <blockquote>
 <p>For the sake of readability, we’ll omit the metadata fields that we don’t need to worry about.</p>

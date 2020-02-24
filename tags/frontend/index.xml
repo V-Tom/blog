@@ -14,10 +14,10 @@
     
     <item>
       <title>转载：这可能是最通俗的 React Fiber(时间分片) 打开方式</title>
-      <link>https://hasaki.xyz/blog/2019-10-23-%E8%BD%AC%E8%BD%BD%E8%BF%99%E5%8F%AF%E8%83%BD%E6%98%AF%E6%9C%80%E9%80%9A%E4%BF%97%E7%9A%84-react-fiber%E6%97%B6%E9%97%B4%E5%88%86%E7%89%87-%E6%89%93%E5%BC%80%E6%96%B9%E5%BC%8F/</link>
+      <link>https://hasaki.xyz/blog/2019-10-23-%E8%BD%AC%E8%BD%BD-%E8%BF%99%E5%8F%AF%E8%83%BD%E6%98%AF%E6%9C%80%E9%80%9A%E4%BF%97%E7%9A%84-react-fiber%E6%97%B6%E9%97%B4%E5%88%86%E7%89%87-%E6%89%93%E5%BC%80%E6%96%B9%E5%BC%8F/</link>
       <pubDate>Wed, 23 Oct 2019 14:01:30 +0800</pubDate>
       
-      <guid>https://hasaki.xyz/blog/2019-10-23-%E8%BD%AC%E8%BD%BD%E8%BF%99%E5%8F%AF%E8%83%BD%E6%98%AF%E6%9C%80%E9%80%9A%E4%BF%97%E7%9A%84-react-fiber%E6%97%B6%E9%97%B4%E5%88%86%E7%89%87-%E6%89%93%E5%BC%80%E6%96%B9%E5%BC%8F/</guid>
+      <guid>https://hasaki.xyz/blog/2019-10-23-%E8%BD%AC%E8%BD%BD-%E8%BF%99%E5%8F%AF%E8%83%BD%E6%98%AF%E6%9C%80%E9%80%9A%E4%BF%97%E7%9A%84-react-fiber%E6%97%B6%E9%97%B4%E5%88%86%E7%89%87-%E6%89%93%E5%BC%80%E6%96%B9%E5%BC%8F/</guid>
       <description>本文全文来自转载文章 这可能是最通俗的 React Fiber(时间分片) 打开方式
  读者可以直接去查看原文，如果原文链接丢失，可以下载这个 PDF 备份</description>
     </item>
@@ -47,7 +47,7 @@ JIT 计算机使用的是机器语言，也就是 010101 二进制，而我们�
       <description>本人只是一个前端，偶尔写一点其他语言来拓展开发技能。
 因业务当中使用到 RN，所以对如何实现 RN custom module 也比较感兴趣并简单学习实现了一些功能。本文可能有些地方可能比较浅显或者有错误，还望读者海涵并指正。
  环境准备 由于 swift 的断崖式升级以及 RN 不同版本，所以下面的例子可能会存在一些误差。本机环境为：
- RN：0.45.1 swift：4.1 Xcode：9.3 OS：high sierra 10.13.4  CocoaPods CocoaPods是专门为 iOS 工程提供对第三方库的依赖的管理工具，通过 CocoaPods ，我们可以更方便地管理每个第三方库的版本，而且不需要我们做太多的配置。直观、集中和自动化地管理我们项目的第三方库。
+ RN：0.45.1 swift：4.1 Xcode：9.3 OS：high sierra 10.13.4  CocoaPods CocoaPods 是专门为 iOS 工程提供对第三方库的依赖的管理工具，通过 CocoaPods ，我们可以更方便地管理每个第三方库的版本，而且不需要我们做太多的配置。直观、集中和自动化地管理我们项目的第三方库。
 我们都有这样的经历，当我们添加第三方库的时候，需要导入一堆相关依赖库，更新的时候也要删掉重新导入然后再配置。当我们需要更新某个第三方库的时候，我们又要手动移除该库，导入新的库，然后再配置。这些是很麻烦且没有意义的工作。
 安装 CocoaPods 需要用到 gem 。gem 是 RubyGems 的缩写，属于 ruby 上的包管理工具。
 这里建议切换国内镜像源地址，当然你也可以加上 -p 参数来配置 proxy
@@ -62,16 +62,13 @@ gem sources -l  结果应该是：</description>
       <pubDate>Wed, 13 Dec 2017 15:29:40 +0800</pubDate>
       
       <guid>https://hasaki.xyz/blog/2017-12-13-react-native-art/</guid>
-      <description>React Native ART 由来 React-Art  是 Reactjs 团队基于 Art（一个兼容各个浏览器SVG绘制的API封装）开发的模块，让 React 开发者能使用 jsx 语法绘制 svg。
-React Native 团队分别在0.10.0和0.18.0也添加了iOS和Android平台对 react-art 的支持，官网文档至今对其只字未提。本文旨在介绍安静躺在 react-native/Libraries/ 里的ART，并展示一些实践结果。
-在React Native中ART是个非常重要的库，它让非常酷炫的绘图及动画变成了可能。但是可能是知道的人真的不多导致文档及少中文更少。很多都是把英文的参数列表翻译过来，也没有案例。
+      <description>React Native ART 由来 React-Art  是 Reactjs 团队基于 Art（一个兼容各个浏览器 SVG 绘制的 API 封装）开发的模块，让 React 开发者能使用 jsx 语法绘制 svg。
+React Native 团队分别在 0.10.0 和 0.18.0 也添加了 iOS 和 Android 平台对 react-art 的支持，官网文档至今对其只字未提。本文旨在介绍安静躺在 react-native/Libraries/ 里的ART，并展示一些实践结果。
+在 React Native 中 ART 是个非常重要的库，它让非常酷炫的绘图及动画变成了可能。但是可能是知道的人真的不多导致文档及少中文更少。很多都是把英文的参数列表翻译过来，也没有案例。
 为什么用 ART React Native 本身自带的 &amp;lt;Image&amp;gt; 有很多缺陷：
-首先是不支持 SVG 格式的资源，目前的解决方案有通过 ReactNative-SVG 进行实现，但是这个库需要更改客户端bundle文件，带来一定的风险。
-其次是 Image decoding can take more than a frame-worth of time，图片的解码由于不在主线程中进行，所以不能确保所有图片和内容在同一帧内出现，使用 &amp;lt;Image&amp;gt;标签的制作的组件里的图（比如icon）可能是三三两两“闪现”出来的，让人怀疑是个webview，体验远不如原生，尤其是在开发环境下最为明显。
-其次就是不能支持矢量图形，必须放置 @2x 或者 @3x 对应的图片。
-ART能干什么 俗话说，库如其名，背负着如此具有“艺术感”名字的ART生来就是为了绘制矢量图的，或者说是 画UI的，ART可以解决上诉的所有缺陷。
-在我看来，或者说我目前业务需求用到的功能：
- ART 可以解决上诉 &amp;lt;Image&amp;gt; 的缺陷：解码和矢量图形 ART 可以实现 UI 上的一些渐变，比如渐变按钮，渐变背景或者底色。以及一些交互性较强的动画——画UI ART 另外一个场景就是简单数据可视化。  使用 ART  本文使用的 RN版本为0.</description>
+首先是不支持 SVG 格式的资源，目前的解决方案有通过 ReactNative-SVG 进行实现，但是这个库需要更改客户端 bundle 文件，带来一定的风险。
+其次是 Image decoding can take more than a frame-worth of time，图片的解码由于不在主线程中进行，所以不能确保所有图片和内容在同一帧内出现，使用 &amp;lt;Image&amp;gt;标签的制作的组件里的图（比如 icon）可能是三三两两“闪现”出来的，让人怀疑是个webview，体验远不如原生，尤其是在开发环境下最为明显。
+其次就是不能支持矢量图形，必须放置 @2x 或者 @3x 对应的图片。</description>
     </item>
     
     <item>
@@ -100,8 +97,8 @@ ART能干什么 俗话说，库如其名，背负着如此具有“艺术感”�
 收集错误异常  错误异常分为 web 错误异常和React-native 错误异常
  web 错误异常 总体来说：平时收集日志的手段，可以归类为两个方面，一个是逻辑中的错误判断，为主动判断，如try...catch；一个是利用语言给我们提供的捷径，暴力式获取错误信息，如 window.onerror；当然也存在另外一种错误，那就是Promise unhandlerejection
 try…catch 判断一个代码段中可能存在的错误：
-try { doSomeThing(); // code... } catch (e) { // send format error Reporter.send(format(e)); }  window.onerror 这个用来捕获全局错误：
-window.onerror = function() { // send format error var errInfo = format(arguments); Reporter.send(errInfo); return true; };  在上面的函数中返回 return true，错误便不会暴露到控制台中。下面是它的参数信息：
+try { doSomeThing() // code... } catch (e) { // send format error Reporter.send(format(e)) }  window.onerror 这个用来捕获全局错误：
+window.onerror = function() { // send format error var errInfo = format(arguments) Reporter.send(errInfo) return true }  在上面的函数中返回 return true，错误便不会暴露到控制台中。下面是它的参数信息：
 /** * @param {String} errorMessage 错误信息 * @param {String} scriptURI 出错的文件 * @param {Long} lineNumber 出错代码的行号 * @param {Long} columnNumber 出错代码的列号 * @param {Object} errorObj 错误的详细信息，Anything */ window.</description>
     </item>
     
@@ -127,22 +124,17 @@ var foo = { a: 1 }; var baz = foo.a = 2; foo.a === 1; baz.a === 2;   And transfo
       <guid>https://hasaki.xyz/blog/2017-03-24-%E5%89%8D%E7%AB%AF%E7%9A%8410000%E4%B8%AA%E5%B0%8F%E6%97%B6/</guid>
       <description>我又开始扯淡了
  本篇文章出自原文，深有感触，有删改。
- 10000小时定律 著名的10000小时定律，我想大家都不陌生，『要成为某个领域的专家，需要10000小时』，这个定律来源于《异类》的作者，格拉德威尔。
-作为一个程序员，每天工作10小时，每周工作五天，大约4年就能达到10000小时，那是不是每个程序员认真工作，勤勤恳恳的过完4年他就能成为专家呢？答案是显而易见的。
-首先10000小时只是必要条件，并非充分条件，也就是说，即使你花了这10000小时，可能也没什么用，再次简单的工作重复10000小时并不能给你带来什么提高，自然也就成不了专家
+ 10000 小时定律 著名的 10000 小时定律，我想大家都不陌生，『要成为某个领域的专家，需要 10000 小时』，这个定律来源于《异类》的作者，格拉德威尔。
+作为一个程序员，每天工作 10 小时，每周工作五天，大约 4 年就能达到 10000 小时，那是不是每个程序员认真工作，勤勤恳恳的过完 4 年他就能成为专家呢？答案是显而易见的。
+首先 10000 小时只是必要条件，并非充分条件，也就是说，即使你花了这 10000 小时，可能也没什么用，再次简单的工作重复 10000 小时并不能给你带来什么提高，自然也就成不了专家
  一万小时定律 并非适合所有领域，即使有很强意志力，也很难在某些领域成为世界顶级，这里只是强调在某些领域去努力、去花费很大的精力。我觉得，这需要 实力与运气共同作用的结果
- 简单的工作重复10000小时 吴军老师在《智能时代》一书中提过一个这样的观点：
- 在未来的智能时代，真正受益于技术进步的个人可能不超过人口的2%。
+ 简单的工作重复 10000 小时 吴军老师在《智能时代》一书中提过一个这样的观点：
+ 在未来的智能时代，真正受益于技术进步的个人可能不超过人口的 2%。
  之后他又补充了一句：
- 坦率的讲，仅仅会写几行 JavaScript 的人不属于我说的2%的行列，这些人恰恰在未来是要被计算机淘汰的。
+ 坦率的讲，仅仅会写几行 JavaScript 的人不属于我说的 2%的行列，这些人恰恰在未来是要被计算机淘汰的。
  当时看到这里，我其实十分不解，吴军老师是不是太久没撸码了，现在 JavaScript 这么火，Node 那么牛掰，什么 React Native，Grunt，Gulp，Webpack，Vue，Weex，微信小程序等等，这些都是风生水起啊，怎么 JavaScript 就跪了呢？还有，我们高大上的前端工作怎么就挤不进这 2% 呢？
-后来仔细想想，这里定义的是『仅仅会写几行 JavaScript 』，事实上，如果10000小时都花在改界面，修改 DOM，改个色值，切个图，替换下图标这种简单重复的工作里面，当然挤不进这 2% 。事实上，要学的东西远远不够，前端要有危机意识。
-再来看，前端工作怎么就挤不进 2% 的人呢？ 2% 看起来还挺多，可是想想，每种职业都有其 2% ， 搬砖的有搬砖的 2%，写程序的有些程序的 2%，总不可能写程序的去抢搬砖的活儿吧。能不能挤进这 2% 要看是否善于使用智能工具，很不幸，我发现一些热门的技术的发起都和前端没啥关系，什么数字化，VR/AR，基因测序，大数据，机器学习，人工智能……
-说到这里，智能手机的飞速发展带起了移动互联网，但是这波红利被终端开发给占了一大半，直到近两年，手机性能提升才让前端开始发力。为什么 PhoneGap （现已改名 Cordova）搞了那么久没什么人用，React Native 才出了没多久就已经炙手可热。除了 React Native 师出名门，还因为它的出现是为了解决终端开发效率低以及更新审核慢的问题。
-好吧，前端不那么容易称为 2%，那我们还是继续付出10000小时，争取做个专家吧。
-那么简单的重复不足以称为专家，那对于前端来说应该要怎么做呢？我的想法是『跨界』，不满足于做前端，而是去更多的学习终端，学习后端的知识，带来思维的转变和编程能力的提高。
- 当然也可以去阅读那些框架的源码，比如React,Koa等等，去思考和借鉴一下它们的架构和内部实现，去看看算法方面的内容来提高自己的逻辑思维能力
- 跨界 看看现在非常热门的 JavaScript 编译器 Babel，其作者 Sebastian McKenzie 写出这样一个编译器，必须具有很强的编程能力和熟悉编译原理、AST。这样一个人虽然写的是 JavaScript，但是已经不是一个前端了，而是大神。</description>
+后来仔细想想，这里定义的是『仅仅会写几行 JavaScript 』，事实上，如果 10000 小时都花在改界面，修改 DOM，改个色值，切个图，替换下图标这种简单重复的工作里面，当然挤不进这 2% 。事实上，要学的东西远远不够，前端要有危机意识。
+再来看，前端工作怎么就挤不进 2% 的人呢？ 2% 看起来还挺多，可是想想，每种职业都有其 2% ， 搬砖的有搬砖的 2%，写程序的有些程序的 2%，总不可能写程序的去抢搬砖的活儿吧。能不能挤进这 2% 要看是否善于使用智能工具，很不幸，我发现一些热门的技术的发起都和前端没啥关系，什么数字化，VR/AR，基因测序，大数据，机器学习，人工智能……</description>
     </item>
     
   </channel>

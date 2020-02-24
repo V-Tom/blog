@@ -18,16 +18,13 @@
       <pubDate>Wed, 13 Dec 2017 15:29:40 +0800</pubDate>
       
       <guid>https://hasaki.xyz/blog/2017-12-13-react-native-art/</guid>
-      <description>React Native ART 由来 React-Art  是 Reactjs 团队基于 Art（一个兼容各个浏览器SVG绘制的API封装）开发的模块，让 React 开发者能使用 jsx 语法绘制 svg。
-React Native 团队分别在0.10.0和0.18.0也添加了iOS和Android平台对 react-art 的支持，官网文档至今对其只字未提。本文旨在介绍安静躺在 react-native/Libraries/ 里的ART，并展示一些实践结果。
-在React Native中ART是个非常重要的库，它让非常酷炫的绘图及动画变成了可能。但是可能是知道的人真的不多导致文档及少中文更少。很多都是把英文的参数列表翻译过来，也没有案例。
+      <description>React Native ART 由来 React-Art  是 Reactjs 团队基于 Art（一个兼容各个浏览器 SVG 绘制的 API 封装）开发的模块，让 React 开发者能使用 jsx 语法绘制 svg。
+React Native 团队分别在 0.10.0 和 0.18.0 也添加了 iOS 和 Android 平台对 react-art 的支持，官网文档至今对其只字未提。本文旨在介绍安静躺在 react-native/Libraries/ 里的ART，并展示一些实践结果。
+在 React Native 中 ART 是个非常重要的库，它让非常酷炫的绘图及动画变成了可能。但是可能是知道的人真的不多导致文档及少中文更少。很多都是把英文的参数列表翻译过来，也没有案例。
 为什么用 ART React Native 本身自带的 &amp;lt;Image&amp;gt; 有很多缺陷：
-首先是不支持 SVG 格式的资源，目前的解决方案有通过 ReactNative-SVG 进行实现，但是这个库需要更改客户端bundle文件，带来一定的风险。
-其次是 Image decoding can take more than a frame-worth of time，图片的解码由于不在主线程中进行，所以不能确保所有图片和内容在同一帧内出现，使用 &amp;lt;Image&amp;gt;标签的制作的组件里的图（比如icon）可能是三三两两“闪现”出来的，让人怀疑是个webview，体验远不如原生，尤其是在开发环境下最为明显。
-其次就是不能支持矢量图形，必须放置 @2x 或者 @3x 对应的图片。
-ART能干什么 俗话说，库如其名，背负着如此具有“艺术感”名字的ART生来就是为了绘制矢量图的，或者说是 画UI的，ART可以解决上诉的所有缺陷。
-在我看来，或者说我目前业务需求用到的功能：
- ART 可以解决上诉 &amp;lt;Image&amp;gt; 的缺陷：解码和矢量图形 ART 可以实现 UI 上的一些渐变，比如渐变按钮，渐变背景或者底色。以及一些交互性较强的动画——画UI ART 另外一个场景就是简单数据可视化。  使用 ART  本文使用的 RN版本为0.</description>
+首先是不支持 SVG 格式的资源，目前的解决方案有通过 ReactNative-SVG 进行实现，但是这个库需要更改客户端 bundle 文件，带来一定的风险。
+其次是 Image decoding can take more than a frame-worth of time，图片的解码由于不在主线程中进行，所以不能确保所有图片和内容在同一帧内出现，使用 &amp;lt;Image&amp;gt;标签的制作的组件里的图（比如 icon）可能是三三两两“闪现”出来的，让人怀疑是个webview，体验远不如原生，尤其是在开发环境下最为明显。
+其次就是不能支持矢量图形，必须放置 @2x 或者 @3x 对应的图片。</description>
     </item>
     
   </channel>

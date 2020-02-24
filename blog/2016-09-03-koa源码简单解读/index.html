@@ -17,10 +17,10 @@
 <title>koa 源码简单解读 - TOM&#39;s zone</title>
 
 <meta name="description" content="Koa 是一个类似于 Express 的 Web开发框架，创始人也都是 TJ
-Koa 的主要特点是，使用了ES6 的 Generator 函数，进行了架构的重新设计。Koa 的原理和内部结构很像Express，但是语法和内部结构进行了升级，最近已经发布了2.x版本，我们来直接看一下2.x版本的koa
+Koa 的主要特点是，使用了ES6 的 Generator 函数，进行了架构的重新设计。Koa 的原理和内部结构很像 Express，但是语法和内部结构进行了升级，最近已经发布了2.x版本，我们来直接看一下2.x版本的koa
 创建 Koa 应用 我们可以按照官方的说明很简单的创建一个koa应用
 const koa = require(&#39;koa&#39;) const app = new koa() app.listen(3000)  或者可以这样：
-var koa = require(&#39;koa&#39;); var http = require(&#39;http&#39;); var app = new koa(); http.createServer(app.callback()).listen(4000);  这两种方式是等价的：
+var koa = require(&#39;koa&#39;) var http = require(&#39;http&#39;) var app = new koa() http.createServer(app.callback()).listen(4000)  这两种方式是等价的：
 第一种方式:listen在内部主动创建一个一个http server并调用实例内部的 callback方法，把返回的handleRequest函数作为创建http server服务的回调函数，然后内部主动去listen。
 参考源码 listen方法：
 listen() { debug(&#39;listen&#39;); const server = http.createServer(this.callback()); return server.listen.apply(server, arguments); }  第二种方式:主动创建一个http server并主动调用实例的callback方法来生成一个handleRequest函数，最后listen端口号。
@@ -159,7 +159,7 @@ listen() { debug(&#39;listen&#39;); const server = http.createServer(this.callba
 
 <p><a href="https://github.com/koajs/koa">Koa</a> 是一个类似于 <a href="https://expressjs.com/">Express</a> 的 <code>Web</code>开发框架，创始人也都是 TJ</p>
 
-<p>Koa 的主要特点是，使用了<code>ES6</code> 的 <code>Generator</code> 函数，进行了架构的重新设计。Koa 的原理和内部结构很像Express，但是语法和内部结构进行了升级，最近已经发布了<code>2.x</code>版本，我们来直接看一下<code>2.x</code>版本的<code>koa</code></p>
+<p>Koa 的主要特点是，使用了<code>ES6</code> 的 <code>Generator</code> 函数，进行了架构的重新设计。Koa 的原理和内部结构很像 Express，但是语法和内部结构进行了升级，最近已经发布了<code>2.x</code>版本，我们来直接看一下<code>2.x</code>版本的<code>koa</code></p>
 
 <h3 id="创建-koa-应用">创建 <code>Koa</code> 应用</h3>
 
@@ -174,12 +174,12 @@ app.listen(3000)
 
 <p>或者可以这样：</p>
 
-<pre><code class="language-javascript">var koa = require('koa');
-var http = require('http');
+<pre><code class="language-javascript">var koa = require('koa')
+var http = require('http')
 
-var app = new koa();
+var app = new koa()
 
-http.createServer(app.callback()).listen(4000);
+http.createServer(app.callback()).listen(4000)
 </code></pre>
 
 <p>这两种方式是等价的：</p>
@@ -206,7 +206,7 @@ http.createServer(app.callback()).listen(4000);
 <p><code>koa</code> 本身是没有定义事件处理机制的，其事件处理机制继承自<code>Node</code> 的<code>events</code>模块，本身就是在<code>events</code>模块上继承的一个实例</p>
 
 <pre><code class="language-javascript">// koa 源码解读
-const Emitter = require('events');
+const Emitter = require('events')
 module.exports = class Application extends Emitter {}
 </code></pre>
 
@@ -232,11 +232,11 @@ module.exports = class Application extends Emitter {}
 <p>我们要看的关键方法在于 <code>use</code>、<code>listen</code>、<code>compose</code>、<code>callback</code>，本篇文章（扯淡）会详细的说明，也算是自己的理解</p>
 </blockquote>
 
-<h3 id="use方法">use方法</h3>
+<h3 id="use-方法">use 方法</h3>
 
 <p>在<code>koa2</code>中，我们在使用中间件的方法很简单，只需要按照下面的方式就可以添加一层中间件：</p>
 
-<pre><code class="language-javascript">App.use( async ()=&gt;{
+<pre><code class="language-javascript">App.use(async () =&gt; {
   // 中间件
 })
 </code></pre>
@@ -260,15 +260,15 @@ module.exports = class Application extends Emitter {}
 
 <p>所以根据源码可以看到，<code>use</code>方法参数必须是个函数，也可以是个<code>GeneratorFunction</code>（deprecate），而且调用这个<code>use</code>方法后，<code>koa</code>实例内部会自动在<code>middleware</code>数组上<code>push</code>一个中间件。</p>
 
-<h3 id="listen方法">listen方法</h3>
+<h3 id="listen-方法">listen 方法</h3>
 
-<pre><code class="language-javascript">  // koa 源码加理解
-  
-  // 创建一个 http server
-  const server = http.createServer(this.callback());
-  
-  // 显式返回 server
-  return server.listen.apply(server, arguments);
+<pre><code class="language-javascript">// koa 源码加理解
+
+// 创建一个 http server
+const server = http.createServer(this.callback())
+
+// 显式返回 server
+return server.listen.apply(server, arguments)
 </code></pre>
 
 <p>在<code>listen</code>方法当中通过[http lib]()模块创建一个<code>http server</code>，然后调用了<code>this.callback()</code>作为这个新创建服务的回调函数，最后通过<code>apply</code>来调用<code>server.listen</code>方法，并把<code>this</code>指向新创建出来的<code>server</code>，并把<code>listen</code>方法的函数实参传入并返回。</p>
@@ -297,37 +297,37 @@ module.exports = class Application extends Emitter {}
 
 <p>我的理解就是：它的作用是把一个个不相干的中间件串联在一起。我们来看看这个<code>compose</code>方法：</p>
 
-<pre><code class="language-javascript">function compose (middleware) {
-  
+<pre><code class="language-javascript">function compose(middleware) {
   // *** 省略代码
-  
+
   // 创建一个闭包便于访问 middleware
   // 根据上面 callback 可以看出，每次 http 请求，都会调用这个闭包函数，然后对整个 middleware 走一次遍历。
-  return function (context, next) {
-    
+  return function(context, next) {
     // last called middleware #
     let index = -1
-    
+
     // 第一次调用这个闭包，默认从第一个中间件开始
     return dispatch(0)
-    function dispatch (i) {
-    
+    function dispatch(i) {
       // 进行条件判断
-      if (i &lt;= index) return Promise.reject(new Error('next() called multiple times'))
+      if (i &lt;= index)
+        return Promise.reject(new Error('next() called multiple times'))
       index = i
       let fn = middleware[i]
       if (i === middleware.length) fn = next
       if (!fn) return Promise.resolve()
-      
+
       // 在这里尝试执行中间件并进行错误捕捉
       // 然后把进入下一个中间件的方法作为参数传入当前中间件，也就是 next 函数，内部进行递归，注意这个递归是按顺序的。
       try {
-        return Promise.resolve(fn(context, function next () {
-        	// next 函数作为实参进行递归
-          return dispatch(i + 1)
-        }))
+        return Promise.resolve(
+          fn(context, function next() {
+            // next 函数作为实参进行递归
+            return dispatch(i + 1)
+          }),
+        )
       } catch (err) {
-      		// 错误捕捉
+        // 错误捕捉
         return Promise.reject(err)
       }
     }
@@ -347,35 +347,35 @@ module.exports = class Application extends Emitter {}
 
 <pre><code class="language-javascript">  // Koa 源码理解
   callback(){
-    
-    // *** 上面代码在上面，参照 compose 
-   
+
+    // *** 上面代码在上面，参照 compose
+
 	const handleRequest = (req, res) =&gt; {
-	    
+
 	  // 默认http状态码为404，即没有任何中间件修改过就是 404 。
 	  res.statusCode = 404;
-	    
+
 	  // 创建上下文
 	  const ctx = this.createContext(req, res);
-	    
+
 	  // 设置 error 分发
 	  const onerror = err =&gt; ctx.onerror(err);
-	    
+
 	  // 设置 response 分发
 	  const handleResponse = () =&gt; respond(ctx);
-	    
+
 	  // 统一设置 finished 分发，用于监听 http response 的结束事件，执行回调
 	  onFinished(res, onerror);
-	    
+
 	  // 添加一个中间件的方法：app.use(middleware)
 	  // 调用 compose 返回的闭包来按顺序处理所有的 middleware，并把 context 传入，所以每个中间件内部可以访问到 context
-	    
+
 	  fn(ctx).then(handleResponse).catch(onerror);
-	    
+
 	};
-	
+
 	  // 显式返回 handleRequest
-	  return handleRequest;    
+	  return handleRequest;
   }
 </code></pre>
 
@@ -400,12 +400,12 @@ module.exports = class Application extends Emitter {}
 
 <pre><code class="language-javascript">  // koa 源码理解
   createContext(req, res) {
-  
+
     // 通过Object.create 来创建 上下文 request response
     const context = Object.create(this.context);
     const request = context.request = Object.create(this.request);
     const response = context.response = Object.create(this.response);
-    
+
     // 在 上下文 request response 上挂载 app 和 req 和 res 便于访问
     // app === this
     // req === httpServer.request
@@ -413,32 +413,32 @@ module.exports = class Application extends Emitter {}
     context.app = request.app = response.app = this;
     context.req = request.req = response.req = req;
     context.res = request.res = response.res = res;
-    
+
     // 在 request 上 挂载 上下文
     request.ctx = response.ctx = context;
-    
+
     // 互相挂载
     request.response = response;
     response.request = request;
-    
+
     // 挂载 原始请求地址
     context.originalUrl = request.originalUrl = req.url;
-    
+
     // 挂载 cookies ，这里暂不深入
     context.cookies = new Cookies(req, res, {
       keys: this.keys,
       secure: request.secure
     });
-    
+
     // 挂载原始ip
     request.ip = request.ips[0] || req.socket.remoteAddress || '';
-    
+
     // 挂载 request accept
     context.accept = request.accept = accepts(req);
-    
+
     // 当前上下文的state，官方推荐设置state最好的方式
     context.state = {};
-    
+
     // 显式返回 上下文
     return context;
   }
@@ -448,64 +448,71 @@ module.exports = class Application extends Emitter {}
 
 <pre><code class="language-javascript">function respond(ctx) {
   // allow bypassing koa
-  if (false === ctx.respond) return;
+  if (false === ctx.respond) return
 
-  const res = ctx.res;
-  if (!ctx.writable) return;
+  const res = ctx.res
+  if (!ctx.writable) return
 
-  let body = ctx.body;
-  const code = ctx.status;
+  let body = ctx.body
+  const code = ctx.status
 
   // ignore body
   if (statuses.empty[code]) {
     // strip headers
-    ctx.body = null;
-    return res.end();
+    ctx.body = null
+    return res.end()
   }
 
   if ('HEAD' == ctx.method) {
     if (!res.headersSent &amp;&amp; isJSON(body)) {
-      ctx.length = Buffer.byteLength(JSON.stringify(body));
+      ctx.length = Buffer.byteLength(JSON.stringify(body))
     }
-    return res.end();
+    return res.end()
   }
 
   // status body
   if (null == body) {
-    body = ctx.message || String(code);
+    body = ctx.message || String(code)
     if (!res.headersSent) {
-      ctx.type = 'text';
-      ctx.length = Buffer.byteLength(body);
+      ctx.type = 'text'
+      ctx.length = Buffer.byteLength(body)
     }
-    return res.end(body);
+    return res.end(body)
   }
 
   // responses
-  if (Buffer.isBuffer(body)) return res.end(body);
-  if ('string' == typeof body) return res.end(body);
-  if (body instanceof Stream) return body.pipe(res);
+  if (Buffer.isBuffer(body)) return res.end(body)
+  if ('string' == typeof body) return res.end(body)
+  if (body instanceof Stream) return body.pipe(res)
 
   // body: json
-  body = JSON.stringify(body);
+  body = JSON.stringify(body)
   if (!res.headersSent) {
-    ctx.length = Buffer.byteLength(body);
+    ctx.length = Buffer.byteLength(body)
   }
-  res.end(body);
+  res.end(body)
 }
-
 </code></pre>
 
 <p>至此基本上源码也就解读完了，也许会有人会问：koa 和 express 中间件的主要区别是什么？</p>
 
 <blockquote>
-<p>可以参考这篇文章来详细介绍 <a href="http://perkinzone.cn/2017/08/15/Redux,Koa,Express%E4%B9%8Bmiddleware%E6%9C%BA%E5%88%B6%E5%AF%B9%E6%AF%94/">koa、express等中间件的区别</a></p>
+<p>可以参考这篇文章来详细介绍 <a href="http://perkinzone.cn/2017/08/15/Redux,Koa,Express%E4%B9%8Bmiddleware%E6%9C%BA%E5%88%B6%E5%AF%B9%E6%AF%94/">koa、express 等中间件的区别</a></p>
 </blockquote>
 
 <p>其实两者的中间件都是以一系列数组的模式，只是对于中间件的处理方式不同</p>
 
 <p>koa 是洋葱型，内部实现中间件是以 Promise 的形式通过 <code>Promise based then</code> 来实现洋葱模型</p>
 
-<p>虽然都说 express 则是直线型，实际运行起来 express 也可以说是洋葱型，只是内部实现中间件是以 stack 的形式，通过 <code>callback</code> 的形式实现。</p>
+<p>虽然都说 express 则是直线型，实际运行起来 express 也可以说是洋葱型，只是内部实现中间件是以 stack 的形式，外部通过 <code>callback</code> 的形式实现。</p>
+
+<h3 id="express-和-koa-的区别">Express 和 Koa 的区别</h3>
+
+<ul>
+<li>前者大而全，二者只内置了简单的模块，<code>http-parser</code>、<code>router</code>、<code>view</code> 等都需要社区实现</li>
+<li>中间件模型的差别。一个是直线型，一个是洋葱模型</li>
+<li>对错误的处理情况。Express 使用 Node 约定的 &ldquo;error-first 回调&rdquo; 处理异常，并通过中间件传播，业务逻辑复杂时嵌套过多，异常捕获困难。Koa 借助 co 和 generator ，通过同步方式编写异步代码，可以通过 try catch 处理异常，所以很好地解决了异步流程控制和异常捕获问题</li>
+</ul>
 
     </section>
     <nav class="no-print post-nav">

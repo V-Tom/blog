@@ -56,16 +56,14 @@ http vs RPC HTTP 调用其实也是一种特殊的 RPC 。RPC 可以基于 HTTP 
       <pubDate>Wed, 22 Jun 2016 15:29:40 +0800</pubDate>
       
       <guid>https://hasaki.xyz/blog/2016-06-22-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AAnode.js-%E7%9A%84-docker-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</guid>
-      <description>本文以构建一个 Node.js Docker应用 为目标写的一个教程。当前操作系统环境 Mac OSX Sierra 10.12.4
- Docker介绍  Docker 是个划时代的开源项目，它彻底释放了计算虚拟化的威力，极大提高了应用的运行效率，降低了云计算资源供应的成本！ 使用 Docker，可以让应用的部署、测试和分发都变得前所未有的高效和轻松！
- Docker引擎的基础是Linuxring器(Linux Containers，LXC)技术。这个并不是一个新生的概念，很早前已经出现，比如操作系统上的chroot工具、以及Solaris Containers和FreeBSD jail等等，虽然这个技术非常成熟，然而这些工具使用起来非常不方便。Docker的出现解决了这些问题。
-Docker容器虚拟化有很多好处：
- 更高效的利用系统资源：由于容器不需要进行硬件虚拟以及运行完整操作系统等额外开销，Docker 对系统资源的利用率更高。 更快速的启动时间，Docker容器应用启动时间很快 一致的运行环境和环境隔离 持续交付和部署 更轻松的迁移服务  既然Docker这么好，我们来试试如何跑一个Node.js Docker应用。
-安装Docker 使用Docker之前，我们需要安装。Docker支持在主流操作平台上使用：包括Ubuntu、CenterOS、Windows已经MacOS系统。
-Ubuntu 在Ubuntu上安装Docker可以直接使用以下shell script
-// 最新的Docker安装需要先移除老的Docker sudo apt-get remove docker docker-engine sudo apt-get update sudo curl -sSL https://get.docker.com/ | sh  Windows Windows 上我们可以直接下载 Docker GUI
-Mac OSX Mac OSX 上我们也可以直接下载 Docker GUI。
-Docker的主要目标是Build ship and run any app,any where.</description>
+      <description>本文以构建一个 Node.js Docker 应用 为目标写的一个教程。当前操作系统环境 Mac OSX Sierra 10.12.4
+ Docker 介绍  Docker 是个划时代的开源项目，它彻底释放了计算虚拟化的威力，极大提高了应用的运行效率，降低了云计算资源供应的成本！ 使用 Docker，可以让应用的部署、测试和分发都变得前所未有的高效和轻松！
+ Docker 引擎的基础是 Linuxring 器(Linux Containers，LXC)技术。这个并不是一个新生的概念，很早前已经出现，比如操作系统上的chroot工具、以及Solaris Containers和FreeBSD jail等等，虽然这个技术非常成熟，然而这些工具使用起来非常不方便。Docker 的出现解决了这些问题。
+Docker 容器虚拟化有很多好处：
+ 更高效的利用系统资源：由于容器不需要进行硬件虚拟以及运行完整操作系统等额外开销，Docker 对系统资源的利用率更高。 更快速的启动时间，Docker 容器应用启动时间很快 一致的运行环境和环境隔离 持续交付和部署 更轻松的迁移服务  既然 Docker 这么好，我们来试试如何跑一个 Node.js Docker 应用。
+安装 Docker 使用 Docker 之前，我们需要安装。Docker 支持在主流操作平台上使用：包括 Ubuntu、CenterOS、Windows 已经 MacOS 系统。
+Ubuntu 在 Ubuntu 上安装 Docker 可以直接使用以下 shell script
+// 最新的Docker安装需要先移除老的Docker sudo apt-get remove docker docker-engine sudo apt-get update sudo curl -sSL https://get.</description>
     </item>
     
   </channel>

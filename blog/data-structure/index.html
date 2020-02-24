@@ -1,0 +1,1916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="Keywords" content="">
+    <meta name="full-screen" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#006cb4">
+    <meta name="apple-mobile-web-app-title" content="TOM&#39;s zone">
+    <meta name="description" content="TOM&#39;s zone">
+    <link rel="dns-prefetch" href="https://hasaki.xyz">
+    <link rel="preconnect" href="https://hasaki.xyz">
+    <link rel="manifest" href="/sw/manifest.json"/>
+<title>Data Structure - TOM&#39;s zone</title>
+
+<meta name="description" content="Data Structure">
+
+
+
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato|Raleway">
+
+
+    <link rel="stylesheet"
+          href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/ocean.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/javascript.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/python.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/go.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/css.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/swift.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/objectivec.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/rust.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/yaml.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/bash.min.js"></script>
+
+
+    <link rel="stylesheet" href="/css/bundle.min.css"/>
+<script src="/js/bundle.js"></script>
+
+<style>
+	a { color: #ff8181; }
+	blockquote {
+		background: rgba(255, 129, 129, .1);
+		border-left-color: #ff8181;
+		border-right-color: #ff8181; }
+	.bar a:hover {
+		color: #ff8181;
+		text-decoration: none; }
+	.sep {
+		margin-top: 2rem;
+		margin-bottom: 1rem;
+		margin-left:0;
+		width: 24rem;
+		border-top: 2px solid #ff8181; }
+    .bar li.active a{
+        color:#ff8181;
+    }
+</style>
+
+</head>
+
+<body>
+<header class="container no-print">
+	<div class="u-header">
+		<nav class="bar">
+	<ul><li>
+			<a href="/">
+				<img class="icon-text" src="/img/prev.svg"/>
+			</a>
+		</li>
+		
+		<li class="active"><a href="/blog/">Blog</a></li>
+		<li class=""><a href="/gallery/">Gallery</a></li>
+		<li class=""><a href="/life/">Life</a></li></ul>
+</nav>
+
+	</div>
+</header>
+<main class="container">
+
+<article>
+    <header><hgroup id="brand">
+  <h1>Data Structure</h1>
+  <h5>
+    
+    <time datetime="2018-05-23 12:33:21 &#43;0800 CST">May 23, 2018</time>
+    <span class="no-print">
+      -
+      
+      <a href="/tags/datastructure">DataStructure</a>
+      </span>
+  </h5>
+
+  <a
+    style="margin-top: 1.2rem;display: inline-block;"
+    href="https://github.com/V-Tom/blog/blob/hugo/content/blog/Data%20Structure/index.md"
+    >✨✨✨You can Edit this Article on Github site</a
+  >
+
+  <div id="git-update-time">
+  ✏️✏️✏️ This article .MD file was last updated at:
+  <b>Loading ...</b>
+</div>
+
+<script data-name="commits">
+  ;(async () => {
+    const b = document.querySelector('#git-update-time').querySelector('b')
+
+    if (window.location.href.includes('localhost')) {
+      b.innerHTML = 'localhost disable'
+      return
+    }
+
+    const commits = await fetch(
+      'https://api.github.com/repos/V-Tom/blog/commits?sha=hugo&path=content/blog\/Data Structure\/index.md',
+    ).then(res => res.json())
+    try {
+      const time = new Date(commits[0].commit.committer.date)
+      b.innerHTML = `${time.getFullYear()}-${time.getMonth() +
+        1}-${time.getDate()}`
+    } catch (e) {
+      b.innerHTML = 'unknown'
+    }
+  })()
+</script>
+
+
+  
+</hgroup>
+<hr class="sep" />
+</header>
+    <section id="markdown">
+        
+
+<h3 id="list">List</h3>
+
+<p>list 是<strong>n(n≥0)个相同类型</strong>的<strong>数据元素</strong>构成的<strong>有限</strong>序列。</p>
+
+<pre><code class="language-adt">ADT List
+{
+    Data:
+    Operation:
+        InitList(&amp;L)
+        CreateList(&amp;L)
+        ListEmpty(L)
+        ListLength(L)
+        LocateElem(L,e)
+        PriorElem(L,cur_e,&amp;pre_e)
+        NextElem(L,cur_e,&amp;pre_e)
+        ListInsert(&amp;L,i,e)
+        ListDelete(&amp;L,i,&amp;e)
+        GetElem(L,i,&amp;e)
+        ListTraverse(L)
+        DestroyList(&amp;L)
+    }//ADT List
+</code></pre>
+
+<h5 id="list-简单实现">list 简单实现</h5>
+
+<pre><code class="language-javascript">/**
+ * List Structure
+ */
+
+class List {
+  /**
+   * 顺序表初始化操作，申请使用内存
+   * @constructor
+   */
+  InitList() {
+    this.list = []
+  }
+
+  /**
+   * 判断顺序表是否为空
+   * @returns {boolean}
+   * @constructor
+   */
+  ListEmpty() {
+    return this.list.length === 0
+  }
+
+  /**
+   * 顺序表求表长操作
+   * @returns {number}
+   * @constructor
+   */
+  ListLength() {
+    return this.list.length
+  }
+
+  /**
+   * 顺序表定位元素(返回与e值相等的元素下标)
+   * @param item
+   * @returns {*}
+   * @constructor
+   */
+  LocateElem(item) {
+    return this.list.indexOf(item)
+  }
+
+  /**
+   * 获取指定元素的上一个元素
+   * @param item
+   * @returns {*}
+   * @constructor
+   */
+  PriorElem(item) {
+    const indexOf = this.list.indexOf(item)
+
+    if (indexOf &lt;= 0) {
+      return null
+    } else {
+      return this.list[indexOf - 1]
+    }
+  }
+
+  /**
+   * 获取指定元素的下一个元素
+   * @param item
+   * @returns {*}
+   * @constructor
+   */
+  NextElem(item) {
+    const indexOf = this.list.indexOf(item)
+
+    if (indexOf &gt;= this.list.length - 1) {
+      return null
+    } else {
+      return this.list[indexOf + 1]
+    }
+  }
+
+  /**
+   * 在顺序表L的第i个元素之前插入新的元素e
+   * @param i
+   * @param elem
+   * @returns {boolean}
+   * @constructor
+   */
+  ListInsertBefore(i, elem) {
+    if (i &lt;= 0) {
+      return false
+    }
+
+    this.list.splice(i - 1, 0, elem)
+
+    return true
+  }
+
+  /**
+   * 在顺序表L的第i个元素之后插入新的元素e
+   * @param i
+   * @param elem
+   * @returns {boolean}
+   * @constructor
+   */
+  ListInsertAfter(i, elem) {
+    if (i &lt;= 0) {
+      return false
+    }
+
+    this.list.splice(i, 0, elem)
+
+    return true
+  }
+
+  /**
+   * 在顺序表L的最后一个元素之后插入新的元素e
+   * @param elem
+   * @returns {boolean}
+   * @constructor
+   */
+  ListInsertBottom(elem) {
+    this.list.push(elem)
+
+    return true
+  }
+
+  /**
+   * 在递增有序顺序表L中查找插入新的元素e
+   * 暂时只支持 []int 类型的 list
+   * @param elem
+   * @returns {boolean}
+   * @constructor
+   */
+  ListInsertByOrder(elem) {
+    if (typeof elem !== 'number') {
+      return false
+    }
+
+    for (let i = 0; i &lt; this.list.length; i++) {
+      if (this.list[i] &lt;= elem &amp;&amp; this.list[i + 1] &gt;= elem) {
+        this.ListInsertBefore(i, elem)
+        return true
+      }
+    }
+
+    return false
+  }
+
+  /**
+   * 在顺序表L中删除第i个元素，并返回其值
+   * @param i
+   * @returns {*}
+   * @constructor
+   */
+  ListDelete(i) {
+    if (i &lt;= 0) return false
+
+    if (!this.list[i]) return false
+
+    return this.list.splice(i - 1, 1)[0]
+  }
+
+  /**
+   * 取出顺序表L中第i个元素，并返回其值
+   * @param i
+   * @returns {*}
+   * @constructor
+   */
+  GetElem(i) {
+    return this.list[i]
+  }
+
+  /**
+   * 顺序表遍历输出各元素
+   * @constructor
+   */
+  ListTraverse() {
+    this.list.forEach(item =&gt; console.log(item))
+  }
+
+  /**
+   * 删除顺序表
+   * @constructor
+   */
+  DestroyList() {
+    this.list = null
+  }
+}
+</code></pre>
+
+<p>线性表顺序存储结构个人总结优点是：</p>
+
+<ul>
+<li>无需为表示表中元素之间的逻辑关系而增加额外的存储空间</li>
+<li>可以快速的读取表中任意位置的元素</li>
+</ul>
+
+<p>缺点是：</p>
+
+<ul>
+<li>插入和删除需要移动大量的元素</li>
+</ul>
+
+<h3 id="链表">链表</h3>
+
+<p>链表是为了解决线性表插入和删除的时候需要移动大量元素耗时的问题</p>
+
+<p>可以充分利用计算机内存空间，实现灵活的内存动态管理。但是链表失去了数组随机读取的优点，同时链表由于增加了结点的指针域，空间开销比较大。</p>
+
+<p>链表具体大致分为：</p>
+
+<ul>
+<li>单向链表</li>
+<li>双向链表</li>
+<li>单向循环链表 <code>single liked list</code></li>
+<li>双向循环链表 <code>double linked list</code></li>
+</ul>
+
+<h4 id="单向链表">单向链表</h4>
+
+<h5 id="单向链表定义">单向链表定义：</h5>
+
+<p>链式存储结构：用一组任意的存储单元存储<strong>数据结构</strong>（这里是线性表)里的各元素(这组存储单元可以是地址连续的，也可以是不连续的)，并且每个存储元素有一个数据域，一个（或多个）指针域，数据域用来存储元素内容，指针域用来反映元素的逻辑关系(前后位置关系)，这种存储方式成为链式存储（也叫非随机存取的存储结构）</p>
+
+<p><img src="./ListSingle.jpg" alt="List Single" /></p>
+
+<ul>
+<li><strong>表头指针</strong>：存放单链表中第一个结点的地址的指针。【指向 a0(带头结点时)或指向 a1(不带头结点时)的指针，上图中的 L】</li>
+<li><strong>头结点</strong>：带头结点的单链表中 L【上图中的 a1 之前的结点 a0】</li>
+<li><strong>开始结点</strong>：，又称首节点，存放单链表的第一个存放元素的结点。【a1】</li>
+<li><strong>表尾结点</strong>：单链表中最后一个结点，表尾结点的指针域指针为空。【an】</li>
+</ul>
+
+<h5 id="单向链表实现方式">单向链表实现方式：</h5>
+
+<pre><code class="language-javascript">class LinkSingle {
+  constructor() {
+    this.size = 0
+    // 虚拟头部
+    this.dummyNode = new Node({
+      type: 'dummyNode',
+    })
+  }
+
+  /**
+   * 根据 index 获取节点
+   * @param index
+   * @returns {Node|*|((value?: any) =&gt; IteratorResult&lt;T&gt;)|((value?: any) =&gt; Promise&lt;IteratorResult&lt;T&gt;&gt;)}
+   * @constructor
+   */
+  GetNode(index) {
+    this.CheckIndex(index + 1)
+    return this.FindNode(this.dummyNode, index, 0).next
+  }
+
+  /**
+   * 在 index 位置添加数据为 value 的新节点
+   * @param value
+   * @param index
+   * @returns {boolean}
+   * @constructor
+   */
+  AddNode(value, index) {
+    this.CheckIndex(index)
+
+    const findPrevNode = this.FindNode(this.dummyNode, index, 0)
+
+    /**
+     * 这里需要把 上一个 node 的 next 放入 新 node 的 value 当中
+     */
+    findPrevNode.next = new Node({
+      value,
+      next: findPrevNode.next,
+    })
+
+    this.size++
+
+    return true
+  }
+
+  /**
+   * 添加到头部
+   * @param v
+   * @returns {boolean}
+   * @constructor
+   */
+  AddToHeader(v) {
+    return this.AddNode(v, 0)
+  }
+
+  /**
+   * 添加到最后一个
+   * @param v
+   * @returns {boolean}
+   * @constructor
+   */
+  AddToLast(v) {
+    return this.AddNode(v, this.size)
+  }
+
+  /**
+   * 删除节点
+   * @param index
+   * @returns {boolean}
+   * @constructor
+   */
+  RemoveNode(index) {
+    this.CheckIndex(index)
+
+    if (index &gt;= this.GetSize()) {
+      return false
+    }
+
+    const findedNode = this.FindNode(this.dummyNode, index, 0)
+
+    let node = findedNode.next
+
+    findedNode.next = node.next
+
+    node = null
+
+    this.size--
+
+    return true
+  }
+
+  /**
+   * 删除头部节点
+   * @returns {boolean}
+   * @constructor
+   */
+  RemoveHeader() {
+    if (this.IsEmpty()) return true
+    return this.RemoveNode(0)
+  }
+
+  /**
+   * 移除最后一个节点
+   * @returns {boolean}
+   * @constructor
+   */
+  RemoveLast() {
+    if (this.IsEmpty()) return true
+    return this.RemoveNode(this.size - 1)
+  }
+
+  /**
+   * 查找节点
+   * @param node
+   * @param index
+   * @param currentIndex
+   * @returns {*}
+   * @constructor
+   */
+  FindNode(node, index, currentIndex) {
+    if (index === currentIndex) return node
+    return this.FindNode(node.next, index, currentIndex + 1)
+  }
+
+  /**
+   * 是否空表
+   * @returns {boolean}
+   * @constructor
+   */
+  IsEmpty() {
+    return this.size === 0
+  }
+
+  /**
+   * 获取表的长度
+   * @returns {number}
+   * @constructor
+   */
+  GetSize() {
+    return this.size
+  }
+
+  /**
+   * 检查 index 是否符合要求
+   * @param index
+   * @constructor
+   */
+  CheckIndex(index) {
+    if (index &lt; 0 || index &gt; this.size) {
+      throw new Error('Index error')
+    }
+  }
+}
+
+class Node {
+  constructor({ value = null, prev = null, type = null } = {}) {
+    this.value = value
+    this.prev = prev
+    if (type) this.type = type
+  }
+}
+</code></pre>
+
+<h4 id="双向链表">双向链表</h4>
+
+<h5 id="双向链表定义">双向链表定义</h5>
+
+<ul>
+<li>双（向）链表就是每个结点中含有两个指针域的链表，其中一个指针域存放其前趋结点的地址，另一个指针域存放其后继结点的地址。</li>
+</ul>
+
+<p><img src="./ListDouble.jpg" alt="ListDouble.jpg" /></p>
+
+<ul>
+<li><strong>头结点</strong>：双链表中第一个结点(上图中的 a1 之前的结点 a0)</li>
+<li><strong>表头指针</strong>：存放双链表中第一个结点的地址的指针。(指向 a0 的指针)</li>
+<li><strong>开始结点</strong>：存放双链表的第一个元素的结点。(a1)</li>
+<li><strong>表尾结点</strong>：双链表中最后一个结点，表尾结点的指针域指针为空。(an)</li>
+</ul>
+
+<h5 id="双向链表实现方式">双向链表实现方式</h5>
+
+<p>简单看起来，双向链表只是在每一个 Node 当中多了一个 prev 的指针指向，所以双向链表的实现就简单写一下</p>
+
+<pre><code class="language-javascript">class LinkDouble {
+  constructor() {
+    this.size = 0
+    this.dummyNode = new Node({
+      type: 'dummyNode',
+    })
+  }
+
+  /**
+   * 添加节点
+   * @param value
+   * @param index
+   * @constructor
+   */
+  AddNode(value, index) {
+    this.CheckIndex(index)
+
+    const findPrevNode = this.FindNode(this.dummyNode, index, 0)
+
+    const node = new Node({
+      value,
+      prev: findPrevNode,
+      next: findPrevNode.next,
+    })
+
+    findPrevNode.next = node
+
+    this.size++
+  }
+
+  /**
+   * 删除节点
+   * @param index
+   * @returns {boolean}
+   * @constructor
+   */
+  RemoveNode(index) {
+    this.CheckIndex(index)
+    const findPrevNode = this.FindNode(this.dummyNode, index, 0)
+
+    let node = findPrevNode.next
+
+    findPrevNode.next = node.next
+    node.prev = findPrevNode
+
+    node = null
+
+    this.size--
+
+    return true
+  }
+
+  /**
+   * 根据 index 获取节点
+   * @param index
+   * @returns {*}
+   * @constructor
+   */
+  GetNode(index) {
+    this.CheckIndex(index + 1)
+    return this.FindNode(this.dummyNode, index + 1, 0)
+  }
+
+  /**
+   * 获取长度
+   * @returns {number}
+   * @constructor
+   */
+  GetSize() {
+    return this.size
+  }
+
+  /**
+   * 查找节点
+   * @param node
+   * @param index
+   * @param currentIndex
+   * @returns {*}
+   * @constructor
+   */
+  FindNode(node, index, currentIndex) {
+    if (index === currentIndex) return node
+    return this.FindNode(node.next, index, currentIndex + 1)
+  }
+
+  /**
+   * 检查 index 是否符合要求
+   * @param index
+   * @constructor
+   */
+  CheckIndex(index) {
+    if (index &lt; 0 || index &gt; this.GetSize()) {
+      throw new Error('Index error')
+    }
+  }
+}
+
+class Node {
+  constructor({ value = null, prev = null, next = null, type = null } = {}) {
+    this.value = value
+    this.prev = prev
+    this.next = next
+    if (type) this.type = type
+  }
+}
+</code></pre>
+
+<h4 id="循环链表">循环链表</h4>
+
+<h5 id="循环链表的定义">循环链表的定义</h5>
+
+<ul>
+<li>一般有两种形式的循环链表，即<strong>单向循环链表</strong>和<strong>双向循环链表</strong>。</li>
+<li>单向循环链表中，表尾结点的指针域不为空，回指第一个结点，整个链表形成一个环。</li>
+<li>在双向循环链表中，除了表尾结点的后继指针域回指第一个结点外，同时表头结点的前驱指针域回指表尾结点，这样在链表中构成了两个环。</li>
+</ul>
+
+<p><img src="./ListSingleCricle.jpg" alt="ListSingleCricle.jpg" /></p>
+
+<p><img src="./ListDoubleCricle.jpg" alt="ListDoubleCricle.jpg" /></p>
+
+<p>循环链表和上述链表大同小异，这里没有继续列出简单实现。</p>
+
+<h3 id="stack">Stack</h3>
+
+<h5 id="stack-定义">stack 定义：</h5>
+
+<ul>
+<li>是一种特殊的线性表，这种表只能在固定的一端进行插入与删除操作</li>
+<li>固定插入的一端叫<strong>栈顶(top)</strong>，而另一端称为<strong>栈底(bottom)</strong>。位于栈顶和栈底的元素分别称为<strong>顶元</strong>和<strong>底元</strong>。当表中无元素时，称为空栈</li>
+<li>栈的修改是按照<strong>后进先出</strong>的原则进行（简称 LIFO）</li>
+</ul>
+
+<pre><code class="language-adt">ADT List
+{
+    Data:
+    Operation:
+        InitStack(&amp;S,maxsize,incresize)
+        ClearStack(&amp;S)
+        StackLength(S)
+        Push(&amp;S,e)
+        Pop(&amp;S,&amp;e)
+        GetTop(S,&amp;e)
+        StackTraverse(S)
+        StackEmpty(S)
+        DestroyStack(&amp;S)
+    }//ADT List
+</code></pre>
+
+<h5 id="stack-简单实现">stack 简单实现</h5>
+
+<pre><code class="language-go">package Stack
+
+import (
+	&quot;fmt&quot;
+)
+
+type Stack struct {
+	Stack []int
+}
+
+func (S *Stack) InitStack() []int {
+	S.Stack = []int{}
+	return S.Stack
+}
+
+func (S *Stack) StackLength() int {
+	return len(S.Stack)
+}
+
+func (S *Stack) Push(elem int) {
+	S.Stack = append(S.Stack, elem)
+}
+
+func (S *Stack) Pop() int {
+
+	len := len(S.Stack) - 1
+
+	elem := S.Stack[len]
+
+	S.Stack = S.Stack[:len]
+
+	return elem
+}
+
+func (S *Stack) GetTop() int {
+	return S.Stack[len(S.Stack)-1]
+}
+
+func (S *Stack) StackEmpty() bool {
+
+	return len(S.Stack) &lt;= 0
+}
+
+func (S *Stack) StackTraverse() {
+	for _, elem := range S.Stack {
+		fmt.Println(elem)
+	}
+}
+
+func (S *Stack) DestroyStack() {
+	S.Stack = []int{}
+}
+</code></pre>
+
+<h5 id="数制转换问题">数制转换问题</h5>
+
+<pre><code class="language-go">package main
+
+import (
+	&quot;DataStructure/Stack&quot;
+	&quot;strconv&quot;
+)
+
+/**
+	简单版本的 十进制转任意进制
+ */
+func Conversion(input int, radix int) string {
+
+	result := &quot;&quot;
+
+	if input &lt;= 0 || radix &lt;= 0 {
+		return result
+	}
+
+	S := Stack.Stack{}
+
+	S.InitStack()
+
+	for {
+
+		if input &lt;= 0 {
+			break
+		}
+
+		S.Push(input % radix)
+
+		input = input / radix
+
+	}
+
+	for {
+
+		if S.StackEmpty() {
+			break
+		}
+
+		result += strconv.Itoa(S.Pop())
+	}
+
+	return result
+
+}
+</code></pre>
+
+<h5 id="valid-parentheses">Valid Parentheses</h5>
+
+<p>本题参考自 <a href="https://leetcode.com/problems/valid-parentheses">leet code</a>，可以通过 栈 的特性完成</p>
+
+<pre><code class="language-javascript">const isValid = function(s) {
+  const stack = []
+
+  const map = {
+    '(': -1,
+    ')': 1,
+    '[': -2,
+    ']': 2,
+    '{': -3,
+    '}': 3,
+  }
+
+  for (let i = 0; i &lt; s.length; i++) {
+    const current = map[s[i]]
+    if (current &lt;= 0) {
+      stack.push(current)
+    } else {
+      const last = stack.pop()
+      if (last + current !== 0) return false
+    }
+  }
+
+  return !stack.length &gt; 0
+}
+</code></pre>
+
+<h5 id="表达式求值-todo">表达式求值 TODO</h5>
+
+<pre><code class="language-javascript">class EvaluateExpression {}
+</code></pre>
+
+<h5 id="汉诺塔-todo">汉诺塔 TODO</h5>
+
+<pre><code class="language-javascript">class Hanoi {}
+</code></pre>
+
+<h3 id="queue">Queue</h3>
+
+<p><img src="./Queue.png" alt="Queue.png" /></p>
+
+<h4 id="queue-定义">Queue 定义</h4>
+
+<ul>
+<li>与堆栈一样，<strong>队列</strong>也是一种特殊的线性表，这种表在一端进行插入操作，而在另一端进行删除操作</li>
+<li>允许插入的一端叫<strong>队尾(rear)</strong></li>
+<li>允许删除的一端叫<strong>队首(front)</strong></li>
+<li>位于队首和队尾的元素分别称为<strong>队首元素</strong>和<strong>队尾元素</strong></li>
+<li>当表中无元素时，称为<strong>空队</strong></li>
+<li>队列的插入称为<strong>进队</strong>，队列的删除称为<strong>出队</strong></li>
+<li>数据元素从<strong>rear（队尾，上方）</strong>进队，从<strong>front（队首，下方）</strong>出队</li>
+<li><strong>先进入队列的元素比后进入队列的元素先出队列（后进入队列的元素比先进入的元素后出队列）</strong>，即队列是一个先进先出(FIFO)表</li>
+</ul>
+
+<h4 id="queue-adt">Queue ADT</h4>
+
+<pre><code class="language-adt">ADT Queue{
+   Data：数据元素相同数据类型，相邻元素具有前驱和后继的关系。
+   Operation：
+        InitQueue(&amp;Q，maxsize，incresize)
+           操作结果：构造一个容量为maxsize的空队列Q。
+        ClearQueue(&amp;Q)
+           初始条件：队列Q已存在。
+           操作结果：将Q清为空队列。
+        QueueLength(Q)
+           初始条件：队列Q已存在。
+           操作结果：返回Q的元素个数，即队列的长度。
+        EnQueue(&amp;Q，e)
+           初始条件：队列Q已存在。
+           操作结果：插入元素e为Q的新的队尾元素。
+        DeQueue(&amp;Q，&amp;e)
+            初始条件：Q为非空队列。
+            操作结果：删除Q的队首元素，并用e返回其值。
+        GetHead(Q，&amp;e)
+            初始条件：Q为非空队列。
+            操作结果：用e返回Q的队头元素。
+        QueueTraverse(Q)
+            初始条件：队列Q已存在且非空。
+            操作结果：从队头到队尾依次输出Q中各个数据元素。
+        QueueEmpty(Q)
+            初始条件：队列Q已存在。
+            操作结果：若Q为空队列，则返回true；否则返回false。
+        DestroyQueue(&amp;Q)
+           初始条件：队列Q已存在。
+            操作结果：队列Ｑ被撤销，不再存在。
+}ADT Queue
+</code></pre>
+
+<h4 id="单链队列">单链队列</h4>
+
+<p>单链存在<strong>假溢出</strong>的情况</p>
+
+<blockquote>
+<p>当元素被插入到数组中下标最大的位置上时，数组的底端还有空闲空间，此时如果还有元素入队，就会发生“溢出”现象，显然这种溢出并不是真正的溢出，而是<strong>假溢出</strong>。</p>
+</blockquote>
+
+<p>由于 <code>javascript</code> 内部自己动态分配数组，所以实现上不需要考虑这种情况。</p>
+
+<p>单链队列实现方式如下：</p>
+
+<pre><code class="language-javascript">class SingleQueue {
+  InitQueue() {
+    this.queue = []
+  }
+
+  ClearQueue() {
+    this.queue = []
+  }
+
+  QueueLength() {
+    return this.queue.length
+  }
+
+  /**
+   * 插入元素e到队尾，成功插入返回true，否则返回false
+   * @param elem
+   * @constructor
+   */
+  EnQueue(elem) {
+    this.queue.push(elem)
+    return true
+  }
+
+  /**
+   * 删除队尾元素，并用e返回其值，成功删除返回true;否则返回false
+   * @param elem
+   * @returns {*}
+   * @constructor
+   */
+  DeQueue(elem) {
+    return this.queue.shift()
+  }
+
+  /**
+   * 取出队首
+   * @returns {*}
+   * @constructor
+   */
+  GetHead() {
+    return this.queue[0]
+  }
+
+  /**
+   * 队列判断队空
+   * @returns {boolean}
+   * @constructor
+   */
+  QueueEmpty() {
+    return this.queue.length === 0
+  }
+
+  DestroyQueue() {
+    this.queue = []
+  }
+}
+</code></pre>
+
+<h4 id="顺序循环队列">顺序循环队列</h4>
+
+<p>为了解决<strong>假溢出</strong>的情况，可以由下面方式来解决：</p>
+
+<ul>
+<li>修改出队算法，事先避免假溢出，每次出队后把所有元素望前移动一个位置。</li>
+<li>修改进队算法，在发生假溢出的时候，把所有的元素往前移动一个位置。</li>
+<li>通过顺序循环队列来解决</li>
+</ul>
+
+<pre><code class="language-javascript">class CricleQueue {
+  constructor() {
+    this.incrementSize = 5
+
+    this.front = this.rear = 0
+    this.queue = new Array(this.incrementSize)
+  }
+
+  /**
+   * EnQueue
+   * @param elem
+   * @returns {boolean}
+   * @constructor
+   */
+  EnQueue(elem) {
+    /**
+     * 判断是否存储满（少一个存储单元
+     * 插入操作时，首先判断rear所指示的下一个位置是否是front，如果是，则停止插入。（队尾留一个单元）
+     * 判满条件：(rear+1) mod maxsize = front
+     */
+    if ((this.rear + 1) % this.queue.length === this.front) {
+      /**
+       * 如果满则根据 incrementSize 扩容数组
+       */
+      const newQueue = new Array(this.queue.length + this.incrementSize + 1)
+      for (let i = 0; i &lt; this.queue.length; i++) {
+        newQueue[i] = this.queue[(i + this.front) % this.queue.length]
+      }
+      this.queue = newQueue
+    }
+
+    this.queue[this.rear] = elem
+    this.rear = (this.rear + 1) % this.queue.length
+
+    return true
+  }
+
+  /**
+   * DeQueue
+   * @returns {*}
+   * @constructor
+   */
+  DeQueue() {
+    /**
+     * 判断是否为空
+     * 判空条件：rear == front
+     */
+    if (this.rear === this.front) {
+      return false
+    }
+
+    const r = this.queue[this.front]
+    this.queue[this.front] = null
+    this.front = (this.front + 1) % this.queue.length
+
+    return r
+  }
+
+  GetHead() {
+    /**
+     * 判断是否为空
+     * 判空条件：rear == front
+     */
+    if (this.rear === this.front) {
+      return false
+    }
+
+    /**
+     * TODO
+     * 这里是否需要添加自动判断队列长度缩减队列的逻辑
+     */
+    return this.queue[this.front]
+  }
+
+  QueueEmpty() {
+    return this.rear === this.front
+  }
+
+  DestroyQueue() {
+    this.queue = []
+    this.front = null
+    this.rear = null
+  }
+}
+</code></pre>
+
+<p>与队列相关的还有<strong>链队</strong>，这里不做介绍。</p>
+
+<h3 id="tree">Tree</h3>
+
+<p>树是一种非线性结构，树与线性表的逻辑关系不同。</p>
+
+<p>树的遍历是树的一种重要的运算。所谓遍历是指对树中所有结点的信息的访问，即依次对树中每个结点访问一次且仅访问一次，我们把这种对所有节点的访问称为遍历（traversal）</p>
+
+<p>树的两种重要的遍历模式是：</p>
+
+<ul>
+<li>深度优先遍历</li>
+<li>广度优先遍历</li>
+</ul>
+
+<h4 id="深度优先遍历">深度优先遍历</h4>
+
+<p>对于一颗二叉树，深度优先搜索(Depth First Search)是沿着树的深度遍历树的节点，尽可能深的搜索树的分支。</p>
+
+<p>简单的深度优先遍历可以采用数据结构 <code>Stack</code> 来辅助进行实现：</p>
+
+<pre><code class="language-js">/**
+ * DeepFirstTraversal
+ * @param node
+ * @constructor
+ */
+function DeepFirstTraversal(node) {
+  if (!node) {
+    return
+  }
+
+  const stack = new Stack()
+
+  stack.push(node)
+
+  while (!stack.isEmpty()) {
+    const node = stack.pop()
+
+    console.log(`traversal node value is ${node.value}`)
+
+    if (node.left) stack.push(node.left)
+
+    if (stack.right) stack.push(node.right)
+  }
+}
+</code></pre>
+
+<p>深度遍历有重要的三种方法。这三种方式常被用于访问树的节点，它们之间的不同在于访问每个节点的次序不同。这三种遍历分别叫做：</p>
+
+<ul>
+<li>先序遍历（preorder）</li>
+<li>中序遍历（inorder）</li>
+<li>后序遍历（postorder）</li>
+</ul>
+
+<p>上诉通过 <code>Stack</code> 数据结构进行的简单实现就是 <strong>先序遍历</strong></p>
+
+<p>可以通过改变 <code>console.log(</code>traversal node value is \${node.value}<code>)</code> 的顺序来实现三种遍历方式。</p>
+
+<p>下面继续介绍递归方式实现。</p>
+
+<h4 id="递归先序遍历">递归先序遍历</h4>
+
+<p>根节点-&gt;左子树-&gt;右子树</p>
+
+<pre><code class="language-js">/**
+ * 递归先序遍历
+ * @param node
+ * @constructor
+ */
+function PreorderTravelBinarynode(node) {
+  console.log(node.value)
+
+  PreorderTravelBinarynode(node.left)
+
+  PreorderTravelBinarynode(node.right)
+}
+</code></pre>
+
+<h5 id="递归中序遍历">递归中序遍历</h5>
+
+<p>左子树-&gt;根节点-&gt;右子树</p>
+
+<pre><code class="language-js">/**
+ * 递归中序遍历
+ * @param node
+ * @constructor
+ */
+function MiddleorderTraversal(node) {
+  MiddleorderTraversal(node.left)
+  console.log(node.value)
+  MiddleorderTraversal(node.right)
+}
+</code></pre>
+
+<h5 id="递归后序遍历">递归后序遍历</h5>
+
+<p>左子树-&gt;右子树-&gt;根节点</p>
+
+<pre><code class="language-js">/**
+ * 递归后序遍历
+ * @param node
+ * @constructor
+ */
+function PostorderTraversal(node) {
+  PostorderTraversal(node.left)
+  PostorderTraversal(node.right)
+  console.log(node.value)
+}
+</code></pre>
+
+<h5 id="广度优先遍历">广度优先遍历</h5>
+
+<p>从树的 root 开始，从上到下从从左到右遍历整个树的节点</p>
+
+<p>广度优先遍历可以通过数据结构 <code>Queue</code> 来辅助进行实现：</p>
+
+<pre><code class="language-js">/**
+ * breadthFirstSearch
+ * queue
+ * @param Node
+ */
+function breadthFirstSearch(Node) {
+  console.log(Node.value)
+
+  const queue = []
+  queue.push(Node)
+
+  while (queue.length &gt; 0) {
+    const currentNode = queue.shift()
+
+    if (currentNode.left) {
+      console.log(currentNode.left.value)
+      queue.push(currentNode.left)
+    }
+
+    if (currentNode.right) {
+      console.log(currentNode.right.value)
+      queue.push(currentNode.right)
+    }
+  }
+}
+</code></pre>
+
+<h3 id="排序">排序</h3>
+
+<p>排序算法是《数据结构与算法》中最基本的算法之一。</p>
+
+<p>具体内容可以参照<a href="https://github.com/hustcc/JS-Sorting-Algorithm">十大经典排序算法</a></p>
+
+<h4 id="冒泡排序">冒泡排序</h4>
+
+<p>冒泡排序（Bubble Sort）也是一种简单直观的排序算法。它重复地走访过要排序的数列，一次比较两个元素，如果他们的顺序错误就把他们交换过来。走访数列的工作是重复地进行直到没有再需要交换，也就是说该数列已经排序完成。这个算法的名字由来是因为越小的元素会经由交换慢慢“浮”到数列的顶端。</p>
+
+<p>作为最简单的排序算法之一，冒泡排序给我的感觉就像 Abandon 在单词书里出现的感觉一样，每次都在第一页第一位，所以最熟悉。冒泡排序还有一种优化算法，就是立一个 flag，当在一趟序列遍历中元素没有发生交换，则证明该序列已经有序。但这种改进对于提升性能来说并没有什么太大作用。</p>
+
+<p><img src="./bubble-sort.gif" alt="bubble-sort.gif" /></p>
+
+<pre><code class="language-javascript">function bubbleSort(list) {
+  const len = list.length
+
+  for (let m = 0; m &lt; len; m++) {
+    for (let n = 0; n &lt; len - m - 1; n++) {
+      if (list[m] &gt; list[m + 1]) {
+        ;[list[m], list[m + 1]] = [list[m + 1], list[m]]
+      }
+    }
+  }
+
+  return list
+}
+</code></pre>
+
+<h4 id="插入排序">插入排序</h4>
+
+<p>插入排序的代码实现虽然没有冒泡排序和选择排序那么简单粗暴，但它的原理应该是最容易理解的了，因为只要打过扑克牌的人都应该能够秒懂。插入排序是一种最简单直观的排序算法，它的工作原理是通过构建有序序列，对于未排序数据，在已排序序列中从后向前扫描，找到相应位置并插入。</p>
+
+<p>插入排序和冒泡排序一样，也有一种优化算法，叫做拆半插入</p>
+
+<p><img src="./insertion-sort.gif" alt="insertion-sort.gif" /></p>
+
+<pre><code class="language-javascript">function insertionSort(list) {
+  const len = list.length
+
+  let preIndex, current
+
+  for (let m = 1; m &lt; len; m++) {
+    preIndex = m - 1
+    current = list[m]
+
+    while (preIndex &gt;= 0 &amp;&amp; list[preIndex] &gt; current) {
+      list[preIndex + 1] = list[preIndex]
+      preIndex--
+    }
+
+    list[preIndex + 1] = current
+  }
+
+  return list
+}
+</code></pre>
+
+<h4 id="快速排序">快速排序</h4>
+
+<p>分而治之 （divide and conquer，D&amp;C）——一种著名的递归式问题解决方法</p>
+
+<p>D&amp;C 的工作原理：</p>
+
+<ul>
+<li>(1) 找出简单的基线条件；</li>
+<li>(2) 确定如何缩小问题的规模，使其符合基线条件。 D&amp;C 并非可用于解决问题的算法，而是一种解决问题的思路。</li>
+</ul>
+
+<p><img src="./quick-sort.gif" alt="quick-sort.gif" /></p>
+
+<pre><code class="language-python">def quicksort(array):
+
+  if len(array) &lt; 2:
+
+    return array # 基线条件：为空或只包含一个元素的数组是“有序”的
+
+  else:
+
+    pivot = array[0] # 递归条件
+
+    less = [i for i in array[1:]if i &lt;= pivot] # 由所有小于基准值的 元素组成的子数组
+    greater = [i for i in array[1:] if i &gt; pivot] # 由所有大于基准值的 元素组成的子数组
+
+    return quicksort(less) + [pivot] + quicksort(greater)
+</code></pre>
+
+<pre><code class="language-javascript">function quickSort(list) {
+  const len = list.length
+
+  if (len &lt;= 1) {
+    return list
+  }
+
+  /**
+   * 二分 list
+   * @type {number}
+   */
+  const index = Math.floor(len / 2)
+
+  /**
+   * 取出中间值作为基准值
+   * @type {T[]}
+   */
+  const pivot = list.splice(index, 1)
+
+  const left = []
+  const right = []
+
+  for (let i = 0; i &lt; len - 1; i++) {
+    if (list[i] &lt; pivot) {
+      left.push(list[i])
+    } else {
+      right.push(list[i])
+    }
+  }
+
+  return quickSort(left).concat(pivot, quickSort(right))
+}
+</code></pre>
+
+<h4 id="选择排序">选择排序</h4>
+
+<p>选择排序是一种简单直观的排序算法，首先在未排序序列中找到最小（大）元素，存放到排序序列的起始位置，再从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾，继续重复步骤。</p>
+
+<p><img src="./selection-sort.gif" alt="selection-sort.gif" /></p>
+
+<pre><code class="language-javascript">function selectionSort(list) {
+  const len = list.length
+  let minIndex = -1
+
+  for (let m = 0; m &lt; len; m++) {
+    minIndex = m
+
+    for (let n = m; n &lt; len; n++) {
+      if (list[n] &lt; list[minIndex]) {
+        minIndex = n
+      }
+    }
+
+    ;[list[m], list[minIndex]] = [list[minIndex], list[m]]
+  }
+
+  return list
+}
+</code></pre>
+
+<h4 id="归并排序">归并排序</h4>
+
+<p>归并排序（Merge sort）是建立在归并操作上的一种有效的排序算法。该算法是采用分治法（Divide and Conquer）的一个非常典型的应用。</p>
+
+<p>作为一种典型的分而治之思想的算法应用，归并排序的实现由两种方法：</p>
+
+<ul>
+<li>自上而下的递归（所有递归的方法都可以用迭代重写，所以就有了第 2 种方法）；</li>
+<li>自下而上的迭代；</li>
+</ul>
+
+<p><img src="./merge-sort.gif" alt="merge-sort.gif" /></p>
+
+<pre><code class="language-javascript">function mergeSort(arr) {
+  const len = arr.length
+  if (len &lt; 2) {
+    return arr
+  }
+  const middle = Math.floor(len / 2),
+    left = arr.slice(0, middle),
+    right = arr.slice(middle)
+  return merge(mergeSort(left), mergeSort(right))
+}
+
+function merge(left, right) {
+  const result = []
+
+  while (left.length &amp;&amp; right.length) {
+    if (left[0] &lt;= right[0]) {
+      result.push(left.shift())
+    } else {
+      result.push(right.shift())
+    }
+  }
+
+  while (left.length) result.push(left.shift())
+
+  while (right.length) result.push(right.shift())
+
+  return result
+}
+</code></pre>
+
+<h3 id="贪婪算法">贪婪算法</h3>
+
+<p>贪婪算法很简单：每步都采取最优的做法。</p>
+
+<p>用专业术语说，就是你每步都选择局部最优解，最终得到的就是全局最优解。</p>
+
+<h3 id="dp-动态规划">DP 动态规划</h3>
+
+<p>动态规划先解决子问题，再逐 步解决大问题。</p>
+
+<p>常用的地方有 <code>斐波那契数列</code>、<code>背包问题</code> 等。</p>
+
+<p>leetcode 题目有：</p>
+
+<ul>
+<li><a href="https://leetcode-cn.com/problems/climbing-stairs/">爬楼梯 Climbing Stairs</a></li>
+<li><a href="https://leetcode-cn.com/problems/longest-palindromic-substring/">最长回文字符串 Palindrome String loggest</a></li>
+<li><a href="https://leetcode-cn.com/problems/maximum-subarray/">最大子序和 Maximum Subarray</a></li>
+</ul>
+
+<p>相应的解释：</p>
+
+<ul>
+<li><a href="https://www.zhihu.com/question/23995189">知乎：什么是动态规划</a></li>
+<li><a href="https://hit-alibaba.github.io/interview/basic/algo/DP.html?q=">动态规划对应的 leetcode 题</a></li>
+</ul>
+
+<h4 id="n-sum">N sum</h4>
+
+<ul>
+<li><a href="https://leetcode-cn.com/problems/two-sum/">两数之和</a></li>
+<li><a href="https://leetcode-cn.com/problems/3sum/">三数之和</a></li>
+</ul>
+
+    </section>
+    <nav class="no-print post-nav">
+        
+        <a class="prev-post" href="https://hasaki.xyz/blog/2018-04-21-javascript-%E6%B2%99%E7%AE%B1/">
+            <img class="icon-text" src="/img/prev.svg"/>javascript 沙箱</a>
+        
+        
+        <a class="next-post" href="https://hasaki.xyz/blog/working-tips/">working tips<img class="icon-text" src="/img/next.svg"/>
+        </a>
+        
+    </nav>
+</article>
+
+
+
+<div id="disqus_thread" class="no-print"></div>
+<script type="text/javascript">
+    'use strict';
+    (function () {
+        if ('localhost' != window.location.hostname) {
+            var a = document.querySelector('#disqus_thread');
+            new IntersectionObserver(function (b) {
+                b.forEach(function (d) {
+                    if (0 < d.intersectionRatio && !a.classList.contains('active')) {
+                        var e = document.createElement('script');
+                        e.type = 'text/javascript', e.async = !0;
+                        e.src = '//' + 'hasaki-xyz' + '.disqus.com/embed.js', (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(e), a.classList.add('active')
+                    }
+                })
+            }, {rootMargin: '0px', threshold: 1}).observe(a)
+        }
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+</noscript>
+
+
+<style rel="catalog">
+  #catalog {
+    position: fixed;
+    min-width: 12vw;
+    left: 3vw;
+    top: 8vh;
+    overflow: auto;
+    height: calc(100% - 16vh);
+    background:
+      linear-gradient(
+        white 30%,
+        rgba(255, 255, 255, 0)
+      ),
+      linear-gradient(rgba(255, 255, 255, 0), white 70%) 0 100%,
+       
+        radial-gradient(
+          50% 0,
+          farthest-side,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        ),
+      radial-gradient(
+          50% 100%,
+          farthest-side,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        )
+        0 100%;
+    background:
+      linear-gradient(
+        white 30%,
+        rgba(255, 255, 255, 0)
+      ),
+      linear-gradient(rgba(255, 255, 255, 0), white 70%) 0 100%,
+       
+        radial-gradient(
+          farthest-side at 50% 0,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        ),
+      radial-gradient(
+          farthest-side at 50% 100%,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        )
+        0 100%;
+    background-repeat: no-repeat;
+    background-color: white;
+    background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
+
+     
+    background-attachment: local, local, scroll, scroll;
+  }
+  @media (max-width: 1280px) {
+    #catalog {
+      display: none;
+    }
+  }
+
+  #catalog::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cl-wrapper {
+    position: relative;
+  }
+
+  .cl-wrapper ul,
+  .cl-wrapper li {
+    margin: 0;
+    -moz-padding-start: 12px;
+    -webkit-padding-start: 12px;
+    list-style: none;
+  }
+
+  .cl-wrapper li > .cl-link.cl-link-active {
+    color: #ff8181;
+    transition: 0.5s;
+  }
+
+  .cl-wrapper li > .cl-transform.cl-link-active {
+    transform: translate(3px);
+  }
+
+  .cl-wrapper .cl-link {
+    cursor: pointer;
+    color: rgba(52, 73, 94, 0.5);
+    font-size: 13px;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .cl-wrapper .cl-marker {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+
+  .cl-wrapper .cl-marker path {
+    transition: all 0.3s ease;
+  }
+</style>
+<main id="catalog"></main>
+<script rel="catalog">
+  void (function() {
+    if (
+      window.innerWidth < 1024 ||
+      /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+    ) {
+      return
+    }
+
+    const Catalog = (function() {
+      return function(opts) {
+        let defaultOpts = {
+          linkClass: 'cl-link', 
+          linkActiveClass: 'cl-link-active', 
+          datasetName: 'data-cata-target', 
+          selector: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'], 
+          scrollWrapper: null, 
+          activeHook: null, 
+          topMargin: 0,
+          bottomMargin: 0,
+          cool: true, 
+        }
+
+        const Opt = Object.assign({}, defaultOpts, opts)
+
+        const $content = document.getElementById(Opt.contentEl) 
+        const $scroll_wrap = window 
+        const $catalog = document.getElementById(Opt.catalogEl) 
+
+        let allCatalogs = $content.querySelectorAll(Opt.selector.join())
+        let tree = getCatalogsTree(allCatalogs)
+
+        try {
+          $catalog.innerHTML = `<div class='cl-wrapper'>${generateHtmlTree(
+            tree,
+            { id: -1 },
+          )}<svg class="cl-marker" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+            <path stroke="#ff8181" stroke-width="3" fill="transparent" stroke-dasharray="0, 0, 0, 1000" stroke-linecap="round" stroke-linejoin="round" transform="translate(-0.5, -0.5)" />
+            </svg></div>`
+        } catch (e) {
+          console.error('error in progress-catalog', e)
+        }
+
+        const tocPath = $catalog.querySelector('.cl-marker path')
+        let tocItems, pathLength 
+
+        
+        window.addEventListener('resize', drawPath)
+        $catalog.addEventListener('click', clickHandler)
+        Opt.cool && $scroll_wrap.addEventListener('scroll', coolScrollHandler)
+        Opt.cool || $scroll_wrap.addEventListener('scroll', simpleScrollHandler)
+
+        setTimeout(drawPath) 
+
+        
+
+        function drawPath() {
+          tocItems = [...$catalog.querySelectorAll('li')]
+          tocItems = tocItems.map(function(liDom) {
+            const anchor = liDom.querySelector(`.${Opt.linkClass}`)
+            const target = document.getElementById(
+              anchor.getAttribute('data-cata-target'),
+            )
+
+            return {
+              listItem: liDom,
+              anchor: anchor,
+              target: target,
+            }
+          })
+          tocItems = tocItems.filter(item => !!item.target)
+
+          const path = []
+          let pathIndent
+
+          tocItems &&
+            tocItems.forEach(function(item, idx) {
+              const { offsetLeft, offsetTop, offsetHeight } = item.anchor,
+                x = Opt.cool ? offsetLeft - 5 : offsetLeft,
+                y = offsetTop,
+                height = offsetHeight
+
+              if (idx === 0) {
+                path.push('M', x, y, 'L', x, y + height)
+                item.pathStart = 0
+              } else {
+                if (pathIndent !== x) path.push('L', pathIndent, y) 
+                path.push('L', x, y)
+                tocPath.setAttribute('d', path.join(' '))
+                item.pathStart = tocPath.getTotalLength() || 0
+                path.push('L', x, y + height)
+              }
+              pathIndent = x
+              tocPath.setAttribute('d', path.join(' '))
+              item.pathEnd = tocPath.getTotalLength()
+            })
+          pathLength = tocPath.getTotalLength()
+          coolScrollHandler()
+        }
+
+        
+
+        function coolScrollHandler() {
+          const wrapHeight = document.documentElement.offsetHeight
+          let pathStart = pathLength,
+            pathEnd = 0,
+            visibleItems = 0
+          tocItems.forEach(function(liItem) {
+            const { bottom, top } = liItem.target.getBoundingClientRect(),
+              firstChild = liItem.listItem.firstChild
+            if (bottom > Opt.topMargin && top < wrapHeight - Opt.bottomMargin) {
+              firstChild.classList.remove(Opt.linkActiveClass)
+              Opt.cool && firstChild.classList.remove('cl-transform')
+            } else {
+              pathStart = Math.min(liItem.pathStart, pathStart)
+              pathEnd = Math.max(liItem.pathEnd, pathEnd)
+              visibleItems += 1
+              firstChild.classList.add(Opt.linkActiveClass)
+              Opt.cool && firstChild.classList.add('cl-transform')
+            }
+          })
+          if (visibleItems > 0 && pathStart < pathEnd && Opt.cool) {
+            tocPath.setAttribute('stroke-dashoffset', '1')
+            tocPath.setAttribute(
+              'stroke-dasharray',
+              `1, ${pathStart}, ${pathEnd - pathStart}, ${pathLength}`,
+            )
+            tocPath.setAttribute('opacity', '1')
+          } else {
+            tocPath.setAttribute('opacity', '0')
+          }
+        }
+
+        
+
+        function simpleScrollHandler(el) {
+          let scrollToEl = null
+          for (let i = allCatalogs.length - 1; i >= 0; i--) {
+            if (allCatalogs[i].offsetTop <= $scroll_wrap.scrollTop) {
+              scrollToEl = allCatalogs[i]
+              break
+            }
+          }
+          if (scrollToEl) setActiveItem(scrollToEl.id)
+          else setActiveItem(null) 
+        }
+
+        
+
+        function clickHandler({ target }) {
+          const datasetId = target.getAttribute(Opt.datasetName)
+          target.classList.contains(Opt.linkClass) &&
+            document
+              .getElementById(datasetId)
+              .scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }
+
+        
+
+        function getCatalogsTree(catalogs) {
+          let title,
+            tagName,
+            tree = [],
+            treeItem = {},
+            parentItem = { id: -1 },
+            lastTreeItem = null,
+            id
+
+          for (let i = 0; i < catalogs.length; i++) {
+            title = catalogs[i].innerText || catalogs[i].textContent
+            tagName = catalogs[i].tagName
+            id = 'heading-' + i
+            catalogs[i].id = id
+            treeItem = {
+              name: title,
+              tagName: tagName,
+              id: id,
+              level: +getLevel(tagName),
+              parent: parentItem,
+            }
+            if (lastTreeItem) {
+              if (getLevel(treeItem.tagName) > getLevel(lastTreeItem.tagName)) {
+                treeItem.parent = lastTreeItem
+              } else {
+                treeItem.parent = findParent(treeItem, lastTreeItem)
+              }
+            }
+            lastTreeItem = treeItem
+            tree.push(treeItem)
+          }
+          return tree
+        }
+
+        
+
+        function findParent(currTreeItem, lastTreeItem) {
+          let lastTreeParent = lastTreeItem.parent
+          while (
+            lastTreeParent &&
+            getLevel(currTreeItem.tagName) <= getLevel(lastTreeParent.tagName)
+          ) {
+            lastTreeParent = lastTreeParent.parent
+          }
+          return lastTreeParent || { id: -1 }
+        }
+
+        
+
+        function getLevel(tagName) {
+          return tagName ? tagName.slice(1) : 0
+        }
+
+        
+
+        function generateHtmlTree(tree, _parent) {
+          let ul,
+            hasChild = false
+          if (tree) {
+            ul = `<ul>`
+            for (let i = 0; i < tree.length; i++) {
+              if (isEqual(tree[i].parent, _parent)) {
+                hasChild = true
+                ul += `<li><div class='${Opt.linkClass} cl-level-${tree[i].level}' ${Opt.datasetName}='${tree[i].id}'>${tree[i].name}</div>`
+                ul += generateHtmlTree(tree, tree[i])
+                ul += '</li>'
+              }
+            }
+            ul += `</ul>`
+          }
+          return hasChild ? ul : ''
+        }
+
+        /**
+         * 判断是否是相同节点
+         */
+        function isEqual(node, node2) {
+          return (
+            node &&
+            node2 &&
+            typeof node === 'object' &&
+            typeof node2 === 'object' &&
+            node.id === node2.id
+          )
+        }
+
+        /**
+         *  设置选中的项
+         */
+        function setActiveItem(id) {
+          let catas = [...$catalog.querySelectorAll(`[${Opt.datasetName}]`)]
+
+          catas.forEach(T => {
+            if (T.getAttribute(Opt.datasetName) === id) {
+              typeof Opt.activeHook === 'function' &&
+                !T.classList.contains(Opt.linkActiveClass) &&
+                Opt.activeHook.call(this, T) // 执行active钩子
+              T.classList.add(Opt.linkActiveClass)
+            } else {
+              T.classList.remove(Opt.linkActiveClass)
+            }
+          })
+        }
+      }
+    })()
+    window.addEventListener(
+      'DOMContentLoaded',
+      _ =>
+        new Catalog({
+          contentEl: 'markdown',
+          catalogEl: 'catalog',
+        }),
+    )
+  })()
+</script>
+
+			<hr class="sep" />
+		</main>
+		<footer class="container no-print">
+			<div class="u-footer">
+				
+<a href="mailto:iamnomand@gmail.com"><img class="icon-social" src="/img/email.svg" alt="Email Me!"/></a>
+
+
+<a href="https://github.com/v-tom/"><img class="icon-social" src="/img/github.svg" alt="Github"/></a>
+
+
+<a href="https://twitter.com/iamnomand"><img class="icon-social" src="/img/twitter.svg" alt="Twitter"/></a>
+
+<a href="https://hasaki.xyz/index.xml" target="_blank"><img class="icon-social" src="/img/feed.svg" alt="Feed"></a>
+
+				<p>
+					
+					
+					Early 2016 ~ 2020 &copy; TOM's Zone
+					
+					
+				</p>
+				
+				<a href="#brand">
+					<img class="icon-text" src="/img/toup.svg" alt="To Up"/>
+					<span>Back to Up</span>
+				</a>
+				
+			</div>
+		</footer>
+		
+		<script>hljs.initHighlightingOnLoad();</script>
+		
+	</body>
+</html>
+

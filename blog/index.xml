@@ -7,10 +7,42 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ZH-CN</language>
     <copyright>Early 2016 ~ 2020 &amp;copy; TOM&#39;s Zone</copyright>
-    <lastBuildDate>Tue, 12 Nov 2019 13:09:31 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 20 Jan 2020 13:21:35 +0800</lastBuildDate>
     
 	<atom:link href="https://hasaki.xyz/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>转载：现代浏览器内部揭秘</title>
+      <link>https://hasaki.xyz/blog/2020-01-20-%E8%BD%AC%E8%BD%BD%E7%8E%B0%E4%BB%A3%E6%B5%8F%E8%A7%88%E5%99%A8%E5%86%85%E9%83%A8%E6%8F%AD%E7%A7%98/</link>
+      <pubDate>Mon, 20 Jan 2020 13:21:35 +0800</pubDate>
+      
+      <guid>https://hasaki.xyz/blog/2020-01-20-%E8%BD%AC%E8%BD%BD%E7%8E%B0%E4%BB%A3%E6%B5%8F%E8%A7%88%E5%99%A8%E5%86%85%E9%83%A8%E6%8F%AD%E7%A7%98/</guid>
+      <description>现代浏览器内部揭秘
+ Inside look at modern web browser (part 1) Inside look at modern web browser (part 2) Inside look at modern web browser (part 3) Inside look at modern web browser (part 4)  中字翻译：现代浏览器内部揭秘
+ 现代浏览器内部揭秘（第一部分） 现代浏览器内部揭秘（第二部分） 现代浏览器内部揭秘（第三部分） 现代浏览器内部揭秘（第四部分）  中字本站 Archive：
+ 现代浏览器内部揭秘合集  </description>
+    </item>
+    
+    <item>
+      <title>浅读《机器学习实战》</title>
+      <link>https://hasaki.xyz/blog/2020-01-09-%E6%B5%85%E8%AF%BB%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98/</link>
+      <pubDate>Thu, 09 Jan 2020 11:13:40 +0800</pubDate>
+      
+      <guid>https://hasaki.xyz/blog/2020-01-09-%E6%B5%85%E8%AF%BB%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98/</guid>
+      <description>机器按照是否 分类 和 回归 可以分为两种：
+ 监督学习  监督学习需要分类和回归，这类算法必须知道预测什么，即目标变量的分类信息。
+监督学习的用途有：
+ k-近邻算法（KNN） 朴素贝叶斯算法 支持向量机 决策树 线性回归 局部加权线性回归 Ridge 回归 Lasso 最小回归系数估计  我们在本文当中会逐个说到上诉用途
+ 非监督学习  与监督学习相对应的是无监督学习，此时数据没有类别信息，也不会给定目标值。在无监督 学习中，将数据集合分成由类似的对象组成的多个类的过程被称为聚类；将寻找描述数据统计值 的过程称之为密度估计。
+此外，无监督学习还可以减少数据特征的维度，以便我们可以使用二维或三维图形更加直观地展示数据信息。
+无监督学习的用途有：
+ K-均值 DBSCAN 最大期望算法 Parzen 窗设计  KNN  kNN（k-Nearest Neighbor）算法的核心思想是如果一个样本在特征空间中的 k 个最相邻的样本中的大多数属于某一个类别，则该样本也属于这个类别
+ KNN 是机器学习中最简单易懂的算法，它的适用面很广，并且在样本量足够大的情况下准确度很高，多年来得到了很多的关注和研究，K-近邻算法采用测量不同特征值之间的距离方法进行分类。适用数据范围：数值型和标称型
+kNN 当中的 k 取不同值时，分类结果可能会有显著不同。
+ 优点：简单，易于理解，易于实现，精度高、对异常值不敏感、无数据输入假定。 缺点：计算复杂度高、空间复杂度高。  下面是 k-近邻算法当中带有 4 个数据点的简单例子，例子当中对 4 个数据点进行了简单分类为 A 和 B：
+import numpy as np import matplotlib.</description>
+    </item>
     
     <item>
       <title>云原生基础及调研</title>
@@ -30,10 +62,10 @@ Docker 先申明下，Docker 是一种容器技术（具体可深入 namespaces 
     
     <item>
       <title>转载：这可能是最通俗的 React Fiber(时间分片) 打开方式</title>
-      <link>https://hasaki.xyz/blog/2019-10-23-%E8%BD%AC%E8%BD%BD%E8%BF%99%E5%8F%AF%E8%83%BD%E6%98%AF%E6%9C%80%E9%80%9A%E4%BF%97%E7%9A%84-react-fiber%E6%97%B6%E9%97%B4%E5%88%86%E7%89%87-%E6%89%93%E5%BC%80%E6%96%B9%E5%BC%8F/</link>
+      <link>https://hasaki.xyz/blog/2019-10-23-%E8%BD%AC%E8%BD%BD-%E8%BF%99%E5%8F%AF%E8%83%BD%E6%98%AF%E6%9C%80%E9%80%9A%E4%BF%97%E7%9A%84-react-fiber%E6%97%B6%E9%97%B4%E5%88%86%E7%89%87-%E6%89%93%E5%BC%80%E6%96%B9%E5%BC%8F/</link>
       <pubDate>Wed, 23 Oct 2019 14:01:30 +0800</pubDate>
       
-      <guid>https://hasaki.xyz/blog/2019-10-23-%E8%BD%AC%E8%BD%BD%E8%BF%99%E5%8F%AF%E8%83%BD%E6%98%AF%E6%9C%80%E9%80%9A%E4%BF%97%E7%9A%84-react-fiber%E6%97%B6%E9%97%B4%E5%88%86%E7%89%87-%E6%89%93%E5%BC%80%E6%96%B9%E5%BC%8F/</guid>
+      <guid>https://hasaki.xyz/blog/2019-10-23-%E8%BD%AC%E8%BD%BD-%E8%BF%99%E5%8F%AF%E8%83%BD%E6%98%AF%E6%9C%80%E9%80%9A%E4%BF%97%E7%9A%84-react-fiber%E6%97%B6%E9%97%B4%E5%88%86%E7%89%87-%E6%89%93%E5%BC%80%E6%96%B9%E5%BC%8F/</guid>
       <description>本文全文来自转载文章 这可能是最通俗的 React Fiber(时间分片) 打开方式
  读者可以直接去查看原文，如果原文链接丢失，可以下载这个 PDF 备份</description>
     </item>
@@ -180,29 +212,29 @@ http vs RPC HTTP 调用其实也是一种特殊的 RPC 。RPC 可以基于 HTTP 
     </item>
     
     <item>
-      <title>learn Data Structure</title>
-      <link>https://hasaki.xyz/blog/datastructure/</link>
+      <title>Data Structure</title>
+      <link>https://hasaki.xyz/blog/data-structure/</link>
       <pubDate>Wed, 23 May 2018 12:33:21 +0800</pubDate>
       
-      <guid>https://hasaki.xyz/blog/datastructure/</guid>
+      <guid>https://hasaki.xyz/blog/data-structure/</guid>
       <description>List list 是n(n≥0)个相同类型的数据元素构成的有限序列。
-ADT List { Data: Operation: InitList(&amp;amp;L) CreateList(&amp;amp;L) ListEmpty(L) ListLength(L) LocateElem(L,e) PriorElem(L,cur_e,&amp;amp;pre_e) NextElem(L,cur_e,&amp;amp;pre_e) ListInsert(&amp;amp;L,i,e) ListDelete(&amp;amp;L,i,&amp;amp;e) GetElem(L,i,&amp;amp;e) ListTraverse(L) DestroyList(&amp;amp;L) }//ADT List  list 简单实现 /** * List Structure */ class List { /** * 顺序表初始化操作，申请使用内存 * @constructor */ InitList() { this.list = []; } /** * 判断顺序表是否为空 * @returns {boolean} * @constructor */ ListEmpty() { return this.list.length === 0; } /** * 顺序表求表长操作 * @returns {number} * @constructor */ ListLength() { return this.</description>
+ADT List { Data: Operation: InitList(&amp;amp;L) CreateList(&amp;amp;L) ListEmpty(L) ListLength(L) LocateElem(L,e) PriorElem(L,cur_e,&amp;amp;pre_e) NextElem(L,cur_e,&amp;amp;pre_e) ListInsert(&amp;amp;L,i,e) ListDelete(&amp;amp;L,i,&amp;amp;e) GetElem(L,i,&amp;amp;e) ListTraverse(L) DestroyList(&amp;amp;L) }//ADT List  list 简单实现 /** * List Structure */ class List { /** * 顺序表初始化操作，申请使用内存 * @constructor */ InitList() { this.list = [] } /** * 判断顺序表是否为空 * @returns {boolean} * @constructor */ ListEmpty() { return this.list.length === 0 } /** * 顺序表求表长操作 * @returns {number} * @constructor */ ListLength() { return this.</description>
     </item>
     
     <item>
-      <title>sandbox of javascript</title>
-      <link>https://hasaki.xyz/blog/2018-04-21-javascript-sandbox/</link>
+      <title>javascript 沙箱</title>
+      <link>https://hasaki.xyz/blog/2018-04-21-javascript-%E6%B2%99%E7%AE%B1/</link>
       <pubDate>Sat, 21 Apr 2018 17:43:01 +0800</pubDate>
       
-      <guid>https://hasaki.xyz/blog/2018-04-21-javascript-sandbox/</guid>
+      <guid>https://hasaki.xyz/blog/2018-04-21-javascript-%E6%B2%99%E7%AE%B1/</guid>
       <description>在一些业务场景当中，我们提供给用户插入自定义逻辑的能力，类似于沙盒、沙箱，允许执行自定义代码，产生的变化可以随后随时删除。
 无论是客户端上的沙箱还是服务器端上的沙箱，我们都要确保安全性，用户自定义的脚本必须收到限制和隔离，不能影响到当前宿主程序。
 javascript 本身有很多种方式可以实现沙箱，各有千秋，各有使用的地方。
  eval new Function with proxy Node VM Deno  eval 最简单的方式就是直接使用 eval 执行：
-eval(&#39;console.log(&amp;quot;a simple script&amp;quot;);&#39;); // a simple script  eval 只是一个普通的函数，只不过他有一个快速通道通向编译器，可以将 string 变成可执行的代码。
+eval(&#39;console.log(&amp;quot;a simple script&amp;quot;);&#39;) // a simple script  eval 只是一个普通的函数，只不过他有一个快速通道通向编译器，可以将 string 变成可执行的代码。
  eval 的特性是如果当前域里面没有，则会向上遍历，一直到最顶层的 global scope：比如 window global ，他还可以访问 closure 内的变量。
  使用 eval 也带来了安全隐患，首先它可以访问和修改它外部作用域中的变量，其次被执行的代码（例如从网络来）可能已被篡改。
-global.name = &#39;TOM&#39;; eval(&#39;console.log(&amp;quot;i am &amp;quot; + name + &amp;quot; from eval&amp;quot;);&#39;); // i am TOM from eval  并且 eval 可读性较差，调试难度较高，也会轻微增加性能消耗。
+global.name = &#39;TOM&#39; eval(&#39;console.log(&amp;quot;i am &amp;quot; + name + &amp;quot; from eval&amp;quot;);&#39;) // i am TOM from eval  并且 eval 可读性较差，调试难度较高，也会轻微增加性能消耗。
 对于 eval 开发者是贬褒不一，eval 是魔鬼 以及 eval 不是魔鬼</description>
     </item>
     
@@ -215,7 +247,7 @@ global.name = &#39;TOM&#39;; eval(&#39;console.log(&amp;quot;i am &amp;quot; + n
       <description>本人只是一个前端，偶尔写一点其他语言来拓展开发技能。
 因业务当中使用到 RN，所以对如何实现 RN custom module 也比较感兴趣并简单学习实现了一些功能。本文可能有些地方可能比较浅显或者有错误，还望读者海涵并指正。
  环境准备 由于 swift 的断崖式升级以及 RN 不同版本，所以下面的例子可能会存在一些误差。本机环境为：
- RN：0.45.1 swift：4.1 Xcode：9.3 OS：high sierra 10.13.4  CocoaPods CocoaPods是专门为 iOS 工程提供对第三方库的依赖的管理工具，通过 CocoaPods ，我们可以更方便地管理每个第三方库的版本，而且不需要我们做太多的配置。直观、集中和自动化地管理我们项目的第三方库。
+ RN：0.45.1 swift：4.1 Xcode：9.3 OS：high sierra 10.13.4  CocoaPods CocoaPods 是专门为 iOS 工程提供对第三方库的依赖的管理工具，通过 CocoaPods ，我们可以更方便地管理每个第三方库的版本，而且不需要我们做太多的配置。直观、集中和自动化地管理我们项目的第三方库。
 我们都有这样的经历，当我们添加第三方库的时候，需要导入一堆相关依赖库，更新的时候也要删掉重新导入然后再配置。当我们需要更新某个第三方库的时候，我们又要手动移除该库，导入新的库，然后再配置。这些是很麻烦且没有意义的工作。
 安装 CocoaPods 需要用到 gem 。gem 是 RubyGems 的缩写，属于 ruby 上的包管理工具。
 这里建议切换国内镜像源地址，当然你也可以加上 -p 参数来配置 proxy
@@ -244,15 +276,12 @@ gem sources -l  结果应该是：</description>
       
       <guid>https://hasaki.xyz/blog/2018-01-02-%E4%BB%8Ejwt%E5%88%B0oauth/</guid>
       <description>JWT JWT 是 JSON Web Token 的缩写，可以简单理解为生产者颁发给消费者一个令牌。参照 JWT 规范 对其所做的描述是：
- JSON Web令牌（JWT）是一种紧凑的、URL安全的方式，用来表示要在双方之间传递的“声明”。JWT中的声明被编码为JSON对象，用作JSON Web签名（JWS）结构的有效内容或JSON Web加密（JWE）结构的明文，使得声明能够被：数字签名、或利用消息认证码（MAC）保护完整性、加密。
- 这个规范允许我们使用JWT在用户和服务器之间传递安全可靠的信息。
-JWT的构成 JWT 由三部分构成：
- Header ：头部，即 JOSE Header Claims ：声明，即 JWT Payload Signature ：签名，即 JWT Signature  JWT由这三部分组成，每一部分都是使用base64url编码的，并使用句点（.）连接起来
- 这里使用base64url编码而不是普通的base64，是因为base64编码会产生+和/，这两个字符在URL中是有特殊意义的，会导致JWT不是URL安全的。
- 头部(JOSE Header) JSOE 是 JSON Object Signing and Encryption，即JSON对象签名与加密的缩写。
-{ &amp;quot;typ&amp;quot;: &amp;quot;JWT&amp;quot;, &amp;quot;alg&amp;quot;: &amp;quot;HS256&amp;quot; }  示例中给出了两个声明：
- typ：类型，在JOSE Header中这是个可选参数，但这里我们需要指明类型是JWT。 alg：算法，必须是 jwt 支持的算法，算法列表可以在jwt 规范当中找到。  简单示例：
-package main import &amp;quot;bytes&amp;quot; import ( &amp;quot;encoding/json&amp;quot; &amp;quot;encoding/base64&amp;quot; &amp;quot;fmt&amp;quot; ) func header() string { header := struct { Alg string `json:&amp;quot;alg&amp;quot;` Typ string `json:&amp;quot;typ&amp;quot;` }{ Alg: &amp;quot;HS256&amp;quot;, Typ: &amp;quot;JWT&amp;quot;, } data, _ := json.</description>
+ JSON Web 令牌（JWT）是一种紧凑的、URL 安全的方式，用来表示要在双方之间传递的“声明”。JWT 中的声明被编码为 JSON 对象，用作 JSON Web 签名（JWS）结构的有效内容或 JSON Web 加密（JWE）结构的明文，使得声明能够被：数字签名、或利用消息认证码（MAC）保护完整性、加密。
+ 这个规范允许我们使用 JWT 在用户和服务器之间传递安全可靠的信息。
+JWT 的构成 JWT 由三部分构成：
+ Header ：头部，即 JOSE Header Claims ：声明，即 JWT Payload Signature ：签名，即 JWT Signature  JWT 由这三部分组成，每一部分都是使用 base64url 编码的，并使用句点（.）连接起来
+ 这里使用base64url编码而不是普通的 base64，是因为 base64 编码会产生+和/，这两个字符在 URL 中是有特殊意义的，会导致 JWT 不是 URL 安全的。
+ 头部(JOSE Header) JSOE 是 JSON Object Signing and Encryption，即JSON对象签名与加密的缩写。</description>
     </item>
     
     <item>
@@ -261,16 +290,13 @@ package main import &amp;quot;bytes&amp;quot; import ( &amp;quot;encoding/json&a
       <pubDate>Wed, 13 Dec 2017 15:29:40 +0800</pubDate>
       
       <guid>https://hasaki.xyz/blog/2017-12-13-react-native-art/</guid>
-      <description>React Native ART 由来 React-Art  是 Reactjs 团队基于 Art（一个兼容各个浏览器SVG绘制的API封装）开发的模块，让 React 开发者能使用 jsx 语法绘制 svg。
-React Native 团队分别在0.10.0和0.18.0也添加了iOS和Android平台对 react-art 的支持，官网文档至今对其只字未提。本文旨在介绍安静躺在 react-native/Libraries/ 里的ART，并展示一些实践结果。
-在React Native中ART是个非常重要的库，它让非常酷炫的绘图及动画变成了可能。但是可能是知道的人真的不多导致文档及少中文更少。很多都是把英文的参数列表翻译过来，也没有案例。
+      <description>React Native ART 由来 React-Art  是 Reactjs 团队基于 Art（一个兼容各个浏览器 SVG 绘制的 API 封装）开发的模块，让 React 开发者能使用 jsx 语法绘制 svg。
+React Native 团队分别在 0.10.0 和 0.18.0 也添加了 iOS 和 Android 平台对 react-art 的支持，官网文档至今对其只字未提。本文旨在介绍安静躺在 react-native/Libraries/ 里的ART，并展示一些实践结果。
+在 React Native 中 ART 是个非常重要的库，它让非常酷炫的绘图及动画变成了可能。但是可能是知道的人真的不多导致文档及少中文更少。很多都是把英文的参数列表翻译过来，也没有案例。
 为什么用 ART React Native 本身自带的 &amp;lt;Image&amp;gt; 有很多缺陷：
-首先是不支持 SVG 格式的资源，目前的解决方案有通过 ReactNative-SVG 进行实现，但是这个库需要更改客户端bundle文件，带来一定的风险。
-其次是 Image decoding can take more than a frame-worth of time，图片的解码由于不在主线程中进行，所以不能确保所有图片和内容在同一帧内出现，使用 &amp;lt;Image&amp;gt;标签的制作的组件里的图（比如icon）可能是三三两两“闪现”出来的，让人怀疑是个webview，体验远不如原生，尤其是在开发环境下最为明显。
-其次就是不能支持矢量图形，必须放置 @2x 或者 @3x 对应的图片。
-ART能干什么 俗话说，库如其名，背负着如此具有“艺术感”名字的ART生来就是为了绘制矢量图的，或者说是 画UI的，ART可以解决上诉的所有缺陷。
-在我看来，或者说我目前业务需求用到的功能：
- ART 可以解决上诉 &amp;lt;Image&amp;gt; 的缺陷：解码和矢量图形 ART 可以实现 UI 上的一些渐变，比如渐变按钮，渐变背景或者底色。以及一些交互性较强的动画——画UI ART 另外一个场景就是简单数据可视化。  使用 ART  本文使用的 RN版本为0.</description>
+首先是不支持 SVG 格式的资源，目前的解决方案有通过 ReactNative-SVG 进行实现，但是这个库需要更改客户端 bundle 文件，带来一定的风险。
+其次是 Image decoding can take more than a frame-worth of time，图片的解码由于不在主线程中进行，所以不能确保所有图片和内容在同一帧内出现，使用 &amp;lt;Image&amp;gt;标签的制作的组件里的图（比如 icon）可能是三三两两“闪现”出来的，让人怀疑是个webview，体验远不如原生，尤其是在开发环境下最为明显。
+其次就是不能支持矢量图形，必须放置 @2x 或者 @3x 对应的图片。</description>
     </item>
     
     <item>
@@ -299,8 +325,8 @@ ART能干什么 俗话说，库如其名，背负着如此具有“艺术感”�
 收集错误异常  错误异常分为 web 错误异常和React-native 错误异常
  web 错误异常 总体来说：平时收集日志的手段，可以归类为两个方面，一个是逻辑中的错误判断，为主动判断，如try...catch；一个是利用语言给我们提供的捷径，暴力式获取错误信息，如 window.onerror；当然也存在另外一种错误，那就是Promise unhandlerejection
 try…catch 判断一个代码段中可能存在的错误：
-try { doSomeThing(); // code... } catch (e) { // send format error Reporter.send(format(e)); }  window.onerror 这个用来捕获全局错误：
-window.onerror = function() { // send format error var errInfo = format(arguments); Reporter.send(errInfo); return true; };  在上面的函数中返回 return true，错误便不会暴露到控制台中。下面是它的参数信息：
+try { doSomeThing() // code... } catch (e) { // send format error Reporter.send(format(e)) }  window.onerror 这个用来捕获全局错误：
+window.onerror = function() { // send format error var errInfo = format(arguments) Reporter.send(errInfo) return true }  在上面的函数中返回 return true，错误便不会暴露到控制台中。下面是它的参数信息：
 /** * @param {String} errorMessage 错误信息 * @param {String} scriptURI 出错的文件 * @param {Long} lineNumber 出错代码的行号 * @param {Long} columnNumber 出错代码的列号 * @param {Object} errorObj 错误的详细信息，Anything */ window.</description>
     </item>
     
@@ -324,29 +350,21 @@ var foo = { a: 1 }; var baz = foo.a = 2; foo.a === 1; baz.a === 2;   And transfo
       <pubDate>Tue, 04 Jul 2017 15:29:40 +0800</pubDate>
       
       <guid>https://hasaki.xyz/blog/2017-07-04-mavic-pro-%E8%AF%84%E6%B5%8B/</guid>
-      <description>  早在今年2、3月份的时候，我就已经知道御姐Mavic Pro的存在了，当然是通过（万恶）的微信朋友圈，被安利、洗脑了一波，当时就很感兴趣，想买一个自己玩玩:haha:。
+      <description>早在今年 2、3 月份的时候，我就已经知道御姐 Mavic Pro 的存在了，当然是通过（万恶）的微信朋友圈，被安利、洗脑了一波，当时就很感兴趣，想买一个自己玩玩:haha:。
  下定决心要买 为什么会买呢，我也不知道，感觉是脑子一热吧
 最近刚换了一份新的工作，压力有点大，中午的时候无聊看了一下官网，晚上就直接叫着女朋友去了新天地的专卖店看了下，然后就直接剁手了。。。
 感觉最近不单单要吃土，还要吃灰了。。
 初见 刚拿回来的时候好大的一个箱子，现在就只剩下一点东西（东西太多，放不下就直接把无用的盒子扔掉了），还好我提前拍了一张整体开箱图：
 另附一张机箱开箱图：
-机身和Mac大小对比图：
+机身和 Mac 大小对比图：
 Mavic pro 装上防撞翼：
-为什么选择Mavic  无人机目前主要市面上的分为多旋翼、固定翼、直升机，Mavic Pro就属于四轴的固定翼
- 就拿大疆目前的产品线来说，几款主流品类为精灵3、精灵4、悟1、御，价格从2k+到2W+不等，最早入手的基友们应该买的是精灵3或者4。
-精灵3有几种款型，Standard相对来说比较初级因为图传距离理论可以1km实际也就六七百米，很容易失去图传对于新手而言看不见图像就会非常的慌乱，所以我自己不太推荐精灵3S及之前的款型作为入门机型。
-大家购买的时候可以从Phantom 3 Adavanced及之后开始考虑，图传距离可以达到5km且比较稳定，上升高度也可以达到500m。
+为什么选择 Mavic  无人机目前主要市面上的分为多旋翼、固定翼、直升机，Mavic Pro 就属于四轴的固定翼
+ 就拿大疆目前的产品线来说，几款主流品类为精灵 3、精灵 4、悟 1、御，价格从 2k+到 2W+不等，最早入手的基友们应该买的是精灵 3 或者 4。
+精灵 3 有几种款型，Standard 相对来说比较初级因为图传距离理论可以 1km 实际也就六七百米，很容易失去图传对于新手而言看不见图像就会非常的慌乱，所以我自己不太推荐精灵 3S 及之前的款型作为入门机型。
+大家购买的时候可以从Phantom 3 Adavanced及之后开始考虑，图传距离可以达到 5km 且比较稳定，上升高度也可以达到 500m。
 然而如果你看过价格和开箱对比图的话，最好的还是御姐，适合经常需要轻装旅行的朋友，因为足够小巧加上高性能的传感器、相机，非常便于携带（把妹神器。
 按照官方的性能数据：
- 重量：743克 飞行速度：最大18m/s（65km/h 飞行时间：27分钟（实际有折扣 图传距离：国内4km国外7km（详见FCC与CE与SRRC 高度：500m 相机：4k@30fps/1080p@96fps 云台角度：78°  这已经很强了好不好！4k，27分钟，4km图传，500m高度（可以自己改装飞到1.5km
-装备清单 默认是自带一节电池、遥控器和2套机翼，我买了全能套装加上dji care，整体下来：
- 电池：3块 遥控器：1部 机身：1部 机翼：8套 随身包，电池管家（管家的意义在于可以同时把四块电池放入其中，但是每次都是单独给一块电池进行充电，这样可以保持充电电压稳定），充电宝转换器   切记，一定要买dji care（都是泪
- 后来在群里人的安利下，又买了一个DJI 飞行眼镜，双1920×1080高分辨率显示屏。这玩意在飞行的时候确实很爽，一个人操控，一个人可以以上帝视角看风景，当然云台角度是可以根据体感控制的。
- 感觉有点鸡肋，1080p只有30fps，720p才有60fps，但是这种体感眼睛120fps才完全没有晕的感觉，不过为了情怀，还是剁了，闲来没事接上HDMI来看冰与火。
- 最后的话 想有情怀，当然要 give me money，总体算了一下：
- 7999+2999=10998  不说了，我去吃土了
-参考：
- Mavic Pro 从入门到精通  </description>
+ 重量：743 克 飞行速度：最大 18m/s（65km/h 飞行时间：27 分钟（实际有折扣 图传距离：国内 4km 国外 7km（详见FCC 与 CE 与 SRRC 高度：500m 相机：4k@30fps/1080p@96fps 云台角度：78°  这已经很强了好不好！4k，27 分钟，4km 图传，500m 高度（可以自己改装飞到 1.</description>
     </item>
     
     <item>
@@ -357,22 +375,17 @@ Mavic pro 装上防撞翼：
       <guid>https://hasaki.xyz/blog/2017-03-24-%E5%89%8D%E7%AB%AF%E7%9A%8410000%E4%B8%AA%E5%B0%8F%E6%97%B6/</guid>
       <description>我又开始扯淡了
  本篇文章出自原文，深有感触，有删改。
- 10000小时定律 著名的10000小时定律，我想大家都不陌生，『要成为某个领域的专家，需要10000小时』，这个定律来源于《异类》的作者，格拉德威尔。
-作为一个程序员，每天工作10小时，每周工作五天，大约4年就能达到10000小时，那是不是每个程序员认真工作，勤勤恳恳的过完4年他就能成为专家呢？答案是显而易见的。
-首先10000小时只是必要条件，并非充分条件，也就是说，即使你花了这10000小时，可能也没什么用，再次简单的工作重复10000小时并不能给你带来什么提高，自然也就成不了专家
+ 10000 小时定律 著名的 10000 小时定律，我想大家都不陌生，『要成为某个领域的专家，需要 10000 小时』，这个定律来源于《异类》的作者，格拉德威尔。
+作为一个程序员，每天工作 10 小时，每周工作五天，大约 4 年就能达到 10000 小时，那是不是每个程序员认真工作，勤勤恳恳的过完 4 年他就能成为专家呢？答案是显而易见的。
+首先 10000 小时只是必要条件，并非充分条件，也就是说，即使你花了这 10000 小时，可能也没什么用，再次简单的工作重复 10000 小时并不能给你带来什么提高，自然也就成不了专家
  一万小时定律 并非适合所有领域，即使有很强意志力，也很难在某些领域成为世界顶级，这里只是强调在某些领域去努力、去花费很大的精力。我觉得，这需要 实力与运气共同作用的结果
- 简单的工作重复10000小时 吴军老师在《智能时代》一书中提过一个这样的观点：
- 在未来的智能时代，真正受益于技术进步的个人可能不超过人口的2%。
+ 简单的工作重复 10000 小时 吴军老师在《智能时代》一书中提过一个这样的观点：
+ 在未来的智能时代，真正受益于技术进步的个人可能不超过人口的 2%。
  之后他又补充了一句：
- 坦率的讲，仅仅会写几行 JavaScript 的人不属于我说的2%的行列，这些人恰恰在未来是要被计算机淘汰的。
+ 坦率的讲，仅仅会写几行 JavaScript 的人不属于我说的 2%的行列，这些人恰恰在未来是要被计算机淘汰的。
  当时看到这里，我其实十分不解，吴军老师是不是太久没撸码了，现在 JavaScript 这么火，Node 那么牛掰，什么 React Native，Grunt，Gulp，Webpack，Vue，Weex，微信小程序等等，这些都是风生水起啊，怎么 JavaScript 就跪了呢？还有，我们高大上的前端工作怎么就挤不进这 2% 呢？
-后来仔细想想，这里定义的是『仅仅会写几行 JavaScript 』，事实上，如果10000小时都花在改界面，修改 DOM，改个色值，切个图，替换下图标这种简单重复的工作里面，当然挤不进这 2% 。事实上，要学的东西远远不够，前端要有危机意识。
-再来看，前端工作怎么就挤不进 2% 的人呢？ 2% 看起来还挺多，可是想想，每种职业都有其 2% ， 搬砖的有搬砖的 2%，写程序的有些程序的 2%，总不可能写程序的去抢搬砖的活儿吧。能不能挤进这 2% 要看是否善于使用智能工具，很不幸，我发现一些热门的技术的发起都和前端没啥关系，什么数字化，VR/AR，基因测序，大数据，机器学习，人工智能……
-说到这里，智能手机的飞速发展带起了移动互联网，但是这波红利被终端开发给占了一大半，直到近两年，手机性能提升才让前端开始发力。为什么 PhoneGap （现已改名 Cordova）搞了那么久没什么人用，React Native 才出了没多久就已经炙手可热。除了 React Native 师出名门，还因为它的出现是为了解决终端开发效率低以及更新审核慢的问题。
-好吧，前端不那么容易称为 2%，那我们还是继续付出10000小时，争取做个专家吧。
-那么简单的重复不足以称为专家，那对于前端来说应该要怎么做呢？我的想法是『跨界』，不满足于做前端，而是去更多的学习终端，学习后端的知识，带来思维的转变和编程能力的提高。
- 当然也可以去阅读那些框架的源码，比如React,Koa等等，去思考和借鉴一下它们的架构和内部实现，去看看算法方面的内容来提高自己的逻辑思维能力
- 跨界 看看现在非常热门的 JavaScript 编译器 Babel，其作者 Sebastian McKenzie 写出这样一个编译器，必须具有很强的编程能力和熟悉编译原理、AST。这样一个人虽然写的是 JavaScript，但是已经不是一个前端了，而是大神。</description>
+后来仔细想想，这里定义的是『仅仅会写几行 JavaScript 』，事实上，如果 10000 小时都花在改界面，修改 DOM，改个色值，切个图，替换下图标这种简单重复的工作里面，当然挤不进这 2% 。事实上，要学的东西远远不够，前端要有危机意识。
+再来看，前端工作怎么就挤不进 2% 的人呢？ 2% 看起来还挺多，可是想想，每种职业都有其 2% ， 搬砖的有搬砖的 2%，写程序的有些程序的 2%，总不可能写程序的去抢搬砖的活儿吧。能不能挤进这 2% 要看是否善于使用智能工具，很不幸，我发现一些热门的技术的发起都和前端没啥关系，什么数字化，VR/AR，基因测序，大数据，机器学习，人工智能……</description>
     </item>
     
     <item>
@@ -382,10 +395,10 @@ Mavic pro 装上防撞翼：
       
       <guid>https://hasaki.xyz/blog/2016-09-03-koa%E6%BA%90%E7%A0%81%E7%AE%80%E5%8D%95%E8%A7%A3%E8%AF%BB/</guid>
       <description>Koa 是一个类似于 Express 的 Web开发框架，创始人也都是 TJ
-Koa 的主要特点是，使用了ES6 的 Generator 函数，进行了架构的重新设计。Koa 的原理和内部结构很像Express，但是语法和内部结构进行了升级，最近已经发布了2.x版本，我们来直接看一下2.x版本的koa
+Koa 的主要特点是，使用了ES6 的 Generator 函数，进行了架构的重新设计。Koa 的原理和内部结构很像 Express，但是语法和内部结构进行了升级，最近已经发布了2.x版本，我们来直接看一下2.x版本的koa
 创建 Koa 应用 我们可以按照官方的说明很简单的创建一个koa应用
 const koa = require(&#39;koa&#39;) const app = new koa() app.listen(3000)  或者可以这样：
-var koa = require(&#39;koa&#39;); var http = require(&#39;http&#39;); var app = new koa(); http.createServer(app.callback()).listen(4000);  这两种方式是等价的：
+var koa = require(&#39;koa&#39;) var http = require(&#39;http&#39;) var app = new koa() http.createServer(app.callback()).listen(4000)  这两种方式是等价的：
 第一种方式:listen在内部主动创建一个一个http server并调用实例内部的 callback方法，把返回的handleRequest函数作为创建http server服务的回调函数，然后内部主动去listen。
 参考源码 listen方法：
 listen() { debug(&#39;listen&#39;); const server = http.createServer(this.callback()); return server.listen.apply(server, arguments); }  第二种方式:主动创建一个http server并主动调用实例的callback方法来生成一个handleRequest函数，最后listen端口号。
@@ -400,16 +413,14 @@ listen() { debug(&#39;listen&#39;); const server = http.createServer(this.callba
       <pubDate>Wed, 22 Jun 2016 15:29:40 +0800</pubDate>
       
       <guid>https://hasaki.xyz/blog/2016-06-22-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AAnode.js-%E7%9A%84-docker-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</guid>
-      <description>本文以构建一个 Node.js Docker应用 为目标写的一个教程。当前操作系统环境 Mac OSX Sierra 10.12.4
- Docker介绍  Docker 是个划时代的开源项目，它彻底释放了计算虚拟化的威力，极大提高了应用的运行效率，降低了云计算资源供应的成本！ 使用 Docker，可以让应用的部署、测试和分发都变得前所未有的高效和轻松！
- Docker引擎的基础是Linuxring器(Linux Containers，LXC)技术。这个并不是一个新生的概念，很早前已经出现，比如操作系统上的chroot工具、以及Solaris Containers和FreeBSD jail等等，虽然这个技术非常成熟，然而这些工具使用起来非常不方便。Docker的出现解决了这些问题。
-Docker容器虚拟化有很多好处：
- 更高效的利用系统资源：由于容器不需要进行硬件虚拟以及运行完整操作系统等额外开销，Docker 对系统资源的利用率更高。 更快速的启动时间，Docker容器应用启动时间很快 一致的运行环境和环境隔离 持续交付和部署 更轻松的迁移服务  既然Docker这么好，我们来试试如何跑一个Node.js Docker应用。
-安装Docker 使用Docker之前，我们需要安装。Docker支持在主流操作平台上使用：包括Ubuntu、CenterOS、Windows已经MacOS系统。
-Ubuntu 在Ubuntu上安装Docker可以直接使用以下shell script
-// 最新的Docker安装需要先移除老的Docker sudo apt-get remove docker docker-engine sudo apt-get update sudo curl -sSL https://get.docker.com/ | sh  Windows Windows 上我们可以直接下载 Docker GUI
-Mac OSX Mac OSX 上我们也可以直接下载 Docker GUI。
-Docker的主要目标是Build ship and run any app,any where.</description>
+      <description>本文以构建一个 Node.js Docker 应用 为目标写的一个教程。当前操作系统环境 Mac OSX Sierra 10.12.4
+ Docker 介绍  Docker 是个划时代的开源项目，它彻底释放了计算虚拟化的威力，极大提高了应用的运行效率，降低了云计算资源供应的成本！ 使用 Docker，可以让应用的部署、测试和分发都变得前所未有的高效和轻松！
+ Docker 引擎的基础是 Linuxring 器(Linux Containers，LXC)技术。这个并不是一个新生的概念，很早前已经出现，比如操作系统上的chroot工具、以及Solaris Containers和FreeBSD jail等等，虽然这个技术非常成熟，然而这些工具使用起来非常不方便。Docker 的出现解决了这些问题。
+Docker 容器虚拟化有很多好处：
+ 更高效的利用系统资源：由于容器不需要进行硬件虚拟以及运行完整操作系统等额外开销，Docker 对系统资源的利用率更高。 更快速的启动时间，Docker 容器应用启动时间很快 一致的运行环境和环境隔离 持续交付和部署 更轻松的迁移服务  既然 Docker 这么好，我们来试试如何跑一个 Node.js Docker 应用。
+安装 Docker 使用 Docker 之前，我们需要安装。Docker 支持在主流操作平台上使用：包括 Ubuntu、CenterOS、Windows 已经 MacOS 系统。
+Ubuntu 在 Ubuntu 上安装 Docker 可以直接使用以下 shell script
+// 最新的Docker安装需要先移除老的Docker sudo apt-get remove docker docker-engine sudo apt-get update sudo curl -sSL https://get.</description>
     </item>
     
     <item>
@@ -418,18 +429,16 @@ Docker的主要目标是Build ship and run any app,any where.</description>
       <pubDate>Sun, 03 Apr 2016 15:29:40 +0800</pubDate>
       
       <guid>https://hasaki.xyz/blog/2016-04-03-%E5%88%A9%E7%94%A8-shadowsocksr-%E5%92%8C%E4%BA%91%E4%B8%BB%E6%9C%BA%E7%BF%BB%E5%A2%99/</guid>
-      <description>世界那么大，我想去看看，但是被墙了… 以前用的VPN，叫做什么green vpn，总体来说，还不错，但是最近老断，于是就搞了个新的法子。申请一台云主机，在上面搭一个Shadowsocks，然后就可以在所有客户端看 YouTube 了，当然，这所有的一切都是免费的。
- Shadowsocks已经河蟹，这里不再说ss，只说ssr：一个基于ss的新分支
- 搭建Shadowsocksr服务器 首先需要搭建一台云主机，首先阿里云或者青云都是挺好的，但是都需要国外的主机，要不然怎么去翻墙，你也可以选择linecode、vultr、aws、azure、GCE（google）。这些大部分都有一年的免费期限，也会有免费赠送不定的体验金的福利。中间会要求绑定信用卡。
-主机建议选择Ubuntu或者debian，申请下来了后就可以安装ssr了。
-可以从这个地址上找到ssr，然后可以参照这个wiki来进行配置安装，在这里记录一下步骤吧：
- 如果你的服务端python版本在2.6以下，那么必须更新python到2.6.x或2.7.x版本。
- 首先需要有git：
+      <description>世界那么大，我想去看看，但是被墙了… 以前用的 VPN，叫做什么green vpn，总体来说，还不错，但是最近老断，于是就搞了个新的法子。申请一台云主机，在上面搭一个 Shadowsocks，然后就可以在所有客户端看 YouTube 了，当然，这所有的一切都是免费的。
+ Shadowsocks 已经河蟹，这里不再说 ss，只说 ssr：一个基于 ss 的新分支
+ 搭建 Shadowsocksr 服务器 首先需要搭建一台云主机，首先阿里云或者青云都是挺好的，但是都需要国外的主机，要不然怎么去翻墙，你也可以选择 linecode、vultr、aws、azure、GCE（google）。这些大部分都有一年的免费期限，也会有免费赠送不定的体验金的福利。中间会要求绑定信用卡。
+主机建议选择 Ubuntu 或者 debian，申请下来了后就可以安装 ssr 了。
+可以从这个地址上找到 ssr，然后可以参照这个wiki来进行配置安装，在这里记录一下步骤吧：
+ 如果你的服务端 python 版本在 2.6 以下，那么必须更新 python 到 2.6.x 或 2.7.x 版本。
+ 首先需要有 git：
 apt-get update &amp;amp;&amp;amp; apt-get install -y git  获取源代码：
 git clone -b manyuser https://github.com/shadowsocksr/shadowsocksr.git  进入子目录：
-cd ~/shadowsocksr &amp;amp;&amp;amp; bash initcfg.sh &amp;amp;&amp;amp; cd ~/shadowsocksr/shadowsocks  快速运行，当然也可以通过配置文件运行，具体请看wiki：
-python server.py -p 443 -k password -m aes-256-cfb -O auth_sha1_v4 -o http 说明：-p 端口 -k 密码 -m 加密方式 -O 协议插件 -o 混淆插件  配置文件参考：
-{ &amp;quot;server&amp;quot;: &amp;quot;0.0.0.0&amp;quot;, &amp;quot;server_ipv6&amp;quot;: &amp;quot;::&amp;quot;, &amp;quot;server_port&amp;quot;: 8388, &amp;quot;local_address&amp;quot;: &amp;quot;127.</description>
+cd ~/shadowsocksr &amp;amp;&amp;amp; bash initcfg.sh &amp;amp;&amp;amp; cd ~/shadowsocksr/shadowsocks  快速运行，当然也可以通过配置文件运行，具体请看wiki：</description>
     </item>
     
   </channel>

@@ -23,8 +23,8 @@
 收集错误异常  错误异常分为 web 错误异常和React-native 错误异常
  web 错误异常 总体来说：平时收集日志的手段，可以归类为两个方面，一个是逻辑中的错误判断，为主动判断，如try...catch；一个是利用语言给我们提供的捷径，暴力式获取错误信息，如 window.onerror；当然也存在另外一种错误，那就是Promise unhandlerejection
 try…catch 判断一个代码段中可能存在的错误：
-try { doSomeThing(); // code... } catch (e) { // send format error Reporter.send(format(e)); }  window.onerror 这个用来捕获全局错误：
-window.onerror = function() { // send format error var errInfo = format(arguments); Reporter.send(errInfo); return true; };  在上面的函数中返回 return true，错误便不会暴露到控制台中。下面是它的参数信息：
+try { doSomeThing() // code... } catch (e) { // send format error Reporter.send(format(e)) }  window.onerror 这个用来捕获全局错误：
+window.onerror = function() { // send format error var errInfo = format(arguments) Reporter.send(errInfo) return true }  在上面的函数中返回 return true，错误便不会暴露到控制台中。下面是它的参数信息：
 /** * @param {String} errorMessage 错误信息 * @param {String} scriptURI 出错的文件 * @param {Long} lineNumber 出错代码的行号 * @param {Long} columnNumber 出错代码的列号 * @param {Object} errorObj 错误的详细信息，Anything */ window.</description>
     </item>
     

@@ -7,10 +7,30 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ZH-CN</language>
     <copyright>Early 2016 ~ 2020 &amp;copy; TOM&#39;s Zone</copyright>
-    <lastBuildDate>Fri, 09 Aug 2019 13:22:30 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 09 Jan 2020 11:13:40 +0800</lastBuildDate>
     
 	<atom:link href="https://hasaki.xyz/tags/machinelearn/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>浅读《机器学习实战》</title>
+      <link>https://hasaki.xyz/blog/2020-01-09-%E6%B5%85%E8%AF%BB%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98/</link>
+      <pubDate>Thu, 09 Jan 2020 11:13:40 +0800</pubDate>
+      
+      <guid>https://hasaki.xyz/blog/2020-01-09-%E6%B5%85%E8%AF%BB%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98/</guid>
+      <description>机器按照是否 分类 和 回归 可以分为两种：
+ 监督学习  监督学习需要分类和回归，这类算法必须知道预测什么，即目标变量的分类信息。
+监督学习的用途有：
+ k-近邻算法（KNN） 朴素贝叶斯算法 支持向量机 决策树 线性回归 局部加权线性回归 Ridge 回归 Lasso 最小回归系数估计  我们在本文当中会逐个说到上诉用途
+ 非监督学习  与监督学习相对应的是无监督学习，此时数据没有类别信息，也不会给定目标值。在无监督 学习中，将数据集合分成由类似的对象组成的多个类的过程被称为聚类；将寻找描述数据统计值 的过程称之为密度估计。
+此外，无监督学习还可以减少数据特征的维度，以便我们可以使用二维或三维图形更加直观地展示数据信息。
+无监督学习的用途有：
+ K-均值 DBSCAN 最大期望算法 Parzen 窗设计  KNN  kNN（k-Nearest Neighbor）算法的核心思想是如果一个样本在特征空间中的 k 个最相邻的样本中的大多数属于某一个类别，则该样本也属于这个类别
+ KNN 是机器学习中最简单易懂的算法，它的适用面很广，并且在样本量足够大的情况下准确度很高，多年来得到了很多的关注和研究，K-近邻算法采用测量不同特征值之间的距离方法进行分类。适用数据范围：数值型和标称型
+kNN 当中的 k 取不同值时，分类结果可能会有显著不同。
+ 优点：简单，易于理解，易于实现，精度高、对异常值不敏感、无数据输入假定。 缺点：计算复杂度高、空间复杂度高。  下面是 k-近邻算法当中带有 4 个数据点的简单例子，例子当中对 4 个数据点进行了简单分类为 A 和 B：
+import numpy as np import matplotlib.</description>
+    </item>
     
     <item>
       <title>Tensor &amp;&amp; flow</title>

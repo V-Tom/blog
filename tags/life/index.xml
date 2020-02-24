@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ZH-CN</language>
     <copyright>Early 2016 ~ 2020 &amp;copy; TOM&#39;s Zone</copyright>
-    <lastBuildDate>Wed, 06 Nov 2019 15:39:30 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 15 Jan 2020 14:50:30 +0800</lastBuildDate>
     
 	<atom:link href="https://hasaki.xyz/tags/life/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>2020年1月杂记</title>
+      <link>https://hasaki.xyz/gallery/2020-01-15-2020%E5%B9%B4%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%9C%88%E4%BB%BD%E6%9D%82%E8%AE%B0/</link>
+      <pubDate>Wed, 15 Jan 2020 14:50:30 +0800</pubDate>
+      
+      <guid>https://hasaki.xyz/gallery/2020-01-15-2020%E5%B9%B4%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%9C%88%E4%BB%BD%E6%9D%82%E8%AE%B0/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>随便放点什么照片</title>
@@ -29,8 +38,7 @@
       <guid>https://hasaki.xyz/life/my-recent-notes-mostly-entertainment/</guid>
       <description>此文稿列出了我最近的一些安排，主要是娱乐安排，比如电影、电视剧、游戏、旅游之类的，每个种类已经手动按照时间进行排序 其中 ✅ 代表当前电视剧已经完结、游戏已经通关等等
  Books  《机器学习实战》 《苍穹浩瀚》  Code Github Projects
-Movies  ✅ 硅谷 第六季 Silicon Valley Season 6 (2019) 首播: 2019-10(美国) ✅ 苍穹浩瀚 第四季 The Expanse Season 4 (2019) 首播: 2019-12-13(美国) ✅ 星际迷航：发现号 第三季 Star Trek: Discovery Season 3 (2020) 首播: 2020-01(美国) 新世纪福音战士新剧场版：终 首播: 2020 曼达洛人 第一季 首播：Nov. 12, 2019  已经开播，4K，1080P 下载地址
-Games  ✅ 瘟疫傳說：無罪 ✅ 巫师 3：狂猎 Cyberpunk 2077 Initial release date: April 16, 2020  组建 NAS 自建 NAS 的所需硬件以及需要满足条件简单如下表：</description>
+Movies  ✅ 硅谷 第六季 Silicon Valley Season 6 (2019) 首播: 2019-10(美国) ✅ 苍穹浩瀚 第四季 The Expanse Season 4 (2019) 首播: 2019-12-13(美国) ✅ 星际迷航：发现号 第三季 Star Trek: Discovery Season 3 (2020) 首播: 2020-01(美国) 苍穹浩瀚 第五季 The Expanse Season 5 (2020) 首播: 2020-12(美国) 星际迷航：皮卡德 第一季 Star Trek: Picard Season 1 (2020) 首播: 2020-01-23(美国) 新世纪福音战士新剧场版：终 首播: 2020 人体奥秘 Inside the Human Body  爱，死亡和机器人 第二季 Love, Death &amp;amp; Robots Season 2  曼达洛人 第一季 首播：Nov.</description>
     </item>
     
   </channel>

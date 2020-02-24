@@ -94,6 +94,15 @@
     </item>
     
     <item>
+      <title>Fe</title>
+      <link>https://hasaki.xyz/tags/fe/</link>
+      <pubDate>Mon, 20 Jan 2020 13:21:35 +0800</pubDate>
+      
+      <guid>https://hasaki.xyz/tags/fe/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Frontend</title>
       <link>https://hasaki.xyz/tags/frontend/</link>
       <pubDate>Wed, 23 Oct 2019 14:01:30 +0800</pubDate>
@@ -105,7 +114,7 @@
     <item>
       <title>Gallery</title>
       <link>https://hasaki.xyz/tags/gallery/</link>
-      <pubDate>Wed, 06 Nov 2019 15:39:30 +0800</pubDate>
+      <pubDate>Wed, 15 Jan 2020 14:50:30 +0800</pubDate>
       
       <guid>https://hasaki.xyz/tags/gallery/</guid>
       <description></description>
@@ -130,18 +139,9 @@
     </item>
     
     <item>
-      <title>Javascript</title>
-      <link>https://hasaki.xyz/tags/javascript/</link>
-      <pubDate>Sat, 21 Apr 2018 17:43:01 +0800</pubDate>
-      
-      <guid>https://hasaki.xyz/tags/javascript/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Life</title>
       <link>https://hasaki.xyz/tags/life/</link>
-      <pubDate>Wed, 06 Nov 2019 15:39:30 +0800</pubDate>
+      <pubDate>Wed, 15 Jan 2020 14:50:30 +0800</pubDate>
       
       <guid>https://hasaki.xyz/tags/life/</guid>
       <description></description>
@@ -150,7 +150,7 @@
     <item>
       <title>Machinelearn</title>
       <link>https://hasaki.xyz/tags/machinelearn/</link>
-      <pubDate>Fri, 09 Aug 2019 13:22:30 +0800</pubDate>
+      <pubDate>Thu, 09 Jan 2020 11:13:40 +0800</pubDate>
       
       <guid>https://hasaki.xyz/tags/machinelearn/</guid>
       <description></description>
@@ -261,15 +261,6 @@
       <pubDate>Sun, 03 Apr 2016 15:29:40 +0800</pubDate>
       
       <guid>https://hasaki.xyz/tags/vps/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Web</title>
-      <link>https://hasaki.xyz/tags/web/</link>
-      <pubDate>Sat, 21 Apr 2018 17:43:01 +0800</pubDate>
-      
-      <guid>https://hasaki.xyz/tags/web/</guid>
       <description></description>
     </item>
     
