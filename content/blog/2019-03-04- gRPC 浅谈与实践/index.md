@@ -256,15 +256,15 @@ message HelloReply {
 以及 `webpack.confg.js` 文件：
 
 ```js
-const path = require('path');
+const path = require('path')
 
 module.exports = {
   entry: path.join(__dirname, './index.js'),
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname)
-  }
-};
+    path: path.resolve(__dirname),
+  },
+}
 ```
 
 以及最后一个空白的 `index.js` 来作为代码入口和 webpack 打包入口，最后我们安装 web 依赖：`npm i -d` 或者 `npm i -d --registry=https://registry.npm.taobao.org`
@@ -304,18 +304,18 @@ echo "generate client success in directory : $OUT_DIR"
 接下来来完善我们的 `index.js`：
 
 ```js
-const { HelloRequest } = require('./protobuf/helloworld_pb');
-const { GreeterClient } = require('./protobuf/helloworld_grpc_web_pb');
+const { HelloRequest } = require('./protobuf/helloworld_pb')
+const { GreeterClient } = require('./protobuf/helloworld_grpc_web_pb')
 
-const client = new GreeterClient('http://localhost:9090');
+const client = new GreeterClient('http://localhost:9090')
 
-const request = new HelloRequest();
-request.setName('gRPC World');
+const request = new HelloRequest()
+request.setName('gRPC World')
 
 client.sayHello(request, {}, (err, response) => {
-  if (err) throw err;
-  console.log(response.getMessage());
-});
+  if (err) throw err
+  console.log(response.getMessage())
+})
 ```
 
 #### golang code

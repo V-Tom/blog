@@ -3,7 +3,6 @@ title: '浅读《机器学习实战》'
 subTitle: '浅读《机器学习实战》'
 tags: ['MachineLearn']
 date: 2020-01-09T11:13:40+08:00
-draft: true
 ---
 
 机器按照是否 **分类** 和 **回归** 可以分为两种：
@@ -82,6 +81,8 @@ if __name__ == '__main__':
 
 ![knn-sample.png](./knn-sample.png)
 
+### 欧氏距离公式
+
 `KNN` 需要计算样本之间的距离，需要用到[欧氏距离公式](https://zh.wikipedia.org/wiki/%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E8%B7%9D%E7%A6%BB)
 
 ![Euclidean distance.png](./Euclidean distance.png)
@@ -123,11 +124,15 @@ def classify(input, dataSet, labels, k):
 classify([0,0], group, labels, 3)
 ```
 
-得到输出结果为 `A` ，你可以在这里[下载上诉代码](./knn1.py)
+得到输出结果为 `A` ，你可以在这里[下载上述代码](./knn1.py)
+
+### 归一化
 
 我们再次回顾上面的[欧氏距离公式](https://zh.wikipedia.org/wiki/%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E8%B7%9D%E7%A6%BB)，我们发现方程中数字差值最大的属性对计算结果的影响最大，在处理这种不同取值范围的特征值时，我们通常采用的方法是将数值**归一化**，如将取值范围 处理为 0 到 1 或者 -1 到 1 之间。
 
-## Reference
+TBD
+
+### Reference
 
 - [机器学习（一）——K-近邻（KNN）算法](https://www.cnblogs.com/ybjourney/p/4702562.html)
 - [CNN(卷积神经网络)、RNN(循环神经网络)、DNN(深度神经网络)的内部网络结构有什么区别？](https://www.zhihu.com/question/34681168/answer/84061846)

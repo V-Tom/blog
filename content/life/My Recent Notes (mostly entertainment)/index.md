@@ -22,10 +22,12 @@ date: 2019-07-27T13:12:30+08:00
 - ✅ [硅谷 第六季 Silicon Valley Season 6 (2019) 首播: 2019-10(美国)](https://movie.douban.com/subject/30194648/)
 - ✅ [苍穹浩瀚 第四季 The Expanse Season 4 (2019) 首播: 2019-12-13(美国)](https://movie.douban.com/subject/30234319/)
 - ✅ [星际迷航：发现号 第三季 Star Trek: Discovery Season 3 (2020) 首播: 2020-01(美国)](https://movie.douban.com/subject/30473976/)
+- [苍穹浩瀚 第五季 The Expanse Season 5 (2020) 首播: 2020-12(美国)](https://movie.douban.com/subject/34725334/)
+- [星际迷航：皮卡德 第一季 Star Trek: Picard Season 1 (2020) 首播: 2020-01-23(美国)](https://movie.douban.com/subject/30292719/)
 - [新世纪福音战士新剧场版：终 首播: 2020](https://zh.wikipedia.org/wiki/%E6%96%B0%E4%B8%96%E7%BA%AA%E7%A6%8F%E9%9F%B3%E6%88%98%E5%A3%AB%E6%96%B0%E5%89%A7%E5%9C%BA%E7%89%88%EF%BC%9A%E7%BB%88)
+- [人体奥秘 Inside the Human Body ](https://movie.douban.com/subject/6558363/)
+- [爱，死亡和机器人 第二季 Love, Death & Robots Season 2 ](https://movie.douban.com/subject/34418203/)
 - [曼达洛人 第一季 首播：Nov. 12, 2019](http://www.btyun.tv/tvshows/the-mandalorian/)
-
-已经开播，[4K，1080P 下载地址](http://www.btyun.tv/tvshows/the-mandalorian/)
 
 ## Games
 

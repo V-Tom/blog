@@ -1,7 +1,6 @@
 ---
 title: 'React 模式，技巧，技巧和窍门'
 subTitle: 'React 模式，技巧，技巧和窍门'
-banner: 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=='
 tags: ['React', 'FrontEnd']
 date: 2017-11-02T15:29:40+08:00
 ---
@@ -41,6 +40,10 @@ date: 2017-11-02T15:29:40+08:00
 - `unstable_rendersubtreeintocontainer` 以及 portal
 - React `fiber` 更新机制
 - `React call return`
+
+虚拟 DOM
+
+- [深度剖析：如何实现一个 Virtual DOM 算法](https://github.com/livoras/blog/issues/13)
 
 > 一些周边拓展（含有本人观念
 
@@ -86,10 +89,10 @@ class Table extends PureComponent {
 
 ```jsx
 // 好的例子
-const defaultval = []; // <---  也可以使用defaultProps
+const defaultval = [] // <---  也可以使用defaultProps
 class Table extends PureComponent {
   update(e) {
-    this.props.update(e.target.value);
+    this.props.update(e.target.value)
   }
 
   render() {
@@ -104,7 +107,7 @@ class Table extends PureComponent {
           />
         ))}
       </div>
-    );
+    )
   }
 }
 ```
@@ -254,8 +257,6 @@ ReactDOM.render(
 );
 ```
 
-> React fiber 会对 async nature of setState 带来什么样的影响呢？
-
 #### 解决 setState 函数异步的办法?
 
 根据 React 官方文档，setState 函数实际上接收两个参数，其中第二个参数类型是一个函数，作为 setState 函数执行后的回调。通过传入回调函数的方式，React 可以保证传入的回调函数一定是在 setState 成功更新 this.state 之后再执行
@@ -296,10 +297,26 @@ ReactComponent.prototype.setState = function(partialState, callback) {
 
 而 updater 的这两个方法，又和 React 底层的 Virtual Dom (虚拟 DOM 树)的 diff 算法有紧密的关系，所以真正决定同步还是异步的其实是 Virtual DOM 的 diff 算法。
 
+![./setState.png](./setState.png)
+
+对着上面的流程图可以简单总结一下：
+
+- 将 setState 传入的 partialState 参数存储在当前组件实例的 state 暂存队列中
+- 判断当前 React 是否处于批量更新状态，如果是，将当前组件加入待更新的组件队列中
+- 如果未处于批量更新状态，将批量更新状态标识设置为 true，用事务再次调用前一步方法，保证当前组件加入到了待更新组件队列中
+- 调用事务的 `waper` 方法，遍历待更新组件队列依次执行更新。
+- 执行生命周期 `componentWillReceiveProps`
+- 将组件的 state 暂存队列中的 state 进行合并，获得最终要更新的 state 对象，并将队列置为空
+- 执行生命周期 `componentShouldUpdate`，根据返回值判断是否要继续更新
+- 执行生命周期 `componentWillUpdate`
+- 执行真正的更新，`render`
+- 执行生命周期 `componentDidUpdate`
+
 Reference:
 
 - <https://medium.com/@wereHamster/beware-react-setstate-is-asynchronous-ce87ef1a9cf3#.jhdhncws3>
 - <https://www.bennadel.com/blog/2893-setstate-state-mutation-operation-may-be-synchronous-in-reactjs.htm>
+- [【React 深入】setState 的执行机制](https://juejin.im/post/5c71050ef265da2db27938b5)
 
 ### Passing a function to setState
 
@@ -414,7 +431,7 @@ React 内置了一些 hook，如 `useState` 当然也可以创建自定义的 `H
 
 > 截止至（2018 年 10 月 29 日 15:21:47），社区已经出现了很多关于 hooks 的库和 idea，印象较深的是这个 [react-use](https://github.com/streamich/react-use) ，看了一下源码对 hooks 的理解更多了一层
 
-#### Reference:
+Reference:
 
 - [offical intro hooks](https://reactjs.org/docs/hooks-intro.html)
 - [github react-use](https://github.com/streamich/react-use)
@@ -435,7 +452,9 @@ React Fiber 的思想和协程的概念是契合的: 🔴React 渲染的过程�
 
 > 也可以理解 React 实现了[Scheduler（调度器）](https://github.com/facebook/react/blob/master/packages/scheduler/src/Scheduler.js#L48-L60)来调度优先级不同的任务（任务包含 JS 的执行、页面的渲染、ui 事件的响应等等）
 
-#### Reference:
+具体更详细的介绍可以查看我转载的这篇文章：[转载：这可能是最通俗的-react-fiber 时间分片-打开方式](/blog/2019-10-23-转载这可能是最通俗的-react-fiber时间分片-打开方式/)
+
+Reference:
 
 - [Reconciliation](https://reactjs.org/docs/reconciliation.html)
 - [Lin Clark - A Cartoon Intro to Fiber - React Conf 2017](https://www.youtube.com/watch?v=ZCuYPiUIONs)

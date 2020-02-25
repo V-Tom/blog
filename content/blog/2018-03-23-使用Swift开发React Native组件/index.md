@@ -1,7 +1,7 @@
 ---
-title: "使用Swift开发React Native组件"
-tags: ["Native","FrontEnd","RN"]
-description: "使用Swift开发React Native组件"
+title: '使用Swift开发React Native组件'
+tags: ['Native', 'FrontEnd', 'RN']
+description: '使用Swift开发React Native组件'
 date: 2018-03-23T14:28:25+08:00
 ---
 
@@ -20,7 +20,7 @@ date: 2018-03-23T14:28:25+08:00
 
 ### CocoaPods
 
-CocoaPods是专门为 iOS 工程提供对第三方库的依赖的管理工具，通过 CocoaPods ，我们可以更方便地管理每个第三方库的版本，而且不需要我们做太多的配置。直观、集中和自动化地管理我们项目的第三方库。
+CocoaPods 是专门为 iOS 工程提供对第三方库的依赖的管理工具，通过 CocoaPods ，我们可以更方便地管理每个第三方库的版本，而且不需要我们做太多的配置。直观、集中和自动化地管理我们项目的第三方库。
 
 我们都有这样的经历，当我们添加第三方库的时候，需要导入一堆相关依赖库，更新的时候也要删掉重新导入然后再配置。当我们需要更新某个第三方库的时候，我们又要手动移除该库，导入新的库，然后再配置。这些是很麻烦且没有意义的工作。
 
@@ -52,7 +52,7 @@ gem sources -l
 https://gems.ruby-china.org/
 ```
 
-接下来就可以放心的安装 CocoaPods了：
+接下来就可以放心的安装 CocoaPods 了：
 
 ```bash
 sudo gem install cocoapods
@@ -64,9 +64,9 @@ sudo gem install cocoapods
 pod setup
 ```
 
-这一步是将Github上的开源库都托管都安装Podspec索引安装到到本地，这一步会很慢，建议添加本地 proxy。
+这一步是将 Github 上的开源库都托管都安装 Podspec 索引安装到到本地，这一步会很慢，建议添加本地 proxy。
 
-我使用 ShadowsocksR 代理，默认代理端口为1080，配置好代理之后去终端输入git配置命令。
+我使用 ShadowsocksR 代理，默认代理端口为 1080，配置好代理之后去终端输入 git 配置命令。
 
 如果你同事电脑上有安装好,你其实可以从你同事电脑上拷贝过来。也可以直接访问 [https://github.com/CocoaPods/Specs](https://link.jianshu.com/?t=https://github.com/CocoaPods/Specs) 这个源地址直接 download 下来。
 
@@ -86,7 +86,7 @@ git config --global http.https://github.com.proxy socks5://127.0.0.1:1080
 
 然后检测版本：`pod --version`，我这里显示是 1.5.0，至此 CocoaPods 安装完毕。
 
-接下来 `pod install` 的时候也会遇到速度较慢的问题，可以切换为[国内镜像](https://mirror.tuna.tsinghua.edu.cn/help/CocoaPods/)，我这里直接添加 proxy了。
+接下来 `pod install` 的时候也会遇到速度较慢的问题，可以切换为[国内镜像](https://mirror.tuna.tsinghua.edu.cn/help/CocoaPods/)，我这里直接添加 proxy 了。
 
 ### 创建项目
 
@@ -113,48 +113,53 @@ mkdir RNComponent && cd RNComponent && touch package.json
 
 ```json
 {
-    "name": "RNComponent",
-    "version": "0.0.0",
-    "private": true,
-    "scripts": {
-        "start": "node node_modules/react-native/local-cli/cli.js start --reset-cache"
-    },
-    "dependencies": {
-        "react": "16.0.0-alpha.12",
-        "react-native": "0.45.1"
-    }
+  "name": "RNComponent",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start --reset-cache"
+  },
+  "dependencies": {
+    "react": "16.0.0-alpha.12",
+    "react-native": "0.45.1"
+  }
 }
-
 ```
 
-接下来安装依赖：`npm i -d ` 。
+接下来安装依赖：`npm i -d` 。
 
 接下来的步骤大家都很熟悉了，我们需要创建一个入口文件 `index.ios.js`，我们用来跑测试 RN 代码，内容大致如下：
 
 ```js
-import { AppRegistry, NativeModules, View, Text, StyleSheet } from 'react-native';
-import React from 'react';
+import {
+  AppRegistry,
+  NativeModules,
+  View,
+  Text,
+  StyleSheet,
+} from 'react-native'
+import React from 'react'
 
 class Root extends React.Component {
-    render() {
-        return (
-            <View style={styles.container}>
-            <Text> hello world </Text>
-            </View>
-        );
-    }
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text> hello world </Text>
+      </View>
+    )
+  }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-});
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+})
 
-AppRegistry.registerComponent('App', () => Root);
+AppRegistry.registerComponent('App', () => Root)
 ```
 
 至此，前端目录部分工作完成。
@@ -167,7 +172,7 @@ AppRegistry.registerComponent('App', () => Root);
 pod init
 ```
 
-我们在刚才生成的 `Podfile` 文件当中 `use_frameworks! ` 关键词下换行添加以下依赖：
+我们在刚才生成的 `Podfile` 文件当中 `use_frameworks!` 关键词下换行添加以下依赖：
 
 > 请注意下面当中的 path 是相对于我们之前的前端工作区安装的 node_modules 的地址。
 
@@ -227,11 +232,11 @@ pod init
 import React
 ```
 
-然后把 `viewDidLoad ` 函数更改为以下代码：
+然后把 `viewDidLoad` 函数更改为以下代码：
 
 ```swift
     override func viewDidLoad() {
-        super.viewDidLoad() 
+        super.viewDidLoad()
         // 这个是我们 RN development 地址，ip 对应本机局域网 ip，建议不要写 localhost
         let strUrl: String = "http://10.0.36.112:8081/index.ios.bundle?platform=ios&dev=true"
         let jsCodeLocation = URL(string: strUrl)
@@ -240,39 +245,39 @@ import React
     }
 ```
 
-####  swift 工作区额外处理
+#### swift 工作区额外处理
 
 当然 ios 开发会有各种各样的问题需要去处理，我在这里列出一些当前项目可能会出现的一些问题：
 
-> ios9 以上的系统，无法通过http协议连接到localhost主机，会出现错误：Could not connect to development server
+> ios9 以上的系统，无法通过 http 协议连接到 localhost 主机，会出现错误：Could not connect to development server
 
 在工程当中的 `Info.list` 文件当中添加下面配置即可：
 
 ```xml
-<key>NSAppTransportSecurity</key>  
-  <dict>  
-  <key>NSExceptionDomains</key>  
-  <dict>  
-      <key>localhost</key>  
-      <dict>  
-      <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>  
-      <true/>  
-     </dict>  
-   </dict>  
-  </dict>  
+<key>NSAppTransportSecurity</key>
+  <dict>
+  <key>NSExceptionDomains</key>
+  <dict>
+      <key>localhost</key>
+      <dict>
+      <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+      <true/>
+     </dict>
+   </dict>
+  </dict>
 ```
 
 配置结果如下：
 
 ![info-list.png](./info-list.png)
 
-> Xcode 一直打印：nw_connection_get_connected_socket_block_invoke 3 Connection has no connected handler  
+> Xcode 一直打印：nw_connection_get_connected_socket_block_invoke 3 Connection has no connected handler
 
 解决办法如下：
 
-- Xcode menu -> Product -> Edit Scheme... 
+- Xcode menu -> Product -> Edit Scheme...
 - Environment Variables -> Add -> Name: "OS_ACTIVITY_MODE", Value:"disable" .
--  Run your app again. done.
+- Run your app again. done.
 
 #### hello world
 
@@ -288,18 +293,18 @@ npm run start
 
 ### 原生模块开发
 
-> 有时候App需要访问平台API，但React Native可能还没有相应的模块封装；又或者你需要实现某些高性能、多线程的代码，譬如图片处理、数据库、或者各种高级扩展等等。所以 RN 提供了封装原生模块方法。
+> 有时候 App 需要访问平台 API，但 React Native 可能还没有相应的模块封装；又或者你需要实现某些高性能、多线程的代码，譬如图片处理、数据库、或者各种高级扩展等等。所以 RN 提供了封装原生模块方法。
 
 RN 提供了很多方法来封装原生模块，具体可以查看 [RCTBridgeModule.h](https://github.com/facebook/react-native/blob/master/React/Base/RCTBridgeModule.h) ,基本上大致有：
 
 - `RCT_EXPORT_METHOD` 或者 `RCT_EXTERN_MODULE` 用来声明给 javascript 导出方法
-- `RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD`  或者 `RCT_EXTERN_BLOCKING_SYNCHRONOUS_METHOD`  用来声明给 javascript 导出的同步方法
-- `RCT_EXPORT_REMAP_MODULE` 和 `RCT_EXTERN_REMAP_MODULE`  用来改变导出模块和方法的JavaScript 调用名称。
+- `RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD` 或者 `RCT_EXTERN_BLOCKING_SYNCHRONOUS_METHOD` 用来声明给 javascript 导出的同步方法
+- `RCT_EXPORT_REMAP_MODULE` 和 `RCT_EXTERN_REMAP_MODULE` 用来改变导出模块和方法的 JavaScript 调用名称。
 - 等等一些其他的方法，具体请参阅源码文件。
 
 > EXPORT 和 EXTERN 的区别到底是什么？以下是个人理解，可能有偏差，望指正。
 
-看官方介绍说后者是用来注册 `swift class` 或者 `private object-c class`。按照个人的理解：`RCT_EXPORT_METHOD` 这个宏是用来将原生的方法导出，只有用这个宏包裹的方法，才可以被RN调用，为了实现 RN 调用 swift 方法，所以需要用到 EXTERN 之类的方法，实际上在 EXTERN 内部也是通过 objc [关键方法](https://github.com/facebook/react-native/blob/master/React/Base/RCTBridgeModule.h#L237-L243) 来实现混合调用。
+看官方介绍说后者是用来注册 `swift class` 或者 `private object-c class`。按照个人的理解：`RCT_EXPORT_METHOD` 这个宏是用来将原生的方法导出，只有用这个宏包裹的方法，才可以被 RN 调用，为了实现 RN 调用 swift 方法，所以需要用到 EXTERN 之类的方法，实际上在 EXTERN 内部也是通过 objc [关键方法](https://github.com/facebook/react-native/blob/master/React/Base/RCTBridgeModule.h#L237-L243) 来实现混合调用。
 
 #### 需求分析
 
@@ -323,17 +328,17 @@ import React
 
 @objc(RNDemoModule)
 class RNDemoModule: NSObject {
-    
+
     // 自定义我们需要导出的方法
-    
+
 }
 ```
 
-因为我们是写的 swift 文件，需要使用 `@objc` 来指定哪些方法或者属性在 OC当中可以调用。
+因为我们是写的 swift 文件，需要使用 `@objc` 来指定哪些方法或者属性在 OC 当中可以调用。
 
-以及一旦你在项目混用OC和Swift两种语言，那就需要这个 **桥接文件**。
+以及一旦你在项目混用 OC 和 Swift 两种语言，那就需要这个 **桥接文件**。
 
-> 一般在项目的Supporting Files文件夹里(一般系统会自动生成的，叫做“项目名-Bridging-Header.h”，项目名就是你工程的项目名）
+> 一般在项目的 Supporting Files 文件夹里(一般系统会自动生成的，叫做“项目名-Bridging-Header.h”，项目名就是你工程的项目名）
 
 我们这里直接创建一个命名为 `RNDemoModuleBridge.m` 的文件来进行桥接，大致如下：
 
@@ -343,7 +348,7 @@ class RNDemoModule: NSObject {
 @interface RCT_EXTERN_MODULE(RNDemoModule,NSObject)
 
 // 通过RCT_EXTERN_METHOD 来导出我们的自定义方法
-    
+
 @end
 ```
 
@@ -351,16 +356,16 @@ class RNDemoModule: NSObject {
 
 ```swift
 // ... class RNDemoModule
-    
+
 	// 导出常量
     func constantsToExport() -> [AnyHashable: Any]! {
         return [
             "SDKVersion": "0.45.1",
             "NativeModuleVersion":"0.0.0"
         ]
-    }   
- 
-// ... class RNDemoModule   
+    }
+
+// ... class RNDemoModule
 ```
 
 我们在 console 打印这个对象可以得到如下结构：
@@ -412,12 +417,12 @@ TODO:尚未完成，存在疑问
 
 > 似乎返回结果需要 `global.nativeCallSyncHook` 来做垫底？？？那怎么知道到底是哪个方法调用返回结果？
 
-参照这篇文章[ React Native技术剖析（二） ](https://blog.csdn.net/wangnan8015/article/details/53303899) 以及 [RCTJSCExecutor.mm ](https://github.com/facebook/react-native/blob/v0.45.1/React/Executors/RCTJSCExecutor.mm#L358-L368)我们知道同步调用返回结果需要设定 `global.nativeCallSyncHook`
+参照这篇文章[ React Native 技术剖析（二） ](https://blog.csdn.net/wangnan8015/article/details/53303899) 以及 [RCTJSCExecutor.mm ](https://github.com/facebook/react-native/blob/v0.45.1/React/Executors/RCTJSCExecutor.mm#L358-L368)我们知道同步调用返回结果需要设定 `global.nativeCallSyncHook`
 
 [RCTJSCExecutor.mm ](https://github.com/facebook/react-native/blob/v0.45.1/React/Executors/RCTJSCExecutor.mm#L358-L368)
 
 ```objective-c
-   
+
 	// 这个 context 是当前 jsCore context
 	context[@"nativeCallSyncHook"] = ^id(NSUInteger module, NSUInteger method, NSArray *args) {
       RCTJSCExecutor *strongSelf = weakSelf;
@@ -462,8 +467,8 @@ import { NativeModules } from 'react-native'
 const { RNDemoModule } = NativeModules
 
 // why？
-global.nativeCallSyncHook = function () {
-    console.info(arguments) // [moduleid,method,'TOM']
+global.nativeCallSyncHook = function() {
+  console.info(arguments) // [moduleid,method,'TOM']
 }
 
 console.info(RNDemoModule.callWithSync('TOM'))
@@ -471,7 +476,7 @@ console.info(RNDemoModule.callWithSync('TOM'))
 
 参照 jsCore 定义，最终 chrome console 会打印出的数据格式为`(Integer,Integer,Array)` 最终结果也就是`[70, 0,['TOM']]`
 
-#### 功能实现:callback调用
+#### 功能实现:callback 调用
 
 `RNDemoModule.swift`
 
@@ -482,7 +487,7 @@ console.info(RNDemoModule.callWithSync('TOM'))
     @objc func callWithCallBack(
         _ name:String,
         callback:@escaping RCTResponseSenderBlock
-        ){       
+        ){
          // 简单实现 setTimeout 1s
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             // callback 参数 name 的值
@@ -513,12 +518,14 @@ RCT_EXTERN_METHOD(callWithCallBack:(NSString *)name callback:(RCTResponseSenderB
 import { NativeModules } from 'react-native'
 const { RNDemoModule } = NativeModules
 
-RNDemoModule.callWithCallBack('TOM', (err, value) => console.info(`callWithCallBack:${value}`))
+RNDemoModule.callWithCallBack('TOM', (err, value) =>
+  console.info(`callWithCallBack:${value}`),
+)
 ```
 
 最终 chrome console 会输出：`callWithCallBack:TOM`
 
-#### 功能实现:Promise调用
+#### 功能实现:Promise 调用
 
 `RNDemoModule.swift`
 
@@ -531,7 +538,7 @@ RNDemoModule.callWithCallBack('TOM', (err, value) => console.info(`callWithCallB
         resolve:@escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock
         )-> Void{
-        
+
         // 简单实现 setTimeout 1s
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             // 直接 resolve 参数 name 的值
@@ -547,7 +554,7 @@ RNDemoModule.callWithCallBack('TOM', (err, value) => console.info(`callWithCallB
 ```objective-c
 // #import <React/RCTBridgeModule.h>
 // @interface RCT_EXTERN_MODULE(RNDemoModule,NSObject)
-    
+
 RCT_EXTERN_METHOD(callWithPromise:(nonnull NSString *)name resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject);
 
 // @end
@@ -559,7 +566,9 @@ RCT_EXTERN_METHOD(callWithPromise:(nonnull NSString *)name resolve:(RCTPromiseRe
 import { NativeModules } from 'react-native'
 const { RNDemoModule } = NativeModules
 
-RNDemoModule.callWithPromise('TOM').then(value => console.info(`callWithPromise:${value}`))
+RNDemoModule.callWithPromise('TOM').then(value =>
+  console.info(`callWithPromise:${value}`),
+)
 ```
 
 最终 chrome console 会输出：`callWithPromise:TOM`
@@ -587,7 +596,7 @@ class RNDemoEventEmitter: RCTEventEmitter {
 }
 ```
 
-官方要求是通过实现 `supportedEvents ` 方法来指定导出的 event name ，这里我们假设一个命名为 `progress` 的 event。
+官方要求是通过实现 `supportedEvents` 方法来指定导出的 event name ，这里我们假设一个命名为 `progress` 的 event。
 
 ```swift
 // ... class RNDemoEventEmitter
@@ -599,17 +608,17 @@ class RNDemoEventEmitter: RCTEventEmitter {
 // ... class RNDemoEventEmitter
 ```
 
-还要实现 `startObserving ` 和 `stopObserving ` 方法，用来优化无监听处理的事件，在实现之前我们定义一个变量来表示是否已经开始监听。
+还要实现 `startObserving` 和 `stopObserving` 方法，用来优化无监听处理的事件，在实现之前我们定义一个变量来表示是否已经开始监听。
 
 ```swift
-var _hasListeners:Bool = false	
+var _hasListeners:Bool = false
 ```
 
-我们希望能够模拟被监听的事件触发的情况。所以我们需要开始监听的时候设定一个定时器，每过特定的时间去调用监听方法：也就是下面的方法 `onProgress` 来调用 ` RCTEventEmitter.sendEvent`。
+我们希望能够模拟被监听的事件触发的情况。所以我们需要开始监听的时候设定一个定时器，每过特定的时间去调用监听方法：也就是下面的方法 `onProgress` 来调用 `RCTEventEmitter.sendEvent`。
 
 ```swift
 // ... class RNDemoEventEmitter
-  
+
   // var _hasListeners:Bool = false
   var timer: Timer?
 
@@ -622,9 +631,9 @@ var _hasListeners:Bool = false
     }
 
   @objc override func startObserving()->Void{
-      
+
         self._hasListeners = true
-        
+
       	// 类似 setinterval 定时器
         self.timer?.invalidate()
         self.timer = Timer.scheduledTimer(
@@ -634,16 +643,16 @@ var _hasListeners:Bool = false
             userInfo: nil,
             repeats: true
         )
-        
+
     }
-    
+
     @objc override func stopObserving()->Void{
         // 关闭 timer
         self.timer?.invalidate()
         self._hasListeners = false
     }
-    
-// ... class RNDemoEventEmitter    
+
+// ... class RNDemoEventEmitter
 ```
 
 我们在前端项目主入口文件 `index.ios.js` 当中添加监听：
@@ -653,17 +662,16 @@ import { NativeEventEmitter, NativeModules } from 'react-native'
 
 const emitter = new NativeEventEmitter(NativeModules.RNDemoEventEmitter)
 const subscription = emitter.addListener('progress', data => console.info(data))
-
 ```
 
-我们可以在 chrome console 看到每隔一段时间会输出特定数据，注意别忘记在  RN 的`componentWillUnMount` 周期内解除这个事件监听。
+我们可以在 chrome console 看到每隔一段时间会输出特定数据，注意别忘记在 RN 的`componentWillUnMount` 周期内解除这个事件监听。
 
 ### Reference
 
-- [CocoaPods最新安装(不使用淘宝镜像)](https://www.jianshu.com/p/adad5ee721af)
-- [看一遍就会的CocoaPods的安装和使用教程](https://www.jianshu.com/p/1711e131987d)
-- [RubyGems *- Ruby China*](https://gems.ruby-china.org/)
+- [CocoaPods 最新安装(不使用淘宝镜像)](https://www.jianshu.com/p/adad5ee721af)
+- [看一遍就会的 CocoaPods 的安装和使用教程](https://www.jianshu.com/p/1711e131987d)
+- [RubyGems _- Ruby China_](https://gems.ruby-china.org/)
 - [[IOS/MAC] -Integrating react-native app with existing apps not creating .workspace](https://github.com/facebook/react-native/issues/7775)
-- [React Native技术剖析（二）](https://blog.csdn.net/wangnan8015/article/details/53303899)
+- [React Native 技术剖析（二）](https://blog.csdn.net/wangnan8015/article/details/53303899)
 - [objective-c 语法快速过](http://www.cnblogs.com/kubixuesheng/p/4306395.html)
 - [Got “is not a recognized Objective-C method” when bridging Swift to React-Native](https://stackoverflow.com/questions/39692230/got-is-not-a-recognized-objective-c-method-when-bridging-swift-to-react-native)

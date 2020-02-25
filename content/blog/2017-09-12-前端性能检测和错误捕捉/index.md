@@ -24,11 +24,11 @@ date: 2017-09-12T15:29:40+08:00
 
 ```javascript
 try {
-  doSomeThing();
+  doSomeThing()
   // code...
 } catch (e) {
   // send format error
-  Reporter.send(format(e));
+  Reporter.send(format(e))
 }
 ```
 
@@ -39,10 +39,10 @@ try {
 ```javascript
 window.onerror = function() {
   // send format error
-  var errInfo = format(arguments);
-  Reporter.send(errInfo);
-  return true;
-};
+  var errInfo = format(arguments)
+  Reporter.send(errInfo)
+  return true
+}
 ```
 
 在上面的函数中返回 `return true`，错误便不会暴露到控制台中。下面是它的参数信息：
@@ -60,10 +60,10 @@ window.onerror = function(
   scriptURI,
   lineNumber,
   columnNumber,
-  errorObj
+  errorObj,
 ) {
   // code..
-};
+}
 ```
 
 #### unhandledrejection
@@ -71,7 +71,7 @@ window.onerror = function(
 `Promise` 内部未捕获的异常可以通过监听`onunhandledrejection`来捕获
 
 ```javascript
-window.addEventListener('unhandledrejection', (error, id) => {});
+window.addEventListener('unhandledrejection', (error, id) => {})
 ```
 
 如果你想还原出 `Promise` 的错误，关键点是要拿到 `Error Stack`，native 提供的监听方法得不到更多的信息，可以考虑采用 [promise polyfill](https://github.com/taylorhakes/promise-polyfill#unhandled-rejections) 提供的方法来拿到。
@@ -89,28 +89,28 @@ window.addEventListener('unhandledrejection', (error, id) => {});
 只存在`javascriptCore`，所以官方提供了方法：`global.ErrorUtils.setGlobalHandler`来监听全局的错误，可以参考以下代码：
 
 ```javascript
-import { Platform } from 'react-native';
+import { Platform } from 'react-native'
 
 // 保留原来内部的error handler
-const originalHandler = global.ErrorUtils.getGlobalHandler();
+const originalHandler = global.ErrorUtils.getGlobalHandler()
 
 // 配置我们自定义的错误 handler
-global.ErrorUtils.setGlobalHandler(ErrorHandler);
+global.ErrorUtils.setGlobalHandler(ErrorHandler)
 
 function ErrorHandler(e, isFatal) {
   if (Platform.OS === 'ios') {
-    CrashHandler.originalHandler(arguments);
+    CrashHandler.originalHandler(arguments)
   } else {
     setTimeout(() => {
-      CrashHandler.originalHandler(arguments);
-    }, 300);
+      CrashHandler.originalHandler(arguments)
+    }, 300)
   }
 
-  __DEV__ && throwErrorToNative();
+  __DEV__ && throwErrorToNative()
 
   // 我们自己的错误处理方式
   // 发送检测数据
-  Report.send(e);
+  Report.send(e)
 }
 ```
 
@@ -125,28 +125,28 @@ function ErrorHandler(e, isFatal) {
  * @returns {{line: *, column: *}}
  */
 function lsErrorStack(e) {
-  if (!e || !e instanceof Error || !e.stack) return {};
+  if (!e || !e instanceof Error || !e.stack) return {}
 
   try {
     const stack = e.stack.toString().split(/\r\n|\n/),
-      frameRE = /:(\d+:\d+)[^\d]*$/;
+      frameRE = /:(\d+:\d+)[^\d]*$/
 
     while (stack.length) {
-      const frame = frameRE.exec(stack.shift());
+      const frame = frameRE.exec(stack.shift())
       if (frame) {
-        const position = frame[1].split(':');
-        return { line: position[0], column: position[1] };
+        const position = frame[1].split(':')
+        return { line: position[0], column: position[1] }
       }
     }
   } catch (e) {
-    return {};
+    return {}
   }
 }
 
-const error = new Error('this is a test');
+const error = new Error('this is a test')
 
 // 我们可以得到 line 和 column
-console.log(lsErrorStack(e));
+console.log(lsErrorStack(e))
 ```
 
 #### Promise Error
@@ -168,7 +168,7 @@ if (!__DEV__) {
      */
     onUnhandled: (id, error) => {
       // Promise 错误
-      this.onUnhandled(id, error);
+      this.onUnhandled(id, error)
     },
 
     /**
@@ -176,9 +176,9 @@ if (!__DEV__) {
      * @param id
      */
     onHandled: id => {
-      this.onHandled(id);
-    }
-  });
+      this.onHandled(id)
+    },
+  })
 }
 ```
 
@@ -208,25 +208,25 @@ web 环境下就很灵活了，对比常用的打包工具`webpack`、`Rollup`�
 const {
   SourceMapConsumer,
   SourceMapGenerator,
-  SourceNode
-} = require('source-map');
-const fs = require('fs');
+  SourceNode,
+} = require('source-map')
+const fs = require('fs')
 
 /**
  * rawMap
  */
-const rawMap = JSON.parse(fs.readFileSync('./index.map').toString());
+const rawMap = JSON.parse(fs.readFileSync('./index.map').toString())
 
-const smc = new SourceMapConsumer(rawMap);
+const smc = new SourceMapConsumer(rawMap)
 const position = smc.originalPositionFor({
   line: 1,
-  column: 75422
-});
+  column: 75422,
+})
 
-const { source, line, column } = position;
+const { source, line, column } = position
 
 // output
-console.log(`事故发生现场：${source}，位于第${line}行，第${column}列！`);
+console.log(`事故发生现场：${source}，位于第${line}行，第${column}列！`)
 ```
 
 当然如果是带有 `sourceContent` 的 sourcemap，我们还能继续还原到具体原始文件，可以参考一下代码：
@@ -237,36 +237,36 @@ console.log(`事故发生现场：${source}，位于第${line}行，第${column}
 /**
  * 这里认为我们已经按照上诉代码拿到了 consumer 以及 错误的 position
  */
-const { source, line, column } = position;
+const { source, line, column } = position
 
 /**
  * 我们想还原原始代码上下10行
  */
-const showOriginCodeLines = 10;
-const finalSource = [];
+const showOriginCodeLines = 10
+const finalSource = []
 
 /**
  * 通过 consumer sourceContentFor 方法拿到 原始的 代码，并处理换行，转换成数组
  */
-const sourceContent = consumer.sourceContentFor(source);
-const sourceContentMaps = sourceContent.toString().split(/\r\n|\n/);
+const sourceContent = consumer.sourceContentFor(source)
+const sourceContentMaps = sourceContent.toString().split(/\r\n|\n/)
 
 /**
  * 这里是垃圾代码，凑合看吧
  * 取上下 showOriginCodeLines 行 组合在一起
  */
 for (let i = 0; i < showOriginCodeLines; i++) {
-  finalSource.unshift(sourceContentMaps[line - 1 - i]);
+  finalSource.unshift(sourceContentMaps[line - 1 - i])
 }
 
 for (let i = 1; i < showOriginCodeLines + 1; i++) {
-  finalSource.push(sourceContentMaps[line - 1 + i]);
+  finalSource.push(sourceContentMaps[line - 1 + i])
 }
 
 /**
  * 输出最终结果
  */
-console.log(finalSource.join('\n'));
+console.log(finalSource.join('\n'))
 ```
 
 这里拿到原始代码后，我们可以通过一些插件做些简单的高亮，美化等处理，完全可以做一个低配版本的 Sentry 平台。
@@ -320,8 +320,8 @@ RN 上的性能数据其实在**开发**环境当中已经可以查看，生产�
 ```javascript
 fetch(`${url}?t=perf&page=lazada-home&load=1168`, {
   mode: 'no-cors',
-  method: 'HEAD'
-});
+  method: 'HEAD',
+})
 ```
 
 #### HTTP/2 头部压缩
@@ -343,3 +343,9 @@ HTTP/2 [头部压缩](https://link.zhihu.com/?target=https%3A//www.oreilly.com/l
 虽然采用 empty GIF 的方式可以实现，因为绝大多数用户代理会延迟卸载以保证图片的载入。但是这种方法有较差的编码方式而且不可靠，会影响页面性能。
 
 当使用 `sendBeacon` 方法将会使用户代理在有机会时异步地向服务器发送数据，同时不会延迟页面的卸载或影响下一导航的载入性能。这就解决了提交分析数据时的所有的问题：使它可靠，异步并且不会影响下一页面的加载。
+
+## And More
+
+下面是收集的一些关于前端性能监控方面的文章：
+
+- [蚂蚁金服如何把前端性能监控做到极致?](https://mp.weixin.qq.com/s?__biz=MzUxMzcxMzE5Ng==&mid=2247490527&idx=1&sn=cc2549683b3ff69c042483d78ced766a&chksm=f951ae9cce26278a263ecf2937b5c4957c9b37f35b7efe4c1a8c6ab69c74ebcb43c54e62abda&xtrack=1&scene=0&subscene=131&clicktime=1550933323&ascene=7&devic) 和对应的 [本站 Archive](./蚂蚁金服如何把前端性能监控做到极致.pdf)

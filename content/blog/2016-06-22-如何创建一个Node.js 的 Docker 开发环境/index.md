@@ -1,36 +1,36 @@
 ---
-title: "如何创建一个Node.js 的 Docker 开发环境"
-subTitle: "如何创建一个Node.js 的 Docker 开发环境"
-banner: "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=="
-tags: ["Node.js","Docker","Cluster"]
+title: '如何创建一个Node.js 的 Docker 开发环境'
+subTitle: '如何创建一个Node.js 的 Docker 开发环境'
+banner: 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=='
+tags: ['Node.js', 'Docker', 'Cluster']
 date: 2016-06-22T15:29:40+08:00
 ---
 
-> 本文以构建一个 Node.js Docker应用 为目标写的一个教程。当前操作系统环境 Mac OSX Sierra 10.12.4
+> 本文以构建一个 Node.js Docker 应用 为目标写的一个教程。当前操作系统环境 Mac OSX Sierra 10.12.4
 
-### Docker介绍
+### Docker 介绍
 
 > Docker 是个划时代的开源项目，它彻底释放了计算虚拟化的威力，极大提高了应用的运行效率，降低了云计算资源供应的成本！ 使用 Docker，可以让应用的部署、测试和分发都变得前所未有的高效和轻松！
 
-Docker引擎的基础是Linuxring器(Linux Containers，LXC)技术。这个并不是一个新生的概念，很早前已经出现，比如操作系统上的`chroot`工具、以及`Solaris Containers`和`FreeBSD jail`等等，虽然这个技术非常成熟，然而这些工具使用起来非常不方便。Docker的出现解决了这些问题。
+Docker 引擎的基础是 Linuxring 器(Linux Containers，LXC)技术。这个并不是一个新生的概念，很早前已经出现，比如操作系统上的`chroot`工具、以及`Solaris Containers`和`FreeBSD jail`等等，虽然这个技术非常成熟，然而这些工具使用起来非常不方便。Docker 的出现解决了这些问题。
 
-Docker容器虚拟化有很多好处：
+Docker 容器虚拟化有很多好处：
 
 - 更高效的利用系统资源：由于容器不需要进行硬件虚拟以及运行完整操作系统等额外开销，Docker 对系统资源的利用率更高。
-- 更快速的启动时间，Docker容器应用启动时间很快
+- 更快速的启动时间，Docker 容器应用启动时间很快
 - 一致的运行环境和环境隔离
 - 持续交付和部署
 - 更轻松的迁移服务
 
-既然Docker这么好，我们来试试如何跑一个Node.js Docker应用。
+既然 Docker 这么好，我们来试试如何跑一个 Node.js Docker 应用。
 
-### 安装Docker
+### 安装 Docker
 
-使用Docker之前，我们需要安装。Docker支持在主流操作平台上使用：包括Ubuntu、CenterOS、Windows已经MacOS系统。
+使用 Docker 之前，我们需要安装。Docker 支持在主流操作平台上使用：包括 Ubuntu、CenterOS、Windows 已经 MacOS 系统。
 
 #### Ubuntu
 
-在Ubuntu上安装Docker可以直接使用以下shell script
+在 Ubuntu 上安装 Docker 可以直接使用以下 shell script
 
 ```shell
  // 最新的Docker安装需要先移除老的Docker
@@ -47,39 +47,38 @@ Windows 上我们可以直接下载 [Docker GUI](https://store.docker.com/editio
 
 Mac OSX 上我们也可以直接下载 [Docker GUI](https://store.docker.com/editions/community/docker-ce-desktop-mac)。
 
-Docker的主要目标是`Build ship and run any app,any where`.主要生命周期有：封装（Packaging）、分发（Distribution）、部署（Deployment）、运行（Runtime）等。
+Docker 的主要目标是`Build ship and run any app,any where`.主要生命周期有：封装（Packaging）、分发（Distribution）、部署（Deployment）、运行（Runtime）等。
 
-Docker具有三大核心概念：
+Docker 具有三大核心概念：
 
 - 仓库（Repository）
 
+* 镜像（Image）
+* 容器 （Container）
 
-- 镜像（Image）
-- 容器 （Container）
-
-> 本篇教程会按照这三大核心概念来展开，中间当然会穿插一些其他Docker方面的内容：Dockerfile、docker-compose
+> 本篇教程会按照这三大核心概念来展开，中间当然会穿插一些其他 Docker 方面的内容：Dockerfile、docker-compose
 
 ### 仓库
 
-Docker仓库类似于代码库，是存放Docker镜像文件的统一地方。分为公开仓库和私人仓库。目前最大的国内仓库是 Docker hub。但是这个仓库由于国内墙的原因pull一个镜像的时候会很慢，所以可以把Docker的仓库地址设置为国内，我们可以打开 `Docker preferences` 来设置 `registry mirrors`，我们这里可以设置为国内的 [daocloud](https://daocloud.io)提供的仓库地址。设置完之后记得重启Docker，然后我们就可以安装我们需要的镜像了。
+Docker 仓库类似于代码库，是存放 Docker 镜像文件的统一地方。分为公开仓库和私人仓库。目前最大的国内仓库是 Docker hub。但是这个仓库由于国内墙的原因 pull 一个镜像的时候会很慢，所以可以把 Docker 的仓库地址设置为国内，我们可以打开 `Docker preferences` 来设置 `registry mirrors`，我们这里可以设置为国内的 [daocloud](https://daocloud.io)提供的仓库地址。设置完之后记得重启 Docker，然后我们就可以安装我们需要的镜像了。
 
 ![设置Docker registry mirrors](./QQ20170422-235751@2x.png)
 
 ### 镜像
 
-Docker镜像类似于虚拟机镜像，一个镜像可以只包含一个完整的Ubuntu操作系统环境。Docker提供了一套十分简单的机制来进行创建和更新现有镜像，甚至可以从网上下载第三方已经做好的镜像，当然也可以自己build一个自定义的镜像发布到仓库当中。
+Docker 镜像类似于虚拟机镜像，一个镜像可以只包含一个完整的 Ubuntu 操作系统环境。Docker 提供了一套十分简单的机制来进行创建和更新现有镜像，甚至可以从网上下载第三方已经做好的镜像，当然也可以自己 build 一个自定义的镜像发布到仓库当中。
 
-> 再次提醒：我们当前教程最终的目的是创建一个 Node.js环境的Docker容器，当前操作系统环境 Mac OSX Sierra 10.12.4
+> 再次提醒：我们当前教程最终的目的是创建一个 Node.js 环境的 Docker 容器，当前操作系统环境 Mac OSX Sierra 10.12.4
 
 #### docker pull NAME[:TAG]
 
-Docker下载镜像的命令格式为：
+Docker 下载镜像的命令格式为：
 
 ```shell
 docker pull NAME[:TAG]
 ```
 
-对于Docker来说，如果不显式的指定TAG（也可以理解为镜像版本），则默认会选择`latest`来作为标签：即下载仓库最新版本的镜像。
+对于 Docker 来说，如果不显式的指定 TAG（也可以理解为镜像版本），则默认会选择`latest`来作为标签：即下载仓库最新版本的镜像。
 
 我们需要先安装一个稳定的`Ubuntu`镜像，在这里我选择了`16.04`版本的镜像：
 
@@ -93,7 +92,7 @@ docker pull ubuntu:16.04
 
 #### docker iamges
 
-接下来我们可以列出本地主机上已经存在的镜像，通过以下命令可以看到我们刚才已经安装过的Ubuntu系统：
+接下来我们可以列出本地主机上已经存在的镜像，通过以下命令可以看到我们刚才已经安装过的 Ubuntu 系统：
 
 ```shell
 docker iamges
@@ -107,11 +106,11 @@ docker iamges
 
 - 来自于哪个仓库（REPOSITORY）
 - 镜像的标签信息（TAG）
-- 镜像的唯一id号（IMAGE ID）
+- 镜像的唯一 id 号（IMAGE ID）
 - 创建时间（REACTED）
 - 镜像大小（SIZE）
 
-> 其中镜像的唯一id号（IMAGE ID）十分重要，它唯一标识了该镜像。
+> 其中镜像的唯一 id 号（IMAGE ID）十分重要，它唯一标识了该镜像。
 
 #### docker inspect IMAGE_ID
 
@@ -141,7 +140,7 @@ docker rmi IMAGE[IMAGE...]
 
 至此，Docker Image 常用的命令已经罗列完毕，其他更多命令请自行[参阅文档](https://docs.docker.com/edge/engine/reference/commandline/docker/)。
 
-接下来我们需要来创建我们需要的Node.js镜像。常用创建镜像的方式有三种：
+接下来我们需要来创建我们需要的 Node.js 镜像。常用创建镜像的方式有三种：
 
 - 基于已有镜像创建
 
@@ -155,13 +154,11 @@ docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]
 
 可以直接通过一个操作系统模板来创建镜像。我们依旧不采用，请自行[查看文档](https://docs.docker.com/engine/reference/commandline/import/)
 
-- 基于Dockerfile创建
+- 基于 Dockerfile 创建
 
 Dockerfile 是一个文本格式的配置文件，用户可以使用它来快速创建自定义的镜像，刚好符合我们的要求。在下面有详细介绍和使用教程。
 
 ### 容器
-
-
 
 ### Dockerfile
 
@@ -169,22 +166,22 @@ Dockerfile 是一个文本格式的配置文件，用户可以使用它来快速
 
 Dockerfile 由一条条命令语句组成，并且支持以**#**开头的注释行。
 
-一般来说，Dockerfile分为四个部分：
+一般来说，Dockerfile 分为四个部分：
 
 - 基础镜像信息
 - 维护者信息
 - 镜像操作指令
 - 容器启动时的执行命令
 
-接下来介绍一下Dockerfile的执行指令，一般格式为 INSTRUCTION arguments。
+接下来介绍一下 Dockerfile 的执行指令，一般格式为 INSTRUCTION arguments。
 
-这些指令在我们来完成我们的目标：Node.js Docker应用 都会用到，更多的请自行[查看文档](https://docs.docker.com/engine/reference/builder/)。我们需要用到的执行指令包括以下内容:
+这些指令在我们来完成我们的目标：Node.js Docker 应用 都会用到，更多的请自行[查看文档](https://docs.docker.com/engine/reference/builder/)。我们需要用到的执行指令包括以下内容:
 
 #### FROM
 
-格式为：FROM <image> 或者FROM <image>:<tag>。
+格式为：FROM <image> 或者 FROM <image>:<tag>。
 
-第一条指令必须为FROM指令，如果在一个Dockerfile当中创建多个镜像，可以使用多个FROM。ßß
+第一条指令必须为 FROM 指令，如果在一个 Dockerfile 当中创建多个镜像，可以使用多个 FROM。ßß
 
 #### MAINTAINER
 
@@ -194,7 +191,7 @@ Dockerfile 由一条条命令语句组成，并且支持以**#**开头的注释�
 
 格式为：RUN <command> 或者 Run ["executable","param1","param2"]
 
-区别是：前者将在shell终端中执行，也就是`/bin/sh -c`；后者则使用`exec`执行。
+区别是：前者将在 shell 终端中执行，也就是`/bin/sh -c`；后者则使用`exec`执行。
 
 当命令过长的时候可以使用`\`来换行。
 
@@ -202,15 +199,15 @@ Dockerfile 由一条条命令语句组成，并且支持以**#**开头的注释�
 
 格式为：CMD command param1 param2 或者 CMD ["executable","param1","param2"]
 
-区别是：前者将在shell终端中执行，也就是`/bin/sh -c`；后者则使用`exec`执行。
+区别是：前者将在 shell 终端中执行，也就是`/bin/sh -c`；后者则使用`exec`执行。
 
-每个Dockerfile只能有一条CMD命令，如果指定多个，只有最后一个执行。
+每个 Dockerfile 只能有一条 CMD 命令，如果指定多个，只有最后一个执行。
 
 #### EXPOSE
 
 格式为：EXPOSE <port> [<port>…]。
 
-告诉Docker服务器容器暴露的端口号来进行容器和本地主机端口映射。启动容器的时候通过`-p`可以具体指定端口
+告诉 Docker 服务器容器暴露的端口号来进行容器和本地主机端口映射。启动容器的时候通过`-p`可以具体指定端口
 
 #### ENV
 
@@ -220,7 +217,7 @@ Dockerfile 由一条条命令语句组成，并且支持以**#**开头的注释�
 
 格式为：ADD <src> <dest>
 
-该命令指定复制本地主机当中的**src**到容器当中的**dest**。其中src可以是相对路径、url、tar。
+该命令指定复制本地主机当中的**src**到容器当中的**dest**。其中 src 可以是相对路径、url、tar。
 
 #### COPY
 
@@ -240,21 +237,21 @@ Dockerfile 由一条条命令语句组成，并且支持以**#**开头的注释�
 
 定义当前容器的工作目录。
 
-使用多次WORKDIR命令，如果参数是相对路径，则会何必每次的相对路径。
+使用多次 WORKDIR 命令，如果参数是相对路径，则会何必每次的相对路径。
 
-> 接下来我们正式创建Node.js container
+> 接下来我们正式创建 Node.js container
 
 ### Node.js Dockerfile
 
-终于到了我们来编写Dockerfile来创建 Node.js container 的时候了！
+终于到了我们来编写 Dockerfile 来创建 Node.js container 的时候了！
 
 在正式开始之前，我们先梳理一下任务要点：
 
-- 安装最新版本的Node.js（这里不选择stable版本）
-- 从GitHub上下载我们的服务器代码（这里的例子采用本地服务器server.js，当然也会有GitHub的例子）
+- 安装最新版本的 Node.js（这里不选择 stable 版本）
+- 从 GitHub 上下载我们的服务器代码（这里的例子采用本地服务器 server.js，当然也会有 GitHub 的例子）
 - 启动服务器并抛出端口
 
-下面正式开始，开始之前需要自行创建一个Dockerfile文件并且在相同文件目录下写入一个`server.js`来作为我们的本地例子，`server.js`可以参考：
+下面正式开始，开始之前需要自行创建一个 Dockerfile 文件并且在相同文件目录下写入一个`server.js`来作为我们的本地例子，`server.js`可以参考：
 
 ```javascript
 'use strict'
@@ -268,7 +265,7 @@ server.listen(3000, () => {
 })
 ```
 
-> 上面server只是做一个简单的hello world例子 :smile:
+> 上面 server 只是做一个简单的 hello world 例子 :smile:
 
 首先指定我们的基础镜像信息，这里我们选择`ubuntu:16.04`来作为基础镜像，并写好维护者信息。
 
@@ -287,7 +284,7 @@ ENV LANG       en_US.UTF-8
 ENV LC_ALL     en_US.UTF-8
 ```
 
-由于国内的原因，我们需要设定阿里云的镜像来作为Ubuntu的更新镜像：
+由于国内的原因，我们需要设定阿里云的镜像来作为 Ubuntu 的更新镜像：
 
 ```dockerfile
 # 设置 Ubuntu 镜像源地址
@@ -331,7 +328,7 @@ RUN apt-get install -y -q --no-install-recommends \
 
 正式开始安装`Node.js`，我们选择安装`7.X`版本。
 
-我们选择官方的[Binary Distributions](https://github.com/nodesource/distributions)提供的bash文件来进行安装，这样可以省下来很多不必要的操作：
+我们选择官方的[Binary Distributions](https://github.com/nodesource/distributions)提供的 bash 文件来进行安装，这样可以省下来很多不必要的操作：
 
 ```dockerfile
 # 可以通过 echo 来输出当前信息
@@ -339,7 +336,7 @@ RUN echo '正在安装 nodejs'
 
 ENV NODE_VERSION=7
 
-RUN curl -o- https://deb.nodesource.com/setup_$NODE_VERSION.x | bash -       
+RUN curl -o- https://deb.nodesource.com/setup_$NODE_VERSION.x | bash -
 
 RUN sudo apt-get install -y nodejs
 ```
@@ -353,21 +350,21 @@ RUN mkdir -p $WORK_DIR
 WORKDIR $WORK_DIR
 ```
 
-然后接下来我们需要把`server.js`拷贝到容器当中，如果是从GitHub上的例子，直接可以`git clone xxx`:
+然后接下来我们需要把`server.js`拷贝到容器当中，如果是从 GitHub 上的例子，直接可以`git clone xxx`:
 
 ```dockerfile
 # 复制 server.js
 COPY ./server.js $WORK_DIR/server.js
 ```
 
-在启动服务器之前， 我们可以选择安装`pm2`来管理我们的node程序：
+在启动服务器之前， 我们可以选择安装`pm2`来管理我们的 node 程序：
 
 ```dockerfile
 # 国内环境可以带上 registry
 RUN sudo npm install pm2 -g -d --registry https://registry.npm.taobao.org
 ```
 
-最后直接启动我们的服务，这里请注意，Docker不支持以`daemon`方式启动的任何服务:
+最后直接启动我们的服务，这里请注意，Docker 不支持以`daemon`方式启动的任何服务:
 
 ```dockerfile
 # 启动服务
@@ -377,15 +374,15 @@ CMD ["pm2","start","server.js"]
 EXPOSE 3000
 ```
 
-然后执行shell script：
+然后执行 shell script：
 
 ```shell
 docker build - < Dockerfile
 ```
 
-下面附上完整的Dockerfile:
+下面附上完整的 Dockerfile:
 
-````dockerfile
+```dockerfile
 # Docker file 文件头
 FROM ubuntu:16.04
 MAINTAINER Nomand <iamnomand@gmail.com>
@@ -417,7 +414,7 @@ RUN apt-get install -y -q --no-install-recommends \
 # 可以通过 echo 来输出当前信息
 RUN echo '正在安装 nodejs'
 ENV NODE_VERSION=7
-RUN curl -o- https://deb.nodesource.com/setup_$NODE_VERSION.x | bash -       
+RUN curl -o- https://deb.nodesource.com/setup_$NODE_VERSION.x | bash -
 RUN sudo apt-get install -y nodejs
 # 这里我们先简单指定 /home/hello 为我们的工作目录
 ENV WORK_DIR=/home/hello
@@ -432,7 +429,7 @@ RUN sudo npm install pm2 -g -d --registry https://registry.npm.taobao.org
 # RUN unset https_proxy
 CMD ["pm2","start","server.js"]
 EXPOSE 3000
-````
+```
 
 ### Docker-compose
 
@@ -444,20 +441,20 @@ EXPOSE 3000
 
 Compose 项目由 Python 编写，实现上调用了 Docker 服务提供的 API 来对容器进行管理
 
-#### 安装 Docker-compose 
+#### 安装 Docker-compose
 
-在Mac OSX 系统上安装完Docker以后默认自带了Compose，在Linux系统上需要手动安装：
+在 Mac OSX 系统上安装完 Docker 以后默认自带了 Compose，在 Linux 系统上需要手动安装：
 
 ```shell
 sudo curl -o /usr/local/bin/docker-compose -L "https://github.com/docker/compose/releases/download/1.11.2/docker-compose-$(uname -s)-$(uname -m)"
 sudo chmod +x /usr/local/bin/docker-compose
 ```
 
-> 安装的过程当中有可能会安装所需的其他依赖，比如Python
+> 安装的过程当中有可能会安装所需的其他依赖，比如 Python
 
-#### 编写yml
+#### 编写 yml
 
-安装完后，我们就可以来以上面的简单的Node.js应用为例，去编写`docker-compose.yml`，更方面的编排我们的Docker应用了。
+安装完后，我们就可以来以上面的简单的 Node.js 应用为例，去编写`docker-compose.yml`，更方面的编排我们的 Docker 应用了。
 
 首先在原来的目录下面新建一个命名为`docker-compose.yml`的文件。
 
@@ -472,7 +469,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 version: '2'
 ```
 
-我们在这里指定compose file 的版本为2，来告诉解析器如何解析。
+我们在这里指定 compose file 的版本为 2，来告诉解析器如何解析。
 
 > 版本这里不深入，对应的版本信息可以在这里找到：[版本信息](https://docs.docker.com/compose/compose-file/compose-versioning/)
 
@@ -485,7 +482,7 @@ services:
       context: .
     container_name: docker_work_space
     ports:
-         - "3000:3000"
+      - '3000:3000'
     tty: true
 ```
 

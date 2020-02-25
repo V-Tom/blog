@@ -1,71 +1,71 @@
 ---
-title: "React Native ART 介绍与实践"
-subTitle: "React Native ART 介绍与实践"
-summary: "React Native ART 介绍与实践"
-tags: ["React","FrontEnd","RN","D3"]
+title: 'React Native ART 介绍与实践'
+subTitle: 'React Native ART 介绍与实践'
+summary: 'React Native ART 介绍与实践'
+tags: ['React', 'FrontEnd', 'RN', 'D3']
 date: 2017-12-13T15:29:40+08:00
 ---
 
 ### React Native ART 由来
 
-[React-Art ](https://github.com/reactjs/react-art) 是 `Reactjs` 团队基于 [Art](https://github.com/sebmarkbage/art)（一个兼容各个浏览器SVG绘制的API封装）开发的模块，让 `React` 开发者能使用 `jsx` 语法绘制 `svg`。
+[React-Art ](https://github.com/reactjs/react-art) 是 `Reactjs` 团队基于 [Art](https://github.com/sebmarkbage/art)（一个兼容各个浏览器 SVG 绘制的 API 封装）开发的模块，让 `React` 开发者能使用 `jsx` 语法绘制 `svg`。
 
-`React Native` 团队分别在0.10.0和0.18.0也添加了iOS和Android平台对 `react-art` 的支持，官网文档至今对其只字未提。本文旨在介绍安静躺在 [react-native/Libraries/](https://github.com/facebook/react-native/blob/master/Libraries/ART/ReactNativeART.js) 里的`ART`，并展示一些实践结果。
+`React Native` 团队分别在 0.10.0 和 0.18.0 也添加了 iOS 和 Android 平台对 `react-art` 的支持，官网文档至今对其只字未提。本文旨在介绍安静躺在 [react-native/Libraries/](https://github.com/facebook/react-native/blob/master/Libraries/ART/ReactNativeART.js) 里的`ART`，并展示一些实践结果。
 
-在React Native中ART是个非常重要的库，它让非常酷炫的绘图及动画变成了可能。但是可能是知道的人真的不多导致文档及少中文更少。很多都是把英文的参数列表翻译过来，也没有案例。
+在 React Native 中 ART 是个非常重要的库，它让非常酷炫的绘图及动画变成了可能。但是可能是知道的人真的不多导致文档及少中文更少。很多都是把英文的参数列表翻译过来，也没有案例。
 
 ### 为什么用 ART
 
 `React Native` 本身自带的 `<Image>` 有很多缺陷：
 
-首先是不支持 SVG 格式的资源，目前的解决方案有通过 [ReactNative-SVG](https://github.com/react-native-community/react-native-svg) 进行实现，但是这个库需要更改客户端bundle文件，带来一定的风险。
+首先是不支持 SVG 格式的资源，目前的解决方案有通过 [ReactNative-SVG](https://github.com/react-native-community/react-native-svg) 进行实现，但是这个库需要更改客户端 bundle 文件，带来一定的风险。
 
-其次是 [Image decoding can take more than a frame-worth of time](https://facebook.github.io/react-native/docs/images.html#off-thread-decoding)，图片的解码由于不在主线程中进行，所以不能确保所有图片和内容在同一帧内出现，使用 `<Image> `标签的制作的组件里的图（比如icon）可能是三三两两“闪现”出来的，让人怀疑是个`webview`，体验远不如原生，尤其是在开发环境下最为明显。
+其次是 [Image decoding can take more than a frame-worth of time](https://facebook.github.io/react-native/docs/images.html#off-thread-decoding)，图片的解码由于不在主线程中进行，所以不能确保所有图片和内容在同一帧内出现，使用 `<Image>`标签的制作的组件里的图（比如 icon）可能是三三两两“闪现”出来的，让人怀疑是个`webview`，体验远不如原生，尤其是在开发环境下最为明显。
 
 其次就是不能支持矢量图形，必须放置 `@2x` 或者 `@3x` 对应的图片。
 
-### ART能干什么
+### ART 能干什么
 
-俗话说，**库如其名**，背负着如此具有“艺术感”名字的ART生来就是为了绘制矢量图的，或者说是 **画UI的**，ART可以解决上诉的所有缺陷。
+俗话说，**库如其名**，背负着如此具有“艺术感”名字的 ART 生来就是为了绘制矢量图的，或者说是 **画 UI 的**，ART 可以解决上诉的所有缺陷。
 
 在我看来，或者说我目前业务需求用到的功能：
 
-- ART 可以解决上诉 `<Image> ` 的缺陷：解码和矢量图形
-- ART 可以实现 UI 上的一些渐变，比如渐变按钮，渐变背景或者底色。以及一些交互性较强的动画——**画UI**
+- ART 可以解决上诉 `<Image>` 的缺陷：解码和矢量图形
+- ART 可以实现 UI 上的一些渐变，比如渐变按钮，渐变背景或者底色。以及一些交互性较强的动画——**画 UI**
 - ART 另外一个场景就是简单数据可视化。
 
 ### 使用 ART
 
-> 本文使用的 RN版本为0.50.1
+> 本文使用的 RN 版本为 0.50.1
 
-> 本文一些英语词汇出于编写角度进行了简写，RN是 `React Native` 的简写
+> 本文一些英语词汇出于编写角度进行了简写，RN 是 `React Native` 的简写
 
-> Android默认就包含ART库，IOS需要单独添加依赖库。
+> Android 默认就包含 ART 库，IOS 需要单独添加依赖库。
 
-- ART在iOS上使用需要事先导入ART的链接库，找到 `node_modules/react-native/Libraries/ART/ART.xcdoeproj` 拖入Xcode对应项目的 `Libraries`
-- 打开 `General Settings `添加 `libART.a` 到 `Linked Frameworks and Libraries` 列表
-- `cmd+b `重新构建项目
+- ART 在 iOS 上使用需要事先导入 ART 的链接库，找到 `node_modules/react-native/Libraries/ART/ART.xcdoeproj` 拖入 Xcode 对应项目的 `Libraries`
+- 打开 `General Settings`添加 `libART.a` 到 `Linked Frameworks and Libraries` 列表
+- `cmd+b`重新构建项目
 
 #### 基本 API
 
-[RN ART 文档 (非官方)](https://github.com/react-native-china/react-native-ART-doc/blob/master/doc.md) 在github上有这样比较全一篇文档，可以选择直接看它了解使用。
+[RN ART 文档 (非官方)](https://github.com/react-native-china/react-native-ART-doc/blob/master/doc.md) 在 github 上有这样比较全一篇文档，可以选择直接看它了解使用。
 
-`ART` 目前的API有：
+`ART` 目前的 API 有：
 
-- `Surface` 标签对应svg中的`SVG`标签，所有ART的jsx内容需要被其包含
+- `Surface` 标签对应 svg 中的`SVG`标签，所有 ART 的 jsx 内容需要被其包含
 - `Group` 标签对应 `g` 标签
 - `Shape` 标签对应 `path` 标签
 - `Text` 标签对应 `text` 标签
-- `Transform` 做图形变换的API
-- `Path` 绘制路径API
-- `LinearGradient` 创建线性渐变API
-- `RadialGradient` 创建径向渐变API
+- `Transform` 做图形变换的 API
+- `Path` 绘制路径 API
+- `LinearGradient` 创建线性渐变 API
+- `RadialGradient` 创建径向渐变 API
 
 > 本文不介绍 SVG ，读者可以自行线下学习。
 
 可以看到 ART 和 SVG 还是有不同的，有点像是阉割后的 SVG，当然已经有开发者做了实现，可以方便地使用 SVG 标签写 [ReactNative-SVG](https://github.com/react-native-community/react-native-svg) ，这种方式的缺点上文已经说过。
 
-在本文例子当中，我们使用原原本本的ART实践。
+在本文例子当中，我们使用原原本本的 ART 实践。
 
 #### 基础例子：
 
@@ -73,21 +73,13 @@ date: 2017-12-13T15:29:40+08:00
 
 ```javascript
 import React, { Component } from 'react'
-import {
-  View,
-  Dimensions,
-  ART
-} from 'react-native'
+import { View, Dimensions, ART } from 'react-native'
 
 export default class Line extends Component {
   render() {
     return (
-      <View
-      >
-        <ART.Surface
-          width={Dimensions.get('window').width}
-          height={100}
-        >
+      <View>
+        <ART.Surface width={Dimensions.get('window').width} height={100}>
           <ART.Shape
             d={new ART.Path().moveTo(50, 50).lineTo(100, 100)}
             stroke="#000000"
@@ -100,13 +92,13 @@ export default class Line extends Component {
 }
 ```
 
-`Surface ` 必须是ART内容的父层，并且其中不能包含非ART标签（否则直接闪退…），需要指定宽高，很多时候绘制无效或者缺角有可能是 `Path` 超过了 `Shape` 的绘制区域。
+`Surface` 必须是 ART 内容的父层，并且其中不能包含非 ART 标签（否则直接闪退…），需要指定宽高，很多时候绘制无效或者缺角有可能是 `Path` 超过了 `Shape` 的绘制区域。
 
-`Group ` 可有可无，当绘制内容较多时可以用其统一管理，可以把它当做 `View`标签使用，可制定内容在画布绘制的起点。
+`Group` 可有可无，当绘制内容较多时可以用其统一管理，可以把它当做 `View`标签使用，可制定内容在画布绘制的起点。
 
-`Shape ` 是目前ART绘制的首要入口，`d` 属性对标svg的 `path` 标签上的 `d` 属性。
+`Shape` 是目前 ART 绘制的首要入口，`d` 属性对标 svg 的 `path` 标签上的 `d` 属性。
 
-所有的ART标签都可以使用 `transform` 属性做变换。
+所有的 ART 标签都可以使用 `transform` 属性做变换。
 
 `Shape` 当中的 `d` 类似于 svg 的 path，可以通过 `ART.Path` 生成，比如下面这些是绘制的一些简单图形：
 
@@ -115,18 +107,14 @@ export default class Line extends Component {
 ```javascript
 // 绘制圆形
 function circlePathRender() {
-  
   const path = Path()
-  	.moveTo(0,50)
+    .moveTo(0, 50)
     .arc(0, radius * 2, radius)
     .arc(0, radius * -2, radius)
-    .close(); // 闭合路径
-  
+    .close() // 闭合路径
+
   // path 可以直接作为 props 传给 shape
-  return <ART.Shape 
-           d={path} 
-           fill={'#2ba'}
-          />
+  return <ART.Shape d={path} fill={'#2ba'} />
 }
 ```
 
@@ -136,21 +124,16 @@ function circlePathRender() {
 // 绘制多边形
 function polygonPathRender() {
   var path = Path()
-  	.moveTo(10, 10)
+    .moveTo(10, 10)
     .lineTo(20, 30)
     .lineTo(30, 40)
-    .close(); // 闭合路径
-  
-  return <ART.Shape 
-           d={path} 
-           fill={'#00a'} 
-           stroke="yellow" 
-           strokeWidth={4}
-          />
+    .close() // 闭合路径
+
+  return <ART.Shape d={path} fill={'#00a'} stroke="yellow" strokeWidth={4} />
 }
 ```
 
-`Path` 还有一些API来满足日常绘图要求：`arcTo`/`curve`/`line`/`Text`
+`Path` 还有一些 API 来满足日常绘图要求：`arcTo`/`curve`/`line`/`Text`
 
 - 文字
 
@@ -166,7 +149,7 @@ function textRender() {
     >
       Lorem ipsum dolor sit amet
     </ART.Text>
-  );
+  )
 }
 ```
 
@@ -182,11 +165,11 @@ function linearGradientRender() {
     "0.7": "#aa4422",
     "1": "rgba(255,255,255,0.5)"
   }, 0, 0, 100, 200);
-  
+
   // 这里的 d props(Path) 简略
-  return <ART.Shape 
-           d={...} 
-           fill={linearGradient} 
+  return <ART.Shape
+           d={...}
+           fill={linearGradient}
           />
 }
 
@@ -195,7 +178,7 @@ function linearGradientRender() {
 `LinearGradient` 构造函数第一个参数是设定渐变色的对象。
 
 使用诸如`0.3`/`.52`/`1`这样的属性表示`30%`/`52%`/`100%`，值为颜色值，不符合要求的键值对会被忽略。
-后面四个参数分别表示：起点x，起点y，终点x，终点y.
+后面四个参数分别表示：起点 x，起点 y，终点 x，终点 y.
 
 ```javascript
 // radialGradient 可赋值给Path或者Text标签的fill属性
@@ -207,19 +190,19 @@ function radialGradientRender() {
     "0.7": "#aa4422",
     "1": "rgba(255,255,255,0.5)"
   }, 0, 0, 100, 200);
-  
+
   // 这里的 d props(Path) 简略
-  return <ART.Shape 
-           d={...} 
-           fill={radialGradient} 
+  return <ART.Shape
+           d={...}
+           fill={radialGradient}
           />
 }
 
 ```
 
-`RadialGradient `构造函数第一个参数是和线性渐变相同的，后续六个分别表示：焦点x，焦点y，x半轴长，y半轴长，原点x，原点y。
+`RadialGradient`构造函数第一个参数是和线性渐变相同的，后续六个分别表示：焦点 x，焦点 y，x 半轴长，y 半轴长，原点 x，原点 y。
 
-### ART 动画 
+### ART 动画
 
 大多数情况下，在 React Native 中创建动画是推荐使用 [Animated API](https://facebook.github.io/react-native/docs/animated.html) 的，其提供了三个主要的方法用于创建动画：
 
@@ -233,35 +216,28 @@ function radialGradientRender() {
 
 ```javascript
 import React, { Component } from 'react'
-import {
-  ART,
-  View,
-} from 'react-native';
+import { ART, View } from 'react-native'
 
-const {
-  Surface,
-  Group,
-  Shape,
-} = ART;
+const { Surface, Group, Shape } = ART
 
-export default class ARTSimpleLine extends Component{
-    render(){
-        return (
-            <View>
-              <Surface width={500} height={500}>
-                <Group>
-                  <Shape
-                    d="M0,100L60,160L120,60L180,140L240,100L300,120"
-                    stroke="#000"
-                    strokeWidth={1}
-                    // 设置 shape X 偏移值
-                    x={50}
-                    />
-                </Group>
-              </Surface>
-            </View>
-          )
-    }
+export default class ARTSimpleLine extends Component {
+  render() {
+    return (
+      <View>
+        <Surface width={500} height={500}>
+          <Group>
+            <Shape
+              d="M0,100L60,160L120,60L180,140L240,100L300,120"
+              stroke="#000"
+              strokeWidth={1}
+              // 设置 shape X 偏移值
+              x={50}
+            />
+          </Group>
+        </Surface>
+      </View>
+    )
+  }
 }
 ```
 
@@ -271,7 +247,7 @@ export default class ARTSimpleLine extends Component{
 
 实际上我们可以通过一些工具生成 Path 来做简单的数据可视化。
 
-而path data由一系列的命令组成，比如上面代码当中的：
+而 path data 由一系列的命令组成，比如上面代码当中的：
 
 > SVG 的 path 这里不详细介绍，可以参考 [SVG path tutorial](https://developer.mozilla.org/zh-CN/docs/Web/SVG/Tutorial/Paths)
 
@@ -290,7 +266,6 @@ M0,100L60,160L120,60L180,140L240,100L300,120
 - [Curves](https://github.com/d3/d3-shape#curves)
 - [Symbols](https://github.com/d3/d3-shape#symbols)
 
-
 > 这里推荐一个在线查看 [D3 shape demo](https://www.pshrmn.com/tutorials/d3/shapes/)
 
 我们暂时只简单的用到了 `Lines` 生成器。
@@ -298,7 +273,7 @@ M0,100L60,160L120,60L180,140L240,100L300,120
 首先生明一个 `line generator`：
 
 ```javascript
-const lineGenerator = d3.line();
+const lineGenerator = d3.line()
 ```
 
 我们来定义一个坐标数组：
@@ -310,20 +285,20 @@ const points = [
   [120, 60],
   [180, 140],
   [240, 100],
-  [300, 120]
-];
+  [300, 120],
+]
 ```
 
-接着我们传入points参数来调用lineGenerator：
+接着我们传入 points 参数来调用 lineGenerator：
 
 ```javascript
-const pathData = lineGenerator(points);
+const pathData = lineGenerator(points)
 // pathData is "M0,100L60,160L120,60L180,140L240,100L300,120"
 ```
 
-lineGenerator完成的工作就是创建了一个M(move to)和L（line to）命令的字符串，这样我们就得到了Path Data。
+lineGenerator 完成的工作就是创建了一个 M(move to)和 L（line to）命令的字符串，这样我们就得到了 Path Data。
 
-这是我们想要的 Path Data吗？
+这是我们想要的 Path Data 吗？
 
 显然不是，我们需要 Path Data 尽量具有以下特征：
 
@@ -332,7 +307,7 @@ lineGenerator完成的工作就是创建了一个M(move to)和L（line to）命�
 
 查阅文档，发现 [line.curve](https://github.com/d3/d3-shape#line_curve) 方法可以实现特征一，至于 [Curve](https://github.com/d3/d3-shape#curves) ，D3 当中有做了详细的解释：
 
->While [lines](https://github.com/d3/d3-shape#lines) are defined as a sequence of two-dimensional [*x*, *y*] points, and [areas](https://github.com/d3/d3-shape#areas) are similarly defined by a topline and a baseline, there remains the task of transforming this discrete representation into a continuous shape: *i.e.*, how to interpolate between the points. A variety of curves are provided for this purpose.
+> While [lines](https://github.com/d3/d3-shape#lines) are defined as a sequence of two-dimensional [*x*, *y*] points, and [areas](https://github.com/d3/d3-shape#areas) are similarly defined by a topline and a baseline, there remains the task of transforming this discrete representation into a continuous shape: _i.e._, how to interpolate between the points. A variety of curves are provided for this purpose.
 
 > 简单翻译一下：线被定义为二维[x,y]点序列，为了将离散转换为连续形状的任务，D3 提供了各种曲线（ps：曲线实现是一个黑盒，使用者无需关心如何实现，可以查看 [splines](https://people.cs.clemson.edu/~dhouse/courses/405/notes/splines.pdf)
 
@@ -343,17 +318,15 @@ curve 通常情况下不会直接构建或者生成，只会在调用 `line.curv
 - **curveBasis**
 - **curveCardinal**
 
-
-- **curveBasisClosed**
-- **...**
+* **curveBasisClosed**
+* **...**
 
 这里只简单列出一些方法，而且我们这里只用到一种方法：**curveCardinal**
 
 按照 D3 给出的例子，代码是下面这样的：
 
 ```javascript
-const line = d3.line()
-    .curve(d3.curveCardinal);
+const line = d3.line().curve(d3.curveCardinal)
 ```
 
 **curveCardinal** 的作用官方是这样介绍的：
@@ -362,7 +335,7 @@ const line = d3.line()
 
 官方介绍太学术化，简单理解为：使用用户传入的控制点坐标来生成曲线。
 
-简单和其他的方法比较一下，没有产生一个闭环，而且使用了第一个和最后一个控制点坐标，而且张力默认为0。
+简单和其他的方法比较一下，没有产生一个闭环，而且使用了第一个和最后一个控制点坐标，而且张力默认为 0。
 
 然后我们就可以生成这样一个 Path Data
 
@@ -388,33 +361,38 @@ const data = [820, 932, 631, 934, 890, 1330, 1320]
 当然可以，上诉代码可以修改为：
 
 ```javascript
-const line = d3.line()
-    .x(function(d) { return x(d.date); })
-    .y(function(d) { return y(d.value); })
-    .curve(d3.curveCardinal);
+const line = d3
+  .line()
+  .x(function(d) {
+    return x(d.date)
+  })
+  .y(function(d) {
+    return y(d.value)
+  })
+  .curve(d3.curveCardinal)
 ```
 
 你可能会说这个 `line.x` 和 `line.y` 是个什么鬼？
 
 关于 `line.x` 官方是这样解释：
 
-> If *x* is specified, sets the x accessor to the specified function or number and returns this line generator. If *x* is not specified, returns the current x accessor, which defaults to:
+> If _x_ is specified, sets the x accessor to the specified function or number and returns this line generator. If _x_ is not specified, returns the current x accessor, which defaults to:
 >
 > ```javascript
 > function x(d) {
->   return d[0];
+>   return d[0]
 > }
 > ```
 
 简单来说就是：如果指定 `x` ，则将 x accessor 设置为指定的函数或编号并返回此行 generator，什么意思呢？
 
-这个可以理解为一个辅助函数，参照上面例子我们自定义的一个坐标数组，默认情况下每一个数组元素都代表了一个二维的数组，比如 `[0,100]` ，然而我们也可以告诉 `line generator ` 来如何自定义解读传入的数据，而这就要使用对应的 `accessor functions` 了。
+这个可以理解为一个辅助函数，参照上面例子我们自定义的一个坐标数组，默认情况下每一个数组元素都代表了一个二维的数组，比如 `[0,100]` ，然而我们也可以告诉 `line generator` 来如何自定义解读传入的数据，而这就要使用对应的 `accessor functions` 了。
 
-至于 `line.y` 当然基本也是一样的概念，但是默认的 Y accessor为：
+至于 `line.y` 当然基本也是一样的概念，但是默认的 Y accessor 为：
 
 ```javascript
 function y(d) {
-  return d[1];
+  return d[1]
 }
 ```
 
@@ -437,25 +415,18 @@ const data = [820, 932, 631, 934, 890, 1330, 1320]
 ```javascript
 import React, { Component } from 'react'
 import * as d3 from 'd3-shape'
-import {
-  ART,
-  View,
-} from 'react-native';
+import { ART, View } from 'react-native'
 
-const {
-  Surface,
-  Group,
-  Shape,
-} = ART;
+const { Surface, Group, Shape } = ART
 
 const data = [
-  { "data": "Mon", "value": 820 },
-  { "data": "Tue", "value": 932 },
-  { "data": "Wed", "value": 631 },
-  { "data": "Thu", "value": 934 },
-  { "data": "Fri", "value": 890 },
-  { "data": "Sat", "value": 1330 },
-  { "data": "Sun", "value": 1320 }
+  { data: 'Mon', value: 820 },
+  { data: 'Tue', value: 932 },
+  { data: 'Wed', value: 631 },
+  { data: 'Thu', value: 934 },
+  { data: 'Fri', value: 890 },
+  { data: 'Sat', value: 1330 },
+  { data: 'Sun', value: 1320 },
 ]
 
 const CHART_WIDTH = 375
@@ -465,25 +436,21 @@ const X_AXIS_OFFSET = 50
 const MAX_Y_AXIS = 1600
 const MIN_Y_AXIS = 0
 
-const lineGenerator = d3.line()
+const lineGenerator = d3
+  .line()
   .x((d, i) => i * X_AXIS_OFFSET)
-  .y(d => CHART_HEIGHT - CHART_HEIGHT * Math.min(1, (d.value / MAX_Y_AXIS)))
-  .curve(d3.curveCardinal);
+  .y(d => CHART_HEIGHT - CHART_HEIGHT * Math.min(1, d.value / MAX_Y_AXIS))
+  .curve(d3.curveCardinal)
 
 const path = lineGenerator(data)
 
 export default class ReactNativeART extends Component {
   render() {
-
     return (
       <View>
         <Surface width={CHART_WIDTH} height={CHART_HEIGHT}>
           <Group>
-            <Shape
-              d={path}
-              stroke="#000"
-              strokeWidth={1}
-            />
+            <Shape d={path} stroke="#000" strokeWidth={1} />
           </Group>
         </Surface>
       </View>
@@ -501,7 +468,15 @@ export default class ReactNativeART extends Component {
 实际生产的二维坐标为：
 
 ```javascript
-[[0,146.25],[50,125.25],[100,131.0625],[150,124.875],[200,58.125],[250,50.625],[300,52.5]]
+;[
+  [0, 146.25],
+  [50, 125.25],
+  [100, 131.0625],
+  [150, 124.875],
+  [200, 58.125],
+  [250, 50.625],
+  [300, 52.5],
+]
 ```
 
 根据坐标生成 Path Data 绘制出来的图表为：
@@ -511,7 +486,7 @@ export default class ReactNativeART extends Component {
 一个基本的 line 图表就这样生成了，接下来我们做一些美化操作：
 
 - 添加 Point
-- 添加 X 和 Y 轴的坐标和label
+- 添加 X 和 Y 轴的坐标和 label
 
 我们可以通过 `ART.Path` 来绘制圆形来模拟 Point：
 
@@ -522,7 +497,7 @@ export default class ReactNativeART extends Component {
     return data.map((d, i) => {
 
       if (i === 0) return null
-      
+
       return (
         <Shape
           key={i}
@@ -618,8 +593,6 @@ export default class ReactNativeART extends Component {
   }
 ```
 
-
-
 ![Art curve with axis](./ArtCurveWithAxis.png)
 
 这个图表看起来似乎很单调，我们添加一些 area fill 效果。
@@ -664,7 +637,7 @@ renderPath(data) {
 
 - [sebmarkbage ART](https://github.com/sebmarkbage/art)
 - [React-Art ](https://github.com/reactjs/react-art)
-- [react-native-svg](https://github.com/react-native-community/react-native-svg) 让ART支持所有svg标签。
-- [react-native-svg-uri](https://github.com/matc4/react-native-svg-uri) 依赖上面的`react-native-svg`让`<Image>`标签的source可使用svg的uri。
-- [react-native-progress](https://github.com/oblador/react-native-progress) ART做的进度条组件。
+- [react-native-svg](https://github.com/react-native-community/react-native-svg) 让 ART 支持所有 svg 标签。
+- [react-native-svg-uri](https://github.com/matc4/react-native-svg-uri) 依赖上面的`react-native-svg`让`<Image>`标签的 source 可使用 svg 的 uri。
+- [react-native-progress](https://github.com/oblador/react-native-progress) ART 做的进度条组件。
 - [Animated Charts in React Native using D3 and ART](https://medium.com/the-react-native-log/animated-charts-in-react-native-using-d3-and-art-21cd9ccf6c58)
