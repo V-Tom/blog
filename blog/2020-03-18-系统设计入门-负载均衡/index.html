@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="Keywords" content="">
+    <meta name="full-screen" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#006cb4">
+    <meta name="apple-mobile-web-app-title" content="TOM&#39;s zone">
+    <meta name="description" content="TOM&#39;s zone">
+    <link rel="dns-prefetch" href="https://hasaki.xyz">
+    <link rel="preconnect" href="https://hasaki.xyz">
+    <link rel="manifest" href="/sw/manifest.json"/>
+<title>系统设计入门-负载均衡 - TOM&#39;s zone</title>
+
+<meta name="description" content="本文是根据 system-design-primer（系统设计入门） 整理，本文主要讲负载均衡
+ 数据流量过大的网络中，尤其是高并发（High Concurrency）网络，单一设备一般是无法承担的，需要多台设备进行数据分流，而负载均衡（Load Balance）就是将请求或者数据均匀分摊到多个操作单元上执行。
+高并发常用的一些指标有：
+ 响应时间（Response Time） 吞吐量（Throughput） 每秒查询率（Query Per Second），简称 QPS  负载均衡器能帮助水平扩展（Horizontal scaling），提高性能和可用性。相对使用商业硬件的性价比更高，并且比在单台硬件上垂直扩展（Vertical scaling）更贵的硬件具有更高的可用性。
+ 水平拓展：增强单机硬件性能或者优化单机架构 垂直拓展：只要增加服务器数量，就能线性扩充系统性能  针对负载均衡有各种各样的实现，我们来简单梳理一下。
+客户端负载均衡 简单来讲，客户端会有一个服务器地址列表，由客户端自行选择目标服务器的 IP 地址。
+客户端不存在缓存的问题，也能检查服务可用性来选择可用 IP。
+DNS 负载均衡 DNS 维护着域名与 IP 地址之间的映射关系，而且是可以接受我们控制的，因此可以在这里实现负载均衡策略。
+ DNS 负载均衡可以通过 NS 记录将域名解析指给多台智能 DNS，以保障解析高可用，通过 IP 地址库及指定算法进行智能解析，可根据不同运营商、地理位置、内部应用情况进行智能解析分配。
+ DNS 负载均衡技术实现比较灵活，成本较低，也可以根据域名解析成用户地址最近的一个服务器地址。
+缺点也很明显：
+ 可靠性没有保障：DNS 并不检查服务器的可用性，即便目标服务器宕机或者无法访问了，也返回其 IP 地址 更新不及时：DNS 的解析结果往往会被层层缓存，记录更新无法立即生效 流量分配策略较为简单，支持的算法较少  另外一个问题，DNS 负载均衡默认采用的是 round-robin 算法，不能区分服务器之间的差异，也不能反应状态。
+K8s 当中也 不推荐使用 round-robin DNS ，个人看法是 DNS 轮询来做域名对应的 IP 扩容，负载均衡交给下层应用。">
+
+
+
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato|Raleway">
+
+
+    <link rel="stylesheet"
+          href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/ocean.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/javascript.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/python.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/go.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/css.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/swift.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/objectivec.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/rust.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/yaml.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/bash.min.js"></script>
+
+
+    <link rel="stylesheet" href="/css/bundle.min.css"/>
+<script src="/js/bundle.js"></script>
+
+<style>
+	a { color: #ff8181; }
+	blockquote {
+		background: rgba(255, 129, 129, .1);
+		border-left-color: #ff8181;
+		border-right-color: #ff8181; }
+	.bar a:hover {
+		color: #ff8181;
+		text-decoration: none; }
+	.sep {
+		margin-top: 2rem;
+		margin-bottom: 1rem;
+		margin-left:0;
+		width: 24rem;
+		border-top: 2px solid #ff8181; }
+    .bar li.active a{
+        color:#ff8181;
+    }
+</style>
+
+</head>
+
+<body>
+<header class="container no-print">
+	<div class="u-header">
+		<nav class="bar">
+	<ul><li>
+			<a href="/">
+				<img class="icon-text" src="/img/prev.svg"/>
+			</a>
+		</li>
+		
+		<li class="active"><a href="/blog/">Blog</a></li>
+		<li class=""><a href="/gallery/">Gallery</a></li>
+		<li class=""><a href="/life/">Life</a></li></ul>
+</nav>
+
+	</div>
+</header>
+<main class="container">
+
+<article>
+    <header><hgroup id="brand">
+  <h1>系统设计入门-负载均衡</h1>
+  <h5>
+    
+    <time datetime="2020-03-18 14:03:17 &#43;0800 CST">Mar 18, 2020</time>
+    <span class="no-print">
+      -
+      
+      <a href="/tags/backend">BackEnd</a>
+      </span>
+  </h5>
+
+  <a
+    style="margin-top: 1.2rem;display: inline-block;"
+    href="https://github.com/V-Tom/blog/blob/hugo/content/blog/2020-03-18-%e7%b3%bb%e7%bb%9f%e8%ae%be%e8%ae%a1%e5%85%a5%e9%97%a8-%e8%b4%9f%e8%bd%bd%e5%9d%87%e8%a1%a1/index.md"
+    >✨✨✨You can Edit this Article on Github site</a
+  >
+
+  <div id="git-update-time">
+  ✏️✏️✏️ This article .MD file was last updated at:
+  <b>Loading ...</b>
+</div>
+
+<script data-name="commits">
+  ;(async () => {
+    const b = document.querySelector('#git-update-time').querySelector('b')
+
+    if (window.location.href.includes('localhost')) {
+      b.innerHTML = 'localhost disable'
+      return
+    }
+
+    const commits = await fetch(
+      'https://api.github.com/repos/V-Tom/blog/commits?sha=hugo&path=content/blog\/2020-03-18-系统设计入门-负载均衡\/index.md',
+    ).then(res => res.json())
+    try {
+      const time = new Date(commits[0].commit.committer.date)
+      b.innerHTML = `${time.getFullYear()}-${time.getMonth() +
+        1}-${time.getDate()}`
+    } catch (e) {
+      b.innerHTML = 'unknown'
+    }
+  })()
+</script>
+
+
+  
+</hgroup>
+<hr class="sep" />
+</header>
+    <section id="markdown">
+        
+
+<blockquote>
+<p>本文是根据 <a href="https://github.com/donnemartin/system-design-primer">system-design-primer（系统设计入门）</a> 整理，本文主要讲负载均衡</p>
+</blockquote>
+
+<p>数据流量过大的网络中，尤其是高并发（High Concurrency）网络，单一设备一般是无法承担的，需要多台设备进行数据分流，而负载均衡（Load Balance）就是将请求或者数据<strong>均匀</strong>分摊到多个操作单元上执行。</p>
+
+<p>高并发常用的一些指标有：</p>
+
+<ul>
+<li>响应时间（Response Time）</li>
+<li>吞吐量（Throughput）</li>
+<li>每秒查询率（Query Per Second），简称 <code>QPS</code></li>
+</ul>
+
+<p>负载均衡器能帮助<strong>水平扩展（Horizontal scaling）</strong>，提高性能和可用性。相对使用商业硬件的性价比更高，并且比在单台硬件上<strong>垂直扩展（Vertical scaling）</strong>更贵的硬件具有更高的可用性。</p>
+
+<ul>
+<li>水平拓展：增强单机硬件性能或者优化单机架构</li>
+<li>垂直拓展：只要增加服务器数量，就能线性扩充系统性能</li>
+</ul>
+
+<p>针对负载均衡有各种各样的实现，我们来简单梳理一下。</p>
+
+<h2 id="客户端负载均衡">客户端负载均衡</h2>
+
+<p>简单来讲，客户端会有一个服务器地址列表，由客户端自行选择目标服务器的 IP 地址。</p>
+
+<p>客户端不存在缓存的问题，也能检查服务可用性来选择可用 IP。</p>
+
+<h2 id="dns-负载均衡">DNS 负载均衡</h2>
+
+<p>DNS 维护着域名与 IP 地址之间的映射关系，而且是可以接受我们控制的，因此可以在这里实现负载均衡策略。</p>
+
+<blockquote>
+<p>DNS 负载均衡可以通过 NS 记录将域名解析指给多台智能 DNS，以保障解析高可用，通过 IP 地址库及指定算法进行智能解析，可根据不同运营商、地理位置、内部应用情况进行智能解析分配。</p>
+</blockquote>
+
+<p>DNS 负载均衡技术实现比较灵活，成本较低，也可以根据域名解析成用户地址最近的一个服务器地址。</p>
+
+<p>缺点也很明显：</p>
+
+<ul>
+<li>可靠性没有保障：DNS 并不检查服务器的可用性，即便目标服务器宕机或者无法访问了，也返回其 IP 地址</li>
+<li>更新不及时：DNS 的解析结果往往会被层层缓存，记录更新无法立即生效</li>
+<li>流量分配策略较为简单，支持的算法较少</li>
+</ul>
+
+<p>另外一个问题，DNS 负载均衡默认采用的是 <code>round-robin</code> 算法，不能区分服务器之间的差异，也不能反应状态。</p>
+
+<p>K8s 当中也 <a href="https://kubernetes.io/docs/concepts/services-networking/service/#why-not-use-round-robin-dns">不推荐使用 round-robin DNS</a> ，个人看法是 DNS 轮询来做域名对应的 IP 扩容，负载均衡交给下层应用。</p>
+
+<h2 id="硬件负载均衡">硬件负载均衡</h2>
+
+<p>直接在服务器和外部网络间安装负载均衡硬件设备，这种设备我们通常称之为负载均衡器。</p>
+
+<p>由专门的设备完成，独立于操作系统，整体性能得到大量提高，加上更多的负载均衡策略，智能化的流量管理，可达到最佳的负载均衡需求。</p>
+
+<p>一般来说，硬件负载均衡在功能、性能上优于软件方式，可以做 4-7 层负载均衡，不过成本昂贵。</p>
+
+<p>硬件负载均衡常见的有 <a href="https://www.f5.com/">F5</a>。</p>
+
+<h2 id="osi-模型">OSI 模型</h2>
+
+<p>接下来就是软件负载均衡，在这之前我们要简单过一下 <a href="https://en.wikipedia.org/wiki/OSI_model">OSI（Open System Interconnect）参考模型</a>，OSI 将网络分为 7 个层次：</p>
+
+<p><img src="./osi-model-7-layers.svg" alt="osi-model-7-layers.svg" /></p>
+
+<p>自下而上，依次为：</p>
+
+<ul>
+<li><code>Physical Layer</code>：物理层，通过物理介质发送和接收原始比特流</li>
+<li><code>Data Link Layer</code>：数据链路层，在通过物理层连接的两个节点之间可靠地传输数据帧</li>
+<li><code>Network Layer</code>：网络层，构建和管理多节点网络，包括寻址，路由和流量控制</li>
+<li><code>Transport Layer</code>：传输层，在网络上各点之间可靠地传输数据段，包括分段，确认和多路复用</li>
+<li><code>Session Layer</code>：会话层，管理通信会话，即在两个节点之间以多次来回传输的形式连续交换信息</li>
+<li><code>Presentation Layer</code>：表现层，联网服务和应用程序之间的数据转换；包括字符编码，数据压缩和加密/解密</li>
+<li><code>Application Layer</code>：应用层，高级 API，包括资源共享，远程文件访问</li>
+</ul>
+
+<h2 id="layer-2-负载均衡-和-layer-3-负载均衡">Layer 2 负载均衡 和 Layer 3 负载均衡</h2>
+
+<p>Layer 2 负载均衡（本文简称为：L2）在数据链路层（Data Link Layer）工作，根据源/目标 MAC 地址进行分发，例如将虚拟 MAC 地址根据既定策略映射到实际 MAC 地址。</p>
+
+<p>Layer 3 负载均衡（本文简称为：L3）在网络层（Network Layer）工作，仅根据 IP 寻址（源和目标）来做出路由决策。</p>
+
+<p>根据 OSI 模型，越靠近底层，所能用来进行分发决策的信息越少，所以 L2 和 L3 的实际用途有限。</p>
+
+<h2 id="layer-4-负载均衡">Layer 4 负载均衡</h2>
+
+<p>Layer 4 负载均衡（本文简称为：L4）在 OSI 模型当中的传输层（transport layer）工作，根据数据包标头中记录的 <strong>源 IP 地址</strong> 和 <strong>目标 IP 地址以及端口</strong> （基于 TCP、UDP、IP）进行负载平衡决策，但是不考虑数据包的内容：</p>
+
+<blockquote>
+<p>When the Layer 4 load balancer receives a request and makes the load balancing decision, it also performs Network Address Translation (NAT) on the request packet, changing the recorded destination IP address from its own to that of the content server it has chosen on the internal network. Similarly, before forwarding server responses to clients, the load balancer changes the source address recorded in the packet header from the server’s IP address to its own. (The destination and source TCP port numbers recorded in the packets are sometimes also changed in a similar way.)</p>
+</blockquote>
+
+<p>当收到请求并做出负载平衡决定时，它还会对请求数据包执行网络地址转换（NAT），将记录的目标 IP 地址从其自身更改为在服务器上选择的内容服务器的目标 IP 地址，同样，在将服务器响应转发给客户端之前，负载均衡器会将记录在数据包头中的源地址从服务器的 IP 地址更改为自己的 IP 地址。</p>
+
+<p>另外 L4 根据从 TCP 流中前几个数据包中提取的地址信息做出路由决策，并且不检查包内容。通常是供应商提供的专用硬件设备，NAT 操作可能由专用芯片执行。</p>
+
+<p>与更复杂的 Layer 7 负载均衡相比，Layer 4 负载均衡所需的计算更少。</p>
+
+<p>当时商用硬件的功能不如现在强大，但是 CPU 和内存现在足够快且便宜，以至于在大多数情况下，第 4 层负载平衡的性能优势变得微不足道或无关紧要。</p>
+
+<p>常用的 L4 有 <a href="http://www.linuxvirtualserver.org/">LVS</a> 等等。</p>
+
+<h2 id="layer-7-负载均衡">Layer 7 负载均衡</h2>
+
+<p>Layer 7 负载均衡（本文简称：L7）在 OSI 模型当中最高一层工作：应用层（application layer）。</p>
+
+<p>L7 可以比 L4 处理复杂得多的方式路由网络流量，尤其适用于基于 <code>TCP</code> 的流量，例如 <code>HTTP</code>。</p>
+
+<blockquote>
+<p>Layer 7 load balancers base their routing decisions on various characteristics of the HTTP header and on the actual contents of the message, such as the URL, the type of data (text, video, graphics), or information in a cookie.</p>
+</blockquote>
+
+<p>L7 的路由决策基于 HTTP 标头的各种特征以及消息的实际内容，例如 URL，数据类型（文本，视频，图形）或 cookie 中的信息：</p>
+
+<p>就时间和所需的计算能力而言，L7 比 L4 昂贵，但是 L7 拥有更全面的上下文信息，可以在此基础上进行更聪明的全局决策，可以做流量控制，还能对内容进行优化和修改（比如压缩和加密）。</p>
+
+<p>由于现代硬件性能通常足够强大，以至于 L4 所节省的计算成本还不足以抵消 L7 所带来的更大灵活性和效率的好处。</p>
+
+<blockquote>
+<p>A device that performs Layer 7 load balancing is often referred to as a reverse‑proxy server.</p>
+</blockquote>
+
+<p>执行 Layer 7 负载均衡的设备通常称为反向代理服务器。</p>
+
+<p>上面所说的 L N 负载均衡其实都是根据 OSI 模型，和 TCP/IP 模型对比起来，严格来讲，L7 应该叫 L5~L7，因为结合了 OSI 模型中 5~7 层的相关信息：</p>
+
+<p><img src="./OSI-vs-TCPIP.jpg" alt="OSI-vs-TCPIP.jpg" /></p>
+
+<p>常用的 L7 有 <code>Nginx</code> 和 <code>HAproxy</code> 等等，下面我们会简单说一下 <code>Nginx</code> 的负载均衡。</p>
+
+<h2 id="nginx-上的负载均衡">Nginx 上的负载均衡</h2>
+
+<p>我们以 Nginx 上的 L7 HTTP 负载均衡为例，可以通过配置 <code>upstream</code> ：</p>
+
+<pre><code class="language-nginx">
+upstream backend {
+    server 10.10.12.45:80 weight=1;
+    server app.example.com:80 weight=2;
+}
+
+server {
+    location / {
+        proxy_pass http://backend;
+    }
+}
+
+</code></pre>
+
+<p>上面在 80 端口上配置了 2 台 HTTP server，其中 <code>weight</code> 代表<strong>权重</strong>，代表这 2 个 server 分配到的概率分别为 <sup>1</sup>&frasl;<sub>3</sub> 和 2/3。</p>
+
+<p>另外 nginx 的负载均衡策略有：</p>
+
+<ul>
+<li><code>Round robin</code>：默认策略</li>
+<li><code>Least connections</code>：此方法通过将当前请求代理到具有最少打开连接数的上游服务器来平衡负载</li>
+<li><code>least time</code>：依赖于 NGINX Plus，优先分配给响应时间最短的服务器</li>
+<li><code>hash</code>：管理员使用给定的文本，请求或运行时的变量或两者来定义哈希，nginx 通过当前 hash 来决定负载均衡</li>
+<li><code>Random</code>：随机</li>
+<li><code>IP hash</code>：只在 <code>HTTP</code> 下工作，来自同一个 ip 的请求永远只分配一台服务器，有效解决了动态网页存在的 <code>session</code> 共享问题。</li>
+</ul>
+
+<h2 id="nginx-health-checks">Nginx Health Checks</h2>
+
+<p>nginx 针对负载均衡也提供了 Health Checks（健康检查），分为被动检查（Passive Health Checks）和 主动检查（Active Health Checks），下面以 HTTP 为例：</p>
+
+<ul>
+<li>被动检查（Passive Health Checks）</li>
+</ul>
+
+<pre><code class="language-nginx">
+upstream backend {
+    server backend1.example.com:1234 max_fails=3 fail_timeout=3s;
+    server backend2.example.com:1234 max_fails=3 fail_timeout=3s;
+}
+
+</code></pre>
+
+<p>被动检查在 nginx 开源版本就可以得到支持。</p>
+
+<blockquote>
+<p>Use NGINX health checks with load balancing to ensure that only healthy upstream servers are utilized:
+NGINX passively moni‐ tors upstream HTTP, TCP, and UDP servers to ensure that they’re healthy and performing.</p>
+</blockquote>
+
+<p>使用健康检查可以当负载均衡保证只有健康的上游服务器才会被利用，这个功能在 nginx 当中默认开启，被动检查上游的 HTTP、TCP、UDP 服务来确保健康度和性能。</p>
+
+<ul>
+<li>主动检查（Active Health Checks）</li>
+</ul>
+
+<pre><code class="language-nginx">
+http {
+    server {
+        location / {
+            proxy_pass http://backend;
+            health_check interval=2s fails=2 passes=5 uri=/ match=welcome;
+        }
+    }
+     # status is 200, content type is &quot;text/html&quot;,
+     # and body contains &quot;Welcome to nginx!&quot;
+     match welcome {
+         status 200;
+         header Content-Type = text/html;
+         body ~ &quot;Welcome to nginx!&quot;;
+    }
+}
+
+</code></pre>
+
+<p>主动检查需要 nginx plus 版本支持。</p>
+
+<blockquote>
+<p>This health check configuration for HTTP servers checks the health of the upstream servers by making an HTTP request to the URI &lsquo;/&rsquo; every two seconds. The upstream servers must pass five consecutive health checks to be considered healthy. They are considered unheal‐ thy if they fail two consecutive checks. The response from the upstream server must match the defined match block,which defines the status code as 200, the header Content-Type value as &lsquo;text/html&rsquo;, and the string &ldquo;Welcome to nginx!&rdquo; in the response body. The HTTP match block has three directives: status, header, and body. All three of these directives have comparison flags, as well.</p>
+</blockquote>
+
+<p>根据上面的配置，上游服务器返回的内容必须符合定义的 <code>match</code> 字段。</p>
+
+<p>而且通过每隔 2（interval） 秒发出 HTTP 请求 URI（uri） <code>/</code> 来检测上游服务器的运行状况，上游服务器必须通过 5（passes） 次的连续健康检测才能被认为健康，如果 2（fails） 次连续健康检查不通过，则认为不健康。</p>
+
+<h2 id="reference">Reference</h2>
+
+<ul>
+<li><a href="http://horicky.blogspot.com/2010/10/scalable-system-design-patterns.html">Pragmatic Programming Techniques</a></li>
+<li><a href="https://www.nginx.com/resources/glossary/layer-4-load-balancing/">What Is Layer 4 Load Balancing?</a></li>
+<li><a href="https://www.nginx.com/resources/glossary/layer-7-load-balancing/">What Is Layer 7 Load Balancing?</a></li>
+<li><a href="https://cloud.tencent.com/developer/news/343236">有软件负载均衡，也有硬件负载均衡，选择哪个？</a></li>
+<li><a href="https://www.w3cschool.cn/architectroad/architectroad-dns-polling.html">lvs 为何不能完全替代 DNS 轮询</a></li>
+<li><a href="https://www.nginx.com/resources/library/nginx-cookbook-2019-edition">NGINX Cookbook Advanced Recipes for High Performance Load Balancing（2019 UPDATE）</a></li>
+</ul>
+
+    </section>
+    <nav class="no-print post-nav">
+        
+        <a class="prev-post" href="https://hasaki.xyz/blog/2020-01-20-%E8%BD%AC%E8%BD%BD%E7%8E%B0%E4%BB%A3%E6%B5%8F%E8%A7%88%E5%99%A8%E5%86%85%E9%83%A8%E6%8F%AD%E7%A7%98/">
+            <img class="icon-text" src="/img/prev.svg"/>转载：现代浏览器内部揭秘</a>
+        
+        
+    </nav>
+</article>
+
+
+
+<div id="disqus_thread" class="no-print"></div>
+<script type="text/javascript">
+  'use strict'
+  ;(function() {
+    if ('localhost' != window.location.hostname) {
+      var a = document.querySelector('#disqus_thread')
+      new IntersectionObserver(
+        function(b) {
+          b.forEach(function(d) {
+            if (0 < d.intersectionRatio && !a.classList.contains('active')) {
+              var e = document.createElement('script')
+              ;(e.type = 'text/javascript'), (e.async = !0)
+              ;(e.src =
+                '//' + 'hasaki-xyz' + '.disqus.com/embed.js'),
+                (
+                  document.getElementsByTagName('head')[0] ||
+                  document.getElementsByTagName('body')[0]
+                ).appendChild(e),
+                a.classList.add('active')
+            }
+          })
+        },
+        { rootMargin: '0px', threshold: 1 },
+      ).observe(a)
+    }
+  })()
+</script>
+
+<script type="text/javascript">
+  window.customElements.define(
+    'back-to-top',
+    class BackToTop extends HTMLElement {
+      constructor() {
+        super()
+      }
+
+      connectedCallback() {
+        const shadowRoot = this.attachShadow({ mode: 'open' })
+
+        shadowRoot.innerHTML = `
+          <style>
+            :host {
+              box-sizing: border-box;
+              position: fixed;
+              width: 55px;
+              height: 55px;
+              bottom: 8%;
+              right: 3%;
+              border-radius: 5px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              flex-direction: column;
+              cursor: pointer;
+              will-change: transform;
+              transform: translate3d(0, 500px, 0);
+              transition: transform 1s ease;
+              background: #ff8181;
+              border: 1px solid #ff8181;
+              color: #fff;
+            }
+            :host(.show) {
+              transform: translate3d(0, 0, 0);
+            }
+            :host::after,
+            :host::before {
+              content: '';
+              display: block;
+              box-sizing: border-box;
+              position: relative;
+            }
+            :host::before {
+              width: 8px;
+              height: 8px;
+              border-top: 2px solid;
+              border-left: 2px solid;
+              transform: rotate(45deg);
+              top: 4px;
+            }
+            :host::after {
+              width: 2px;
+              height: 16px;
+              top: -4px;
+              background: currentColor;
+            }
+        `
+
+        shadowRoot.host.addEventListener('click', e => {
+          window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: 'smooth',
+          })
+        })
+
+        const scrollHeight = document.documentElement.scrollHeight
+
+        window.addEventListener('scroll', e => {
+          if (document.documentElement.scrollTop > scrollHeight / 4) {
+            shadowRoot.host.classList.add('show')
+          } else {
+            shadowRoot.host.classList.remove('show')
+          }
+        })
+      }
+    },
+  )
+</script>
+<back-to-top></back-to-top>
+
+
+<style rel="catalog">
+  #catalog {
+    position: fixed;
+    min-width: 12vw;
+    left: 3vw;
+    top: 8vh;
+    overflow: auto;
+    height: calc(100% - 16vh);
+    background:
+      linear-gradient(
+        white 30%,
+        rgba(255, 255, 255, 0)
+      ),
+      linear-gradient(rgba(255, 255, 255, 0), white 70%) 0 100%,
+       
+        radial-gradient(
+          50% 0,
+          farthest-side,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        ),
+      radial-gradient(
+          50% 100%,
+          farthest-side,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        )
+        0 100%;
+    background:
+      linear-gradient(
+        white 30%,
+        rgba(255, 255, 255, 0)
+      ),
+      linear-gradient(rgba(255, 255, 255, 0), white 70%) 0 100%,
+       
+        radial-gradient(
+          farthest-side at 50% 0,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        ),
+      radial-gradient(
+          farthest-side at 50% 100%,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        )
+        0 100%;
+    background-repeat: no-repeat;
+    background-color: white;
+    background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
+
+     
+    background-attachment: local, local, scroll, scroll;
+  }
+  @media (max-width: 1280px) {
+    #catalog {
+      display: none;
+    }
+  }
+
+  #catalog::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cl-wrapper {
+    position: relative;
+  }
+
+  .cl-wrapper ul,
+  .cl-wrapper li {
+    margin: 0;
+    -moz-padding-start: 12px;
+    -webkit-padding-start: 12px;
+    list-style: none;
+  }
+
+  .cl-wrapper li > .cl-link.cl-link-active {
+    color: #ff8181;
+    transition: 0.5s;
+  }
+
+  .cl-wrapper li > .cl-transform.cl-link-active {
+    transform: translate(3px);
+  }
+
+  .cl-wrapper .cl-link {
+    cursor: pointer;
+    color: rgba(52, 73, 94, 0.5);
+    font-size: 13px;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .cl-wrapper .cl-marker {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+
+  .cl-wrapper .cl-marker path {
+    transition: all 0.3s ease;
+  }
+</style>
+<main id="catalog"></main>
+<script rel="catalog">
+  void (function() {
+    if (
+      window.innerWidth < 1024 ||
+      /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+    ) {
+      return
+    }
+
+    const Catalog = (function() {
+      return function(opts) {
+        let defaultOpts = {
+          linkClass: 'cl-link', 
+          linkActiveClass: 'cl-link-active', 
+          datasetName: 'data-cata-target', 
+          selector: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'], 
+          scrollWrapper: null, 
+          activeHook: null, 
+          topMargin: 0,
+          bottomMargin: 0,
+          cool: true, 
+        }
+
+        const Opt = Object.assign({}, defaultOpts, opts)
+
+        const $content = document.getElementById(Opt.contentEl) 
+        const $scroll_wrap = window 
+        const $catalog = document.getElementById(Opt.catalogEl) 
+
+        let allCatalogs = $content.querySelectorAll(Opt.selector.join())
+        let tree = getCatalogsTree(allCatalogs)
+
+        try {
+          $catalog.innerHTML = `<div class='cl-wrapper'>${generateHtmlTree(
+            tree,
+            { id: -1 },
+          )}<svg class="cl-marker" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+            <path stroke="#ff8181" stroke-width="3" fill="transparent" stroke-dasharray="0, 0, 0, 1000" stroke-linecap="round" stroke-linejoin="round" transform="translate(-0.5, -0.5)" />
+            </svg></div>`
+        } catch (e) {
+          console.error('error in progress-catalog', e)
+        }
+
+        const tocPath = $catalog.querySelector('.cl-marker path')
+        let tocItems, pathLength 
+
+        
+        window.addEventListener('resize', drawPath)
+        $catalog.addEventListener('click', clickHandler)
+        Opt.cool && $scroll_wrap.addEventListener('scroll', coolScrollHandler)
+        Opt.cool || $scroll_wrap.addEventListener('scroll', simpleScrollHandler)
+
+        setTimeout(drawPath) 
+
+        
+
+        function drawPath() {
+          tocItems = [...$catalog.querySelectorAll('li')]
+          tocItems = tocItems.map(function(liDom) {
+            const anchor = liDom.querySelector(`.${Opt.linkClass}`)
+            const target = document.getElementById(
+              anchor.getAttribute('data-cata-target'),
+            )
+
+            return {
+              listItem: liDom,
+              anchor: anchor,
+              target: target,
+            }
+          })
+          tocItems = tocItems.filter(item => !!item.target)
+
+          const path = []
+          let pathIndent
+
+          tocItems &&
+            tocItems.forEach(function(item, idx) {
+              const { offsetLeft, offsetTop, offsetHeight } = item.anchor,
+                x = Opt.cool ? offsetLeft - 5 : offsetLeft,
+                y = offsetTop,
+                height = offsetHeight
+
+              if (idx === 0) {
+                path.push('M', x, y, 'L', x, y + height)
+                item.pathStart = 0
+              } else {
+                if (pathIndent !== x) path.push('L', pathIndent, y) 
+                path.push('L', x, y)
+                tocPath.setAttribute('d', path.join(' '))
+                item.pathStart = tocPath.getTotalLength() || 0
+                path.push('L', x, y + height)
+              }
+              pathIndent = x
+              tocPath.setAttribute('d', path.join(' '))
+              item.pathEnd = tocPath.getTotalLength()
+            })
+          pathLength = tocPath.getTotalLength()
+          coolScrollHandler()
+        }
+
+        
+
+        function coolScrollHandler() {
+          const wrapHeight = document.documentElement.offsetHeight
+          let pathStart = pathLength,
+            pathEnd = 0,
+            visibleItems = 0
+          tocItems.forEach(function(liItem) {
+            const { bottom, top } = liItem.target.getBoundingClientRect(),
+              firstChild = liItem.listItem.firstChild
+            if (bottom > Opt.topMargin && top < wrapHeight - Opt.bottomMargin) {
+              firstChild.classList.remove(Opt.linkActiveClass)
+              Opt.cool && firstChild.classList.remove('cl-transform')
+            } else {
+              pathStart = Math.min(liItem.pathStart, pathStart)
+              pathEnd = Math.max(liItem.pathEnd, pathEnd)
+              visibleItems += 1
+              firstChild.classList.add(Opt.linkActiveClass)
+              Opt.cool && firstChild.classList.add('cl-transform')
+            }
+          })
+          if (visibleItems > 0 && pathStart < pathEnd && Opt.cool) {
+            tocPath.setAttribute('stroke-dashoffset', '1')
+            tocPath.setAttribute(
+              'stroke-dasharray',
+              `1, ${pathStart}, ${pathEnd - pathStart}, ${pathLength}`,
+            )
+            tocPath.setAttribute('opacity', '1')
+          } else {
+            tocPath.setAttribute('opacity', '0')
+          }
+        }
+
+        
+
+        function simpleScrollHandler(el) {
+          let scrollToEl = null
+          for (let i = allCatalogs.length - 1; i >= 0; i--) {
+            if (allCatalogs[i].offsetTop <= $scroll_wrap.scrollTop) {
+              scrollToEl = allCatalogs[i]
+              break
+            }
+          }
+          if (scrollToEl) setActiveItem(scrollToEl.id)
+          else setActiveItem(null) 
+        }
+
+        
+
+        function clickHandler({ target }) {
+          const datasetId = target.getAttribute(Opt.datasetName)
+          target.classList.contains(Opt.linkClass) &&
+            document
+              .getElementById(datasetId)
+              .scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }
+
+        
+
+        function getCatalogsTree(catalogs) {
+          let title,
+            tagName,
+            tree = [],
+            treeItem = {},
+            parentItem = { id: -1 },
+            lastTreeItem = null,
+            id
+
+          for (let i = 0; i < catalogs.length; i++) {
+            title = catalogs[i].innerText || catalogs[i].textContent
+            tagName = catalogs[i].tagName
+            id = 'heading-' + i
+            catalogs[i].id = id
+            treeItem = {
+              name: title,
+              tagName: tagName,
+              id: id,
+              level: +getLevel(tagName),
+              parent: parentItem,
+            }
+            if (lastTreeItem) {
+              if (getLevel(treeItem.tagName) > getLevel(lastTreeItem.tagName)) {
+                treeItem.parent = lastTreeItem
+              } else {
+                treeItem.parent = findParent(treeItem, lastTreeItem)
+              }
+            }
+            lastTreeItem = treeItem
+            tree.push(treeItem)
+          }
+          return tree
+        }
+
+        
+
+        function findParent(currTreeItem, lastTreeItem) {
+          let lastTreeParent = lastTreeItem.parent
+          while (
+            lastTreeParent &&
+            getLevel(currTreeItem.tagName) <= getLevel(lastTreeParent.tagName)
+          ) {
+            lastTreeParent = lastTreeParent.parent
+          }
+          return lastTreeParent || { id: -1 }
+        }
+
+        
+
+        function getLevel(tagName) {
+          return tagName ? tagName.slice(1) : 0
+        }
+
+        
+
+        function generateHtmlTree(tree, _parent) {
+          let ul,
+            hasChild = false
+          if (tree) {
+            ul = `<ul>`
+            for (let i = 0; i < tree.length; i++) {
+              if (isEqual(tree[i].parent, _parent)) {
+                hasChild = true
+                ul += `<li><div class='${Opt.linkClass} cl-level-${tree[i].level}' ${Opt.datasetName}='${tree[i].id}'>${tree[i].name}</div>`
+                ul += generateHtmlTree(tree, tree[i])
+                ul += '</li>'
+              }
+            }
+            ul += `</ul>`
+          }
+          return hasChild ? ul : ''
+        }
+
+        /**
+         * 判断是否是相同节点
+         */
+        function isEqual(node, node2) {
+          return (
+            node &&
+            node2 &&
+            typeof node === 'object' &&
+            typeof node2 === 'object' &&
+            node.id === node2.id
+          )
+        }
+
+        /**
+         *  设置选中的项
+         */
+        function setActiveItem(id) {
+          let catas = [...$catalog.querySelectorAll(`[${Opt.datasetName}]`)]
+
+          catas.forEach(T => {
+            if (T.getAttribute(Opt.datasetName) === id) {
+              typeof Opt.activeHook === 'function' &&
+                !T.classList.contains(Opt.linkActiveClass) &&
+                Opt.activeHook.call(this, T) // 执行active钩子
+              T.classList.add(Opt.linkActiveClass)
+            } else {
+              T.classList.remove(Opt.linkActiveClass)
+            }
+          })
+        }
+      }
+    })()
+    window.addEventListener('DOMContentLoaded', function() {
+      new Catalog({
+        contentEl: 'markdown',
+        catalogEl: 'catalog',
+      })
+    })
+  })()
+</script>
+
+			<hr class="sep" />
+		</main>
+		<footer class="container no-print">
+			<div class="u-footer">
+				
+<a href="mailto:iamnomand@gmail.com"><img class="icon-social" src="/img/email.svg" alt="Email Me!"/></a>
+
+
+<a href="https://github.com/v-tom/"><img class="icon-social" src="/img/github.svg" alt="Github"/></a>
+
+
+<a href="https://twitter.com/iamnomand"><img class="icon-social" src="/img/twitter.svg" alt="Twitter"/></a>
+
+<a href="https://hasaki.xyz/index.xml" target="_blank"><img class="icon-social" src="/img/feed.svg" alt="Feed"></a>
+
+				<p>
+					
+					
+					Early 2016 ~ 2020 &copy; TOM's Zone
+					
+					
+				</p>
+				
+				<a href="#brand">
+					<img class="icon-text" src="/img/toup.svg" alt="To Up"/>
+					<span>Back to Up</span>
+				</a>
+				
+			</div>
+		</footer>
+		
+		<script>hljs.initHighlightingOnLoad();</script>
+		
+	</body>
+</html>
+
+
+<script
+  async
+  src="https://www.googletagmanager.com/gtag/js?id=UA-108259988-2"
+></script>
+<script>
+  window.dataLayer = window.dataLayer || []
+  function gtag() {
+    dataLayer.push(arguments)
+  }
+  gtag('js', new Date())
+
+  gtag('config', 'UA-108259988-2')
+</script>
+

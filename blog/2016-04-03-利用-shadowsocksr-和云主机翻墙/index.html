@@ -279,24 +279,113 @@ cd ~/shadowsocksr &amp;&amp; bash initcfg.sh &amp;&amp; cd ~/shadowsocksr/shadow
 
 <div id="disqus_thread" class="no-print"></div>
 <script type="text/javascript">
-    'use strict';
-    (function () {
-        if ('localhost' != window.location.hostname) {
-            var a = document.querySelector('#disqus_thread');
-            new IntersectionObserver(function (b) {
-                b.forEach(function (d) {
-                    if (0 < d.intersectionRatio && !a.classList.contains('active')) {
-                        var e = document.createElement('script');
-                        e.type = 'text/javascript', e.async = !0;
-                        e.src = '//' + 'hasaki-xyz' + '.disqus.com/embed.js', (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(e), a.classList.add('active')
-                    }
-                })
-            }, {rootMargin: '0px', threshold: 1}).observe(a)
-        }
-    })();
+  'use strict'
+  ;(function() {
+    if ('localhost' != window.location.hostname) {
+      var a = document.querySelector('#disqus_thread')
+      new IntersectionObserver(
+        function(b) {
+          b.forEach(function(d) {
+            if (0 < d.intersectionRatio && !a.classList.contains('active')) {
+              var e = document.createElement('script')
+              ;(e.type = 'text/javascript'), (e.async = !0)
+              ;(e.src =
+                '//' + 'hasaki-xyz' + '.disqus.com/embed.js'),
+                (
+                  document.getElementsByTagName('head')[0] ||
+                  document.getElementsByTagName('body')[0]
+                ).appendChild(e),
+                a.classList.add('active')
+            }
+          })
+        },
+        { rootMargin: '0px', threshold: 1 },
+      ).observe(a)
+    }
+  })()
 </script>
-<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-</noscript>
+
+<script type="text/javascript">
+  window.customElements.define(
+    'back-to-top',
+    class BackToTop extends HTMLElement {
+      constructor() {
+        super()
+      }
+
+      connectedCallback() {
+        const shadowRoot = this.attachShadow({ mode: 'open' })
+
+        shadowRoot.innerHTML = `
+          <style>
+            :host {
+              box-sizing: border-box;
+              position: fixed;
+              width: 55px;
+              height: 55px;
+              bottom: 8%;
+              right: 3%;
+              border-radius: 5px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              flex-direction: column;
+              cursor: pointer;
+              will-change: transform;
+              transform: translate3d(0, 500px, 0);
+              transition: transform 1s ease;
+              background: #ff8181;
+              border: 1px solid #ff8181;
+              color: #fff;
+            }
+            :host(.show) {
+              transform: translate3d(0, 0, 0);
+            }
+            :host::after,
+            :host::before {
+              content: '';
+              display: block;
+              box-sizing: border-box;
+              position: relative;
+            }
+            :host::before {
+              width: 8px;
+              height: 8px;
+              border-top: 2px solid;
+              border-left: 2px solid;
+              transform: rotate(45deg);
+              top: 4px;
+            }
+            :host::after {
+              width: 2px;
+              height: 16px;
+              top: -4px;
+              background: currentColor;
+            }
+        `
+
+        shadowRoot.host.addEventListener('click', e => {
+          window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: 'smooth',
+          })
+        })
+
+        const scrollHeight = document.documentElement.scrollHeight
+
+        window.addEventListener('scroll', e => {
+          if (document.documentElement.scrollTop > scrollHeight / 4) {
+            shadowRoot.host.classList.add('show')
+          } else {
+            shadowRoot.host.classList.remove('show')
+          }
+        })
+      }
+    },
+  )
+</script>
+<back-to-top></back-to-top>
 
 
 <style rel="catalog">
@@ -668,14 +757,12 @@ cd ~/shadowsocksr &amp;&amp; bash initcfg.sh &amp;&amp; cd ~/shadowsocksr/shadow
         }
       }
     })()
-    window.addEventListener(
-      'DOMContentLoaded',
-      _ =>
-        new Catalog({
-          contentEl: 'markdown',
-          catalogEl: 'catalog',
-        }),
-    )
+    window.addEventListener('DOMContentLoaded', function() {
+      new Catalog({
+        contentEl: 'markdown',
+        catalogEl: 'catalog',
+      })
+    })
   })()
 </script>
 
@@ -714,4 +801,19 @@ cd ~/shadowsocksr &amp;&amp; bash initcfg.sh &amp;&amp; cd ~/shadowsocksr/shadow
 		
 	</body>
 </html>
+
+
+<script
+  async
+  src="https://www.googletagmanager.com/gtag/js?id=UA-108259988-2"
+></script>
+<script>
+  window.dataLayer = window.dataLayer || []
+  function gtag() {
+    dataLayer.push(arguments)
+  }
+  gtag('js', new Date())
+
+  gtag('config', 'UA-108259988-2')
+</script>
 

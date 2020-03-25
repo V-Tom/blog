@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Interview on TOM&#39;s zone</title>
+    <link>https://hasaki.xyz/tags/interview/</link>
+    <description>Recent content in Interview on TOM&#39;s zone</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ZH-CN</language>
+    <copyright>Early 2016 ~ 2020 &amp;copy; TOM&#39;s Zone</copyright>
+    <lastBuildDate>Tue, 23 Jul 2019 14:01:30 +0800</lastBuildDate>
+    
+	<atom:link href="https://hasaki.xyz/tags/interview/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>some interview question</title>
+      <link>https://hasaki.xyz/blog/interview-question/</link>
+      <pubDate>Tue, 23 Jul 2019 14:01:30 +0800</pubDate>
+      
+      <guid>https://hasaki.xyz/blog/interview-question/</guid>
+      <description>下面是个人列出的一些前端面试方面的问题（没有先后顺序，也没有优先级之分）
+ 这个是我自己总结的一些面试内容集合
+ 手动实现的轮子  call、apply、bind 符合 Promise/A+规范的 Promise、 asyncawait、co EventEmitter new 双向绑定 JSON.stringify、 JSON.parse 简易模版引擎  浏览器工作原理系列  关键渲染路径 浏览器的工作原理：新式网络浏览器幕后揭秘 Inside look at modern web browser (part 1) 中字 Inside look at modern web browser 浅析浏览器渲染原理 浏览器渲染全过程以及常遇到的问题 life of pixel 【中字】像素的一生 Life of a Pixel - Steve Kobes(Chrome Team)  JavaScript  ES6 class 与 ES5 function 区别及联系 JavaScript 执行（四）：try 里面放 return，finally 还会执行吗？ 最详尽的 JS 原型与原型链终极详解，没有「可能是」 new 的实现 Babel Class Extend 的实现 我的博客 谈谈 Node.</description>
+    </item>
+    
+  </channel>
+</rss>

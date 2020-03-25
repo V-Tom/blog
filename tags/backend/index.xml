@@ -7,10 +7,31 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ZH-CN</language>
     <copyright>Early 2016 ~ 2020 &amp;copy; TOM&#39;s Zone</copyright>
-    <lastBuildDate>Tue, 12 Nov 2019 13:09:31 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 18 Mar 2020 14:03:17 +0800</lastBuildDate>
     
 	<atom:link href="https://hasaki.xyz/tags/backend/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>系统设计入门-负载均衡</title>
+      <link>https://hasaki.xyz/blog/2020-03-18-%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E5%85%A5%E9%97%A8-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/</link>
+      <pubDate>Wed, 18 Mar 2020 14:03:17 +0800</pubDate>
+      
+      <guid>https://hasaki.xyz/blog/2020-03-18-%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E5%85%A5%E9%97%A8-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/</guid>
+      <description>本文是根据 system-design-primer（系统设计入门） 整理，本文主要讲负载均衡
+ 数据流量过大的网络中，尤其是高并发（High Concurrency）网络，单一设备一般是无法承担的，需要多台设备进行数据分流，而负载均衡（Load Balance）就是将请求或者数据均匀分摊到多个操作单元上执行。
+高并发常用的一些指标有：
+ 响应时间（Response Time） 吞吐量（Throughput） 每秒查询率（Query Per Second），简称 QPS  负载均衡器能帮助水平扩展（Horizontal scaling），提高性能和可用性。相对使用商业硬件的性价比更高，并且比在单台硬件上垂直扩展（Vertical scaling）更贵的硬件具有更高的可用性。
+ 水平拓展：增强单机硬件性能或者优化单机架构 垂直拓展：只要增加服务器数量，就能线性扩充系统性能  针对负载均衡有各种各样的实现，我们来简单梳理一下。
+客户端负载均衡 简单来讲，客户端会有一个服务器地址列表，由客户端自行选择目标服务器的 IP 地址。
+客户端不存在缓存的问题，也能检查服务可用性来选择可用 IP。
+DNS 负载均衡 DNS 维护着域名与 IP 地址之间的映射关系，而且是可以接受我们控制的，因此可以在这里实现负载均衡策略。
+ DNS 负载均衡可以通过 NS 记录将域名解析指给多台智能 DNS，以保障解析高可用，通过 IP 地址库及指定算法进行智能解析，可根据不同运营商、地理位置、内部应用情况进行智能解析分配。
+ DNS 负载均衡技术实现比较灵活，成本较低，也可以根据域名解析成用户地址最近的一个服务器地址。
+缺点也很明显：
+ 可靠性没有保障：DNS 并不检查服务器的可用性，即便目标服务器宕机或者无法访问了，也返回其 IP 地址 更新不及时：DNS 的解析结果往往会被层层缓存，记录更新无法立即生效 流量分配策略较为简单，支持的算法较少  另外一个问题，DNS 负载均衡默认采用的是 round-robin 算法，不能区分服务器之间的差异，也不能反应状态。
+K8s 当中也 不推荐使用 round-robin DNS ，个人看法是 DNS 轮询来做域名对应的 IP 扩容，负载均衡交给下层应用。</description>
+    </item>
     
     <item>
       <title>云原生基础及调研</title>

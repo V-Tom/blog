@@ -7,10 +7,22 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ZH-CN</language>
     <copyright>Early 2016 ~ 2020 &amp;copy; TOM&#39;s Zone</copyright>
-    <lastBuildDate>Sat, 21 Apr 2018 17:43:01 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 20 Jan 2020 13:21:35 +0800</lastBuildDate>
     
 	<atom:link href="https://hasaki.xyz/tags/fe/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>转载：现代浏览器内部揭秘</title>
+      <link>https://hasaki.xyz/blog/2020-01-20-%E8%BD%AC%E8%BD%BD%E7%8E%B0%E4%BB%A3%E6%B5%8F%E8%A7%88%E5%99%A8%E5%86%85%E9%83%A8%E6%8F%AD%E7%A7%98/</link>
+      <pubDate>Mon, 20 Jan 2020 13:21:35 +0800</pubDate>
+      
+      <guid>https://hasaki.xyz/blog/2020-01-20-%E8%BD%AC%E8%BD%BD%E7%8E%B0%E4%BB%A3%E6%B5%8F%E8%A7%88%E5%99%A8%E5%86%85%E9%83%A8%E6%8F%AD%E7%A7%98/</guid>
+      <description>现代浏览器内部揭秘
+ Inside look at modern web browser (part 1) Inside look at modern web browser (part 2) Inside look at modern web browser (part 3) Inside look at modern web browser (part 4)  中字翻译：现代浏览器内部揭秘
+ 现代浏览器内部揭秘（第一部分） 现代浏览器内部揭秘（第二部分） 现代浏览器内部揭秘（第三部分） 现代浏览器内部揭秘（第四部分）  中字本站 Archive：
+ 现代浏览器内部揭秘合集  </description>
+    </item>
     
     <item>
       <title>javascript 沙箱</title>

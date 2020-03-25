@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="Keywords" content="">
+    <meta name="full-screen" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#006cb4">
+    <meta name="apple-mobile-web-app-title" content="TOM&#39;s zone">
+    <meta name="description" content="TOM&#39;s zone">
+    <link rel="dns-prefetch" href="https://hasaki.xyz">
+    <link rel="preconnect" href="https://hasaki.xyz">
+    <link rel="manifest" href="/sw/manifest.json"/>
+<title>some interview question - TOM&#39;s zone</title>
+
+<meta name="description" content="下面是个人列出的一些前端面试方面的问题（没有先后顺序，也没有优先级之分）
+ 这个是我自己总结的一些面试内容集合
+ 手动实现的轮子  call、apply、bind 符合 Promise/A&#43;规范的 Promise、 asyncawait、co EventEmitter new 双向绑定 JSON.stringify、 JSON.parse 简易模版引擎  浏览器工作原理系列  关键渲染路径 浏览器的工作原理：新式网络浏览器幕后揭秘 Inside look at modern web browser (part 1) 中字 Inside look at modern web browser 浅析浏览器渲染原理 浏览器渲染全过程以及常遇到的问题 life of pixel 【中字】像素的一生 Life of a Pixel - Steve Kobes(Chrome Team)  JavaScript  ES6 class 与 ES5 function 区别及联系 JavaScript 执行（四）：try 里面放 return，finally 还会执行吗？ 最详尽的 JS 原型与原型链终极详解，没有「可能是」 new 的实现 Babel Class Extend 的实现 我的博客 谈谈 Node.">
+
+
+
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono|Lato|Raleway">
+
+
+    <link rel="stylesheet"
+          href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/ocean.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/javascript.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/python.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/go.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/css.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/swift.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/objectivec.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/rust.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/yaml.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/bash.min.js"></script>
+
+
+    <link rel="stylesheet" href="/css/bundle.min.css"/>
+<script src="/js/bundle.js"></script>
+
+<style>
+	a { color: #ff8181; }
+	blockquote {
+		background: rgba(255, 129, 129, .1);
+		border-left-color: #ff8181;
+		border-right-color: #ff8181; }
+	.bar a:hover {
+		color: #ff8181;
+		text-decoration: none; }
+	.sep {
+		margin-top: 2rem;
+		margin-bottom: 1rem;
+		margin-left:0;
+		width: 24rem;
+		border-top: 2px solid #ff8181; }
+    .bar li.active a{
+        color:#ff8181;
+    }
+</style>
+
+</head>
+
+<body>
+<header class="container no-print">
+	<div class="u-header">
+		<nav class="bar">
+	<ul><li>
+			<a href="/">
+				<img class="icon-text" src="/img/prev.svg"/>
+			</a>
+		</li>
+		
+		<li class="active"><a href="/blog/">Blog</a></li>
+		<li class=""><a href="/gallery/">Gallery</a></li>
+		<li class=""><a href="/life/">Life</a></li></ul>
+</nav>
+
+	</div>
+</header>
+<main class="container">
+
+<article>
+    <header><hgroup id="brand">
+  <h1>some interview question</h1>
+  <h5>
+    
+    <time datetime="2019-07-23 14:01:30 &#43;0800 CST">Jul 23, 2019</time>
+    <span class="no-print">
+      -
+      
+      <a href="/tags/interview">interview</a>
+      </span>
+  </h5>
+
+  <a
+    style="margin-top: 1.2rem;display: inline-block;"
+    href="https://github.com/V-Tom/blog/blob/hugo/content/blog/Interview%20Question/index.md"
+    >✨✨✨You can Edit this Article on Github site</a
+  >
+
+  <div id="git-update-time">
+  ✏️✏️✏️ This article .MD file was last updated at:
+  <b>Loading ...</b>
+</div>
+
+<script data-name="commits">
+  ;(async () => {
+    const b = document.querySelector('#git-update-time').querySelector('b')
+
+    if (window.location.href.includes('localhost')) {
+      b.innerHTML = 'localhost disable'
+      return
+    }
+
+    const commits = await fetch(
+      'https://api.github.com/repos/V-Tom/blog/commits?sha=hugo&path=content/blog\/Interview Question\/index.md',
+    ).then(res => res.json())
+    try {
+      const time = new Date(commits[0].commit.committer.date)
+      b.innerHTML = `${time.getFullYear()}-${time.getMonth() +
+        1}-${time.getDate()}`
+    } catch (e) {
+      b.innerHTML = 'unknown'
+    }
+  })()
+</script>
+
+
+  
+</hgroup>
+<hr class="sep" />
+</header>
+    <section id="markdown">
+        
+
+<p>下面是个人列出的一些前端面试方面的问题（没有先后顺序，也没有优先级之分）</p>
+
+<blockquote>
+<p>这个是我自己总结的一些<a href="https://www.processon.com/view/link/5e5cc10de4b03627650d7a2c">面试内容集合</a></p>
+</blockquote>
+
+<h2 id="手动实现的轮子">手动实现的轮子</h2>
+
+<ul>
+<li><code>call</code>、<code>apply</code>、<code>bind</code></li>
+<li>符合 Promise/A+规范的 <code>Promise</code>、 <code>asyncawait</code>、<code>co</code></li>
+<li><code>EventEmitter</code></li>
+<li><code>new</code></li>
+<li>双向绑定</li>
+<li><code>JSON.stringify</code>、 <code>JSON.parse</code></li>
+<li>简易模版引擎</li>
+</ul>
+
+<h2 id="浏览器工作原理系列">浏览器工作原理系列</h2>
+
+<ul>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzA5NzkwNDk3MQ==&amp;mid=2650588806&amp;idx=1&amp;sn=408a54e7c8102fd6944c9a40b119015a&amp;mpshare=1&amp;scene=1&amp;srcid=1228ZrXsmbZKcgCSu7zTVDwy#">关键渲染路径</a></li>
+<li><a href="https://www.html5rocks.com/zh/tutorials/internals/howbrowserswork/">浏览器的工作原理：新式网络浏览器幕后揭秘</a></li>
+<li><a href="https://developers.google.com/web/updates/2018/09/inside-browser-part1">Inside look at modern web browser (part 1)</a></li>
+<li><a href="https://github.com/xitu/gold-miner/blob/master/TODO1/inside-look-at-modern-web-browser-part1.md">中字 Inside look at modern web browser</a></li>
+<li><a href="https://segmentfault.com/a/1190000012960187">浅析浏览器渲染原理</a></li>
+<li><a href="https://blog.chenhaotaishuaile.com/2019/01/31/how-browser-rendering-works/">浏览器渲染全过程以及常遇到的问题</a></li>
+<li><a href="bit.ly/lifeofapixel">life of pixel</a></li>
+<li><a href="https://www.bilibili.com/video/av35265997/">【中字】像素的一生 Life of a Pixel - Steve Kobes(Chrome Team)</a></li>
+</ul>
+
+<h2 id="javascript">JavaScript</h2>
+
+<ul>
+<li><a href="https://blog.csdn.net/u012657197/article/details/77542404">ES6 class 与 ES5 function 区别及联系</a></li>
+<li><a href="https://jdsheng.cn/2019/03/25/JavaScript%E6%89%A7%E8%A1%8C%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9Atry%E9%87%8C%E9%9D%A2%E6%94%BEreturn%EF%BC%8Cfinally%E8%BF%98%E4%BC%9A%E6%89%A7%E8%A1%8C%E5%90%97%EF%BC%9F/">JavaScript 执行（四）：try 里面放 return，finally 还会执行吗？</a></li>
+<li><a href="https://www.jianshu.com/p/dee9f8b14771">最详尽的 JS 原型与原型链终极详解，没有「可能是」</a></li>
+<li><code>new</code> 的实现</li>
+<li><a href="https://babeljs.io/repl#?browsers=&amp;build=&amp;builtIns=false&amp;spec=false&amp;loose=false&amp;code_lz=MYGwhgzhAECCDeAoAvoxpIwELQKYA8AXXAOwBMYFkg&amp;debug=false&amp;forceAllTransforms=false&amp;shippedProposals=false&amp;circleciRepo=&amp;evaluate=false&amp;fileSize=true&amp;timeTravel=false&amp;sourceType=module&amp;lineWrap=true&amp;presets=env%2Ces2015%2Creact%2Cstage-2%2Cenv&amp;prettier=true&amp;targets=Node-9.1&amp;version=7.8.4&amp;externalPlugins=">Babel Class Extend 的实现</a></li>
+<li>我的博客 <a href="https://hasaki.xyz/blog/2018-02-08-%E8%B0%88%E8%B0%88node.js%E7%9A%84%E5%8D%95%E7%BA%BF%E7%A8%8B/">谈谈 Node.js 的单线程</a></li>
+<li><a href="https://github.com/ElemeFE/node-interview">How to pass the Node.js interview of ElemeFE</a></li>
+</ul>
+
+<h2 id="前端性能监控系列">前端性能监控系列</h2>
+
+<ul>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzUxMzcxMzE5Ng==&amp;mid=2247490527&amp;idx=1&amp;sn=cc2549683b3ff69c042483d78ced766a&amp;chksm=f951ae9cce26278a263ecf2937b5c4957c9b37f35b7efe4c1a8c6ab69c74ebcb43c54e62abda&amp;xtrack=1&amp;scene=0&amp;subscene=131&amp;clicktime=1550933323&amp;ascene=7&amp;devic">蚂蚁金服如何把前端性能监控做到极致?</a></li>
+</ul>
+
+<h2 id="webpack">webpack</h2>
+
+<ul>
+<li><a href="https://zhuanlan.zhihu.com/p/30669007">Webpack HMR 原理解析</a></li>
+</ul>
+
+<p>loader &amp;&amp; webpack plugins 一些简单的区别：</p>
+
+<p><code>loader</code> 在生成包期间或之前在单个文件级别工作。</p>
+
+<p><code>plugins</code> 在 bundle 或 chunk 级别工作，通常在 bundle 生成过程结束时工作。<code>plugins</code> 还可以修改捆绑包本身的创建方式。插件比 <code>loader</code> 具有更强大的控制能力。</p>
+
+<p><img src="./loader-vs-plugins.png" alt="loader-vs-plugins.png" /></p>
+
+<ul>
+<li><a href="https://stackoverflow.com/questions/37452402/webpack-loaders-vs-plugins-whats-the-difference">Webpack loaders vs plugins; what&rsquo;s the difference?</a></li>
+<li><a href="https://juejin.im/post/5a5c18f2518825734f52ad65">Webpack 原理-编写 Plugin</a></li>
+<li><a href="https://segmentfault.com/a/1190000012718374">深入 Webpack-编写 Loader</a></li>
+</ul>
+
+<h2 id="webp-图片的浏览器兼容检测">webp 图片的浏览器兼容检测</h2>
+
+<ul>
+<li>canvas 检测：</li>
+</ul>
+
+<pre><code class="language-javascript">return /^data:image\/webp/.test(
+  document.createElement('canvas').toDataURL('image/webp', 0.5),
+)
+</code></pre>
+
+<ul>
+<li>HTTP header：浏览器在图片请求发出的时候，Request Headers 里有 Accept，服务端可以根据 Accept 里面是否有 image/webp 进行判断。</li>
+<li>new Image：先加载一个 WebP 图片，如果能获取到图片的宽度和高度，就说明是支持 WebP 的，反之则不支持</li>
+</ul>
+
+<h2 id="dsl">DSL</h2>
+
+<ul>
+<li><a href="https://draveness.me/dsl">谈谈 DSL 以及 DSL 的应用</a></li>
+<li><a href="https://juejin.im/entry/59cdbe11f265da06633d4ac2">用 25 行 JavaScript 语句实现一个简单的编译器</a></li>
+<li><a href="https://juejin.im/post/5e4ddf38e51d4526f23a19e1">前端 DSL 实践指南</a></li>
+</ul>
+
+<h2 id="docker-和-k8s">docker 和 K8S</h2>
+
+<ul>
+<li><a href="https://linux.cn/article-7531-1.html">小女孩也能看懂的插画版 Kubernetes 指南</a></li>
+<li><a href="https://blog.csdn.net/M2l0ZgSsVc7r69eFdTj/article/details/78890222">漫画 | Kubernetes 带你一帆风顺去远航</a></li>
+</ul>
+
+<h2 id="react">React</h2>
+
+<ul>
+<li><a href="https://github.com/youngwind/blog/issues/109">单页面应用路由实现原理：以 React-Router 为例</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/78669634">谈谈 React 事件机制和未来(react-events)</a></li>
+<li><a href="http://www.ayqy.net/blog/dive-into-react-fiber/">完全理解 React Fiber</a></li>
+<li><a href="https://github.com/semlinker/reactjs-interview-questions">React 面试题 &amp; 回答（内容非常多，强烈推荐）</a></li>
+</ul>
+
+<h2 id="rn">RN</h2>
+
+<ul>
+<li><a href="https://tech.meituan.com/2018/08/23/deep-understanding-of-jscore.html">深入理解 JSCore</a></li>
+<li><a href="http://blog.poetries.top/2019/10/02/rn-yuanli/">React Native 之原理浅析</a></li>
+<li><a href="https://juejin.im/post/5de5e5de51882560a23239b5">React Native — 桥接 Bridge 到 Fabric 项目</a></li>
+<li><a href="http://www.ayqy.net/blog/react-native-architecture-overview/">React Native 架构一览</a></li>
+<li><a href="https://juejin.im/post/5abca877f265da238155b6bc">JSBridge 的原理</a></li>
+</ul>
+
+<h2 id="event-loop">Event Loop</h2>
+
+<ul>
+<li><a href="https://juejin.im/post/5c337ae06fb9a049bc4cd218">浏览器与 Node 的事件循环(Event Loop)有何区别?</a></li>
+</ul>
+
+<h2 id="堆内存与栈内存">堆内存与栈内存</h2>
+
+<ul>
+<li><a href="https://zhuanlan.zhihu.com/p/27534451">前端知识点总结——堆内存与栈内存</a></li>
+<li><a href="https://www.zhihu.com/question/19729973">什么是堆？什么是栈？他们之间有什么区别和联系？</a></li>
+</ul>
+
+<h2 id="koa">koa</h2>
+
+<ul>
+<li><a href="https://juejin.im/post/5ba7868e6fb9a05cdf309292">Koa2 中间件原理解析</a></li>
+<li>pm2 &amp;&amp; cluster</li>
+</ul>
+
+<h2 id="https">HTTPS</h2>
+
+<p>HTTPS 采用共享密钥加密和公开密钥加密两者并用的混合加密机制。在交换密钥使用环节使用公开密钥加密方式，之后建立的通信交换报文阶段则使用共享密钥加密方式。</p>
+
+<ul>
+<li><a href="https://segmentfault.com/a/1190000012196642">本文主要是对 HTTPS 做一个总结，主要讲解 HTTPS 的实质、HTTPS 加密原理、HTTPS 的通信过程等。</a></li>
+<li><a href="https://developers.weixin.qq.com/community/develop/article/doc/000046a5fdc7802a15f7508b556413">一次安全可靠的通信——HTTPS 原理</a></li>
+</ul>
+
+<h2 id="垃圾回收策略">垃圾回收策略</h2>
+
+<ul>
+<li><a href="https://zhuanlan.zhihu.com/p/56386337">JS 专题之垃圾回收</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/27534451">垃圾回收时栈和堆的区别</a></li>
+</ul>
+
+<p>栈使用的是一级缓存， 他们通常都是被调用时处于存储空间中，调用完毕立即释放，由编译器自动分配释放 。存放函数的参数值，局部变量的值等。其操作方式类似于数据结构中的栈</p>
+
+<p>堆则是存放在二级缓存中，生命周期由虚拟机的垃圾回收算法来决定。所以调用这些对象的速度要相对来得低一些。其操作方式类似于数据结构中的树</p>
+
+<ul>
+<li><a href="https://kaisery.github.io/trpl-zh-cn/ch04-01-what-is-ownership.html">标记-清除（Mark-Sweep） 可以参照 Rust 所有权</a></li>
+</ul>
+
+    </section>
+    <nav class="no-print post-nav">
+        
+        <a class="prev-post" href="https://hasaki.xyz/blog/2019-07-20-%E4%BD%BF%E7%94%A8-rust-%E7%BC%96%E5%86%99-webassembly-/">
+            <img class="icon-text" src="/img/prev.svg"/>使用 Rust 编写 WebAssembly </a>
+        
+        
+        <a class="next-post" href="https://hasaki.xyz/blog/2019-08-09-tensor--flow/">Tensor &amp;&amp; flow<img class="icon-text" src="/img/next.svg"/>
+        </a>
+        
+    </nav>
+</article>
+
+
+
+<div id="disqus_thread" class="no-print"></div>
+<script type="text/javascript">
+  'use strict'
+  ;(function() {
+    if ('localhost' != window.location.hostname) {
+      var a = document.querySelector('#disqus_thread')
+      new IntersectionObserver(
+        function(b) {
+          b.forEach(function(d) {
+            if (0 < d.intersectionRatio && !a.classList.contains('active')) {
+              var e = document.createElement('script')
+              ;(e.type = 'text/javascript'), (e.async = !0)
+              ;(e.src =
+                '//' + 'hasaki-xyz' + '.disqus.com/embed.js'),
+                (
+                  document.getElementsByTagName('head')[0] ||
+                  document.getElementsByTagName('body')[0]
+                ).appendChild(e),
+                a.classList.add('active')
+            }
+          })
+        },
+        { rootMargin: '0px', threshold: 1 },
+      ).observe(a)
+    }
+  })()
+</script>
+
+<script type="text/javascript">
+  window.customElements.define(
+    'back-to-top',
+    class BackToTop extends HTMLElement {
+      constructor() {
+        super()
+      }
+
+      connectedCallback() {
+        const shadowRoot = this.attachShadow({ mode: 'open' })
+
+        shadowRoot.innerHTML = `
+          <style>
+            :host {
+              box-sizing: border-box;
+              position: fixed;
+              width: 55px;
+              height: 55px;
+              bottom: 8%;
+              right: 3%;
+              border-radius: 5px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              flex-direction: column;
+              cursor: pointer;
+              will-change: transform;
+              transform: translate3d(0, 500px, 0);
+              transition: transform 1s ease;
+              background: #ff8181;
+              border: 1px solid #ff8181;
+              color: #fff;
+            }
+            :host(.show) {
+              transform: translate3d(0, 0, 0);
+            }
+            :host::after,
+            :host::before {
+              content: '';
+              display: block;
+              box-sizing: border-box;
+              position: relative;
+            }
+            :host::before {
+              width: 8px;
+              height: 8px;
+              border-top: 2px solid;
+              border-left: 2px solid;
+              transform: rotate(45deg);
+              top: 4px;
+            }
+            :host::after {
+              width: 2px;
+              height: 16px;
+              top: -4px;
+              background: currentColor;
+            }
+        `
+
+        shadowRoot.host.addEventListener('click', e => {
+          window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: 'smooth',
+          })
+        })
+
+        const scrollHeight = document.documentElement.scrollHeight
+
+        window.addEventListener('scroll', e => {
+          if (document.documentElement.scrollTop > scrollHeight / 4) {
+            shadowRoot.host.classList.add('show')
+          } else {
+            shadowRoot.host.classList.remove('show')
+          }
+        })
+      }
+    },
+  )
+</script>
+<back-to-top></back-to-top>
+
+
+<style rel="catalog">
+  #catalog {
+    position: fixed;
+    min-width: 12vw;
+    left: 3vw;
+    top: 8vh;
+    overflow: auto;
+    height: calc(100% - 16vh);
+    background:
+      linear-gradient(
+        white 30%,
+        rgba(255, 255, 255, 0)
+      ),
+      linear-gradient(rgba(255, 255, 255, 0), white 70%) 0 100%,
+       
+        radial-gradient(
+          50% 0,
+          farthest-side,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        ),
+      radial-gradient(
+          50% 100%,
+          farthest-side,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        )
+        0 100%;
+    background:
+      linear-gradient(
+        white 30%,
+        rgba(255, 255, 255, 0)
+      ),
+      linear-gradient(rgba(255, 255, 255, 0), white 70%) 0 100%,
+       
+        radial-gradient(
+          farthest-side at 50% 0,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        ),
+      radial-gradient(
+          farthest-side at 50% 100%,
+          rgba(0, 0, 0, 0.2),
+          rgba(0, 0, 0, 0)
+        )
+        0 100%;
+    background-repeat: no-repeat;
+    background-color: white;
+    background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
+
+     
+    background-attachment: local, local, scroll, scroll;
+  }
+  @media (max-width: 1280px) {
+    #catalog {
+      display: none;
+    }
+  }
+
+  #catalog::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cl-wrapper {
+    position: relative;
+  }
+
+  .cl-wrapper ul,
+  .cl-wrapper li {
+    margin: 0;
+    -moz-padding-start: 12px;
+    -webkit-padding-start: 12px;
+    list-style: none;
+  }
+
+  .cl-wrapper li > .cl-link.cl-link-active {
+    color: #ff8181;
+    transition: 0.5s;
+  }
+
+  .cl-wrapper li > .cl-transform.cl-link-active {
+    transform: translate(3px);
+  }
+
+  .cl-wrapper .cl-link {
+    cursor: pointer;
+    color: rgba(52, 73, 94, 0.5);
+    font-size: 13px;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .cl-wrapper .cl-marker {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+
+  .cl-wrapper .cl-marker path {
+    transition: all 0.3s ease;
+  }
+</style>
+<main id="catalog"></main>
+<script rel="catalog">
+  void (function() {
+    if (
+      window.innerWidth < 1024 ||
+      /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+    ) {
+      return
+    }
+
+    const Catalog = (function() {
+      return function(opts) {
+        let defaultOpts = {
+          linkClass: 'cl-link', 
+          linkActiveClass: 'cl-link-active', 
+          datasetName: 'data-cata-target', 
+          selector: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'], 
+          scrollWrapper: null, 
+          activeHook: null, 
+          topMargin: 0,
+          bottomMargin: 0,
+          cool: true, 
+        }
+
+        const Opt = Object.assign({}, defaultOpts, opts)
+
+        const $content = document.getElementById(Opt.contentEl) 
+        const $scroll_wrap = window 
+        const $catalog = document.getElementById(Opt.catalogEl) 
+
+        let allCatalogs = $content.querySelectorAll(Opt.selector.join())
+        let tree = getCatalogsTree(allCatalogs)
+
+        try {
+          $catalog.innerHTML = `<div class='cl-wrapper'>${generateHtmlTree(
+            tree,
+            { id: -1 },
+          )}<svg class="cl-marker" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+            <path stroke="#ff8181" stroke-width="3" fill="transparent" stroke-dasharray="0, 0, 0, 1000" stroke-linecap="round" stroke-linejoin="round" transform="translate(-0.5, -0.5)" />
+            </svg></div>`
+        } catch (e) {
+          console.error('error in progress-catalog', e)
+        }
+
+        const tocPath = $catalog.querySelector('.cl-marker path')
+        let tocItems, pathLength 
+
+        
+        window.addEventListener('resize', drawPath)
+        $catalog.addEventListener('click', clickHandler)
+        Opt.cool && $scroll_wrap.addEventListener('scroll', coolScrollHandler)
+        Opt.cool || $scroll_wrap.addEventListener('scroll', simpleScrollHandler)
+
+        setTimeout(drawPath) 
+
+        
+
+        function drawPath() {
+          tocItems = [...$catalog.querySelectorAll('li')]
+          tocItems = tocItems.map(function(liDom) {
+            const anchor = liDom.querySelector(`.${Opt.linkClass}`)
+            const target = document.getElementById(
+              anchor.getAttribute('data-cata-target'),
+            )
+
+            return {
+              listItem: liDom,
+              anchor: anchor,
+              target: target,
+            }
+          })
+          tocItems = tocItems.filter(item => !!item.target)
+
+          const path = []
+          let pathIndent
+
+          tocItems &&
+            tocItems.forEach(function(item, idx) {
+              const { offsetLeft, offsetTop, offsetHeight } = item.anchor,
+                x = Opt.cool ? offsetLeft - 5 : offsetLeft,
+                y = offsetTop,
+                height = offsetHeight
+
+              if (idx === 0) {
+                path.push('M', x, y, 'L', x, y + height)
+                item.pathStart = 0
+              } else {
+                if (pathIndent !== x) path.push('L', pathIndent, y) 
+                path.push('L', x, y)
+                tocPath.setAttribute('d', path.join(' '))
+                item.pathStart = tocPath.getTotalLength() || 0
+                path.push('L', x, y + height)
+              }
+              pathIndent = x
+              tocPath.setAttribute('d', path.join(' '))
+              item.pathEnd = tocPath.getTotalLength()
+            })
+          pathLength = tocPath.getTotalLength()
+          coolScrollHandler()
+        }
+
+        
+
+        function coolScrollHandler() {
+          const wrapHeight = document.documentElement.offsetHeight
+          let pathStart = pathLength,
+            pathEnd = 0,
+            visibleItems = 0
+          tocItems.forEach(function(liItem) {
+            const { bottom, top } = liItem.target.getBoundingClientRect(),
+              firstChild = liItem.listItem.firstChild
+            if (bottom > Opt.topMargin && top < wrapHeight - Opt.bottomMargin) {
+              firstChild.classList.remove(Opt.linkActiveClass)
+              Opt.cool && firstChild.classList.remove('cl-transform')
+            } else {
+              pathStart = Math.min(liItem.pathStart, pathStart)
+              pathEnd = Math.max(liItem.pathEnd, pathEnd)
+              visibleItems += 1
+              firstChild.classList.add(Opt.linkActiveClass)
+              Opt.cool && firstChild.classList.add('cl-transform')
+            }
+          })
+          if (visibleItems > 0 && pathStart < pathEnd && Opt.cool) {
+            tocPath.setAttribute('stroke-dashoffset', '1')
+            tocPath.setAttribute(
+              'stroke-dasharray',
+              `1, ${pathStart}, ${pathEnd - pathStart}, ${pathLength}`,
+            )
+            tocPath.setAttribute('opacity', '1')
+          } else {
+            tocPath.setAttribute('opacity', '0')
+          }
+        }
+
+        
+
+        function simpleScrollHandler(el) {
+          let scrollToEl = null
+          for (let i = allCatalogs.length - 1; i >= 0; i--) {
+            if (allCatalogs[i].offsetTop <= $scroll_wrap.scrollTop) {
+              scrollToEl = allCatalogs[i]
+              break
+            }
+          }
+          if (scrollToEl) setActiveItem(scrollToEl.id)
+          else setActiveItem(null) 
+        }
+
+        
+
+        function clickHandler({ target }) {
+          const datasetId = target.getAttribute(Opt.datasetName)
+          target.classList.contains(Opt.linkClass) &&
+            document
+              .getElementById(datasetId)
+              .scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }
+
+        
+
+        function getCatalogsTree(catalogs) {
+          let title,
+            tagName,
+            tree = [],
+            treeItem = {},
+            parentItem = { id: -1 },
+            lastTreeItem = null,
+            id
+
+          for (let i = 0; i < catalogs.length; i++) {
+            title = catalogs[i].innerText || catalogs[i].textContent
+            tagName = catalogs[i].tagName
+            id = 'heading-' + i
+            catalogs[i].id = id
+            treeItem = {
+              name: title,
+              tagName: tagName,
+              id: id,
+              level: +getLevel(tagName),
+              parent: parentItem,
+            }
+            if (lastTreeItem) {
+              if (getLevel(treeItem.tagName) > getLevel(lastTreeItem.tagName)) {
+                treeItem.parent = lastTreeItem
+              } else {
+                treeItem.parent = findParent(treeItem, lastTreeItem)
+              }
+            }
+            lastTreeItem = treeItem
+            tree.push(treeItem)
+          }
+          return tree
+        }
+
+        
+
+        function findParent(currTreeItem, lastTreeItem) {
+          let lastTreeParent = lastTreeItem.parent
+          while (
+            lastTreeParent &&
+            getLevel(currTreeItem.tagName) <= getLevel(lastTreeParent.tagName)
+          ) {
+            lastTreeParent = lastTreeParent.parent
+          }
+          return lastTreeParent || { id: -1 }
+        }
+
+        
+
+        function getLevel(tagName) {
+          return tagName ? tagName.slice(1) : 0
+        }
+
+        
+
+        function generateHtmlTree(tree, _parent) {
+          let ul,
+            hasChild = false
+          if (tree) {
+            ul = `<ul>`
+            for (let i = 0; i < tree.length; i++) {
+              if (isEqual(tree[i].parent, _parent)) {
+                hasChild = true
+                ul += `<li><div class='${Opt.linkClass} cl-level-${tree[i].level}' ${Opt.datasetName}='${tree[i].id}'>${tree[i].name}</div>`
+                ul += generateHtmlTree(tree, tree[i])
+                ul += '</li>'
+              }
+            }
+            ul += `</ul>`
+          }
+          return hasChild ? ul : ''
+        }
+
+        /**
+         * 判断是否是相同节点
+         */
+        function isEqual(node, node2) {
+          return (
+            node &&
+            node2 &&
+            typeof node === 'object' &&
+            typeof node2 === 'object' &&
+            node.id === node2.id
+          )
+        }
+
+        /**
+         *  设置选中的项
+         */
+        function setActiveItem(id) {
+          let catas = [...$catalog.querySelectorAll(`[${Opt.datasetName}]`)]
+
+          catas.forEach(T => {
+            if (T.getAttribute(Opt.datasetName) === id) {
+              typeof Opt.activeHook === 'function' &&
+                !T.classList.contains(Opt.linkActiveClass) &&
+                Opt.activeHook.call(this, T) // 执行active钩子
+              T.classList.add(Opt.linkActiveClass)
+            } else {
+              T.classList.remove(Opt.linkActiveClass)
+            }
+          })
+        }
+      }
+    })()
+    window.addEventListener('DOMContentLoaded', function() {
+      new Catalog({
+        contentEl: 'markdown',
+        catalogEl: 'catalog',
+      })
+    })
+  })()
+</script>
+
+			<hr class="sep" />
+		</main>
+		<footer class="container no-print">
+			<div class="u-footer">
+				
+<a href="mailto:iamnomand@gmail.com"><img class="icon-social" src="/img/email.svg" alt="Email Me!"/></a>
+
+
+<a href="https://github.com/v-tom/"><img class="icon-social" src="/img/github.svg" alt="Github"/></a>
+
+
+<a href="https://twitter.com/iamnomand"><img class="icon-social" src="/img/twitter.svg" alt="Twitter"/></a>
+
+<a href="https://hasaki.xyz/index.xml" target="_blank"><img class="icon-social" src="/img/feed.svg" alt="Feed"></a>
+
+				<p>
+					
+					
+					Early 2016 ~ 2020 &copy; TOM's Zone
+					
+					
+				</p>
+				
+				<a href="#brand">
+					<img class="icon-text" src="/img/toup.svg" alt="To Up"/>
+					<span>Back to Up</span>
+				</a>
+				
+			</div>
+		</footer>
+		
+		<script>hljs.initHighlightingOnLoad();</script>
+		
+	</body>
+</html>
+
+
+<script
+  async
+  src="https://www.googletagmanager.com/gtag/js?id=UA-108259988-2"
+></script>
+<script>
+  window.dataLayer = window.dataLayer || []
+  function gtag() {
+    dataLayer.push(arguments)
+  }
+  gtag('js', new Date())
+
+  gtag('config', 'UA-108259988-2')
+</script>
+
