@@ -14,26 +14,17 @@
     <link rel="dns-prefetch" href="https://hasaki.xyz">
     <link rel="preconnect" href="https://hasaki.xyz">
     <link rel="manifest" href="/sw/manifest.json"/>
-<title>系统设计入门-负载均衡 - TOM&#39;s zone</title>
+<title>系统设计入门-缓存 - TOM&#39;s zone</title>
 
-<meta name="description" content="本文是根据 system-design-primer（系统设计入门） 整理，本文主要讲负载均衡
- 数据流量过大的网络中，尤其是高并发（High Concurrency）网络，单一设备一般是无法承担的，需要多台设备进行数据分流，而负载均衡（Load Balance）就是将请求或者数据均匀分摊到多个操作单元上执行。
-高并发常用的一些指标有：
- 响应时间（Response Time） 吞吐量（Throughput） 每秒查询率（Query Per Second），简称 QPS  没有负载均衡的 web 架构大概如下图：
-用户直接连接服务器，这个时候如果这台服务器挂了，那么就整个网站挂了。
-有负载均衡的架构如下图：
-用户不直接访问后端服务器，而是访问负载均衡服务器，由负载均衡服务器再次转发到后端服务器。
-如果这个时候有一台后端服务器挂掉了，那么负载均衡服务器会剔除掉它，将后续请求都转发到好的那台，这样就不影响网站的正常运行。
-这个时候我们也需要考虑负载均衡服务器会不会挂掉，那就引入第二个负载均衡服务器来缓解一下。
-负载均衡器能帮助水平扩展（Horizontal scaling），提高性能和可用性。相对使用商业硬件的性价比更高，并且比在单台硬件上垂直扩展（Vertical scaling）更贵的硬件具有更高的可用性。
- 水平拓展：增强单机硬件性能或者优化单机架构 垂直拓展：只要增加服务器数量，就能线性扩充系统性能  针对负载均衡有各种各样的实现，我们来简单梳理一下。
-客户端负载均衡 简单来讲，客户端会有一个服务器地址列表，由客户端自行选择目标服务器的 IP 地址。
-客户端不存在缓存的问题，也能检查服务可用性来选择可用 IP。
-DNS 负载均衡 DNS 维护着域名与 IP 地址之间的映射关系，而且是可以接受我们控制的，因此可以在这里实现负载均衡策略。
- DNS 负载均衡可以通过 NS 记录将域名解析指给多台智能 DNS，以保障解析高可用，通过 IP 地址库及指定算法进行智能解析，可根据不同运营商、地理位置、内部应用情况进行智能解析分配。
- DNS 负载均衡技术实现比较灵活，成本较低，也可以根据域名解析成用户地址最近的一个服务器地址。
-缺点也很明显：
- 可靠性没有保障：DNS 并不检查服务器的可用性，即便目标服务器宕机或者无法访问了，也返回其 IP 地址 更新不及时：DNS 的解析结果往往会被层层缓存，记录更新无法立即生效 流量分配策略较为简单，支持的算法较少  另外一个问题，DNS 负载均衡默认采用的是 round-robin 算法，不能区分服务器之间的差异，也不能反应状态。">
+<meta name="description" content="本文是根据 system-design-primer（系统设计入门） 整理，本文主要讲缓存
+ 从操作系统的角度来看，不同存储之间的读写速度是有区别的。缓存就是把低速存储的结果，临时保存在高速存储的技术。
+在实际业务当中，缓存可以提高页面加载速度，并可以减少服务器或者数据库的负载。在这个模型中，应用会先查看请求之前是否被响应过，如果有则将之前的结果直接返回，来省掉真正的处理。
+下面我们会以从客户端请求到 web 应用服务器这个流程当中可能涉及到的缓存为例来简单说一下。
+Service Worker 缓存 Service Worker 是浏览器在后台独立于网页运行的脚本，可以提供请求拦截、推送通知、后台同步等功能。
+Service Worker 需要浏览器支持，也需要 HTTPS，并且对应的生命周期完全独立于 网页生命周期（Page Lifecycle API）。
+在成功安装 Service Worker 之后可以通过监听 fetch 事件来决定是否需要缓存：
+self.addEventListener(&#39;fetch&#39;, function(event) { event.respondWith( caches.match(event.request).then(function(response) { // Cache hit - return response if (response) { return response } return fetch(event.request) }), ) })  Service Worker 对应的 API 和最佳实践都比较复杂，我们可以采用官方推荐的 workbox 来配置和部署，并且也提供了以下 缓存策略：
+ CacheFirst: 缓存优先 CacheOnly: 仅缓存 NetworkFirst: 网络优先 NetworkOnly: 仅网络 StaleWhileRevaidate: 取缓存，再走网络更新缓存  客户端缓存 客户端缓存可以位于操作系统或者浏览器，在移动互联网当中也可以存在于 App 当中，可以减少服务端请求，避免文件重复加载。">
 
 
 
@@ -110,10 +101,10 @@ DNS 负载均衡 DNS 维护着域名与 IP 地址之间的映射关系，而且�
 
 <article>
     <header><hgroup id="brand">
-  <h1>系统设计入门-负载均衡</h1>
+  <h1>系统设计入门-缓存</h1>
   <h5>
     
-    <time datetime="2020-03-18 14:03:17 &#43;0800 CST">Mar 18, 2020</time>
+    <time datetime="2020-03-21 11:34:17 &#43;0800 CST">Mar 21, 2020</time>
     <span class="no-print">
       -
       
@@ -123,7 +114,7 @@ DNS 负载均衡 DNS 维护着域名与 IP 地址之间的映射关系，而且�
 
   <a
     style="margin-top: 1.2rem;display: inline-block;"
-    href="https://github.com/V-Tom/blog/blob/hugo/content/blog/2020-03-18-%e7%b3%bb%e7%bb%9f%e8%ae%be%e8%ae%a1%e5%85%a5%e9%97%a8-%e8%b4%9f%e8%bd%bd%e5%9d%87%e8%a1%a1/index.md"
+    href="https://github.com/V-Tom/blog/blob/hugo/content/blog/2020-03-21-%e7%b3%bb%e7%bb%9f%e8%ae%be%e8%ae%a1%e5%85%a5%e9%97%a8-%e7%bc%93%e5%ad%98/index.md"
     >✨✨✨You can Edit this Article on Github site</a
   >
 
@@ -142,7 +133,7 @@ DNS 负载均衡 DNS 维护着域名与 IP 地址之间的映射关系，而且�
     }
 
     const commits = await fetch(
-      'https://api.github.com/repos/V-Tom/blog/commits?sha=hugo&path=content/blog\/2020-03-18-系统设计入门-负载均衡\/index.md',
+      'https://api.github.com/repos/V-Tom/blog/commits?sha=hugo&path=content/blog\/2020-03-21-系统设计入门-缓存\/index.md',
     ).then(res => res.json())
     try {
       const time = new Date(commits[0].commit.committer.date)
@@ -163,263 +154,177 @@ DNS 负载均衡 DNS 维护着域名与 IP 地址之间的映射关系，而且�
         
 
 <blockquote>
-<p>本文是根据 <a href="https://github.com/donnemartin/system-design-primer">system-design-primer（系统设计入门）</a> 整理，本文主要讲负载均衡</p>
+<p>本文是根据 <a href="https://github.com/donnemartin/system-design-primer">system-design-primer（系统设计入门）</a> 整理，本文主要讲缓存</p>
 </blockquote>
 
-<p>数据流量过大的网络中，尤其是高并发（High Concurrency）网络，单一设备一般是无法承担的，需要多台设备进行数据分流，而负载均衡（Load Balance）就是将请求或者数据<strong>均匀</strong>分摊到多个操作单元上执行。</p>
+<p>从操作系统的角度来看，不同存储之间的读写速度是有区别的。缓存就是把低速存储的结果，临时保存在高速存储的技术。</p>
 
-<p>高并发常用的一些指标有：</p>
+<p><img src="./operation-system-cache.jpeg" alt="operation-system-cache.jpeg" /></p>
 
-<ul>
-<li>响应时间（Response Time）</li>
-<li>吞吐量（Throughput）</li>
-<li>每秒查询率（Query Per Second），简称 <code>QPS</code></li>
-</ul>
+<p>在实际业务当中，缓存可以提高页面加载速度，并可以减少服务器或者数据库的负载。在这个模型中，应用会先查看请求之前是否被响应过，如果有则将之前的结果直接返回，来省掉真正的处理。</p>
 
-<p>没有负载均衡的 web 架构大概如下图：</p>
+<p>下面我们会以从客户端请求到 web 应用服务器这个流程当中可能涉及到的缓存为例来简单说一下。</p>
 
-<p><img src="./no-LB.png" alt="no-LB.png" /></p>
+<h2 id="service-worker-缓存">Service Worker 缓存</h2>
 
-<p>用户直接连接服务器，这个时候如果这台服务器挂了，那么就整个网站挂了。</p>
+<p><a href="https://developers.google.com/web/fundamentals/primers/service-workers">Service Worker</a> 是浏览器在后台独立于网页运行的脚本，可以提供请求拦截、推送通知、后台同步等功能。</p>
 
-<p>有负载均衡的架构如下图：</p>
+<p><code>Service Worker</code> 需要浏览器支持，也需要 HTTPS，并且对应的生命周期完全独立于 <a href="https://developers.google.com/web/updates/2018/07/page-lifecycle-api">网页生命周期（Page Lifecycle API）</a>。</p>
 
-<p><img src="./ha-diagram-animated.gif" alt="ha-diagram-animated.gif" /></p>
+<p><img src="./sw-lifecycle.png" alt="sw-lifecycle.png" /></p>
 
-<p>用户不直接访问后端服务器，而是访问负载均衡服务器，由负载均衡服务器再次转发到后端服务器。</p>
+<p>在成功安装 Service Worker 之后可以通过监听 <code>fetch</code> 事件来决定是否需要缓存：</p>
 
-<p>如果这个时候有一台后端服务器挂掉了，那么负载均衡服务器会剔除掉它，将后续请求都转发到好的那台，这样就不影响网站的正常运行。</p>
-
-<p>这个时候我们也需要考虑负载均衡服务器会不会挂掉，那就引入第二个负载均衡服务器来缓解一下。</p>
-
-<p>负载均衡器能帮助<strong>水平扩展（Horizontal scaling）</strong>，提高性能和可用性。相对使用商业硬件的性价比更高，并且比在单台硬件上<strong>垂直扩展（Vertical scaling）</strong>更贵的硬件具有更高的可用性。</p>
-
-<ul>
-<li>水平拓展：增强单机硬件性能或者优化单机架构</li>
-<li>垂直拓展：只要增加服务器数量，就能线性扩充系统性能</li>
-</ul>
-
-<p>针对负载均衡有各种各样的实现，我们来简单梳理一下。</p>
-
-<h2 id="客户端负载均衡">客户端负载均衡</h2>
-
-<p>简单来讲，客户端会有一个服务器地址列表，由客户端自行选择目标服务器的 IP 地址。</p>
-
-<p>客户端不存在缓存的问题，也能检查服务可用性来选择可用 IP。</p>
-
-<h2 id="dns-负载均衡">DNS 负载均衡</h2>
-
-<p>DNS 维护着域名与 IP 地址之间的映射关系，而且是可以接受我们控制的，因此可以在这里实现负载均衡策略。</p>
-
-<blockquote>
-<p>DNS 负载均衡可以通过 NS 记录将域名解析指给多台智能 DNS，以保障解析高可用，通过 IP 地址库及指定算法进行智能解析，可根据不同运营商、地理位置、内部应用情况进行智能解析分配。</p>
-</blockquote>
-
-<p>DNS 负载均衡技术实现比较灵活，成本较低，也可以根据域名解析成用户地址最近的一个服务器地址。</p>
-
-<p>缺点也很明显：</p>
-
-<ul>
-<li>可靠性没有保障：DNS 并不检查服务器的可用性，即便目标服务器宕机或者无法访问了，也返回其 IP 地址</li>
-<li>更新不及时：DNS 的解析结果往往会被层层缓存，记录更新无法立即生效</li>
-<li>流量分配策略较为简单，支持的算法较少</li>
-</ul>
-
-<p>另外一个问题，DNS 负载均衡默认采用的是 <code>round-robin</code> 算法，不能区分服务器之间的差异，也不能反应状态。</p>
-
-<p>K8s 当中也 <a href="https://kubernetes.io/docs/concepts/services-networking/service/#why-not-use-round-robin-dns">不推荐使用 round-robin DNS</a> ，个人看法是 DNS 轮询来做域名对应的 IP 扩容，负载均衡交给下层应用。</p>
-
-<h2 id="硬件负载均衡">硬件负载均衡</h2>
-
-<p>直接在服务器和外部网络间安装负载均衡硬件设备，这种设备我们通常称之为负载均衡器。</p>
-
-<p>由专门的设备完成，独立于操作系统，整体性能得到大量提高，加上更多的负载均衡策略，智能化的流量管理，可达到最佳的负载均衡需求。</p>
-
-<p>一般来说，硬件负载均衡在功能、性能上优于软件方式，可以做 4-7 层负载均衡，不过成本昂贵。</p>
-
-<p>硬件负载均衡常见的有 <a href="https://www.f5.com/">F5</a>。</p>
-
-<h2 id="osi-模型">OSI 模型</h2>
-
-<p>接下来就是软件负载均衡，在这之前我们要简单过一下 <a href="https://en.wikipedia.org/wiki/OSI_model">OSI（Open System Interconnect）参考模型</a>，OSI 将网络分为 7 个层次：</p>
-
-<p><img src="./osi-model-7-layers.svg" alt="osi-model-7-layers.svg" /></p>
-
-<p>自下而上，依次为：</p>
-
-<ul>
-<li><code>Physical Layer</code>：物理层，通过物理介质发送和接收原始比特流</li>
-<li><code>Data Link Layer</code>：数据链路层，在通过物理层连接的两个节点之间可靠地传输数据帧</li>
-<li><code>Network Layer</code>：网络层，构建和管理多节点网络，包括寻址，路由和流量控制</li>
-<li><code>Transport Layer</code>：传输层，在网络上各点之间可靠地传输数据段，包括分段，确认和多路复用</li>
-<li><code>Session Layer</code>：会话层，管理通信会话，即在两个节点之间以多次来回传输的形式连续交换信息</li>
-<li><code>Presentation Layer</code>：表现层，联网服务和应用程序之间的数据转换；包括字符编码，数据压缩和加密/解密</li>
-<li><code>Application Layer</code>：应用层，高级 API，包括资源共享，远程文件访问</li>
-</ul>
-
-<h2 id="layer-2-负载均衡-和-layer-3-负载均衡">Layer 2 负载均衡 和 Layer 3 负载均衡</h2>
-
-<p>Layer 2 负载均衡（本文简称为：L2）在数据链路层（Data Link Layer）工作，根据源/目标 MAC 地址进行分发，例如将虚拟 MAC 地址根据既定策略映射到实际 MAC 地址。</p>
-
-<p>Layer 3 负载均衡（本文简称为：L3）在网络层（Network Layer）工作，仅根据 IP 寻址（源和目标）来做出路由决策。</p>
-
-<p>根据 OSI 模型，越靠近底层，所能用来进行分发决策的信息越少，所以 L2 和 L3 的实际用途有限。</p>
-
-<h2 id="layer-4-负载均衡">Layer 4 负载均衡</h2>
-
-<p>Layer 4 负载均衡（本文简称为：L4）在 OSI 模型当中的传输层（transport layer）工作，根据数据包标头中记录的 <strong>源 IP 地址</strong> 和 <strong>目标 IP 地址以及端口</strong> （基于 TCP、UDP、IP）进行负载平衡决策，但是不考虑数据包的内容：</p>
-
-<blockquote>
-<p>When the Layer 4 load balancer receives a request and makes the load balancing decision, it also performs Network Address Translation (NAT) on the request packet, changing the recorded destination IP address from its own to that of the content server it has chosen on the internal network. Similarly, before forwarding server responses to clients, the load balancer changes the source address recorded in the packet header from the server’s IP address to its own. (The destination and source TCP port numbers recorded in the packets are sometimes also changed in a similar way.)</p>
-</blockquote>
-
-<p>当收到请求并做出负载平衡决定时，它还会对请求数据包执行网络地址转换（NAT），将记录的目标 IP 地址从其自身更改为在服务器上选择的内容服务器的目标 IP 地址，同样，在将服务器响应转发给客户端之前，负载均衡器会将记录在数据包头中的源地址从服务器的 IP 地址更改为自己的 IP 地址。</p>
-
-<p>另外 L4 根据从 TCP 流中前几个数据包中提取的地址信息做出路由决策，并且不检查包内容。通常是供应商提供的专用硬件设备，NAT 操作可能由专用芯片执行。</p>
-
-<p>与更复杂的 Layer 7 负载均衡相比，Layer 4 负载均衡所需的计算更少。</p>
-
-<p>当时商用硬件的功能不如现在强大，但是 CPU 和内存现在足够快且便宜，以至于在大多数情况下，第 4 层负载平衡的性能优势变得微不足道或无关紧要。</p>
-
-<p>常用的 L4 有 <a href="http://www.linuxvirtualserver.org/">LVS</a> 等等。</p>
-
-<h2 id="layer-7-负载均衡">Layer 7 负载均衡</h2>
-
-<p>Layer 7 负载均衡（本文简称：L7）在 OSI 模型当中最高一层工作：应用层（application layer）。</p>
-
-<p>L7 可以比 L4 处理复杂得多的方式路由网络流量，尤其适用于基于 <code>TCP</code> 的流量，例如 <code>HTTP</code>。</p>
-
-<blockquote>
-<p>Layer 7 load balancers base their routing decisions on various characteristics of the HTTP header and on the actual contents of the message, such as the URL, the type of data (text, video, graphics), or information in a cookie.</p>
-</blockquote>
-
-<p>L7 的路由决策基于 HTTP 标头的各种特征以及消息的实际内容，例如 URL，数据类型（文本，视频，图形）或 cookie 中的信息：</p>
-
-<p>就时间和所需的计算能力而言，L7 比 L4 昂贵，但是 L7 拥有更全面的上下文信息，可以在此基础上进行更聪明的全局决策，可以做流量控制，还能对内容进行优化和修改（比如压缩和加密）。</p>
-
-<p>由于现代硬件性能通常足够强大，以至于 L4 所节省的计算成本还不足以抵消 L7 所带来的更大灵活性和效率的好处。</p>
-
-<blockquote>
-<p>A device that performs Layer 7 load balancing is often referred to as a reverse‑proxy server.</p>
-</blockquote>
-
-<p>执行 Layer 7 负载均衡的设备通常称为反向代理服务器。</p>
-
-<p>上面所说的 L N 负载均衡其实都是根据 OSI 模型，和 TCP/IP 模型对比起来，严格来讲，L7 应该叫 L5~L7，因为结合了 OSI 模型中 5~7 层的相关信息：</p>
-
-<p><img src="./OSI-vs-TCPIP.jpg" alt="OSI-vs-TCPIP.jpg" /></p>
-
-<p>常用的 L7 有 <code>Nginx</code> 和 <code>HAproxy</code> 等等，下面我们会简单说一下 <code>Nginx</code> 的负载均衡。</p>
-
-<h2 id="nginx-上的负载均衡">Nginx 上的负载均衡</h2>
-
-<p>我们以 Nginx 上的 L7 HTTP 负载均衡为例，可以通过配置 <code>upstream</code> ：</p>
-
-<pre><code class="language-nginx">
-upstream backend {
-    server 10.10.12.45:80 weight=1;
-    server app.example.com:80 weight=2;
-}
-
-server {
-    location / {
-        proxy_pass http://backend;
-    }
-}
-
+<pre><code class="language-js">self.addEventListener('fetch', function(event) {
+  event.respondWith(
+    caches.match(event.request).then(function(response) {
+      // Cache hit - return response
+      if (response) {
+        return response
+      }
+      return fetch(event.request)
+    }),
+  )
+})
 </code></pre>
 
-<p>上面在 80 端口上配置了 2 台 HTTP server，其中 <code>weight</code> 代表<strong>权重</strong>，代表这 2 个 server 分配到的概率分别为 <sup>1</sup>&frasl;<sub>3</sub> 和 2/3。</p>
-
-<p>另外 nginx 的负载均衡策略有：</p>
+<p>Service Worker 对应的 API 和最佳实践都比较复杂，我们可以采用官方推荐的 <a href="https://developers.google.com/web/tools/workbox">workbox</a> 来配置和部署，并且也提供了以下 <a href="https://developers.google.com/web/tools/workbox/modules/workbox-strategies">缓存策略</a>：</p>
 
 <ul>
-<li><code>Round robin</code>：默认策略</li>
-<li><code>Least connections</code>：此方法通过将当前请求代理到具有最少打开连接数的上游服务器来平衡负载</li>
-<li><code>least time</code>：依赖于 NGINX Plus，优先分配给响应时间最短的服务器</li>
-<li><code>hash</code>：管理员使用给定的文本，请求或运行时的变量或两者来定义哈希，nginx 通过当前 hash 来决定负载均衡</li>
-<li><code>Random</code>：随机</li>
-<li><code>IP hash</code>：只在 <code>HTTP</code> 下工作，来自同一个 ip 的请求永远只分配一台服务器，有效解决了动态网页存在的 <code>session</code> 共享问题。</li>
+<li><code>CacheFirst</code>: 缓存优先</li>
+<li><code>CacheOnly</code>: 仅缓存</li>
+<li><code>NetworkFirst</code>: 网络优先</li>
+<li><code>NetworkOnly</code>: 仅网络</li>
+<li><code>StaleWhileRevaidate</code>: 取缓存，再走网络更新缓存</li>
 </ul>
 
-<h2 id="nginx-health-checks">Nginx Health Checks</h2>
+<h2 id="客户端缓存">客户端缓存</h2>
 
-<p>nginx 针对负载均衡也提供了 Health Checks（健康检查），分为被动检查（Passive Health Checks）和 主动检查（Active Health Checks），下面以 HTTP 为例：</p>
+<p>客户端缓存可以位于操作系统或者浏览器，在移动互联网当中也可以存在于 App 当中，可以减少服务端请求，避免文件重复加载。</p>
+
+<p>客户端缓存有无法预知资源的更新的缺点，所以需要多维度的配合。</p>
+
+<h2 id="dns-缓存">DNS 缓存</h2>
+
+<p>DNS（<strong>D</strong>omain <strong>N</strong>ame <strong>S</strong>ystem）作为将域名和IP地址相互映射的一个分布式数据库，相当于互联网的通讯录。</p>
+
+<p>当我们请求一个域名，DNS 服务器会通过递归 DNS 服务器的方式帮我们查到对应的 IP。为了提升域名查询效率，查询过后会把域名和 IP 缓存下来，下次请求的时候直接读取缓存当中的 IP。</p>
+
+<p>缓存是有有效时间的，资源记录中的 TTL（Time-to-Live）值相当于该记录的保质期，DNS 服务器会根据 TTL 的值来决定把这条消息缓存多久。</p>
+
+<p>DNS 缓存一般来讲有：浏览器 DNS 缓存、操作系统 DNS 缓存等等。</p>
+
+<h2 id="proxy-缓存">Proxy 缓存</h2>
+
+<p>Proxy（代理）分为正向代理和反向代理：</p>
 
 <ul>
-<li>被动检查（Passive Health Checks）</li>
+<li>正向代理</li>
 </ul>
 
-<pre><code class="language-nginx">
-upstream backend {
-    server backend1.example.com:1234 max_fails=3 fail_timeout=3s;
-    server backend2.example.com:1234 max_fails=3 fail_timeout=3s;
-}
+<p><img src="./proxy.jpg" alt="proxy.jpg" /></p>
 
-</code></pre>
+<p>正向代理就是我们接触最多的代理模式，一般来讲，很多企业以前（现在也有不少）是不允许员工随便访问外网的，有一些则是部分外网，如果你想要或者需要访问外网资源，那你很可能会希望在自己家里搭建一个代理服务器。</p>
 
-<p>被动检查在 nginx 开源版本就可以得到支持。</p>
+<p>由于需求的不同，催生了一些不同用途的代理，比如 HTTP 代理、FTP 代理等等，我们常用的梯子就是 socks5 代理。</p>
+
+<ul>
+<li>反向代理</li>
+</ul>
+
+<p><img src="./reverse_proxy.svg" alt="reverse_proxy.svg" /></p>
+
+<p>相对于正向代理来说，反向代理的技术含量更高一些，应用的范围也更加广泛，从小到你代理访问网站 ，大到网站内部负载均衡都会使用到这种技术。</p>
+
+<p>它的特点就是绝对可以保护代理后边的东西，用户只能访问到代理服务器，而代理服务器后边发生的事情你绝对不会知晓，是个黑箱。</p>
 
 <blockquote>
-<p>Use NGINX health checks with load balancing to ensure that only healthy upstream servers are utilized:
-NGINX passively moni‐ tors upstream HTTP, TCP, and UDP servers to ensure that they’re healthy and performing.</p>
+<p>Cache（缓存）技术和代理服务技术是紧密联系的，代理服务器可以把资源缓存下来，方便资源再次获取</p>
 </blockquote>
 
-<p>使用健康检查可以当负载均衡保证只有健康的上游服务器才会被利用，这个功能在 nginx 当中默认开启，被动检查上游的 HTTP、TCP、UDP 服务来确保健康度和性能。</p>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control">HTTP Cache-Control</a> 可以针对代理服务器设置缓存策略：</p>
 
 <ul>
-<li>主动检查（Active Health Checks）</li>
+<li><code>private</code> 要求代理服务器不能缓存资源</li>
+<li><code>proxy-revalidate</code> 要求代理服务器在资源过期后，必须向原始服务器验证。</li>
 </ul>
 
-<pre><code class="language-nginx">
-http {
-    server {
-        location / {
-            proxy_pass http://backend;
-            health_check interval=2s fails=2 passes=5 uri=/ match=welcome;
-        }
-    }
-     # status is 200, content type is &quot;text/html&quot;,
-     # and body contains &quot;Welcome to nginx!&quot;
-     match welcome {
-         status 200;
-         header Content-Type = text/html;
-         body ~ &quot;Welcome to nginx!&quot;;
-    }
-}
+<h2 id="cdn-缓存">CDN 缓存</h2>
 
-</code></pre>
+<p>内容分发网络（Content Delivery Network）简称 <code>CDN</code>，是一个全球性的代理服务器分布式网络，它从靠近用户的位置提供内容。</p>
 
-<p>主动检查需要 nginx plus 版本支持。</p>
+<p>将内容存储在 CDN 上可以从两个方面来提供性能:</p>
 
-<blockquote>
-<p>This health check configuration for HTTP servers checks the health of the upstream servers by making an HTTP request to the URI &lsquo;/&rsquo; every two seconds. The upstream servers must pass five consecutive health checks to be considered healthy. They are considered unheal‐ thy if they fail two consecutive checks. The response from the upstream server must match the defined match block,which defines the status code as 200, the header Content-Type value as &lsquo;text/html&rsquo;, and the string &ldquo;Welcome to nginx!&rdquo; in the response body. The HTTP match block has three directives: status, header, and body. All three of these directives have comparison flags, as well.</p>
-</blockquote>
+<ul>
+<li>从靠近用户的数据中心提供资源</li>
+<li>通过 CDN 你的服务器不必真的处理请求</li>
+</ul>
 
-<p>根据上面的配置，上游服务器返回的内容必须符合定义的 <code>match</code> 字段。</p>
+<p>CDN 本身也会做一些缓存，CDN 缓存策略因服务商不同而不同，但一般都会遵循 HTTP 缓存标准协议，一些 CDN 服务提供商也会添加一些自定义的 HTTP Header。</p>
 
-<p>而且通过每隔 2（interval） 秒发出 HTTP 请求 URI（uri） <code>/</code> 来检测上游服务器的运行状况，上游服务器必须通过 5（passes） 次的连续健康检测才能被认为健康，如果 2（fails） 次连续健康检查不通过，则认为不健康。</p>
+<p>CDN 缓存存在一些缺点：即使源站资源已经更新，也会因为 CDN 服务器上的数据没有即时更新而导致用户访问异常。</p>
+
+<h2 id="http-缓存">HTTP 缓存</h2>
+
+<p>HTTP 缓存策略分为<strong>强缓存</strong>和<strong>协商缓存</strong>。</p>
+
+<p>其中强缓存有：</p>
+
+<ul>
+<li><code>Expires</code></li>
+<li><code>Cache-Control</code></li>
+<li><code>Age</code></li>
+</ul>
+
+<p>缓存的资源到期了，并不意味着资源内容发生了改变，如果和服务器上的资源没有差异，实际上没有必要再次请求。客户端和服务器端通过某种验证机制验证当前请求资源是否可以使用缓存。</p>
+
+<p>对应的协商缓存有：</p>
+
+<ul>
+<li><code>Last-Modified</code></li>
+<li><code>If-Modified-Since</code></li>
+<li><code>If-None-Match</code></li>
+<li><code>ETag</code></li>
+</ul>
+
+<h2 id="应用缓存">应用缓存</h2>
+
+<p>应用缓存可以简单分为<strong>内存缓存</strong>和<strong>硬盘缓存</strong>：</p>
+
+<ul>
+<li>内存：将缓存存储于内存中是最快的选择，无需额外的 I/O 开销，但是内存的缺点是不能持久化，一旦应用异常 break down 而重新启动，数据很难或者无法复原。</li>
+<li>硬盘：一般来说，很多缓存框架会结合使用内存和硬盘，在内存分配空间满了或是在异常的情况下，可以被动或主动的将内存空间数据持久化到硬盘中，达到释放空间或备份数据的目的。</li>
+</ul>
+
+<p>基于内存的缓存比如 <code>Memcached</code> 和 <code>Redis</code> 是应用程序和数据存储之间的一种键值存储。由于数据保存在 <code>RAM</code> 中，它比存储在磁盘上的典型数据库要快的多，也有一些应用是基于磁盘缓存。</p>
+
+<h2 id="数据库缓存">数据库缓存</h2>
+
+<p>基于磁盘的数据库，存在着查询速度慢（频繁的查询）、扩展成本、需要简化数据访问等常见的问题。</p>
+
+<p>数据库缓存消除了主数据库面临的不必要的压力（通常是频繁访问的读取数据），对其功能有所助益。缓存本身可存在于数据库、应用程序等许多区域中，也可作为独立层存在。常用的数据库缓存类型有：</p>
+
+<ul>
+<li><strong>数据库集成缓存</strong>，该缓存在数据库引擎中托管，具有内置直写功能。</li>
+<li><strong>本地缓存</strong>，本地缓存可存储应用程序中经常使用的数据。这不仅加快了数据检索速度，而且消除了与之相关的网络流量，使其速度快于其他缓存架构</li>
+<li><strong>远程缓存（分布式缓存）</strong>，远程缓存存储在专用服务器上，由于远程缓存可用作供所有不同系统使用的连接集群，因此非常适用于分布式环境。</li>
+</ul>
 
 <h2 id="reference">Reference</h2>
 
 <ul>
-<li><a href="http://horicky.blogspot.com/2010/10/scalable-system-design-patterns.html">Pragmatic Programming Techniques</a></li>
-<li><a href="https://www.nginx.com/resources/glossary/layer-4-load-balancing/">What Is Layer 4 Load Balancing?</a></li>
-<li><a href="https://www.nginx.com/resources/glossary/layer-7-load-balancing/">What Is Layer 7 Load Balancing?</a></li>
-<li><a href="https://cloud.tencent.com/developer/news/343236">有软件负载均衡，也有硬件负载均衡，选择哪个？</a></li>
-<li><a href="https://www.w3cschool.cn/architectroad/architectroad-dns-polling.html">lvs 为何不能完全替代 DNS 轮询</a></li>
-<li><a href="https://www.nginx.com/resources/library/nginx-cookbook-2019-edition">NGINX Cookbook Advanced Recipes for High Performance Load Balancing（2019 UPDATE）</a></li>
+<li><a href="https://medium.com/system-designing-interviews/system-design-chapter-4-caching-b59a4cf83f10">System Design, Chapter 4: Caching</a></li>
+<li><a href="https://developers.google.com/web/fundamentals/primers/service-workers">Service Worker</a></li>
+<li><a href="https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/dd197552%28v%3dws.10%29">DNS Processes and Interactions</a></li>
+<li><a href="https://aws.amazon.com/cn/caching/database-caching/">数据库缓存</a></li>
 </ul>
 
     </section>
     <nav class="no-print post-nav">
         
-        <a class="prev-post" href="https://hasaki.xyz/blog/2020-01-20-%E8%BD%AC%E8%BD%BD%E7%8E%B0%E4%BB%A3%E6%B5%8F%E8%A7%88%E5%99%A8%E5%86%85%E9%83%A8%E6%8F%AD%E7%A7%98/">
-            <img class="icon-text" src="/img/prev.svg"/>转载：现代浏览器内部揭秘</a>
+        <a class="prev-post" href="https://hasaki.xyz/blog/2020-03-18-%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E5%85%A5%E9%97%A8-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/">
+            <img class="icon-text" src="/img/prev.svg"/>系统设计入门-负载均衡</a>
         
-        
-        <a class="next-post" href="https://hasaki.xyz/blog/2020-03-21-%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E5%85%A5%E9%97%A8-%E7%BC%93%E5%AD%98/">系统设计入门-缓存<img class="icon-text" src="/img/next.svg"/>
-        </a>
         
     </nav>
 </article>
