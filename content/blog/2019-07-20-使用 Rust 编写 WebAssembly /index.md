@@ -603,6 +603,7 @@ WebAssembly 应用场景在我看来更多的是：
 - [IR wikipedia](https://en.wikipedia.org/wiki/Intermediate_representation)
 - [LLVM asoa book](http://www.aosabook.org/en/llvm.html)
 - [Understanding the simplest LLVM IR](https://stackoverflow.com/questions/27447865/understanding-the-simplest-llvm-ir)
+- [Lin Clark: A Cartoon Intro to WebAssembly | JSConf EU](https://www.youtube.com/watch?v=HktWin_LPf4)
 - [A cartoon intro to WebAssembly](https://hacks.mozilla.org/2017/02/a-cartoon-intro-to-webassembly/)
 - [wasm-bindgen](https://rustwasm.github.io/docs/wasm-bindgen/introduction.html)
 - [wasm-bindgen examples](https://github.com/rustwasm/wasm-bindgen/blob/master/examples/README.md)

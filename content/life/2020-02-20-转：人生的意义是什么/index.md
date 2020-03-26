@@ -3,7 +3,6 @@ title: '转：人生的意义是什么'
 subTitle: '转：人生的意义是什么'
 tags: ['Life']
 date: 2020-02-20T10:55:55+08:00
-draft: true
 ---
 
 > 本文转载自知乎答主：赵曾良，对应链接为 [https://www.zhihu.com/question/24329745/answer/39941769](https://www.zhihu.com/question/24329745/answer/39941769)

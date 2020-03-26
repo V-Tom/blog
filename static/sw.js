@@ -1,4 +1,4 @@
-const VERSION_NAME = 'CACHE-v1582539604578';
+const VERSION_NAME = 'CACHE-v1585215350562';
 /**
  * PROJECT:  gh-pages
  * AUTHOR:  Nomand
@@ -8,7 +8,7 @@ const VERSION_NAME = 'CACHE-v1582539604578';
 
 const HOST_NAME = location.host;
 const CACHE_NAME = HOST_NAME + '-' + VERSION_NAME;
-const CACHE_HOST = ['https://hasaki.xyz/', 'http://localhost:1313/', 'http://cdnjs.cloudflare.com/', 'https://cdnjs.cloudflare.com/', 'https://fonts.gstatic.com/', 'https://fonts.googleapis.com/'];
+const CACHE_HOST = ['https://hasaki.xyz/', 'http://cdnjs.cloudflare.com/', 'https://cdnjs.cloudflare.com/', 'https://fonts.gstatic.com/', 'https://fonts.googleapis.com/'];
 
 const isValidResponse = _ => true;
 const isShouldBeCachedURI = ({ method, url }) => {

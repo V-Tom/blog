@@ -1,24 +1,12 @@
 ---
 title: 'some interview question'
-subTitle: 'some interview question'
 tags: ['interview']
 date: 2019-07-23T14:01:30+08:00
-draft: true
 ---
 
 下面是个人列出的一些前端面试方面的问题（没有先后顺序，也没有优先级之分）
 
-## 重点关注
-
-- 原型链
-- 复习一下 koa koa-router 源码
-- sso
-- Redux、Connect
-- 虚拟 DOM，[如何理解虚拟 DOM 1](https://github.com/livoras/blog/issues/13)
-- Fiber
-- websocket 握手过程
-- 各种排序算法 和 常用算法、复杂度计算，深度优先算法，字符串的最小编辑距离
-- [React 面试题大全](https://github.com/semlinker/reactjs-interview-questions)
+> 这个是我自己总结的一些[面试内容集合](https://www.processon.com/view/link/5e5cc10de4b03627650d7a2c)
 
 ## 手动实现的轮子
 
@@ -32,7 +20,7 @@ draft: true
 
 ## 浏览器工作原理系列
 
-- [关键渲染路径](https://mp.weixin.qq.com/s?__biz=MzA5NzkwNDk3MQ==&mid=2650588806&idx=1&sn=408a54e7c8102fd6944c9a40b119015a&chksm=8891d6a2bfe65fb42f493fe9a4dab672dd7e440f31e753196cee0cfbc6696e4f8dd3a669e040&mpshare=1&scene=1&srcid=1228ZrXsmbZKcgCSu7zTVDwy#)
+- [关键渲染路径](https://mp.weixin.qq.com/s?__biz=MzA5NzkwNDk3MQ==&mid=2650588806&idx=1&sn=408a54e7c8102fd6944c9a40b119015a&mpshare=1&scene=1&srcid=1228ZrXsmbZKcgCSu7zTVDwy#)
 - [浏览器的工作原理：新式网络浏览器幕后揭秘](https://www.html5rocks.com/zh/tutorials/internals/howbrowserswork/)
 - [Inside look at modern web browser (part 1)](https://developers.google.com/web/updates/2018/09/inside-browser-part1)
 - [中字 Inside look at modern web browser](https://github.com/xitu/gold-miner/blob/master/TODO1/inside-look-at-modern-web-browser-part1.md)

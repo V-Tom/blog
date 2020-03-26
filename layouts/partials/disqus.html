@@ -1,20 +1,27 @@
 <div id="disqus_thread" class="no-print"></div>
 <script type="text/javascript">
-    'use strict';
-    (function () {
-        if ('localhost' != window.location.hostname) {
-            var a = document.querySelector('#disqus_thread');
-            new IntersectionObserver(function (b) {
-                b.forEach(function (d) {
-                    if (0 < d.intersectionRatio && !a.classList.contains('active')) {
-                        var e = document.createElement('script');
-                        e.type = 'text/javascript', e.async = !0;
-                        e.src = '//' + '{{ .Site.DisqusShortname }}' + '.disqus.com/embed.js', (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(e), a.classList.add('active')
-                    }
-                })
-            }, {rootMargin: '0px', threshold: 1}).observe(a)
-        }
-    })();
+  'use strict'
+  ;(function() {
+    if ('localhost' != window.location.hostname) {
+      var a = document.querySelector('#disqus_thread')
+      new IntersectionObserver(
+        function(b) {
+          b.forEach(function(d) {
+            if (0 < d.intersectionRatio && !a.classList.contains('active')) {
+              var e = document.createElement('script')
+              ;(e.type = 'text/javascript'), (e.async = !0)
+              ;(e.src =
+                '//' + '{{ .Site.DisqusShortname }}' + '.disqus.com/embed.js'),
+                (
+                  document.getElementsByTagName('head')[0] ||
+                  document.getElementsByTagName('body')[0]
+                ).appendChild(e),
+                a.classList.add('active')
+            }
+          })
+        },
+        { rootMargin: '0px', threshold: 1 },
+      ).observe(a)
+    }
+  })()
 </script>
-<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-</noscript>

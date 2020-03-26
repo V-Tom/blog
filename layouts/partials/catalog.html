@@ -385,13 +385,11 @@
         }
       }
     })()
-    window.addEventListener(
-      'DOMContentLoaded',
-      _ =>
-        new Catalog({
-          contentEl: 'markdown',
-          catalogEl: 'catalog',
-        }),
-    )
+    window.addEventListener('DOMContentLoaded', function() {
+      new Catalog({
+        contentEl: 'markdown',
+        catalogEl: 'catalog',
+      })
+    })
   })()
 </script>
